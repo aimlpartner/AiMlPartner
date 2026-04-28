@@ -18,25 +18,29 @@ export function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 py-4 shadow-sm' : 'bg-slate-900/90 backdrop-blur-md py-6 border-b border-white/10'
+        isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 py-1 shadow-sm' : 'bg-white/80 backdrop-blur-md py-2 border-b border-slate-100'
       }`}
     >
       <div className="container-max flex items-center justify-between relative z-50">
-        <Link to="/" className={`flex items-center gap-3 transition-colors ${isScrolled || mobileMenuOpen ? 'text-slate-900' : 'text-white'}`}>
-          <div className="w-6 h-6 bg-gradient-to-br from-sky-400 to-sky-700 flex items-center justify-center rounded-sm shadow-md">
-            <div className={`w-2 h-2 ${isScrolled || mobileMenuOpen ? 'bg-white' : 'bg-sky-900'} rounded-full`} />
+        <Link to="/" className="flex items-center transition-colors text-slate-900">
+          <div className={`${isScrolled ? 'h-12' : 'h-16 md:h-20'} w-auto flex items-center transition-all duration-300`}>
+            <img 
+              src="https://darkgray-finch-838850.hostingersite.com/wp-content/uploads/2026/04/WhatsApp_Image_2026-04-28_at_12.18.40_AM-removebg-preview.png" 
+              alt="AIMLPartner Logo"
+              className="h-full w-auto object-contain transition-transform duration-300 hover:scale-105"
+              referrerPolicy="no-referrer"
+            />
           </div>
-          <span className="font-semibold text-lg tracking-tight drop-shadow-md">AIML TEK</span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className={`hidden md:flex items-center gap-6 text-sm font-medium transition-colors ${isScrolled ? 'text-slate-600' : 'text-sky-100'}`}>
-          <Link to="/agent-studio" className={`transition-colors ${isScrolled ? 'hover:text-slate-900' : 'hover:text-white drop-shadow'}`}>Agent Studio</Link>
-          <Link to="/agent-shop" className={`transition-colors ${isScrolled ? 'hover:text-slate-900' : 'hover:text-white drop-shadow'}`}>Agent Shop</Link>
-          <Link to="/low-code-pods" className={`transition-colors ${isScrolled ? 'hover:text-slate-900' : 'hover:text-white drop-shadow'}`}>Low-Code Pods</Link>
-          <Link to="/agentforce-services" className={`transition-colors ${isScrolled ? 'hover:text-slate-900' : 'hover:text-white drop-shadow'}`}>Agentforce</Link>
-          <Link to="/team" className={`transition-colors ${isScrolled ? 'hover:text-slate-900' : 'hover:text-white drop-shadow'}`}>Team</Link>
-          <Link to="/events" className={`transition-colors ${isScrolled ? 'hover:text-slate-900' : 'hover:text-white drop-shadow'}`}>Events</Link>
+        <nav className={`hidden md:flex items-center gap-6 text-sm font-medium transition-colors ${isScrolled ? 'text-slate-600' : 'text-slate-600'}`}>
+          <Link to="/agent-studio" className="transition-colors hover:text-sky-600">Agent Studio</Link>
+          <Link to="/agent-shop" className="transition-colors hover:text-sky-600">Agent Shop</Link>
+          <Link to="/low-code-pods" className="transition-colors hover:text-sky-600">Low-Code Pods</Link>
+          <Link to="/agentforce-services" className="transition-colors hover:text-sky-600">Agentforce</Link>
+          <Link to="/team" className="transition-colors hover:text-sky-600">Team</Link>
+          <Link to="/events" className="transition-colors hover:text-sky-600">Events</Link>
           <button 
             onClick={() => document.dispatchEvent(new CustomEvent('open-quiz'))}
             className="bg-gradient-to-r from-sky-400 to-sky-500 text-white rounded-full shadow-md shadow-sky-500/20 px-5 py-2.5 hover:from-sky-500 hover:to-sky-600 transition-colors ml-2"
@@ -47,7 +51,7 @@ export function Navbar() {
 
         {/* Mobile Toggle */}
         <button 
-          className={`md:hidden z-50 ${isScrolled || mobileMenuOpen ? 'text-slate-900' : 'text-white drop-shadow'}`}
+          className="md:hidden z-50 text-slate-900"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}

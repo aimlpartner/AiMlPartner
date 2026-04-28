@@ -42,10 +42,14 @@ export function Footer() {
           className="flex flex-col gap-6"
         >
           <div className="flex items-center gap-3 text-slate-50">
-            <div className="w-6 h-6 bg-gradient-to-br from-slate-50 to-sky-50/30 flex items-center justify-center">
-              <div className="w-2 h-2 bg-slate-900" />
+            <div className="h-16 w-auto flex items-center">
+              <img 
+                src="https://darkgray-finch-838850.hostingersite.com/wp-content/uploads/2026/04/WhatsApp_Image_2026-04-28_at_12.18.40_AM-removebg-preview.png" 
+                alt="AIMLPartner Logo"
+                className="h-full w-auto object-contain brightness-0 invert"
+                referrerPolicy="no-referrer"
+              />
             </div>
-            <span className="font-semibold text-lg tracking-tight">AIML TEK</span>
           </div>
           
           <p className="text-sm font-light leading-relaxed max-w-xs text-slate-600">
@@ -53,9 +57,9 @@ export function Footer() {
           </p>
           
           <div className="flex flex-col gap-3 text-sm mt-4 font-mono">
-            <a href="mailto:hello@aiml.tech" className="flex items-center gap-3 hover:text-slate-50 transition-colors w-fit">
+            <a href="mailto:hello@aimlpartner.com" className="flex items-center gap-3 hover:text-slate-50 transition-colors w-fit">
               <Mail size={14} />
-              hello@aiml.tech
+              hello@aimlpartner.com
             </a>
             <div className="flex items-center gap-3">
               <MapPin size={14} />
@@ -138,7 +142,7 @@ export function Footer() {
         transition={{ duration: 0.8, delay: 0.4 }}
         className="container-max mt-24 pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-600 uppercase tracking-widest"
       >
-        <p>&copy; {new Date().getFullYear()} AIML TEK.</p>
+        <p>&copy; {new Date().getFullYear()} AIMLPartner.</p>
         <div className="flex items-center gap-8">
           <a href="#" className="hover:text-slate-400 transition-colors">Privacy</a>
           <a href="#" className="hover:text-slate-400 transition-colors">Terms</a>
