@@ -9,6 +9,11 @@ async function startServer() {
   const distPath = path.join(process.cwd(), 'dist');
   const distIndexPath = path.join(distPath, 'index.html');
 
+  // Health-check endpoint for hosting platforms
+  app.get('/health', (_req, res) => {
+    res.status(200).json({ status: 'ok' });
+  });
+
   // Always prefer serving the built output when available.
   // Hostinger sometimes doesn't set NODE_ENV=production, which would otherwise
   // cause Vite middleware to start and potentially crash.
@@ -44,4 +49,7 @@ async function startServer() {
   });
 }
 
-startServer();
+startServer().catch((err) => {
+  console.error('[Server] Fatal error during startup:', err);
+  process.exit(1);
+});
