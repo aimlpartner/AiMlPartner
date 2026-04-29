@@ -1,5 +1,4 @@
 import express from 'express';
-import { createServer as createViteServer } from 'vite';
 import fs from 'fs';
 import path from 'path';
 
@@ -20,6 +19,9 @@ async function startServer() {
     });
   } else {
     try {
+      // `vite` may not be installed in some production environments (it can be a devDependency).
+      // Dynamic import prevents the server from crashing at startup when we're only serving `dist`.
+      const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
         server: { middlewareMode: true },
         appType: 'spa',
