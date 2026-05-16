@@ -11,7 +11,7 @@ export function MessagingTable() {
     },
     {
       buyer: "SMBs",
-      message: "Human-in-loop automation: n8n + low-code portals cut costs 40%.",
+      message: "Human-in-loop automation: AI agents + low-code portals cut costs 40%.",
       pain: "Scaling without headcount.",
       outcome: "Efficiency, $ROI fast."
     },

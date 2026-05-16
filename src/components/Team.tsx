@@ -17,7 +17,7 @@ export function Team() {
       role: "AI & Automation Architect / Fullstack",
       imageId: "1534528741775-53994a69daeb", // Water
       points: [
-        "Designs agent workflows on n8n and/or orchestration frameworks (LangChain / CrewAI where needed).",
+        "Designs agent workflows using modern orchestration frameworks.",
         "Owns infra choices, security, observability, and templates for common use cases (RAG, SDR, support, ops)."
       ]
     },
@@ -27,16 +27,32 @@ export function Team() {
       imageId: "1507003211169-0a1dd7228f2d", // Sand
       points: [
         "Builds app UIs, internal tools, and bridges between agents and business systems using low-code platforms.",
-        "Glues n8n/agents with databases, dashboards, and any custom code needed for robustness."
+        "Glues AI agents with databases, dashboards, and any custom code needed for robustness."
       ]
     },
     {
       name: "Anand M",
-      role: "Salesforce / Agentforce Architect",
+      role: "Enterprise CRM & AI Architect",
       imageId: "1519085360753-af0119f7cbe7", // Stone
       points: [
-        "Designs Agentforce use-cases, data model touchpoints, and integration with Salesforce clouds.",
-        "Coaches internal/existing client Salesforce teams to adopt Agentforce safely."
+        "Designs enterprise AI use-cases, data model touchpoints, and integration with leading CRM platforms.",
+        "Coaches internal and client CRM teams to adopt AI solutions safely."
+      ]
+    },
+    {
+      name: "Robert Molnar",
+      role: "Business Ops & Rev Architect",
+      points: [
+        "Drives business operations, revenue modeling, and strategic growth initiatives.",
+        "Aligns operational processes with revenue targets and scales go-to-market strategies."
+      ]
+    },
+    {
+      name: "Rich Miró",
+      role: "Brand & Product Media Architect",
+      points: [
+        "Leads brand strategy, visual identity, and product media development.",
+        "Crafts compelling narratives and media assets to elevate product positioning."
       ]
     }
   ];

@@ -9,7 +9,7 @@ export function HowWeWork() {
     },
     {
       title: "Build",
-      description: "Design and develop agent-driven workflows in n8n, low-code UI, and Salesforce configurations."
+      description: "Design and develop custom agent-driven workflows, low-code UIs, and robust system configurations."
     },
     {
       title: "Launch + Distribute",

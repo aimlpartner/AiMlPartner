@@ -57,9 +57,11 @@ export function Footer() {
           </p>
           
           <div className="flex flex-col gap-3 text-sm mt-4 font-mono">
-            <a href="mailto:hello@aimlpartner.com" className="flex items-center gap-3 hover:text-slate-50 transition-colors w-fit">
-              <Mail size={14} />
-              hello@aimlpartner.com
+            <a href="mailto:info@aimlpartner.com" className="flex items-center gap-3 hover:text-slate-50 transition-colors w-fit">
+              <span className="w-8 h-8 rounded-full border border-slate-700 flex items-center justify-center shrink-0">
+                <Mail size={14} className="text-slate-400" />
+              </span>
+              info@aimlpartner.com
             </a>
             <div className="flex items-center gap-3">
               <MapPin size={14} />

@@ -165,7 +165,7 @@ export function QuizModal() {
 
                 {step === 2 && (
                   <div className="space-y-3 flex-grow">
-                    {['Salesforce / Hubspot', 'Custom Internal Tools', 'Spreadsheets & Zapier', 'No established stack yet'].map((option) => (
+                    {['Enterprise CRM Platforms', 'Custom Internal Tools', 'Spreadsheets & Basic Automation', 'No established stack yet'].map((option) => (
                       <button
                         key={option}
                         onClick={() => {

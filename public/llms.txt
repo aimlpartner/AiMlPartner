@@ -1,0 +1,35 @@
+# AI ML Partner
+
+> **AI Agent Studio | Revenue-Focused AI Systems for Startups, SMBs & Enterprises**
+
+## About Us
+AI ML Partner (also known as AI Agent Studio) is an elite AI consulting and development agency. We specialize in building and launching revenue-focused AI agent systems for startups, SMBs, and enterprises. Our core focus is on driving operational efficiency, scaling revenue, and automating complex workflows using modern AI technologies.
+
+## Core Services
+
+### 1. Agent Studio
+We design, build, and deploy custom AI agents tailored to your unique business logic. Our agents can automate customer service, sales outreach, data processing, and internal operations.
+
+### 2. Low-Code Pods
+We leverage powerful low-code platforms like n8n to build scalable, flexible, and robust AI-driven workflows. This allows for rapid iteration and deployment, reducing time-to-value for our clients.
+
+### 3. Agentforce Services
+We architect and implement Salesforce Agentforce solutions. We integrate AI directly into your CRM to empower your sales and support teams, providing them with actionable insights and automated assistance directly within their existing workflows.
+
+### 4. Agent Shop
+A marketplace of pre-built, ready-to-deploy AI agents designed for common business use cases. Start scaling immediately with our proven, battle-tested solutions.
+
+## Target Audience
+We partner with:
+- **Startups:** Looking to scale rapidly without massive headcount overhead.
+- **SMBs (Small to Medium Businesses):** Seeking to optimize operations and improve profit margins.
+- **Enterprises:** Requiring secure, compliant, and scalable AI infrastructure integrated with existing systems like Salesforce.
+
+## Value Proposition
+- **Revenue-Focused:** We don't just build cool tech; we build systems designed to increase your bottom line.
+- **Rapid Deployment:** Utilizing low-code platforms and pre-built components ensures you see ROI faster.
+- **Enterprise-Grade:** Secure architectures, robust error handling, and seamless integrations.
+
+## Contact and Links
+- **Website:** https://aimlpartner.com
+- **Services:** Agent Studio, Agent Shop, Low-Code Pods, Agentforce Services

@@ -9,7 +9,7 @@ export function EventsPage() {
       date: "October 15, 2026",
       location: "San Francisco, CA",
       image: "1540575467063-178a50c2df87", // Conference
-      description: "Join us for a deep dive into building resilient agentic workflows using n8n and LangChain."
+      description: "Join us for a deep dive into building resilient agentic workflows using advanced orchestration frameworks."
     },
     {
       title: "Low-Code Founders Meetup",

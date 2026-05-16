@@ -5,7 +5,7 @@ export function Proof() {
   const caseStudies = [
     {
       headline: "3x qualified leads in 8 weeks",
-      description: "Automated lead enrichment and personalized outreach via n8n agents.",
+      description: "Automated lead enrichment and personalized outreach via intelligent agents.",
       metric: "300% pipeline growth",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400&h=300"
     },

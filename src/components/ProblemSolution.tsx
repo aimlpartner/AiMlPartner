@@ -5,7 +5,7 @@ export function ProblemSolution() {
   const problems = [
     {
       pain: "Manual workflows kill velocity",
-      solution: "Agent-driven workflows in n8n"
+      solution: "Custom agent-driven workflows"
     },
     {
       pain: "Human-driven ops don't scale",
