@@ -149,11 +149,11 @@ export function Hero() {
           </div>
           
           <h1 className="text-5xl md:text-6xl lg:text-[4rem] font-semibold tracking-tight text-white leading-[1.05] mb-6 drop-shadow-sm">
-            We build and launch <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-200 to-white font-bold drop-shadow-md">revenue-focused</span> AI agent systems.
+            AIMLpartner
           </h1>
           
           <p className="text-lg md:text-xl text-sky-100 mb-10 max-w-2xl leading-relaxed font-light drop-shadow">
-            Lean studio. Founder-led. Human oversight ensures systems scale reliably. Skip the buzz—get agentic automation that drives real results: <span className="font-medium text-white">30–50% faster ops</span> and qualified leads at scale.
+            AIMLpartner helps companies discover, validate, and implement AI solutions — matched to expert agents built for their exact business needs.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto drop-shadow-xl">

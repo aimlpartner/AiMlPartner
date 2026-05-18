@@ -8,6 +8,9 @@ import { HowWeWork } from '../components/HowWeWork';
 import { MessagingTable } from '../components/MessagingTable';
 import { LeadMagnets } from '../components/LeadMagnets';
 import { DistributionTeaser } from '../components/DistributionTeaser';
+import { HowItWorks } from '../components/HowItWorks';
+import { AgentCategories } from '../components/AgentCategories';
+import { CTABanner } from '../components/CTABanner';
 
 export function Home() {
   return (
@@ -16,11 +19,14 @@ export function Home() {
       <TechStackMarquee />
       <ProblemSolution />
       <Offerings />
+      <HowItWorks />
+      <AgentCategories />
       <Proof />
       <HowWeWork />
       <MessagingTable />
       <LeadMagnets />
       <DistributionTeaser />
+      <CTABanner />
     </main>
   );
 }

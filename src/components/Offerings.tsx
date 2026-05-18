@@ -6,33 +6,33 @@ import { Link } from 'react-router-dom';
 export function Offerings() {
   const offerings = [
     {
-      title: "Agent Studio",
+      title: "AI Discovery Engine",
       icon: <Network size={20} className="text-slate-900" />,
-      description: "Low-code platform for building custom AI agents that automate lead-qualifying, outreach, and internal ops.",
+      description: "The starting point. Tell us about your business and we'll identify your highest-value AI opportunities, estimate ROI, and create a clear implementation roadmap.",
       cta: "Explore Studio",
       link: "/agent-studio",
       imageId: "1498050108023-c5249f4df085" // Code/Computer
     },
     {
-      title: "Agent Shop",
+      title: "Expert Agent Network",
       icon: <CloudCog size={20} className="text-slate-900" />,
-      description: "Marketplace for pre-built, production-ready agents that you can deploy in minutes.",
+      description: "Get matched to specialized AI agents built for your exact use case — revenue, operations, customer support, hiring, and more. No generic outputs.",
       cta: "Browse Shop",
       link: "/agent-shop",
       imageId: "1542626991-cbc4e32524cc" // Business Dashboard
     },
     {
-      title: "Low-Code Product Pods",
+      title: "Validated Implementation",
       icon: <LayoutDashboard size={20} className="text-slate-900" />,
-      description: "Services to help founders build production-ready apps rapidly using low-code platforms.",
+      description: "Every agent in our network is vetted, domain-trained, and ready to deploy. We support onboarding so your team hits the ground running.",
       cta: "View Pods",
       link: "/low-code-pods",
       imageId: "1531403009284-440f080d1e12" // Workflow/Planning
     },
     {
-      title: "Salesforce Agentforce",
+      title: "Agent Shop",
       icon: <Cloud size={20} className="text-slate-900" />,
-      description: "Expert advisory and implementation services for secure, compliant AI agents in Salesforce.",
+      description: "Browse pre-built AI agents across revenue, operations, support, and hiring — ready to deploy for your business today.",
       cta: "View Services",
       link: "/agentforce-services",
       imageId: "1518770660439-4636190af475" // Server/Enterprise Tech
@@ -53,7 +53,7 @@ export function Offerings() {
             Core Offerings
           </h2>
           <p className="text-lg text-slate-600 font-light">
-            We build real agentic solutions for startups, SMBs, and enterprises. No hype, just measurable efficiency and growth.
+            We help startups and SMBs cut through the noise — identifying exactly where AI will move the needle for their business, then connecting them to purpose-built expert agents that get it done.
           </p>
         </motion.div>
 

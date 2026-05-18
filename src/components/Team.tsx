@@ -4,44 +4,9 @@ import { motion } from 'motion/react';
 export function Team() {
   const team = [
     {
-      name: "Deepak Porwal",
-      role: "Studio / GTM Architect",
-      imageId: "1573164713988-8665fc963095", // Leaves
-      points: [
-        "Owns narrative, ICP selection, offer design, pricing, and GTM experiments.",
-        "Leads sales and discovery calls, turns client pain into concrete agent + workflow projects."
-      ]
-    },
-    {
-      name: "Manu Singh",
-      role: "AI & Automation Architect / Fullstack",
-      imageId: "1534528741775-53994a69daeb", // Water
-      points: [
-        "Designs agent workflows using modern orchestration frameworks.",
-        "Owns infra choices, security, observability, and templates for common use cases (RAG, SDR, support, ops)."
-      ]
-    },
-    {
-      name: "Garvit Bansal",
-      role: "Low-Code & Product Fullstack AI Engineer",
-      imageId: "1507003211169-0a1dd7228f2d", // Sand
-      points: [
-        "Builds app UIs, internal tools, and bridges between agents and business systems using low-code platforms.",
-        "Glues AI agents with databases, dashboards, and any custom code needed for robustness."
-      ]
-    },
-    {
-      name: "Anand M",
-      role: "Enterprise CRM & AI Architect",
-      imageId: "1519085360753-af0119f7cbe7", // Stone
-      points: [
-        "Designs enterprise AI use-cases, data model touchpoints, and integration with leading CRM platforms.",
-        "Coaches internal and client CRM teams to adopt AI solutions safely."
-      ]
-    },
-    {
       name: "Robert Molnar",
       role: "Business Ops & Rev Architect",
+      seed: "RobertMolnarBoy", // Custom seed to ensure male avatar
       points: [
         "Drives business operations, revenue modeling, and strategic growth initiatives.",
         "Aligns operational processes with revenue targets and scales go-to-market strategies."
@@ -53,6 +18,38 @@ export function Team() {
       points: [
         "Leads brand strategy, visual identity, and product media development.",
         "Crafts compelling narratives and media assets to elevate product positioning."
+      ]
+    },
+    {
+      name: "Deepak Porwal",
+      role: "Studio / GTM Architect",
+      points: [
+        "Owns narrative, ICP selection, offer design, pricing, and GTM experiments.",
+        "Leads sales and discovery calls, turns client pain into concrete agent + workflow projects."
+      ]
+    },
+    {
+      name: "Anand M",
+      role: "Enterprise CRM & AI Architect",
+      points: [
+        "Designs enterprise AI use-cases, data model touchpoints, and integration with leading CRM platforms.",
+        "Coaches internal and client CRM teams to adopt AI solutions safely."
+      ]
+    },
+    {
+      name: "Manu Singh",
+      role: "AI & Automation Architect / Fullstack",
+      points: [
+        "Designs agent workflows using modern orchestration frameworks.",
+        "Owns infra choices, security, observability, and templates for common use cases (RAG, SDR, support, ops)."
+      ]
+    },
+    {
+      name: "Garvit Bansal",
+      role: "Low-Code & Product Fullstack AI Architect",
+      points: [
+        "Builds app UIs, internal tools, and bridges between agents and business systems using low-code platforms.",
+        "Glues AI agents with databases, dashboards, and any custom code needed for robustness."
       ]
     }
   ];
@@ -87,8 +84,8 @@ export function Team() {
             >
               <div className="mb-6 pb-6 border-b border-slate-200 flex items-center gap-6">
                 <div className="w-16 h-16 shrink-0 rounded-full border border-slate-200 overflow-hidden bg-sky-50">
-                  <img 
-                    src={`https://api.dicebear.com/8.x/notionists/svg?seed=${member.name}&backgroundColor=transparent`}
+                  <img
+                    src={`https://api.dicebear.com/8.x/notionists/svg?seed=${member.seed || member.name}&backgroundColor=transparent`}
                     alt={member.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     referrerPolicy="no-referrer"
