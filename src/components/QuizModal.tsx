@@ -46,13 +46,40 @@ export function QuizModal() {
     if (formData.email && formData.name && formData.company) {
       setIsSubmitting(true);
       setSubmitError('');
+      
+      // Map quiz answers to clear, condensed text strings
+      const teamMap: Record<string, string> = {
+        '1-10 (Founder-led)': '1-10',
+        '11-50 (Scaling SMB)': '11-50',
+        '51-200 (Mid-market)': '51-200',
+        '200+ (Enterprise)': '200+'
+      };
+      const stackMap: Record<string, string> = {
+        'Enterprise CRM Platforms': 'CRM',
+        'Custom Internal Tools': 'Custom',
+        'Spreadsheets & Basic Automation': 'Sheets',
+        'No established stack yet': 'None'
+      };
+      const goalsMap: Record<string, string> = {
+        'Scale outbound & lead gen': 'Outbound',
+        'Automate internal approvals': 'Approvals',
+        'Connect fragmented data': 'Data',
+        'Reduce operational headcount': 'Efficiency'
+      };
+
+      const t = teamMap[answers.teamSize] || 'N/A';
+      const s = stackMap[answers.stack] || 'N/A';
+      const g = goalsMap[answers.goals] || 'N/A';
+
+      // Keep under the 100 character rule limit
+      const sourceString = `Quiz: Size:${t}, Stack:${s}, Goal:${g}`.substring(0, 100);
+
       try {
         await addDoc(collection(db, 'leads'), {
           name: formData.name,
           email: formData.email,
           company: formData.company,
-          source: 'Agent Readiness Quiz',
-          quizAnswers: answers,
+          source: sourceString,
           createdAt: serverTimestamp()
         });
         setSubmitted(true);
