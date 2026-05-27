@@ -14,6 +14,7 @@ export function QuizModal() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   
   const [answers, setAnswers] = useState({
     teamSize: '',
@@ -28,6 +29,7 @@ export function QuizModal() {
       setIsOpen(true);
       setStep(1);
       setSubmitted(false);
+      setSubmitError('');
       setFormData({ name: '', email: '', company: '' });
       setAnswers({ teamSize: '', stack: '', goals: '' });
       setDirection(1);
@@ -43,6 +45,7 @@ export function QuizModal() {
     e.preventDefault();
     if (formData.email && formData.name && formData.company) {
       setIsSubmitting(true);
+      setSubmitError('');
       try {
         await addDoc(collection(db, 'leads'), {
           name: formData.name,
@@ -54,7 +57,8 @@ export function QuizModal() {
         });
         setSubmitted(true);
       } catch (error) {
-        handleFirestoreError(error, OperationType.CREATE, 'leads');
+        console.error("Firestore Error submitting quiz:", error);
+        setSubmitError("Failed to submit form. Please check your network or try again.");
       } finally {
         setIsSubmitting(false);
       }
@@ -242,11 +246,15 @@ export function QuizModal() {
                     </div>
                     <button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-sky-400 to-sky-600 text-white rounded-full shadow-md shadow-sky-500/20  px-6 py-4 font-medium hover:from-sky-500 hover:to-sky-700 transition-colors flex items-center justify-center gap-2 mt-4"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-sky-400 to-sky-600 text-white rounded-full shadow-md shadow-sky-500/20 px-6 py-4 font-medium hover:from-sky-500 hover:to-sky-700 transition-colors flex items-center justify-center gap-2 mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Request Consultation
+                      {isSubmitting ? 'Requesting...' : 'Request Consultation'}
                       <ArrowRight size={16} />
                     </button>
+                    {submitError && (
+                      <p className="text-red-500 text-xs font-light text-center mt-2">{submitError}</p>
+                    )}
                   </form>
                 )}
 

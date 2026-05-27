@@ -66,11 +66,12 @@ service cloud.firestore {
     }
 
     function isValidLead(data) {
-      return hasOnlyAllowedFields(['name', 'email', 'company', 'source', 'createdAt']) &&
+      return hasOnlyAllowedFields(['name', 'email', 'company', 'source', 'createdAt', 'quizAnswers']) &&
              (!('name' in data) || (data.name is string && data.name.size() <= 100)) &&
              data.email is string && isValidEmail(data.email) &&
              (!('company' in data) || (data.company is string && data.company.size() <= 100)) &&
              data.source is string && data.source.size() <= 100 &&
+             (!('quizAnswers' in data) || (data.quizAnswers is map)) &&
              data.createdAt is timestamp;
     }
 
