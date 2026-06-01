@@ -517,6 +517,20 @@ JSON SCHEMA STRUCTURE:
     res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
+  // Secure operational diagnostics debugging route
+  app.get('/api/debug-status', (req, res) => {
+    const apiKey = process.env.GEMINI_API_KEY;
+    res.status(200).json({
+      hasApiKey: !!apiKey,
+      apiKeyLength: apiKey ? apiKey.length : 0,
+      apiKeyPrefix: apiKey ? apiKey.substring(0, 5) + '...' : 'none',
+      cwd: process.cwd(),
+      envFilePath: path.join(__dirname, '.env'),
+      envFileExists: fs.existsSync(path.join(__dirname, '.env')),
+      nodeVersion: process.version
+    });
+  });
+
   if (fs.existsSync(distIndexPath)) {
     console.log('[Server] Serving production build from dist/');
 
