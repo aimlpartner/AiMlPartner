@@ -5,14 +5,21 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
 
-dotenv.config();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Initialize Gemini SDK
-const apiKey = process.env.GEMINI_API_KEY;
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+// Resolve and load .env using the absolute directory path of the server.js script
+dotenv.config({ path: path.join(__dirname, '.env') });
+
+// Helper to initialize GoogleGenAI lazily and fetch key dynamically at request time
+function getGoogleGenAI() {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.error("[Analyzer API Production] Error: GEMINI_API_KEY environment variable is missing.");
+    return null;
+  }
+  return new GoogleGenAI({ apiKey });
+}
 
 /**
  * Strips HTML and retrieves pure text
@@ -164,8 +171,9 @@ async function startServer() {
   app.post('/api/analyze', async (req, res) => {
     const { url, description, fileContent } = req.body;
 
+    const ai = getGoogleGenAI();
     if (!ai) {
-      return res.status(500).json({ error: "Gemini client not initialized" });
+      return res.status(500).json({ error: "Gemini client not initialized. Please ensure GEMINI_API_KEY is configured on your server." });
     }
 
     let finalContext = "";

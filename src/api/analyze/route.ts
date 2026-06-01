@@ -4,11 +4,20 @@ import dotenv from 'dotenv';
 import PDFDocument from 'pdfkit';
 import nodemailer from 'nodemailer';
 
-dotenv.config();
+import path from 'path';
 
-// Initialize the Gemini client using the official Google GenAI SDK.
-const apiKey = process.env.GEMINI_API_KEY;
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+// Resolve and load .env using the absolute working directory path
+dotenv.config({ path: path.join(process.cwd(), '.env') });
+
+// Helper to initialize GoogleGenAI lazily and fetch key dynamically at request time
+function getGoogleGenAI(): GoogleGenAI | null {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.error("[Analyzer API] Error: GEMINI_API_KEY environment variable is missing.");
+    return null;
+  }
+  return new GoogleGenAI({ apiKey });
+}
 
 /**
  * Strips all HTML tags, scripts, styles, and extracts pure visible web texts up to 40,000 characters.
@@ -215,6 +224,7 @@ function parseGeminiJson(rawText: string): any {
 export async function analyzeHandler(req: Request, res: Response): Promise<void> {
   const { url, description, fileContent } = req.body;
 
+  const ai = getGoogleGenAI();
   if (!ai) {
     res.status(500).json({ error: "Gemini API Client is not configured. Please supply GEMINI_API_KEY." });
     return;

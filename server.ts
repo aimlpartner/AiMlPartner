@@ -4,7 +4,8 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { analyzeHandler, emailReportHandler } from './src/api/analyze/route';
 
-dotenv.config();
+// Resolve and load .env using the absolute working directory path
+dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 async function startServer() {
   const app = express();
