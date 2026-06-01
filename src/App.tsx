@@ -25,6 +25,9 @@ const EventsPage = lazy(() => import('./pages/EventsPage').then((module) => ({ d
 const AdminDashboard = lazy(() =>
   import('./pages/AdminDashboard').then((module) => ({ default: module.AdminDashboard })),
 );
+const Analyzer = lazy(() =>
+  import('./pages/Analyzer').then((module) => ({ default: module.Analyzer })),
+);
 
 export default function App() {
   useVisitorTracking();
@@ -43,6 +46,7 @@ export default function App() {
           <Route path="/team" element={<TeamPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/analyzer" element={<Analyzer />} />
         </Routes>
       </Suspense>
       

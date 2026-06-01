@@ -41,6 +41,7 @@ export function Navbar() {
           <Link to="/agentforce-services" className="transition-colors hover:text-sky-600">Agentforce</Link>
           <Link to="/team" className="transition-colors hover:text-sky-600">Team</Link>
           <Link to="/events" className="transition-colors hover:text-sky-600">Events</Link>
+          <Link to="/analyzer" className="transition-colors hover:text-sky-600 font-semibold text-sky-500">AI Analyzer</Link>
           <button 
             onClick={() => document.dispatchEvent(new CustomEvent('open-quiz'))}
             className="bg-gradient-to-r from-sky-400 to-sky-500 text-white rounded-full shadow-md shadow-sky-500/20 px-5 py-2.5 hover:from-sky-500 hover:to-sky-600 transition-colors ml-2"
@@ -74,6 +75,7 @@ export function Navbar() {
             <Link to="/agentforce-services" className="text-slate-600 hover:text-sky-600 transition-colors font-medium py-2" onClick={() => setMobileMenuOpen(false)}>Agentforce Services</Link>
             <Link to="/team" className="text-slate-600 hover:text-sky-600 transition-colors font-medium py-2" onClick={() => setMobileMenuOpen(false)}>Team</Link>
             <Link to="/events" className="text-slate-600 hover:text-sky-600 transition-colors font-medium py-2" onClick={() => setMobileMenuOpen(false)}>Events</Link>
+            <Link to="/analyzer" className="text-sky-600 hover:text-sky-750 transition-colors font-semibold py-2" onClick={() => setMobileMenuOpen(false)}>AI Analyzer</Link>
             <button 
               onClick={() => {
                 setMobileMenuOpen(false);

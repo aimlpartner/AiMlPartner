@@ -1,6 +1,10 @@
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
+import dotenv from 'dotenv';
+import { analyzeHandler, emailReportHandler } from './src/api/analyze/route';
+
+dotenv.config();
 
 async function startServer() {
   const app = express();
@@ -8,6 +12,14 @@ async function startServer() {
   const HOST = process.env.HOST || '0.0.0.0';
   const distPath = path.join(process.cwd(), 'dist');
   const distIndexPath = path.join(distPath, 'index.html');
+
+  // Support JSON and urlencoded request bodies
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+  // Register AI Auditing Engine route
+  app.post('/api/analyze', analyzeHandler);
+  app.post('/api/email-report', emailReportHandler);
 
   // Health-check endpoint for hosting platforms
   app.get('/health', (_req, res) => {
