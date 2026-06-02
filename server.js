@@ -512,6 +512,145 @@ JSON SCHEMA STRUCTURE:
     }
   });
 
+  // Register "Let's Build It" build request endpoint
+  app.post('/api/build-request', async (req, res) => {
+    const { email, name, company, departmentName, answers, playbookDetails, analysisResult } = req.body;
+
+    if (!email || !departmentName || !answers || !playbookDetails) {
+      return res.status(400).json({ error: "Missing required client customization parameters." });
+    }
+
+    const ai = getGoogleGenAI();
+    if (!ai) {
+      return res.status(500).json({ error: "Gemini client not initialized. Please ensure GEMINI_API_KEY is configured on your server." });
+    }
+
+    try {
+      const answersText = answers.map((a, i) => `Q${i+1}: ${a.question}\nA${i+1}: ${a.answer}`).join('\n\n');
+      
+      const systemPromptDraftInstruction = `You are a Principal AI Prompt Architect & Senior Systems Engineer.
+The client (${name} from ${company}) wants to build a customized AI Agent for their "${departmentName}" department.
+
+Here are the details of the audited Playbook workflow:
+- Friction: ${playbookDetails.friction}
+- Resolution Strategy: ${playbookDetails.resolution}
+- Recommended Pipeline: ${playbookDetails.workflow}
+- Target SaaS Stack: ${playbookDetails.toolStack ? playbookDetails.toolStack.join(', ') : 'Make.com, OpenAI'}
+- Playbook Complexity: ${playbookDetails.complexity}
+- Timeline: ${playbookDetails.timeline}
+
+Here are the custom requirements clarified by the client's answers:
+${answersText}
+
+---
+TASK:
+Draft a highly detailed, professional-grade, copy-pasteable System Prompt to be used in Google AI Studio to build and configure this custom AI Agent.
+The system prompt must be extremely comprehensive, precise, and professional. It must instruct the agent in every detail.
+
+The system prompt must include the following sections inside a clean, pre-formatted markdown code block:
+1. ROLE & FOCUS: Detailed persona, operational context, and overall target goal.
+2. INPUT PROCESSING & PARSING: Explicit instructions on how to receive, validate, and parse raw input data structures (e.g. email texts, document files, webhook payloads).
+3. SYSTEM CONSTRAINTS & BOUNDARIES: Explicit "do-not-do" operational rules, strict validation filters, and safety boundaries to prevent hallucinations or unauthorized data modification.
+4. DETAILED EXECUTION STEPS: A step-by-step workflow of how the agent operates, processes data, extracts key values, and reasons.
+5. SAAS INTEGRATION WEBHOOKS: Instructions on how to format outputs to trigger downstream integrations (like Make.com webhooks, HubSpot CRM logging, Slack alerts).
+6. CRITICAL FALLBACK & ERROR HANDLERS: Detailed guidelines for human-in-the-loop escalation, handling corrupted files, edge cases, or invalid signatures.
+7. TARGET OUTPUT SCHEMA: Precise JSON schema structure or text formats the agent must return, guaranteeing zero downstream pipeline integration failures.
+
+Write a brief 1-sentence introduction, then output the complete Google AI Studio System Prompt inside a markdown code block so it can be easily copy-pasted.`;
+
+      console.log(`[Build Request API Prod] Calling Gemini to generate AI Studio System Prompt...`);
+      const aiResponse = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: systemPromptDraftInstruction
+      });
+
+      const systemPromptText = aiResponse.text;
+      if (!systemPromptText) {
+        throw new Error("Gemini returned empty text");
+      }
+
+      // Transmit the details to the administrator inbox support@brandtopost.com
+      const nodemailer = (await import('nodemailer')).default;
+      const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+      const smtpPort = Number(process.env.SMTP_PORT) || 587;
+      const smtpUser = process.env.SMTP_USER;
+      const smtpPass = process.env.SMTP_PASS;
+      const toEmail = process.env.TO_EMAIL || 'support@brandtopost.com';
+
+      if (!smtpUser || !smtpPass) {
+        console.warn('[Build Request API Prod] SMTP credentials missing.');
+        return res.status(200).json({ status: "mocked", prompt: systemPromptText });
+      }
+
+      const transporter = nodemailer.createTransport({
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpPort === 465,
+        auth: { user: smtpUser, pass: smtpPass },
+      });
+
+      const mailOptions = {
+        from: `"AIMLpartner Customizer" <${smtpUser}>`,
+        to: toEmail,
+        subject: `[Let's Build It Request] Custom ${departmentName} Agent for ${company}`,
+        html: `
+          <div style="font-family: sans-serif; color: #334155; line-height: 1.6; max-width: 650px; margin: auto; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);">
+            <h2 style="color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-top: 0;">Let's Build It! Custom Agent Request</h2>
+            <p>A client has completed the Playbook Questionnaire on your site for a customized AI Agent in their <strong>\${departmentName}</strong> department.</p>
+            
+            <h3 style="color: #0284c7; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Client Profile</h3>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;">
+              <tr>
+                <td style="padding: 6px 0; font-weight: bold; width: 30%;">Lead Name:</td>
+                <td style="padding: 6px 0;">\${name}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; font-weight: bold;">Work Email:</td>
+                <td style="padding: 6px 0;"><a href="mailto:\${email}">\${email}</a></td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; font-weight: bold;">Company Name:</td>
+                <td style="padding: 6px 0;">\${company}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; font-weight: bold;">Business Sector:</td>
+                <td style="padding: 6px 0;">\${analysisResult?.sector || 'Services'}</td>
+              </tr>
+            </table>
+
+            <h3 style="color: #0284c7; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Custom Requirements Clarified</h3>
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 20px; font-size: 14px;">
+              \${answers.map((a, i) => \`
+                <p style="margin: 0 0 8px 0;"><strong>Q\${i+1}: \${a.question}</strong></p>
+                <p style="margin: 0 0 16px 0; color: #475569; font-style: italic;">A\${i+1}: \${a.answer}</p>
+              \`).join('')}
+            </div>
+
+            <h3 style="color: #4f46e5; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; margin-top: 30px;">Google AI Studio System Prompt Blueprint</h3>
+            <p style="font-size: 13px; color: #64748b; margin-top: 5px; margin-bottom: 15px;">
+              Copy and paste the generated system prompt block below directly into Google AI Studio system instructions to spin up this agent immediately!
+            </p>
+            <div style="background-color: #0f172a; color: #e2e8f0; font-family: monospace; font-size: 12px; padding: 15px; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; border: 1px solid #1e293b; max-height: 500px;">
+\${systemPromptText}
+            </div>
+            
+            <br/>
+            <p style="font-size: 12px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 10px; margin-bottom: 0;">
+              This email was automatically generated by the AIMLpartner Custom Analyzer Engine. Follow up with the lead at \${email} within 72 hours with their prototype demo.
+            </p>
+          </div>
+        \`
+      };
+
+      console.log(`[Build Request API Prod] Sending email blueprint to \${toEmail}...`);
+      await transporter.sendMail(mailOptions);
+      res.status(200).json({ status: "sent" });
+    } catch (err) {
+      console.error(`[Build Request API Exception]:`, err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   // Health-check endpoint — useful for uptime monitors & Hostinger diagnostics
   app.get('/health', (_req, res) => {
     res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });

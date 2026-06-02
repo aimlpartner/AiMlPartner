@@ -42,23 +42,43 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
     return () => clearInterval(interval);
   }, [isLoading]);
 
+  // Form validation helper to prevent shell/script injection
+  const isValidDomainOrUrl = (str: string): boolean => {
+    if (/<script|javascript:|data:|vbscript:|<|>|'|"|`|\{|\}|\[|\]|\\|\^|\%/i.test(str)) {
+      return false;
+    }
+    const cleaned = str.trim().replace(/^https?:\/\//i, '');
+    const domainRegex = /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(:\d+)?(\/.*)?$/;
+    return domainRegex.test(cleaned);
+  };
+
   // Form handlers
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     if (activeTab === 'url') {
-      if (!url.trim()) {
+      const trimmedUrl = url.trim();
+      if (!trimmedUrl) {
         setError('Please enter a website URL.');
         return;
       }
-      onAnalyze({ url: url.trim() });
+      if (!isValidDomainOrUrl(trimmedUrl)) {
+        setError('Please enter a valid website URL or domain name (e.g. company.com). Injections are strictly prohibited.');
+        return;
+      }
+      onAnalyze({ url: trimmedUrl });
     } else if (activeTab === 'description') {
-      if (!description.trim() || description.trim().length < 20) {
+      const trimmedDesc = description.trim();
+      if (!trimmedDesc || trimmedDesc.length < 20) {
         setError('Please enter a detailed description (at least 20 characters).');
         return;
       }
-      onAnalyze({ description: description.trim() });
+      if (trimmedDesc.length > 2000) {
+        setError('Description exceeds the maximum limit of 2000 characters.');
+        return;
+      }
+      onAnalyze({ description: trimmedDesc });
     } else if (activeTab === 'file') {
       if (!fileContent.trim()) {
         setError('Please upload a text brief or manual first.');
@@ -97,6 +117,16 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
 
   const handleFile = (file: File) => {
     setError('');
+    
+    // Strict file size limit: 250 KB
+    const MAX_FILE_SIZE = 250 * 1024;
+    if (file.size > MAX_FILE_SIZE) {
+      setError('File size exceeds the limit of 250 KB. Please upload a smaller text brief.');
+      setFileName('');
+      setFileContent('');
+      return;
+    }
+
     setFileName(file.name);
     
     const reader = new FileReader();
@@ -240,14 +270,16 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                     <textarea
                       id="company-desc"
                       rows={6}
+                      maxLength={2000}
                       placeholder="Tell us about your team structure, manual tasks that waste hours (like sorting quotes, logging leads, copy-pasting customer records), and current CRM bottlenecks..."
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       className="block w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm transition-all text-base resize-none"
                     />
-                    <p className="text-xs text-slate-400 font-light mt-1">
-                      Minimum 20 characters. The more specific details you share about workflows, the higher the fidelity of the generated playbooks.
-                    </p>
+                    <div className="flex justify-between text-xs text-slate-400 font-light mt-1">
+                      <span>Minimum 20 characters. The more specific details you share about workflows, the higher the fidelity of the generated playbooks.</span>
+                      <span className={description.length >= 2000 ? "text-rose-500 font-semibold" : ""}>{description.length} / 2000 characters</span>
+                    </div>
                   </motion.div>
                 )}
 

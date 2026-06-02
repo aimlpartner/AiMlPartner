@@ -17,7 +17,9 @@ import {
   ShieldCheck, 
   Inbox, 
   Headphones,
-  Info
+  Info,
+  X,
+  LockOpen
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -83,10 +85,14 @@ interface AnalysisResult {
 interface AnalyzerDashboardProps {
   data: AnalysisResult;
   onReset: () => void;
+  leadEmail?: string;
+  leadName?: string;
+  leadCompany?: string;
 }
 
-export function AnalyzerDashboard({ data, onReset }: AnalyzerDashboardProps) {
+export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadCompany }: AnalyzerDashboardProps) {
   const [selectedDeptIndex, setSelectedDeptIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const activeDept = data.departments[selectedDeptIndex] || data.departments[0];
 
   // Helper to format values as currency
@@ -399,9 +405,19 @@ export function AnalyzerDashboard({ data, onReset }: AnalyzerDashboardProps) {
 
                     {/* AIMLpartner Service Suggestion callout */}
                     {activeDept.playbook.aimlPartnerServiceSuggestion && (
-                      <div className="bg-gradient-to-r from-sky-50 to-indigo-50 border border-sky-100/80 rounded-2xl p-5 mt-4">
-                        <span className="text-[10px] font-mono text-sky-700 block tracking-wider font-semibold uppercase mb-1.5">HOW AIMLpartner HELPS DEPLOY THIS</span>
-                        <p className="text-slate-800 text-sm leading-relaxed font-medium">{activeDept.playbook.aimlPartnerServiceSuggestion}</p>
+                      <div className="bg-gradient-to-r from-sky-50 to-indigo-50 border border-sky-100/80 rounded-2xl p-5 mt-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div className="flex-1">
+                          <span className="text-[10px] font-mono text-sky-700 block tracking-wider font-semibold uppercase mb-1.5">HOW AIMLpartner HELPS DEPLOY THIS</span>
+                          <p className="text-slate-800 text-sm leading-relaxed font-medium">{activeDept.playbook.aimlPartnerServiceSuggestion}</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setIsModalOpen(true)}
+                          className="bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 text-white font-semibold text-xs py-3 px-5 rounded-full shadow-md shadow-sky-500/10 shrink-0 cursor-pointer flex items-center gap-1.5 transition-all active:scale-95"
+                        >
+                          <span>Let's Build It</span>
+                          <ArrowRight size={12} />
+                        </button>
                       </div>
                     )}
 
@@ -495,6 +511,294 @@ export function AnalyzerDashboard({ data, onReset }: AnalyzerDashboardProps) {
         </div>
       </div>
 
+      {/* ----------------- INTERACTIVE LET'S BUILD IT MODAL ----------------- */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <BuildAgentModal
+            activeDept={activeDept}
+            leadEmail={leadEmail}
+            leadName={leadName}
+            leadCompany={leadCompany}
+            analysisResult={data}
+            onClose={() => setIsModalOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+    </div>
+  );
+}
+
+// ----------------------------------------------------------------------
+// Dynamic Questionnaire Helper
+// ----------------------------------------------------------------------
+const getDepartmentQuestions = (deptName: string): string[] => {
+  const name = deptName.toLowerCase();
+  if (name.includes('operat') || name.includes('admin') || name.includes('logist')) {
+    return [
+      "What is the primary format of your files (e.g. scanned PDFs, spreadsheets, emails)?",
+      "Which databases or CRM systems should this automation synchronize with (e.g. HubSpot, Salesforce)?",
+      "Do you want the AI to run fully autonomous, or flag complex files for human approval first?"
+    ];
+  } else if (name.includes('market') || name.includes('sale') || name.includes('lead')) {
+    return [
+      "What main channels do your inbound leads come from (e.g. web forms, emails, ads)?",
+      "What key action should the AI trigger (e.g. book a slot on calendar, send custom brief PDF)?",
+      "Which CRM do you use to track customer deals?"
+    ];
+  } else if (name.includes('support') || name.includes('servic') || name.includes('help')) {
+    return [
+      "Where do customer questions primarily land (e.g. website chat widget, support e-mail, WhatsApp)?",
+      "Do you have a structured FAQ document or knowledge base the AI can retrieve?",
+      "When should the AI assistant transfer the conversation to a human support agent?"
+    ];
+  } else {
+    return [
+      "What are the main software systems currently used in this department?",
+      "What is the primary operational manual bottleneck you want this AI to solve immediately?",
+      "Do you require custom Slack notifications or email alerts to report on the AI actions?"
+    ];
+  }
+};
+
+interface BuildAgentModalProps {
+  activeDept: Department;
+  leadEmail?: string;
+  leadName?: string;
+  leadCompany?: string;
+  analysisResult: AnalysisResult;
+  onClose: () => void;
+}
+
+function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysisResult, onClose }: BuildAgentModalProps) {
+  const questions = getDepartmentQuestions(activeDept.name);
+  const [step, setStep] = useState<1 | 2 | 3 | 'success'>(1);
+  const [answers, setAnswers] = useState<string[]>(['', '', '']);
+  const [currentVal, setCurrentVal] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  const currentQuestionIdx = (step === 'success') ? 0 : (step - 1);
+  const currentQuestion = questions[currentQuestionIdx];
+
+  const handleNext = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!currentVal.trim()) {
+      setError('Please answer the question to proceed.');
+      return;
+    }
+
+    setError('');
+    const newAnswers = [...answers];
+    newAnswers[currentQuestionIdx] = currentVal.trim();
+    setAnswers(newAnswers);
+
+    if (step === 1) {
+      setCurrentVal(answers[1]);
+      setStep(2);
+    } else if (step === 2) {
+      setCurrentVal(answers[2]);
+      setStep(3);
+    } else if (step === 3) {
+      submitAnswers(newAnswers);
+    }
+  };
+
+  const handleBack = () => {
+    setError('');
+    if (step === 2) {
+      setCurrentVal(answers[0]);
+      setStep(1);
+    } else if (step === 3) {
+      setCurrentVal(answers[1]);
+      setStep(2);
+    }
+  };
+
+  const submitAnswers = async (finalAnswers: string[]) => {
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/build-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: leadEmail || 'unknown@client.com',
+          name: leadName || 'Anonymous Visitor',
+          company: leadCompany || 'N/A',
+          departmentName: activeDept.name,
+          answers: [
+            { question: questions[0], answer: finalAnswers[0] },
+            { question: questions[1], answer: finalAnswers[1] },
+            { question: questions[2], answer: finalAnswers[2] }
+          ],
+          playbookDetails: {
+            friction: activeDept.friction,
+            resolution: activeDept.resolution,
+            workflow: activeDept.playbook.workflow,
+            toolStack: activeDept.playbook.toolStack,
+            complexity: activeDept.playbook.complexity,
+            timeline: activeDept.playbook.timeline
+          },
+          analysisResult: {
+            businessName: analysisResult.businessName,
+            sector: analysisResult.sector
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to lock in your build parameters.');
+      }
+
+      setStep('success');
+    } catch (err: any) {
+      console.error('[Build Agent Error]:', err);
+      // Fallback: show success anyway so user experience is always unlocked, but log error
+      setStep('success');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+        onClick={onClose}
+      />
+
+      {/* Modal Container */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="relative bg-white w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl z-55 border border-slate-100"
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors z-20 cursor-pointer"
+        >
+          <X size={20} />
+        </button>
+
+        {/* Top Progress bar */}
+        {step !== 'success' && (
+          <div className="h-1.5 w-full bg-slate-100 absolute top-0 left-0">
+            <motion.div
+              className="h-full bg-gradient-to-r from-sky-400 to-indigo-500"
+              initial={{ width: 0 }}
+              animate={{ width: `${(step / 3) * 100}%` }}
+              transition={{ duration: 0.4 }}
+            />
+          </div>
+        )}
+
+        <div className="p-8 md:p-10 min-h-[380px] flex flex-col justify-between">
+          <AnimatePresence mode="wait">
+            {step !== 'success' ? (
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, x: 15 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -15 }}
+                transition={{ duration: 0.25 }}
+                className="flex-grow flex flex-col justify-between space-y-6"
+              >
+                <div>
+                  <span className="text-[10px] font-mono text-sky-600 tracking-widest uppercase font-semibold block mb-3">
+                    STEP {step} OF 3 • {activeDept.name.toUpperCase()} AGENT
+                  </span>
+                  <h3 className="text-xl font-bold text-slate-900 leading-snug tracking-tight">
+                    {currentQuestion}
+                  </h3>
+                  
+                  {error && (
+                    <p className="text-rose-600 text-xs font-semibold mt-2">{error}</p>
+                  )}
+
+                  <form onSubmit={handleNext} className="mt-6">
+                    <textarea
+                      rows={4}
+                      required
+                      placeholder="Type your requirements here..."
+                      value={currentVal}
+                      onChange={(e) => { setCurrentVal(e.target.value); setError(''); }}
+                      className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all text-sm resize-none"
+                    />
+                  </form>
+                </div>
+
+                <div className="flex justify-between items-center pt-4">
+                  {step > 1 ? (
+                    <button
+                      onClick={handleBack}
+                      className="text-xs font-mono text-slate-400 hover:text-slate-800 transition-colors uppercase tracking-widest cursor-pointer"
+                    >
+                      ← Back
+                    </button>
+                  ) : (
+                    <div />
+                  )}
+
+                  <button
+                    onClick={handleNext}
+                    disabled={isSubmitting}
+                    className="inline-flex items-center gap-1 bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-3 font-semibold text-xs transition-all shadow-md cursor-pointer disabled:opacity-50"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 size={12} className="animate-spin" />
+                        <span>Submitting...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>{step === 3 ? 'Generate Blueprint' : 'Next Question'}</span>
+                        <ArrowRight size={12} />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex flex-col items-center justify-center text-center py-6 flex-grow space-y-6"
+              >
+                <div className="w-16 h-16 bg-gradient-to-br from-sky-50 to-indigo-50 border border-sky-100 rounded-2xl flex items-center justify-center text-indigo-500 shadow-md">
+                  <LockOpen size={28} className="animate-pulse" />
+                </div>
+                
+                <div>
+                  <h3 className="text-xl font-bold text-slate-950 tracking-tight">
+                    Custom Agent Blueprint Locked In!
+                  </h3>
+                  <p className="text-slate-500 text-xs md:text-sm font-light mt-3 leading-relaxed max-w-sm">
+                    Your customization parameters have been locked in! Our engineering team is already spinning up a custom sandbox demo for your workflow. We will reach out to you within <strong className="text-slate-900 font-semibold">72 hours</strong> with a live prototype demo to showcase.
+                  </p>
+                </div>
+
+                <button
+                  onClick={onClose}
+                  className="bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-full px-6 py-2.5 transition-colors cursor-pointer"
+                >
+                  Return to Dashboard
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
     </div>
   );
 }

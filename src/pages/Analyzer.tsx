@@ -18,6 +18,14 @@ export function Analyzer() {
   const [unlockError, setUnlockError] = useState('');
 
   const handleAnalyze = async (payload: { url?: string; description?: string; fileContent?: string }) => {
+    // Strict client rate-limiting to maximum 2 diagnostic runs to prevent server/API abuse
+    const auditCountStr = localStorage.getItem('aiml_analyzer_run_count');
+    const auditCount = auditCountStr ? parseInt(auditCountStr, 10) : 0;
+    if (auditCount >= 2) {
+      setError('You have reached the maximum limit of 2 free diagnostics. Contact support@brandtopost.com for a comprehensive enterprise AI audit.');
+      return;
+    }
+
     setIsLoading(true);
     setError('');
     setEmailCaptured(false); // Reset unlock state for new analysis
@@ -37,6 +45,9 @@ export function Analyzer() {
 
       const data = await response.json();
       setResult(data);
+      
+      // Increment successful diagnostic audit run count
+      localStorage.setItem('aiml_analyzer_run_count', String(auditCount + 1));
     } catch (err: any) {
       console.error('[Analyzer Client Error]:', err);
       setError(err.message || 'Diagnostic failed. Please check your inputs and try again.');
@@ -143,111 +154,121 @@ export function Analyzer() {
           </div>
         )}
 
-        {/* State Transitions: Input -> Lock Gate -> Dashboard */}
+        {/* State Transitions: Input -> Lock Gate (blurred dashboard behind overlay) -> Unlocked Dashboard */}
         {!result ? (
           <AnalyzerInput onAnalyze={handleAnalyze} isLoading={isLoading} />
-        ) : !emailCaptured ? (
-          // lead capture gating lock card
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="max-w-2xl mx-auto bg-slate-900 border border-slate-800 shadow-2xl rounded-3xl p-8 md:p-12 text-white relative overflow-hidden text-center"
-          >
-            <div className="absolute top-0 right-1/4 w-80 h-80 bg-sky-500/10 rounded-full filter blur-[80px] pointer-events-none animate-pulse" />
-            
-            <div className="relative z-10 max-w-md mx-auto space-y-6">
-              <div className="w-16 h-16 bg-sky-500/10 border border-sky-500/30 rounded-2xl flex items-center justify-center mx-auto text-sky-400 shadow-lg shadow-sky-500/5 mb-4">
-                <Lock size={26} className="animate-pulse" />
-              </div>
-              
-              <div>
-                <span className="text-[10px] font-mono text-sky-400 uppercase tracking-widest block font-semibold mb-1">ANALYSIS COMPLETE</span>
-                <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
-                  Unlock Your Custom Operational Playbook
-                </h3>
-                <p className="text-slate-400 font-light text-sm mt-3 leading-relaxed">
-                  Your customized diagnostic report for <strong className="text-white font-medium">{result.businessName}</strong> is generated! Please supply your work details below to unlock your dashboard and playbooks.
-                </p>
-              </div>
-
-              {unlockError && (
-                <div className="bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs py-2.5 px-4 rounded-xl font-medium text-left">
-                  {unlockError}
-                </div>
-              )}
-
-              <form onSubmit={handleUnlock} className="space-y-4 text-left">
-                <div className="space-y-3">
-                  <div>
-                    <label htmlFor="gate-name" className="sr-only">Full Name</label>
-                    <input
-                      id="gate-name"
-                      type="text"
-                      required
-                      placeholder="Full Name"
-                      value={leadForm.name}
-                      onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
-                      className="block w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="gate-email" className="sr-only">Work Email</label>
-                    <input
-                      id="gate-email"
-                      type="email"
-                      required
-                      placeholder="Work Email"
-                      value={leadForm.email}
-                      onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
-                      className="block w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="gate-company" className="sr-only">Company Name</label>
-                    <input
-                      id="gate-company"
-                      type="text"
-                      required
-                      placeholder="Company Name"
-                      value={leadForm.company}
-                      onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })}
-                      className="block w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm text-sm"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isUnlocking}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-400 to-sky-500 text-white rounded-full py-4 font-semibold text-sm hover:from-sky-500 hover:to-sky-600 transition-all shadow-lg shadow-sky-500/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isUnlocking ? (
-                    <>
-                      <Loader2 size={16} className="animate-spin text-white" />
-                      <span>Unlocking Analysis...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Unlock Audit Dashboard</span>
-                      <ArrowRight size={16} />
-                    </>
-                  )}
-                </button>
-              </form>
-
-              <div className="pt-2 text-center text-[10px] text-slate-500 font-light">
-                Secure SSL processing • Free for business owners • Instant unlock
-              </div>
-            </div>
-          </motion.div>
         ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <AnalyzerDashboard data={result} onReset={handleReset} />
-          </motion.div>
+          <div className="relative">
+            {/* The dashboard is rendered behind, blurred and disabled until email is captured */}
+            <div className={!emailCaptured ? "filter blur-md pointer-events-none select-none" : ""}>
+              <AnalyzerDashboard 
+                data={result} 
+                onReset={handleReset} 
+                leadEmail={leadForm.email}
+                leadName={leadForm.name}
+                leadCompany={leadForm.company}
+              />
+            </div>
+
+            {/* Immersive Lead Capture Lock Gate Overlay */}
+            {!emailCaptured && (
+              <div className="absolute inset-0 z-40 flex items-start justify-center bg-slate-950/20 backdrop-blur-[2px] pt-12 md:pt-20 px-4 min-h-[600px]">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full max-w-2xl bg-slate-900/95 border border-slate-800 shadow-2xl rounded-3xl p-8 md:p-12 text-white relative overflow-hidden text-center sticky top-28"
+                >
+                  <div className="absolute top-0 right-1/4 w-80 h-80 bg-sky-500/10 rounded-full filter blur-[80px] pointer-events-none animate-pulse" />
+                  
+                  <div className="relative z-10 max-w-md mx-auto space-y-6">
+                    <div className="w-16 h-16 bg-sky-500/10 border border-sky-500/30 rounded-2xl flex items-center justify-center mx-auto text-sky-400 shadow-lg shadow-sky-500/5 mb-4">
+                      <Lock size={26} className="animate-pulse" />
+                    </div>
+                    
+                    <div>
+                      <span className="text-[10px] font-mono text-sky-400 uppercase tracking-widest block font-semibold mb-1">ANALYSIS COMPLETE</span>
+                      <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-white font-sans">
+                        Unlock Your Custom AI Audit Dashboard
+                      </h3>
+                      <p className="text-slate-400 font-light text-sm mt-3 leading-relaxed">
+                        Your customized diagnostic playbooks and ROI roadmaps are fully compiled in the background! Supply your details to unlock full access.
+                      </p>
+                    </div>
+
+                    {unlockError && (
+                      <div className="bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs py-2.5 px-4 rounded-xl font-medium text-left">
+                        {unlockError}
+                      </div>
+                    )}
+
+                    <form onSubmit={handleUnlock} className="space-y-4 text-left">
+                      <div className="space-y-3">
+                        <div>
+                          <label htmlFor="gate-name" className="sr-only">Full Name</label>
+                          <input
+                            id="gate-name"
+                            type="text"
+                            required
+                            placeholder="Full Name"
+                            value={leadForm.name}
+                            onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
+                            className="block w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="gate-email" className="sr-only">Work Email</label>
+                          <input
+                            id="gate-email"
+                            type="email"
+                            required
+                            placeholder="Work Email"
+                            value={leadForm.email}
+                            onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
+                            className="block w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="gate-company" className="sr-only">Company Name</label>
+                          <input
+                            id="gate-company"
+                            type="text"
+                            required
+                            placeholder="Company Name"
+                            value={leadForm.company}
+                            onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })}
+                            className="block w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm text-sm"
+                          />
+                        </div>
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={isUnlocking}
+                        className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-400 to-sky-500 text-white rounded-full py-4 font-semibold text-sm hover:from-sky-500 hover:to-sky-600 transition-all shadow-lg shadow-sky-500/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isUnlocking ? (
+                          <>
+                            <Loader2 size={16} className="animate-spin text-white" />
+                            <span>Unlocking Analysis...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Unlock Audit Dashboard</span>
+                            <ArrowRight size={16} />
+                          </>
+                        )}
+                      </button>
+                    </form>
+
+                    <div className="pt-2 text-center text-[10px] text-slate-500 font-light">
+                      Secure SSL processing • Free for business owners • Instant unlock
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </main>
