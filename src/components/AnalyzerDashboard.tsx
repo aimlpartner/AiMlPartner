@@ -19,7 +19,8 @@ import {
   Headphones,
   Info,
   X,
-  LockOpen
+  LockOpen,
+  Loader2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 

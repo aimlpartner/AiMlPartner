@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -27,15 +28,15 @@ export function StickyCTA() {
           <div className="container-max flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-center sm:text-left">
               <p className="font-medium text-slate-900 tracking-tight">Ready to scale your operations?</p>
-              <p className="text-sm text-slate-600 font-light hidden md:block">Get a personalized assessment of your agent readiness.</p>
+              <p className="text-sm text-slate-600 font-light hidden md:block">Get a personalized operational diagnostic report instantly.</p>
             </div>
-            <button 
-              onClick={() => document.dispatchEvent(new CustomEvent('open-quiz'))}
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-400 to-sky-600 text-white rounded-full shadow-md shadow-sky-500/20  px-6 py-2.5 font-medium hover:from-sky-500 hover:to-sky-700 transition-colors whitespace-nowrap w-full sm:w-auto"
+            <Link 
+              to="/analyzer"
+              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-400 to-sky-500 text-white rounded-full shadow-md shadow-sky-500/20 px-6 py-2.5 font-medium hover:from-sky-500 hover:to-sky-600 transition-colors whitespace-nowrap w-full sm:w-auto"
             >
-              Assess Your Agent Readiness
+              Run AI Operational Audit
               <ArrowRight size={16} />
-            </button>
+            </Link>
           </div>
         </motion.div>
       )}

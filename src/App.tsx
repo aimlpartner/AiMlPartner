@@ -7,9 +7,7 @@ import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { QuizModal } from './components/QuizModal';
 import { StickyCTA } from './components/StickyCTA';
-import { ExitIntentPopup } from './components/ExitIntentPopup';
 import { useVisitorTracking } from './hooks/useVisitorTracking';
 
 // Pages
@@ -53,9 +51,7 @@ export default function App() {
       <Footer />
       
       {/* Modals and Overlays */}
-      <QuizModal />
       <StickyCTA />
-      <ExitIntentPopup />
     </div>
   );
 }

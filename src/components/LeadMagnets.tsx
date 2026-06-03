@@ -1,152 +1,83 @@
-import React, { useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import React from 'react';
+import { ArrowRight, Globe, FileText } from 'lucide-react';
 import { motion } from 'motion/react';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db, handleFirestoreError, OperationType } from '../lib/firebase';
+import { Link } from 'react-router-dom';
 
 export function LeadMagnets() {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [company, setCompany] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email && name) {
-      setIsSubmitting(true);
-      try {
-        await addDoc(collection(db, 'leads'), {
-          name,
-          email,
-          company,
-          source: 'Strategy Call Form',
-          createdAt: serverTimestamp()
-        });
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 3000);
-        setEmail('');
-        setName('');
-        setCompany('');
-      } catch (error) {
-        handleFirestoreError(error, OperationType.CREATE, 'leads');
-      } finally {
-        setIsSubmitting(false);
-      }
-    }
-  };
-
   return (
-    <section className="py-24 bg-gradient-to-br from-slate-50 to-sky-50/30 border-b border-slate-200">
+    <section className="py-24 bg-gradient-to-br from-slate-50 to-sky-50/30 border-b border-slate-200 text-left">
       <div className="container-max">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mx-auto text-center mb-16"
+          className="max-w-3xl mx-auto text-center mb-16 text-slate-900"
         >
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-6">
-            Turn curiosity into your revenue edge
+          <span className="text-xs font-mono text-slate-400 uppercase tracking-widest block mb-3">
+            Audit Channels
+          </span>
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-6">
+            Get Your Custom Automation Blueprint
           </h2>
-          <p className="text-lg text-slate-600 font-light">
-            Discover how agentic systems can accelerate your GTM and cut operational bloat.
+          <p className="text-lg text-slate-600 font-light max-w-2xl mx-auto">
+            Choose the method that fits your context and launch your operational report in under 30 seconds.
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {/* Quiz CTA */}
+          {/* Option 1: URL Scanner */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-white p-10 border border-slate-200 flex flex-col items-start h-full"
+            className="bg-white p-10 border border-slate-200 flex flex-col items-start h-full rounded-2xl shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-300"
           >
-            <div className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-6">Assessment</div>
-            <h3 className="text-2xl font-medium text-slate-900 mb-4 tracking-tight">
-              Agent Readiness Quiz
+            <div className="w-10 h-10 mb-6 bg-sky-50 border border-sky-100 rounded-lg flex items-center justify-center text-sky-500">
+              <Globe size={20} className="text-sky-500" />
+            </div>
+            <div className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-3">Website Scan</div>
+            <h3 className="text-2xl font-semibold text-slate-900 mb-4 tracking-tight">
+              Analyze Public Domain
             </h3>
-            <p className="text-slate-600 font-light mb-8 leading-relaxed flex-grow">
-              Take our 3-minute assessment to evaluate your current stack, team size, and goals. Get a personalized Readiness Score PDF instantly.
+            <p className="text-slate-600 font-light mb-8 text-sm leading-relaxed flex-grow">
+              Provide your business website address. Our system crawls public facing details, strips style boilerplate, and builds a CRM synchronization diagnostic report.
             </p>
-            <button 
-              onClick={() => document.dispatchEvent(new CustomEvent('open-quiz'))}
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-400 to-sky-600 text-white rounded-full shadow-md shadow-sky-500/20  px-6 py-3 font-medium hover:from-sky-500 hover:to-sky-700 transition-colors w-full sm:w-auto"
+            <Link 
+              to="/analyzer"
+              className="inline-flex items-center justify-center gap-2 bg-slate-950 text-white rounded-full px-6 py-3 font-semibold text-sm hover:bg-slate-800 transition-colors w-full sm:w-auto"
             >
-              Assess Your Agent Readiness
+              <span>Scan Your Domain</span>
               <ArrowRight size={16} />
-            </button>
+            </Link>
           </motion.div>
 
-          {/* Consultation Form */}
+          {/* Option 2: Bottleneck Audit */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-white p-10 border border-slate-200 flex flex-col h-full"
+            className="bg-white p-10 border border-slate-200 flex flex-col items-start h-full rounded-2xl shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-300"
           >
-            <div className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-6">Consultation</div>
-            <h3 className="text-2xl font-medium text-slate-900 mb-2 tracking-tight">
-              Book a Free Strategy Call
+            <div className="w-10 h-10 mb-6 bg-sky-50 border border-sky-100 rounded-lg flex items-center justify-center text-sky-500">
+              <FileText size={20} className="text-sky-500" />
+            </div>
+            <div className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-3">Text Audit</div>
+            <h3 className="text-2xl font-semibold text-slate-900 mb-4 tracking-tight">
+              Outline A Bottleneck
             </h3>
-            <p className="text-slate-600 font-light mb-8 text-sm leading-relaxed">
-              Speak directly with our architects to map out how agentic systems can drive real ROI for your specific use case.
+            <p className="text-slate-600 font-light mb-8 text-sm leading-relaxed flex-grow">
+              Describe your current software systems and operational delays. Get a tailored prompt loop roadmap, low-disruption integration checklist, and tool stack recommendation.
             </p>
-            
-            {submitted ? (
-              <div className="flex flex-col items-center justify-center h-full py-8 text-center animate-in fade-in duration-300">
-                <h4 className="text-lg font-medium text-slate-900 mb-2">Request Received!</h4>
-                <p className="text-slate-600 font-light text-sm">We'll be in touch shortly to schedule your call.</p>
-              </div>
-            ) : (
-              <form 
-                onSubmit={handleSubmit} 
-                className="flex flex-col gap-4 flex-grow"
-                name="consultation-lead"
-                method="POST"
-                data-netlify="true"
-              >
-                <input type="hidden" name="form-name" value="consultation-lead" />
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <input 
-                    type="text" 
-                    name="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Full Name" 
-                    required
-                    className="w-full px-4 py-2.5 bg-gradient-to-br from-slate-50 to-sky-50/30 border border-slate-200 focus:outline-none focus:border-slate-400 transition-colors text-sm font-light"
-                  />
-                  <input 
-                    type="text" 
-                    name="company"
-                    value={company}
-                    onChange={(e) => setCompany(e.target.value)}
-                    placeholder="Company" 
-                    required
-                    className="w-full px-4 py-2.5 bg-gradient-to-br from-slate-50 to-sky-50/30 border border-slate-200 focus:outline-none focus:border-slate-400 transition-colors text-sm font-light"
-                  />
-                </div>
-                <input 
-                  type="email" 
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Work Email" 
-                  required
-                  className="w-full px-4 py-2.5 bg-gradient-to-br from-slate-50 to-sky-50/30 border border-slate-200 focus:outline-none focus:border-slate-400 transition-colors text-sm font-light"
-                />
-                <button 
-                  type="submit"
-                  className="mt-auto inline-flex items-center justify-center gap-2 bg-slate-100 text-slate-900 border border-slate-200 px-6 py-3 font-medium hover:bg-slate-200 transition-colors w-full"
-                >
-                  Request Consultation
-                </button>
-              </form>
-            )}
+            <Link 
+              to="/analyzer"
+              className="inline-flex items-center justify-center gap-2 bg-slate-950 text-white rounded-full px-6 py-3 font-semibold text-sm hover:bg-slate-800 transition-colors w-full sm:w-auto"
+            >
+              <span>Audit Your Workflow</span>
+              <ArrowRight size={16} />
+            </Link>
           </motion.div>
         </div>
       </div>

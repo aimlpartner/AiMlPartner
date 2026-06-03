@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AnalyzerInput } from '../components/AnalyzerInput';
 import { AnalyzerDashboard } from '../components/AnalyzerDashboard';
 import { Sparkles, Brain, Cpu, Lock, ArrowRight, Loader2, Sparkle } from 'lucide-react';
@@ -16,6 +17,9 @@ export function Analyzer() {
   const [leadForm, setLeadForm] = useState({ name: '', email: '', company: '' });
   const [isUnlocking, setIsUnlocking] = useState(false);
   const [unlockError, setUnlockError] = useState('');
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleAnalyze = async (payload: { url?: string; description?: string; fileContent?: string }) => {
     // Strict client rate-limiting to maximum 2 diagnostic runs to prevent server/API abuse
@@ -55,6 +59,32 @@ export function Analyzer() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    // 1. Check navigation state
+    if (location.state && (location.state.url || location.state.description)) {
+      handleAnalyze({
+        url: location.state.url,
+        description: location.state.description
+      });
+      // Clear navigation state
+      navigate(location.pathname, { replace: true, state: null });
+      return;
+    }
+
+    // 2. Check query parameters
+    const params = new URLSearchParams(location.search);
+    const urlParam = params.get('url');
+    const descParam = params.get('description');
+    if (urlParam || descParam) {
+      handleAnalyze({
+        url: urlParam || undefined,
+        description: descParam || undefined
+      });
+      // Clear query params from URL
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.state, location.search]);
 
   const handleUnlock = async (e: React.FormEvent) => {
     e.preventDefault();
