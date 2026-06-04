@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { WorkflowSimulator } from '../components/WorkflowSimulator';
 
 export function Home() {
   const navigate = useNavigate();
@@ -381,113 +382,9 @@ export function Home() {
             </p>
           </div>
 
-          {/* The Visual Diagram */}
-          <div className="relative bg-surface rounded-[2rem] border border-black/5 p-8 md:p-16 shadow-editorial overflow-hidden reveal">
-            {/* Animated Background Grid / Constellation Vibe */}
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuMDUiIHN0cm9rZS13aWR0aD0iMScvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-40 z-0"></div>
-
-            {/* Connecting Line with Animated Dash */}
-            <svg className="absolute top-1/2 left-0 w-full h-24 -translate-y-1/2 z-0 hidden md:block" preserveAspectRatio="none">
-              <path
-                d="M0,48 C200,48 300,10 500,48 C700,86 800,48 1400,48"
-                fill="none"
-                stroke="#2563EB"
-                strokeWidth="2"
-                strokeOpacity="0.3"
-                strokeDasharray="8 8"
-                className="animate-dash"
-              />
-            </svg>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-4 items-center relative z-10">
-              {/* Step 1: Messy Input */}
-              <div className="flex flex-col items-center">
-                <div className="bg-white p-5 rounded-xl border border-black/10 shadow-sm w-full max-w-[280px] transform -rotate-3 hover:rotate-0 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1)">
-                  <div className="flex items-center justify-between mb-3 border-b border-black/5 pb-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded bg-surface flex items-center justify-center border border-black/5 shadow-sm">
-                        <i className="ph-fill ph-envelope-simple text-ink-light text-xs"></i>
-                      </div>
-                      <span className="text-[10px] font-mono text-ink-light uppercase tracking-wider font-bold">
-                        Inbound Email
-                      </span>
-                    </div>
-                    <div className="w-2 h-2 rounded-full bg-alert"></div>
-                  </div>
-                  <p className="text-sm font-medium text-ink leading-relaxed italic opacity-85">
-                    "Hey, I'm John from Acme Corp. We need about 50 licenses by next month. Can you sort
-                    this?"
-                  </p>
-                </div>
-                <div className="mt-6 text-center">
-                  <h4 className="font-display font-bold text-ink mb-1 tracking-tight">Unstructured Data</h4>
-                  <p className="text-xs text-ink-light font-medium uppercase tracking-wider">
-                    Human-written text
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 2: The Agent Processor */}
-              <div className="flex flex-col items-center justify-center animate-float-slow">
-                <div className="relative w-20 h-20 md:w-24 md:h-24">
-                  {/* Glowing rings */}
-                  <div
-                    className="absolute inset-0 rounded-full border-2 border-accent/30 animate-ping"
-                    style={{ animationDuration: '4s' }}
-                  ></div>
-                  <div className="absolute inset-2 rounded-full border border-accent/40 bg-white/80 backdrop-blur-sm"></div>
-                  {/* Core */}
-                  <div className="absolute inset-4 rounded-full bg-accent text-white flex items-center justify-center shadow-glow">
-                    <i className="ph-fill ph-magic-wand text-2xl md:text-3xl"></i>
-                  </div>
-                </div>
-                <div className="mt-6 text-center bg-white/90 backdrop-blur-md px-4 py-2 rounded-lg border border-black/5 shadow-sm">
-                  <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold text-accent mb-0.5">
-                    Agent Logic
-                  </h4>
-                  <p className="text-[10px] text-ink-light font-medium uppercase tracking-wider">
-                    Extracting Intent
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 3: Clean Output */}
-              <div className="flex flex-col items-center">
-                <div className="bg-ink p-5 rounded-xl border border-black shadow-editorial w-full max-w-[280px] transform translate-y-3 hover:-translate-y-0 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1)">
-                  <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded bg-white/10 flex items-center justify-center">
-                        <i className="ph-fill ph-database text-success text-xs"></i>
-                      </div>
-                      <span className="text-[10px] font-mono text-white uppercase tracking-wider font-bold">
-                        CRM Payload
-                      </span>
-                    </div>
-                    <i className="ph-bold ph-check-circle text-success"></i>
-                  </div>
-                  <div className="space-y-3 font-mono text-xs text-left">
-                    <div className="flex justify-between border-b border-white/5 pb-1">
-                      <span className="text-white/50">Company:</span>
-                      <span className="text-white font-medium">"Acme Corp"</span>
-                    </div>
-                    <div className="flex justify-between border-b border-white/5 pb-1">
-                      <span className="text-white/50">Intent:</span>
-                      <span className="text-white font-medium">"Purchase"</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-white/50">Quantity:</span>
-                      <span className="text-success font-bold">50</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-6 text-center">
-                  <h4 className="font-display font-bold text-ink mb-1 tracking-tight">Structured Action</h4>
-                  <p className="text-xs text-ink-light font-medium uppercase tracking-wider">
-                    Clean JSON for API
-                  </p>
-                </div>
-              </div>
-            </div>
+          {/* The Visual Diagram (Interactive Simulation Console) */}
+          <div className="reveal">
+            <WorkflowSimulator />
           </div>
 
           <div className="mt-12 text-center">

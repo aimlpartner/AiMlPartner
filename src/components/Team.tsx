@@ -25,8 +25,7 @@ export function Team() {
     {
       name: "Deepak Porwal",
       role: "Studio / GTM Architect",
-      colSpan: "md:col-span-8",
-      featured: true,
+      colSpan: "md:col-span-4",
       points: [
         "Owns narrative, ICP selection, offer design, pricing, and GTM experiments.",
         "Leads sales and discovery calls, turns client pain into concrete agent + workflow projects."
@@ -44,8 +43,7 @@ export function Team() {
     {
       name: "Manu Singh",
       role: "AI & Automation Architect / Fullstack",
-      colSpan: "md:col-span-8",
-      featured: true,
+      colSpan: "md:col-span-4",
       points: [
         "Designs agent workflows using modern orchestration frameworks.",
         "Owns infra choices, security, observability, and templates for common use cases (RAG, SDR, support, ops)."
@@ -112,65 +110,30 @@ export function Team() {
                 transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 className={`${member.colSpan} bg-white border border-black/5 p-8 flex flex-col justify-between group hover:border-accent/40 hover:shadow-editorial-hover transition-all duration-300 rounded-3xl shadow-editorial relative overflow-hidden`}
               >
-                {member.featured ? (
-                  // Wide featured card with split layout
-                  <div className="grid md:grid-cols-12 gap-8 h-full items-center">
-                    <div className="md:col-span-5 flex items-center gap-6">
-                      <div className="w-20 h-20 shrink-0 rounded-2xl border border-black/5 overflow-hidden bg-surface-alt shadow-sm p-1">
-                        <img
-                          src={`https://api.dicebear.com/8.x/notionists/svg?seed=${member.seed || member.name}&backgroundColor=transparent`}
-                          alt={member.name}
-                          className="w-full h-full object-cover group-hover:scale-115 transition-transform duration-500"
-                          referrerPolicy="no-referrer"
-                        />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-ink mb-2 tracking-tight group-hover:text-accent transition-colors duration-300">{member.name}</h3>
-                        <div className="text-[10px] font-mono text-accent uppercase tracking-widest font-bold">{member.role}</div>
-                      </div>
+                <div className="flex flex-col justify-between h-full">
+                  <div className="mb-6 pb-6 border-b border-black/5 flex items-center gap-4">
+                    <div className="w-14 h-14 shrink-0 rounded-2xl border border-black/5 overflow-hidden bg-surface-alt p-1">
+                      <img
+                        src={`https://api.dicebear.com/8.x/notionists/svg?seed=${member.seed || member.name}&backgroundColor=transparent`}
+                        alt={member.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        referrerPolicy="no-referrer"
+                      />
                     </div>
-                    
-                    {/* Vertical Fading Divider */}
-                    <div className="hidden md:block md:col-span-1 h-full w-px bg-gradient-to-b from-transparent via-black/10 to-transparent self-stretch" />
-                    
-                    <div className="md:col-span-6">
-                      <ul className="space-y-4">
-                        {member.points.map((point, j) => (
-                          <li key={j} className="flex items-start gap-3 text-ink-light text-sm leading-relaxed font-medium">
-                            <span className="text-accent mt-2 w-1.5 h-1.5 bg-accent shrink-0 rounded-full" />
-                            <span>{point}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    <div>
+                      <h3 className="text-lg font-bold text-ink mb-1 tracking-tight group-hover:text-accent transition-colors duration-300">{member.name}</h3>
+                      <div className="text-[9px] font-mono text-ink-lighter uppercase tracking-widest font-semibold">{member.role}</div>
                     </div>
                   </div>
-                ) : (
-                  // Standard vertical card
-                  <div className="flex flex-col justify-between h-full">
-                    <div className="mb-6 pb-6 border-b border-black/5 flex items-center gap-4">
-                      <div className="w-14 h-14 shrink-0 rounded-2xl border border-black/5 overflow-hidden bg-surface-alt p-1">
-                        <img
-                          src={`https://api.dicebear.com/8.x/notionists/svg?seed=${member.seed || member.name}&backgroundColor=transparent`}
-                          alt={member.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                          referrerPolicy="no-referrer"
-                        />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-ink mb-1 tracking-tight group-hover:text-accent transition-colors duration-300">{member.name}</h3>
-                        <div className="text-[9px] font-mono text-ink-lighter uppercase tracking-widest font-semibold">{member.role}</div>
-                      </div>
-                    </div>
-                    <ul className="space-y-4 flex-grow">
-                      {member.points.map((point, j) => (
-                        <li key={j} className="flex items-start gap-3 text-ink-light text-xs leading-relaxed font-medium">
-                          <span className="text-accent mt-1.5 w-1.2 h-1.2 bg-accent shrink-0 rounded-full" />
-                          <span>{point}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                  <ul className="space-y-4 flex-grow">
+                    {member.points.map((point, j) => (
+                      <li key={j} className="flex items-start gap-3 text-ink-light text-xs leading-relaxed font-medium">
+                        <span className="text-accent mt-1.5 w-1.2 h-1.2 bg-accent shrink-0 rounded-full" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </motion.div>
             ))}
           </div>
