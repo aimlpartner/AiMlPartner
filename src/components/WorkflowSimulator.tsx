@@ -2,126 +2,74 @@ import React from 'react';
 
 export function WorkflowSimulator() {
   return (
-    <div className="w-full relative bg-zinc-950 text-white rounded-[2.5rem] border border-zinc-850 p-6 md:p-10 shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden font-sans select-none">
-      {/* Decorative background glows */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[250px] h-[250px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <div className="w-full relative bg-white border border-black/5 rounded-[2rem] p-8 md:p-14 shadow-editorial overflow-hidden font-sans select-none flex flex-col items-center justify-center min-h-[300px]">
+      {/* Delicate mesh background gradients */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-indigo-50/20 via-white to-emerald-50/20 opacity-90 pointer-events-none"></div>
+      
+      {/* Decorative architectural layout grid lines (very faint) */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuMDIiIHN0cm9rZS13aWR0aD0iMScvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-40 pointer-events-none z-0"></div>
 
-      {/* Main Header explaining the Business Use Case */}
-      <div className="max-w-3xl mb-10 relative z-10 text-left">
-        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-blue-400 font-bold mb-3 block">
-          Real Business Impact
-        </span>
-        <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white font-display mb-3 leading-tight">
-          How AI agents transform daily operations
-        </h3>
-        <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl">
-          Let’s look at a mainstream business example: handling a high-value customer inquiry. See how background agent automation translates directly into hours reclaimed, expenses saved, and revenue growth.
-        </p>
-      </div>
-
-      {/* Relatable Scenario Card */}
-      <div className="bg-zinc-900/40 border border-zinc-850 rounded-2xl p-5 mb-8 relative z-10 backdrop-blur-sm text-left">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 font-semibold">Typical Business Scenario: Inbound Sales Lead</span>
-        </div>
-        <div className="bg-zinc-950 border border-zinc-850 rounded-xl p-4 font-mono text-xs leading-relaxed text-zinc-300">
-          <span className="text-blue-400 font-bold">Incoming Customer Inquiry:</span> "Hey! I'm Sarah, Director of Ops at Stripe. We want to automate our CRM sync for a team of 150 members starting next month. Can we schedule a demo?"
-        </div>
-      </div>
-
-      {/* 3 Pillars: Time, Money, Growth */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10 text-left">
+      {/* Main Designer Layout */}
+      <div className="w-full flex flex-col md:flex-row items-center justify-center gap-4 relative z-10">
         
-        {/* Card 1: Time */}
-        <div className="bg-zinc-900/30 border border-zinc-850 hover:border-zinc-700/80 hover:bg-zinc-900/40 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 shadow-inner group">
-          <div>
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-3 mb-4">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 font-bold flex items-center gap-1.5">
-                <i className="ph-fill ph-timer text-blue-500 text-sm"></i>
-                Time Saved
-              </span>
-              <span className="text-base font-bold text-blue-400 group-hover:scale-105 transition-transform duration-300">-99% prep</span>
-            </div>
-            
-            <h4 className="text-base font-bold text-white mb-2 tracking-tight">Instant Lead Readiness</h4>
-            <p className="text-zinc-400 text-xs leading-relaxed mb-6">
-              Instead of sales reps wasting hours manually digging up company stats, financial reports, and profiles before jumping on calls, the AI agent completes the research in seconds.
-            </p>
-          </div>
-          
-          <div className="space-y-2 border-t border-zinc-800/80 pt-4">
-            <div className="flex justify-between items-center text-[11px]">
-              <span className="text-zinc-500">Manual Process:</span>
-              <span className="text-red-400 bg-red-950/20 border border-red-900/40 px-2 py-0.5 rounded font-mono">2 Hours research</span>
-            </div>
-            <div className="flex justify-between items-center text-[11px]">
-              <span className="text-zinc-500">Agentic Process:</span>
-              <span className="text-emerald-400 bg-emerald-950/20 border border-emerald-900/40 px-2 py-0.5 rounded font-mono">45 Seconds flat</span>
+        {/* NODE 1: CAPTURE */}
+        <div className="flex flex-col items-center text-center group w-full md:w-[220px]">
+          <div className="w-18 h-18 rounded-full bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-black/5 flex items-center justify-center relative hover:scale-105 transition-transform duration-300">
+            <div className="w-13 h-13 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-blue-500/10">
+              <i className="ph-bold ph-envelope text-lg"></i>
             </div>
           </div>
+          <h4 className="font-display font-bold text-ink mt-5 text-sm tracking-tight">Capture</h4>
+          <p className="text-[11px] text-ink-light mt-1.5 font-medium max-w-[170px] mx-auto leading-relaxed">
+            Ingest raw client emails, inquiry forms, and unstructured files.
+          </p>
         </div>
 
-        {/* Card 2: Money */}
-        <div className="bg-zinc-900/30 border border-zinc-850 hover:border-zinc-700/80 hover:bg-zinc-900/40 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 shadow-inner group">
-          <div>
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-3 mb-4">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 font-bold flex items-center gap-1.5">
-                <i className="ph-fill ph-trend-down text-blue-500 text-sm"></i>
-                Money Saved
-              </span>
-              <span className="text-base font-bold text-blue-400 group-hover:scale-105 transition-transform duration-300">75% cost cut</span>
-            </div>
-            
-            <h4 className="text-base font-bold text-white mb-2 tracking-tight">Zero-Overhead Enrichment</h4>
-            <p className="text-zinc-400 text-xs leading-relaxed mb-6">
-              Skip hiring virtual assistants or outsourcing data-entry tasks to update CRM profiles. Continuous AI listener tasks maintain database hygiene and enrich contacts automatically.
-            </p>
-          </div>
-          
-          <div className="space-y-2 border-t border-zinc-800/80 pt-4">
-            <div className="flex justify-between items-center text-[11px]">
-              <span className="text-zinc-500">Manual Labor Cost:</span>
-              <span className="text-red-400 bg-red-950/20 border border-red-900/40 px-2 py-0.5 rounded font-mono">$15.00 / lead</span>
-            </div>
-            <div className="flex justify-between items-center text-[11px]">
-              <span className="text-zinc-500">AI Agent Cost:</span>
-              <span className="text-emerald-400 bg-emerald-950/20 border border-emerald-900/40 px-2 py-0.5 rounded font-mono">$0.04 / lead</span>
+        {/* CONNECTOR 1 */}
+        <Connector />
+
+        {/* NODE 2: REFINE */}
+        <div className="flex flex-col items-center text-center group w-full md:w-[220px]">
+          <div className="w-18 h-18 rounded-full bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-black/5 flex items-center justify-center relative hover:scale-105 transition-transform duration-300">
+            <div className="w-13 h-13 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 text-white flex items-center justify-center shadow-md shadow-purple-500/10">
+              <i className="ph-bold ph-sparkles text-lg"></i>
             </div>
           </div>
+          <h4 className="font-display font-bold text-ink mt-5 text-sm tracking-tight">Refine</h4>
+          <p className="text-[11px] text-ink-light mt-1.5 font-medium max-w-[170px] mx-auto leading-relaxed">
+            AI agents parse context, extract intent, and clean operational data.
+          </p>
         </div>
 
-        {/* Card 3: Growth */}
-        <div className="bg-zinc-900/30 border border-zinc-850 hover:border-zinc-700/80 hover:bg-zinc-900/40 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 shadow-inner group">
-          <div>
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-3 mb-4">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 font-bold flex items-center gap-1.5">
-                <i className="ph-fill ph-chart-line-up text-blue-500 text-sm"></i>
-                Growth Accelerated
-              </span>
-              <span className="text-base font-bold text-blue-400 group-hover:scale-105 transition-transform duration-300">+42% bookings</span>
-            </div>
-            
-            <h4 className="text-base font-bold text-white mb-2 tracking-tight">Instant Lead Response</h4>
-            <p className="text-zinc-400 text-xs leading-relaxed mb-6">
-              Response speed is the #1 factor in closing inbound sales. AI agents draft contextual, high-converting replies immediately, preventing leads from cooling off or going to competitors.
-            </p>
-          </div>
-          
-          <div className="space-y-2 border-t border-zinc-800/80 pt-4">
-            <div className="flex justify-between items-center text-[11px]">
-              <span className="text-zinc-500">Average Delay:</span>
-              <span className="text-red-400 bg-red-950/20 border border-red-900/40 px-2 py-0.5 rounded font-mono">4.5 Hours delay</span>
-            </div>
-            <div className="flex justify-between items-center text-[11px]">
-              <span className="text-zinc-500">Agentic Response:</span>
-              <span className="text-emerald-400 bg-emerald-950/20 border border-emerald-900/40 px-2 py-0.5 rounded font-mono">Real-time draft</span>
+        {/* CONNECTOR 2 */}
+        <Connector />
+
+        {/* NODE 3: SYNC */}
+        <div className="flex flex-col items-center text-center group w-full md:w-[220px]">
+          <div className="w-18 h-18 rounded-full bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-black/5 flex items-center justify-center relative hover:scale-105 transition-transform duration-300">
+            <div className="w-13 h-13 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-md shadow-emerald-500/10">
+              <i className="ph-bold ph-paper-plane-tilt text-lg"></i>
             </div>
           </div>
+          <h4 className="font-display font-bold text-ink mt-5 text-sm tracking-tight">Sync</h4>
+          <p className="text-[11px] text-ink-light mt-1.5 font-medium max-w-[170px] mx-auto leading-relaxed">
+            Instantly sync structured payloads directly to your CRM and Slack channels.
+          </p>
         </div>
 
       </div>
+    </div>
+  );
+}
+
+// Minimalistic line connector component with a soft color gradient
+function Connector() {
+  return (
+    <div className="flex md:flex-col items-center justify-center shrink-0">
+      {/* Desktop Horizontal Line */}
+      <div className="hidden md:block w-16 h-[1.5px] bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-emerald-500/30 mx-2"></div>
+      {/* Mobile Vertical Line */}
+      <div className="block md:hidden w-[1.5px] h-10 bg-gradient-to-b from-blue-500/30 via-purple-500/30 to-emerald-500/30 my-3"></div>
     </div>
   );
 }
