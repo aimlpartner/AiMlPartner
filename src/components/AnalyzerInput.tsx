@@ -42,14 +42,22 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
     return () => clearInterval(interval);
   }, [isLoading]);
 
-  // Form validation helper to prevent shell/script injection
-  const isValidDomainOrUrl = (str: string): boolean => {
+  const cleanDomain = (str: string): string => {
+    let cleaned = str.trim().toLowerCase();
+    cleaned = cleaned.replace(/^https?:\/\//i, '');
+    cleaned = cleaned.replace(/^www\./i, '');
+    cleaned = cleaned.split('/')[0];
+    cleaned = cleaned.split('?')[0];
+    cleaned = cleaned.split('#')[0];
+    return cleaned;
+  };
+
+  const isValidDomain = (str: string): boolean => {
     if (/<script|javascript:|data:|vbscript:|<|>|'|"|`|\{|\}|\[|\]|\\|\^|\%/i.test(str)) {
       return false;
     }
-    const cleaned = str.trim().replace(/^https?:\/\//i, '');
-    const domainRegex = /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(:\d+)?(\/.*)?$/;
-    return domainRegex.test(cleaned);
+    const domainRegex = /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(:\d+)?$/;
+    return domainRegex.test(str);
   };
 
   // Form handlers
@@ -58,16 +66,16 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
     setError('');
 
     if (activeTab === 'url') {
-      const trimmedUrl = url.trim();
-      if (!trimmedUrl) {
-        setError('Please enter a website URL.');
+      const cleaned = cleanDomain(url);
+      if (!cleaned) {
+        setError('Please enter a website.');
         return;
       }
-      if (!isValidDomainOrUrl(trimmedUrl)) {
-        setError('Please enter a valid website URL or domain name (e.g. company.com). Injections are strictly prohibited.');
+      if (!isValidDomain(cleaned)) {
+        setError('Please enter a valid website domain name (e.g. company.com). Do not include https:// or www.');
         return;
       }
-      onAnalyze({ url: trimmedUrl });
+      onAnalyze({ url: cleaned });
     } else if (activeTab === 'description') {
       const trimmedDesc = description.trim();
       if (!trimmedDesc || trimmedDesc.length < 20) {
@@ -193,37 +201,37 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                 <button
                   type="button"
                   onClick={() => { setActiveTab('url'); setError(''); }}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-4 rounded-xl text-[10px] sm:text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
                     activeTab === 'url'
                       ? 'bg-white text-ink border border-black/10 backdrop-blur-md shadow-sm'
                       : 'text-ink-light hover:text-ink'
                   }`}
                 >
-                  <Globe size={15} />
-                  <span>Website URL</span>
+                  <Globe size={14} className="shrink-0" />
+                  <span>Website</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => { setActiveTab('description'); setError(''); }}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-4 rounded-xl text-[10px] sm:text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
                     activeTab === 'description'
                       ? 'bg-white text-ink border border-black/10 backdrop-blur-md shadow-sm'
                       : 'text-ink-light hover:text-ink'
                   }`}
                 >
-                  <FileText size={15} />
+                  <FileText size={14} className="shrink-0" />
                   <span>Description</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => { setActiveTab('file'); setError(''); }}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-4 rounded-xl text-[10px] sm:text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
                     activeTab === 'file'
                       ? 'bg-white text-ink border border-black/10 backdrop-blur-md shadow-sm'
                       : 'text-ink-light hover:text-ink'
                   }`}
                 >
-                  <UploadCloud size={15} />
+                  <UploadCloud size={14} className="shrink-0" />
                   <span>Upload Brief</span>
                 </button>
               </div>
@@ -237,7 +245,7 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                     className="space-y-2"
                   >
                     <label htmlFor="company-url" className="block text-[10px] font-mono uppercase tracking-widest text-ink-light">
-                      Company Website
+                      Website Domain
                     </label>
                     <div className="relative group">
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-ink-light group-focus-within:text-accent transition-colors">
@@ -246,14 +254,14 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                       <input
                         id="company-url"
                         type="text"
-                        placeholder="e.g. aimlpartner.com or acmecorp.net"
+                        placeholder="e.g. company.com (no https or www)"
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
                         className="block w-full pl-12 pr-4 py-4 bg-white border border-black/10 rounded-2xl text-ink placeholder:text-ink-lighter focus:outline-none focus:border-accent shadow-inner transition-colors text-base"
                       />
                     </div>
                     <p className="text-xs text-ink-light font-mono mt-1 leading-relaxed">
-                      Our system securely scrapes visible web pages, stripping script and tags to fetch pure context up to 40,000 characters.
+                      Our system securely performs an operational audit based on your website domain name, using search grounding and scraping.
                     </p>
                   </motion.div>
                 )}

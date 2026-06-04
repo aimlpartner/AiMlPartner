@@ -61,6 +61,14 @@ async function scrapeUrlText(url) {
   }
 }
 
+/**
+ * Helper to determine if input string is a domain/URL or a plain name.
+ */
+function isDomainOrUrl(str) {
+  const cleaned = str.trim().replace(/^https?:\/\//i, '');
+  return /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(:\d+)?(\/.*)?$/.test(cleaned);
+}
+
 function createFallbackResult() {
   return {
     businessName: "Your Business",
@@ -173,7 +181,8 @@ async function startServer() {
 
     const ai = getGoogleGenAI();
     if (!ai) {
-      return res.status(500).json({ error: "Gemini client not initialized. Please ensure GEMINI_API_KEY is configured on your server." });
+      console.warn("[Analyzer API Production] Gemini API Client is not configured. Returning fallback data.");
+      return res.status(200).json(createFallbackResult());
     }
 
     let finalContext = "";
@@ -181,9 +190,23 @@ async function startServer() {
 
     try {
       if (url) {
-        const scraped = await scrapeUrlText(url);
-        finalContext = `Website scrape of domain (${url}):\n\n${scraped}`;
-        sourceChannel = `website URL (${url})`;
+        const isUrl = isDomainOrUrl(url);
+        if (isUrl) {
+          console.log(`[Analyzer API Production] Scraping website: ${url}`);
+          try {
+            const scraped = await scrapeUrlText(url);
+            finalContext = `Website scrape of domain (${url}):\n\n${scraped}`;
+            sourceChannel = `website URL (${url})`;
+          } catch (scrapeErr) {
+            console.warn(`[Analyzer API Production] Scraping failed for ${url}, continuing with search grounding.`, scrapeErr.message || scrapeErr);
+            finalContext = `Website URL: ${url} (Scraping failed, please search the web for details about this company/domain)`;
+            sourceChannel = `website URL (${url}) with search fallback`;
+          }
+        } else {
+          console.log(`[Analyzer API Production] Treating input as company name: ${url}`);
+          finalContext = `Company Name: ${url} (Please search the web for details about this company)`;
+          sourceChannel = `company name (${url})`;
+        }
       } else if (fileContent) {
         finalContext = `Uploaded brief contents:\n\n${fileContent}`;
         sourceChannel = "uploaded document";

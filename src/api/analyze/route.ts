@@ -71,6 +71,14 @@ async function scrapeUrlText(url: string): Promise<string> {
 }
 
 /**
+ * Helper to determine if input string is a domain/URL or a plain name.
+ */
+function isDomainOrUrl(str: string): boolean {
+  const cleaned = str.trim().replace(/^https?:\/\//i, '');
+  return /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(:\d+)?(\/.*)?$/.test(cleaned);
+}
+
+/**
  * Standard interface for the parsed AI response payload.
  */
 interface AnalysisResult {
@@ -226,7 +234,9 @@ export async function analyzeHandler(req: Request, res: Response): Promise<void>
 
   const ai = getGoogleGenAI();
   if (!ai) {
-    res.status(500).json({ error: "Gemini API Client is not configured. Please supply GEMINI_API_KEY." });
+    console.warn("[Analyzer API] Gemini API Client is not configured. Returning fallback data.");
+    const fallback = createFallbackResult(description || url || "Generic");
+    res.status(200).json(fallback);
     return;
   }
 
@@ -236,10 +246,23 @@ export async function analyzeHandler(req: Request, res: Response): Promise<void>
   try {
     // 1. Gather context from selected channel
     if (url) {
-      console.log(`[Analyzer API] Scraping website: ${url}`);
-      const scrapedText = await scrapeUrlText(url);
-      finalContext = `Website scrape of business domain (${url}):\n\n${scrapedText}`;
-      sourceChannel = `website URL (${url})`;
+      const isUrl = isDomainOrUrl(url);
+      if (isUrl) {
+        console.log(`[Analyzer API] Scraping website: ${url}`);
+        try {
+          const scrapedText = await scrapeUrlText(url);
+          finalContext = `Website scrape of business domain (${url}):\n\n${scrapedText}`;
+          sourceChannel = `website URL (${url})`;
+        } catch (scrapeErr: any) {
+          console.warn(`[Analyzer API] Scraping failed for ${url}, continuing with search grounding.`, scrapeErr.message || scrapeErr);
+          finalContext = `Website URL: ${url} (Scraping failed, please search the web for details about this company/domain)`;
+          sourceChannel = `website URL (${url}) with search fallback`;
+        }
+      } else {
+        console.log(`[Analyzer API] Treating input as company name: ${url}`);
+        finalContext = `Company Name: ${url} (Please search the web for details about this company)`;
+        sourceChannel = `company name (${url})`;
+      }
     } else if (fileContent) {
       console.log(`[Analyzer API] Reading file attachment content`);
       finalContext = `Uploaded business operational brief content:\n\n${fileContent}`;

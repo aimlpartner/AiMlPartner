@@ -307,7 +307,7 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Department side selector list */}
-          <div className="lg:col-span-4 flex flex-col gap-3">
+          <div className="lg:col-span-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 gap-3 scrollbar-none">
             {data.departments.map((dept, index) => {
               const IconComponent = ICON_MAP[dept.icon] || FileText;
               const isSelected = selectedDeptIndex === index;
@@ -315,13 +315,13 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
                 <button
                   key={dept.name}
                   onClick={() => setSelectedDeptIndex(index)}
-                  className={`w-full flex items-center justify-between p-5 rounded-2xl border text-left transition-all relative overflow-hidden cursor-pointer ${
+                  className={`w-full sm:w-auto lg:w-full shrink-0 flex items-center justify-between p-4 sm:p-5 rounded-2xl border text-left transition-all relative overflow-hidden cursor-pointer ${
                     isSelected
                       ? 'bg-slate-900 border-slate-950 text-white shadow-xl shadow-slate-900/10'
                       : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50/50'
                   }`}
                 >
-                  <div className="flex items-center gap-4 relative z-10">
+                  <div className="flex items-center gap-4 relative z-10 pr-4">
                     <div className={`p-2.5 rounded-xl ${isSelected ? 'bg-sky-500/20 text-sky-400' : 'bg-slate-100 text-slate-500'}`}>
                       <IconComponent size={20} />
                     </div>
@@ -332,7 +332,7 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
                       </span>
                     </div>
                   </div>
-                  <ArrowRight size={16} className={`relative z-10 ${isSelected ? 'text-sky-400' : 'text-slate-300'}`} />
+                  <ArrowRight size={16} className={`relative z-10 hidden lg:block ${isSelected ? 'text-sky-400' : 'text-slate-300'}`} />
                 </button>
               );
             })}
@@ -682,7 +682,7 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="relative bg-white w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl z-55 border border-slate-100"
+        className="relative bg-white w-full max-w-lg rounded-3xl shadow-2xl z-55 border border-slate-100 max-h-[90vh] overflow-y-auto"
       >
         <button
           onClick={onClose}

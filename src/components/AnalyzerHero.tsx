@@ -10,13 +10,22 @@ export function AnalyzerHero() {
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
 
-  const isValidDomainOrUrl = (str: string): boolean => {
+  const cleanDomain = (str: string): string => {
+    let cleaned = str.trim().toLowerCase();
+    cleaned = cleaned.replace(/^https?:\/\//i, '');
+    cleaned = cleaned.replace(/^www\./i, '');
+    cleaned = cleaned.split('/')[0];
+    cleaned = cleaned.split('?')[0];
+    cleaned = cleaned.split('#')[0];
+    return cleaned;
+  };
+
+  const isValidDomain = (str: string): boolean => {
     if (/<script|javascript:|data:|vbscript:|<|>|'|"|`|\{|\}|\[|\]|\\|\^|\%/i.test(str)) {
       return false;
     }
-    const cleaned = str.trim().replace(/^https?:\/\//i, '');
-    const domainRegex = /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(:\d+)?(\/.*)?$/;
-    return domainRegex.test(cleaned);
+    const domainRegex = /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(:\d+)?$/;
+    return domainRegex.test(str);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -24,16 +33,16 @@ export function AnalyzerHero() {
     setError('');
 
     if (activeTab === 'url') {
-      const trimmedUrl = url.trim();
-      if (!trimmedUrl) {
-        setError('Please enter a website URL.');
+      const cleaned = cleanDomain(url);
+      if (!cleaned) {
+        setError('Please enter a website.');
         return;
       }
-      if (!isValidDomainOrUrl(trimmedUrl)) {
-        setError('Please enter a valid website URL or domain name (e.g. company.com).');
+      if (!isValidDomain(cleaned)) {
+        setError('Please enter a valid website domain name (e.g. company.com). Do not include https:// or www.');
         return;
       }
-      navigate('/analyzer', { state: { url: trimmedUrl } });
+      navigate('/analyzer', { state: { url: cleaned } });
     } else {
       const trimmedDesc = description.trim();
       if (!trimmedDesc || trimmedDesc.length < 20) {
@@ -150,7 +159,7 @@ export function AnalyzerHero() {
                       className="space-y-1.5"
                     >
                       <label htmlFor="url-input" className="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
-                        Enter Company Website
+                        Website Domain
                       </label>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
@@ -159,7 +168,7 @@ export function AnalyzerHero() {
                         <input
                           id="url-input"
                           type="text"
-                          placeholder="e.g. company.com"
+                          placeholder="e.g. company.com (no https or www)"
                           value={url}
                           onChange={(e) => setUrl(e.target.value)}
                           className="block w-full pl-10 pr-4 py-3 bg-white/[0.02] border border-white/10 rounded-xl text-white placeholder:text-slate-600 focus:outline-none focus:border-sky-300 transition-colors text-sm"

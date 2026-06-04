@@ -233,12 +233,12 @@ export function Analyzer() {
 
               {/* Immersive Lead Capture Lock Gate Overlay */}
               {!emailCaptured && (
-                <div className="absolute inset-0 z-40 flex items-start justify-center bg-black/40 backdrop-blur-[2px] pt-12 md:pt-20 px-4 min-h-[600px]">
+                <div className="fixed inset-0 z-40 overflow-y-auto flex items-center justify-center bg-black/60 backdrop-blur-[4px] p-4">
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: 30 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="w-full max-w-2xl bg-surface-glassDark/95 border border-white/10 shadow-glass rounded-3xl p-8 md:p-12 text-white relative overflow-hidden text-center sticky top-28 backdrop-blur-2xl"
+                    className="w-full max-w-2xl bg-slate-950/95 border border-white/10 shadow-glass rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden text-center my-auto backdrop-blur-2xl"
                   >
                     <div className="absolute top-0 right-1/4 w-80 h-80 bg-accent/10 rounded-full filter blur-[80px] pointer-events-none animate-pulse-slow" />
                     

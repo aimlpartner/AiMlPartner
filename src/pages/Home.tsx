@@ -34,28 +34,37 @@ export function Home() {
     };
   }, []);
 
-  const isValidDomainOrUrl = (str: string): boolean => {
+  const cleanDomain = (str: string): string => {
+    let cleaned = str.trim().toLowerCase();
+    cleaned = cleaned.replace(/^https?:\/\//i, '');
+    cleaned = cleaned.replace(/^www\./i, '');
+    cleaned = cleaned.split('/')[0];
+    cleaned = cleaned.split('?')[0];
+    cleaned = cleaned.split('#')[0];
+    return cleaned;
+  };
+
+  const isValidDomain = (str: string): boolean => {
     if (/<script|javascript:|data:|vbscript:|<|>|'|"|`|\{|\}|\[|\]|\\|\^|\%/i.test(str)) {
       return false;
     }
-    const cleaned = str.trim().replace(/^https?:\/\//i, '');
-    const domainRegex = /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(:\d+)?(\/.*)?$/;
-    return domainRegex.test(cleaned);
+    const domainRegex = /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(:\d+)?$/;
+    return domainRegex.test(str);
   };
 
   const handleWebsiteSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    const trimmedUrl = url.trim();
-    if (!trimmedUrl) {
-      setError('Please enter a website URL.');
+    const cleaned = cleanDomain(url);
+    if (!cleaned) {
+      setError('Please enter a website.');
       return;
     }
-    if (!isValidDomainOrUrl(trimmedUrl)) {
-      setError('Please enter a valid website URL or domain name (e.g. company.com).');
+    if (!isValidDomain(cleaned)) {
+      setError('Please enter a valid website domain name (e.g. company.com). Do not include https:// or www.');
       return;
     }
-    navigate('/analyzer', { state: { url: trimmedUrl } });
+    navigate('/analyzer', { state: { url: cleaned } });
   };
 
   const handleWorkflowSubmit = (e: React.FormEvent) => {
@@ -181,11 +190,11 @@ export function Home() {
                   }`}
                 >
                   <label className="block font-mono text-[10px] uppercase text-white/60 mb-2 tracking-[0.2em] font-semibold">
-                    Target Architecture URL
+                    Website Domain
                   </label>
                   <input
-                    type="url"
-                    placeholder="https://yourcompany.com"
+                    type="text"
+                    placeholder="e.g. company.com (no https or www)"
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                     className="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 md:py-4 text-base md:text-lg font-display text-white placeholder-white/30 mb-4 focus:border-accent focus:bg-black/50 transition-all shadow-inner outline-none"
