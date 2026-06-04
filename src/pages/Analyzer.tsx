@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AnalyzerInput } from '../components/AnalyzerInput';
 import { AnalyzerDashboard } from '../components/AnalyzerDashboard';
-import { Sparkles, Brain, Cpu, Lock, ArrowRight, Loader2, Sparkle } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { Sparkles, Brain, Cpu, Lock, ArrowRight, Loader2 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
@@ -26,7 +26,7 @@ export function Analyzer() {
     const auditCountStr = localStorage.getItem('aiml_analyzer_run_count');
     const auditCount = auditCountStr ? parseInt(auditCountStr, 10) : 0;
     if (auditCount >= 2) {
-      setError('You have reached the maximum limit of 2 free diagnostics. Contact support@brandtopost.com for a comprehensive enterprise AI audit.');
+      setError('You have reached the maximum limit of 2 free diagnostics. Contact info@aimlpartner.com for a comprehensive enterprise AI audit.');
       return;
     }
 
@@ -139,168 +139,200 @@ export function Analyzer() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50/50 pt-28 pb-20 relative overflow-hidden font-sans">
-      {/* Visual background layers */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-sky-200/40 rounded-full filter blur-[120px] animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-100/30 rounded-full filter blur-[120px] animate-pulse" />
-      </div>
+    <div className="relative min-h-screen overflow-x-hidden bg-surface text-ink font-sans">
+      {/* Texture Overlays */}
+      <div className="grain-overlay"></div>
 
-      <div className="container-max relative z-10 space-y-12">
-        {/* Banner Section */}
-        {!result && !isLoading && (
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-3xl mx-auto space-y-4"
-          >
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-900 border border-slate-800 text-sky-400 rounded-full text-xs font-mono mb-2 shadow-lg">
-              <Brain size={14} className="animate-pulse" />
-              <span>POWERED BY GEMINI PRO & GROUNDED SEARCH</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight">
-              Enterprise AI <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 via-sky-600 to-indigo-600">
-                Operational Analyzer
-              </span>
-            </h1>
-            <p className="text-slate-500 font-light text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-              Scan your domain, submit briefs, or describe bottleneck processes. Receive instant high-fidelity administrative diagnostics, time leak calculations, and tactical playbooks.
-            </p>
-          </motion.div>
-        )}
-
-        {/* Error notification banner */}
-        {error && (
-          <div className="max-w-4xl mx-auto bg-rose-50 border border-rose-100 text-rose-800 rounded-2xl p-5 flex items-center justify-between shadow-sm">
-            <span className="text-sm font-medium">{error}</span>
-            <button 
-              onClick={() => setError('')} 
-              className="text-rose-500 hover:text-rose-700 text-xs font-semibold px-3 py-1 rounded-full border border-rose-200 transition-colors"
-            >
-              Dismiss
-            </button>
-          </div>
-        )}
-
-        {/* State Transitions: Input -> Lock Gate (blurred dashboard behind overlay) -> Unlocked Dashboard */}
-        {!result ? (
-          <AnalyzerInput onAnalyze={handleAnalyze} isLoading={isLoading} />
-        ) : (
-          <div className="relative">
-            {/* The dashboard is rendered behind, blurred and disabled until email is captured */}
-            <div className={!emailCaptured ? "filter blur-md pointer-events-none select-none" : ""}>
-              <AnalyzerDashboard 
-                data={result} 
-                onReset={handleReset} 
-                leadEmail={leadForm.email}
-                leadName={leadForm.name}
-                leadCompany={leadForm.company}
-              />
-            </div>
-
-            {/* Immersive Lead Capture Lock Gate Overlay */}
-            {!emailCaptured && (
-              <div className="absolute inset-0 z-40 flex items-start justify-center bg-slate-950/20 backdrop-blur-[2px] pt-12 md:pt-20 px-4 min-h-[600px]">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95, y: 30 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full max-w-2xl bg-slate-900/95 border border-slate-800 shadow-2xl rounded-3xl p-8 md:p-12 text-white relative overflow-hidden text-center sticky top-28"
-                >
-                  <div className="absolute top-0 right-1/4 w-80 h-80 bg-sky-500/10 rounded-full filter blur-[80px] pointer-events-none animate-pulse" />
-                  
-                  <div className="relative z-10 max-w-md mx-auto space-y-6">
-                    <div className="w-16 h-16 bg-sky-500/10 border border-sky-500/30 rounded-2xl flex items-center justify-center mx-auto text-sky-400 shadow-lg shadow-sky-500/5 mb-4">
-                      <Lock size={26} className="animate-pulse" />
-                    </div>
-                    
-                    <div>
-                      <span className="text-[10px] font-mono text-sky-400 uppercase tracking-widest block font-semibold mb-1">ANALYSIS COMPLETE</span>
-                      <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-white font-sans">
-                        Unlock Your Custom AI Audit Dashboard
-                      </h3>
-                      <p className="text-slate-400 font-light text-sm mt-3 leading-relaxed">
-                        Your customized diagnostic playbooks and ROI roadmaps are fully compiled in the background! Supply your details to unlock full access.
-                      </p>
-                    </div>
-
-                    {unlockError && (
-                      <div className="bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs py-2.5 px-4 rounded-xl font-medium text-left">
-                        {unlockError}
-                      </div>
-                    )}
-
-                    <form onSubmit={handleUnlock} className="space-y-4 text-left">
-                      <div className="space-y-3">
-                        <div>
-                          <label htmlFor="gate-name" className="sr-only">Full Name</label>
-                          <input
-                            id="gate-name"
-                            type="text"
-                            required
-                            placeholder="Full Name"
-                            value={leadForm.name}
-                            onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
-                            className="block w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm text-sm"
-                          />
-                        </div>
-                        <div>
-                          <label htmlFor="gate-email" className="sr-only">Work Email</label>
-                          <input
-                            id="gate-email"
-                            type="email"
-                            required
-                            placeholder="Work Email"
-                            value={leadForm.email}
-                            onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
-                            className="block w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm text-sm"
-                          />
-                        </div>
-                        <div>
-                          <label htmlFor="gate-company" className="sr-only">Company Name</label>
-                          <input
-                            id="gate-company"
-                            type="text"
-                            required
-                            placeholder="Company Name"
-                            value={leadForm.company}
-                            onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })}
-                            className="block w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm text-sm"
-                          />
-                        </div>
-                      </div>
-
-                      <button
-                        type="submit"
-                        disabled={isUnlocking}
-                        className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-400 to-sky-500 text-white rounded-full py-4 font-semibold text-sm hover:from-sky-500 hover:to-sky-600 transition-all shadow-lg shadow-sky-500/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {isUnlocking ? (
-                          <>
-                            <Loader2 size={16} className="animate-spin text-white" />
-                            <span>Unlocking Analysis...</span>
-                          </>
-                        ) : (
-                          <>
-                            <span>Unlock Audit Dashboard</span>
-                            <ArrowRight size={16} />
-                          </>
-                        )}
-                      </button>
-                    </form>
-
-                    <div className="pt-2 text-center text-[10px] text-slate-500 font-light">
-                      Secure SSL processing • Free for business owners • Instant unlock
-                    </div>
-                  </div>
-                </motion.div>
+      {/* STATE 1: NO RESULT - Show Hero and Input Forms */}
+      {!result ? (
+        <>
+          {/* SECTION 1: IMMERSIVE SPACE HERO */}
+          <section className="relative pt-40 pb-24 text-white overflow-hidden">
+            {/* Deep Space Background Overlay */}
+            <div className="absolute inset-0 z-0">
+              <div className="absolute inset-0 animate-[float-slow_30s_ease-in-out_infinite]">
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-90 transform scale-[1.15] origin-center"></div>
               </div>
-            )}
-          </div>
-        )}
-      </div>
-    </main>
+              <div className="absolute inset-0 bg-space-gradient"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-accent/20 rounded-full blur-[100px] pointer-events-none"></div>
+            </div>
+
+            <div className="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>
+
+            <div className="max-w-[1400px] mx-auto px-6 relative z-10">
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-center max-w-3xl mx-auto space-y-6"
+              >
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-accent rounded-full text-xs font-mono font-bold tracking-wider uppercase mb-2 shadow-glow">
+                  <Brain size={14} className="animate-pulse" />
+                  <span>POWERED BY GEMINI PRO & GROUNDED SEARCH</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white leading-tight [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
+                  Enterprise AI <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-300">
+                    Operational Analyzer
+                  </span>
+                </h1>
+                <p className="text-white/70 font-medium text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+                  Scan your domain, submit briefs, or describe bottleneck processes. Receive instant high-fidelity administrative diagnostics, time leak calculations, and tactical playbooks.
+                </p>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* SECTION 2: INPUT AREA (Flowing Gradient Background) */}
+          <section className="flowing-gradient py-24 px-6 relative z-10 border-t border-black/5 text-ink rounded-t-[3rem] -mt-10 min-h-[500px]">
+            <div className="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>
+            <div className="max-w-4xl mx-auto relative z-10">
+              {error && (
+                <div className="max-w-4xl mx-auto mb-8 bg-alert/15 border border-alert/20 text-alert rounded-2xl p-5 flex items-center justify-between shadow-sm bg-white">
+                  <span className="text-sm font-semibold">{error}</span>
+                  <button 
+                    onClick={() => setError('')} 
+                    className="text-alert hover:text-ink text-xs font-bold px-3 py-1 rounded-full border border-alert/30 transition-colors cursor-pointer"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              )}
+              <AnalyzerInput onAnalyze={handleAnalyze} isLoading={isLoading} />
+            </div>
+          </section>
+        </>
+      ) : (
+        <>
+          {/* STATE 2: AUDIT COMPLETE - Show Dashboard Console */}
+          {/* SECTION 1: HEADER CONTROLS BANNER (Space theme) */}
+          <section className="relative pt-32 pb-16 text-white overflow-hidden bg-surface-dark">
+            <div className="absolute inset-0 z-0">
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-30"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-slate-950"></div>
+            </div>
+            <div className="max-w-[1400px] mx-auto px-6 relative z-10 text-center">
+              <span className="text-xs font-mono text-accent uppercase tracking-widest block font-bold mb-2">AUDIT SYSTEM ACTIVE</span>
+              <h1 className="text-3xl md:text-4xl font-display font-extrabold text-white tracking-tight">Interactive Diagnostic Console</h1>
+            </div>
+          </section>
+
+          {/* SECTION 2: THE DASHBOARD (Light Alabaster theme wrapper) */}
+          <section className="bg-surface rounded-t-[3rem] -mt-10 py-16 relative z-10 text-ink border-t border-black/5 px-6 min-h-screen">
+            <div className="max-w-7xl mx-auto relative">
+              {/* The dashboard is rendered behind, blurred and disabled until email is captured */}
+              <div className={!emailCaptured ? "filter blur-md pointer-events-none select-none" : ""}>
+                <AnalyzerDashboard 
+                  data={result} 
+                  onReset={handleReset} 
+                  leadEmail={leadForm.email}
+                  leadName={leadForm.name}
+                  leadCompany={leadForm.company}
+                />
+              </div>
+
+              {/* Immersive Lead Capture Lock Gate Overlay */}
+              {!emailCaptured && (
+                <div className="absolute inset-0 z-40 flex items-start justify-center bg-black/40 backdrop-blur-[2px] pt-12 md:pt-20 px-4 min-h-[600px]">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full max-w-2xl bg-surface-glassDark/95 border border-white/10 shadow-glass rounded-3xl p-8 md:p-12 text-white relative overflow-hidden text-center sticky top-28 backdrop-blur-2xl"
+                  >
+                    <div className="absolute top-0 right-1/4 w-80 h-80 bg-accent/10 rounded-full filter blur-[80px] pointer-events-none animate-pulse-slow" />
+                    
+                    <div className="relative z-10 max-w-md mx-auto space-y-6">
+                      <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto text-accent shadow-lg shadow-accent/5 mb-4">
+                        <Lock size={26} className="animate-pulse" />
+                      </div>
+                      
+                      <div>
+                        <span className="text-[10px] font-mono text-accent uppercase tracking-widest block font-bold mb-1">ANALYSIS COMPLETE</span>
+                        <h3 className="text-2xl md:text-3xl font-display font-extrabold tracking-tight text-white leading-tight">
+                          Unlock Your Custom AI Audit Dashboard
+                        </h3>
+                        <p className="text-white/60 font-medium text-sm mt-3 leading-relaxed">
+                          Your customized diagnostic playbooks and ROI roadmaps are fully compiled in the background! Supply your details to unlock full access.
+                        </p>
+                      </div>
+
+                      {unlockError && (
+                        <div className="bg-alert/15 border border-alert/20 text-alert-soft text-xs py-2.5 px-4 rounded-xl font-medium text-left">
+                          {unlockError}
+                        </div>
+                      )}
+
+                      <form onSubmit={handleUnlock} className="space-y-4 text-left">
+                        <div className="space-y-3">
+                          <div>
+                            <label htmlFor="gate-name" className="sr-only">Full Name</label>
+                            <input
+                              id="gate-name"
+                              type="text"
+                              required
+                              placeholder="Full Name"
+                              value={leadForm.name}
+                              onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
+                              className="block w-full px-4 py-3 bg-black/30 border border-white/20 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent shadow-inner text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor="gate-email" className="sr-only">Work Email</label>
+                            <input
+                              id="gate-email"
+                              type="email"
+                              required
+                              placeholder="Work Email"
+                              value={leadForm.email}
+                              onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
+                              className="block w-full px-4 py-3 bg-black/30 border border-white/20 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent shadow-inner text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor="gate-company" className="sr-only">Company Name</label>
+                            <input
+                              id="gate-company"
+                              type="text"
+                              required
+                              placeholder="Company Name"
+                              value={leadForm.company}
+                              onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })}
+                              className="block w-full px-4 py-3 bg-black/30 border border-white/20 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent shadow-inner text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        <button
+                          type="submit"
+                          disabled={isUnlocking}
+                          className="w-full bg-white text-ink font-bold py-3.5 rounded-full hover:bg-surface-alt transition-all flex items-center justify-center gap-2 group/btn shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isUnlocking ? (
+                            <>
+                              <Loader2 size={16} className="animate-spin text-ink" />
+                              <span>Unlocking Analysis...</span>
+                            </>
+                          ) : (
+                            <>
+                              <span>Unlock Audit Dashboard</span>
+                              <ArrowRight size={16} />
+                            </>
+                          )}
+                        </button>
+                      </form>
+
+                      <div className="pt-2 text-center text-[10px] text-white/40 font-mono">
+                        Secure SSL processing • Free for business owners • Instant unlock
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </div>
+          </section>
+        </>
+      )}
+    </div>
   );
 }

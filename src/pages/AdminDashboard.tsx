@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { collection, query, orderBy, onSnapshot, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
-import { db, auth, signInWithGoogle, logOut, handleFirestoreError, OperationType } from '../lib/firebase';
+import { db, auth, signInWithGoogle, logOut } from '../lib/firebase';
 import { LogOut, Users, FileText, Activity } from 'lucide-react';
 
 export function AdminDashboard() {
@@ -59,125 +59,161 @@ export function AdminDashboard() {
 
   if (!user) {
     return (
-      <main className="pt-32 pb-24 bg-gradient-to-br from-slate-50 to-sky-50/30 min-h-screen flex items-center justify-center">
-        <div className="bg-white p-10 border border-slate-200 max-w-md w-full text-center">
-          <div className="w-16 h-16 bg-slate-100 flex items-center justify-center mx-auto mb-6 border border-slate-200">
-            <Users className="text-slate-900" size={24} />
+      <div className="relative min-h-screen overflow-x-hidden bg-surface text-ink flex items-center justify-center font-sans">
+        {/* Texture Overlays */}
+        <div className="grain-overlay"></div>
+
+        {/* SECTION 1: IMMERSIVE SPACE BACKGROUND */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <div className="absolute inset-0 animate-[float-slow_30s_ease-in-out_infinite]">
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-90 transform scale-[1.15] origin-center"></div>
           </div>
-          <h1 className="text-2xl font-medium text-slate-900 mb-2">Admin Login</h1>
-          <p className="text-slate-600 font-light text-sm mb-8">
+          <div className="absolute inset-0 bg-space-gradient"></div>
+        </div>
+
+        {/* LOGIN CARD */}
+        <div className="bg-white border border-black/10 p-10 rounded-3xl max-w-md w-full text-center shadow-editorial relative overflow-hidden z-10 mx-4">
+          <div className="w-16 h-16 bg-surface-alt border border-black/5 rounded-2xl flex items-center justify-center mx-auto mb-6 text-accent shadow-sm">
+            <Users size={24} />
+          </div>
+          <h1 className="text-2xl font-display font-extrabold text-ink mb-2">Admin Login</h1>
+          <p className="text-ink-light font-medium text-sm mb-8 leading-relaxed">
             Sign in with your authorized Google account to access the dashboard.
           </p>
           <button 
             onClick={signInWithGoogle}
-            className="w-full bg-gradient-to-r from-sky-400 to-sky-600 text-white rounded-full shadow-md shadow-sky-500/20  px-6 py-3 font-medium hover:from-sky-500 hover:to-sky-700 transition-colors"
+            className="w-full bg-ink text-white font-bold hover:bg-accent px-6 py-3 rounded-full transition-all cursor-pointer shadow-md"
           >
             Sign in with Google
           </button>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="pt-32 pb-24 bg-gradient-to-br from-slate-50 to-sky-50/30 min-h-screen">
-      <div className="container-max">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
-          <div>
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 mb-2">
-              Admin Dashboard
-            </h1>
-            <p className="text-slate-600 font-light">
-              Logged in as <span className="font-medium text-slate-900">{user.email}</span>
-            </p>
+    <div className="relative min-h-screen overflow-x-hidden bg-surface text-ink font-sans">
+      {/* Texture Overlays */}
+      <div className="grain-overlay"></div>
+
+      {/* SECTION 1: IMMERSIVE SPACE HERO */}
+      <section className="relative pt-40 pb-24 text-white overflow-hidden bg-surface-dark">
+        {/* Deep Space Background Overlay */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 animate-[float-slow_30s_ease-in-out_infinite]">
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-90 transform scale-[1.15] origin-center"></div>
           </div>
-          <button 
-            onClick={logOut}
-            className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
-          >
-            <LogOut size={16} />
-            Sign Out
-          </button>
+          <div className="absolute inset-0 bg-space-gradient"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-accent/20 rounded-full blur-[100px] pointer-events-none"></div>
         </div>
 
-        {error && (
-          <div className="bg-red-50 text-red-900 p-4 border border-red-200 mb-8 text-sm">
-            {error}
-          </div>
-        )}
+        <div className="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          <div className="bg-white p-6 border border-slate-200 flex items-center gap-6">
-            <div className="w-12 h-12 bg-slate-100 flex items-center justify-center border border-slate-200">
-              <FileText className="text-slate-900" size={20} />
-            </div>
+        <div className="max-w-[1400px] mx-auto px-6 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-              <div className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1">Total Leads</div>
-              <div className="text-3xl font-semibold text-slate-900">{leads.length}</div>
+              <h1 className="text-4xl md:text-5xl font-display font-extrabold text-white tracking-tight mb-2 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
+                Admin Dashboard
+              </h1>
+              <p className="text-white/70 font-medium text-sm leading-relaxed">
+                Logged in as <span className="font-semibold text-accent">{user.email}</span>
+              </p>
             </div>
-          </div>
-          <div className="bg-white p-6 border border-slate-200 flex items-center gap-6">
-            <div className="w-12 h-12 bg-slate-100 flex items-center justify-center border border-slate-200">
-              <Activity className="text-slate-900" size={20} />
-            </div>
-            <div>
-              <div className="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1">Unique Visitors</div>
-              <div className="text-3xl font-semibold text-slate-900">{visitorCount}</div>
-            </div>
+            <button 
+              onClick={logOut}
+              className="flex items-center gap-2 text-sm font-semibold text-white/75 hover:text-white bg-white/10 border border-white/20 px-5 py-2.5 rounded-xl transition-all cursor-pointer shadow-sm hover:bg-white/20"
+            >
+              <LogOut size={16} />
+              Sign Out
+            </button>
           </div>
         </div>
+      </section>
 
-        <div className="bg-white border border-slate-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-slate-200 bg-gradient-to-br from-slate-50 to-sky-50/30">
-            <h2 className="font-medium text-slate-900">Recent Leads</h2>
-          </div>
-          
-          {loading ? (
-            <div className="p-8 text-center text-slate-600 font-light">Loading leads...</div>
-          ) : leads.length === 0 ? (
-            <div className="p-8 text-center text-slate-600 font-light">No leads captured yet.</div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-slate-200 text-xs font-mono text-slate-400 uppercase tracking-widest bg-gradient-to-br from-slate-50 to-sky-50/30/50">
-                    <th className="px-6 py-4 font-normal">Date</th>
-                    <th className="px-6 py-4 font-normal">Name</th>
-                    <th className="px-6 py-4 font-normal">Email</th>
-                    <th className="px-6 py-4 font-normal">Company</th>
-                    <th className="px-6 py-4 font-normal">Source</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {leads.map((lead) => (
-                    <tr key={lead.id} className="border-b border-slate-100 last:border-0 hover:bg-gradient-to-br from-slate-50 to-sky-50/30/50 transition-colors">
-                      <td className="px-6 py-4 text-sm text-slate-600 whitespace-nowrap">
-                        {lead.createdAt ? new Intl.DateTimeFormat('en-US', { 
-                          month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' 
-                        }).format(lead.createdAt) : 'N/A'}
-                      </td>
-                      <td className="px-6 py-4 text-sm font-medium text-slate-900 whitespace-nowrap">
-                        {lead.name || '-'}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-slate-600 whitespace-nowrap">
-                        {lead.email}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-slate-600 whitespace-nowrap">
-                        {lead.company || '-'}
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
-                          {lead.source}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+      {/* SECTION 2: THE DASHBOARD PANEL (Light Alabaster theme wrapper) */}
+      <section className="bg-surface rounded-t-[3rem] -mt-10 py-24 relative z-10 text-ink border-t border-black/5 px-6">
+        <div className="max-w-[1400px] mx-auto">
+          {error && (
+            <div className="bg-alert-soft border border-alert-border text-alert p-4 rounded-xl mb-8 text-sm font-medium">
+              {error}
             </div>
           )}
+
+          {/* Stats Cards */}
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            <div className="bg-white border border-black/5 p-6 rounded-2xl flex items-center gap-6 shadow-editorial hover:shadow-editorial-hover transition-all duration-300 relative overflow-hidden">
+              <div className="w-12 h-12 bg-surface-alt border border-black/5 rounded-xl flex items-center justify-center text-accent">
+                <FileText size={20} />
+              </div>
+              <div>
+                <div className="text-[10px] font-mono text-ink-light uppercase tracking-widest mb-1">Total Leads</div>
+                <div className="text-3xl font-display font-extrabold text-ink">{leads.length}</div>
+              </div>
+            </div>
+            <div className="bg-white border border-black/5 p-6 rounded-2xl flex items-center gap-6 shadow-editorial hover:shadow-editorial-hover transition-all duration-300 relative overflow-hidden">
+              <div className="w-12 h-12 bg-surface-alt border border-black/5 rounded-xl flex items-center justify-center text-accent">
+                <Activity size={20} />
+              </div>
+              <div>
+                <div className="text-[10px] font-mono text-ink-light uppercase tracking-widest mb-1">Unique Visitors</div>
+                <div className="text-3xl font-display font-extrabold text-ink">{visitorCount}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Leads Table Card */}
+          <div className="bg-white border border-black/5 rounded-2xl overflow-hidden shadow-editorial">
+            <div className="px-6 py-5 border-b border-black/5 bg-surface-alt/30">
+              <h2 className="font-display font-bold text-ink text-lg">Recent Leads</h2>
+            </div>
+            
+            {loading ? (
+              <div className="p-8 text-center text-ink-light font-medium text-sm">Loading leads...</div>
+            ) : leads.length === 0 ? (
+              <div className="p-8 text-center text-ink-light font-medium text-sm">No leads captured yet.</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-black/5 text-[10px] font-mono text-ink-light uppercase tracking-widest bg-surface-alt/10">
+                      <th className="px-6 py-4 font-bold">Date</th>
+                      <th className="px-6 py-4 font-bold">Name</th>
+                      <th className="px-6 py-4 font-bold">Email</th>
+                      <th className="px-6 py-4 font-bold">Company</th>
+                      <th className="px-6 py-4 font-bold">Source</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {leads.map((lead) => (
+                      <tr key={lead.id} className="border-b border-black/5 last:border-0 hover:bg-surface-alt/30 transition-colors">
+                        <td className="px-6 py-4 text-xs text-ink-light whitespace-nowrap font-mono">
+                          {lead.createdAt ? new Intl.DateTimeFormat('en-US', { 
+                            month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' 
+                          }).format(lead.createdAt) : 'N/A'}
+                        </td>
+                        <td className="px-6 py-4 text-sm font-semibold text-ink whitespace-nowrap font-display">
+                          {lead.name || '-'}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-ink-light whitespace-nowrap">
+                          {lead.email}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-ink-light whitespace-nowrap">
+                          {lead.company || '-'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded bg-surface-alt border border-black/5 text-[10px] font-semibold text-ink-light uppercase font-mono tracking-wider">
+                            {lead.source}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </main>
+      </section>
+    </div>
   );
 }

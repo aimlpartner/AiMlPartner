@@ -147,7 +147,7 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto z-10 relative">
       <AnimatePresence mode="wait">
         {!isLoading ? (
           <motion.div
@@ -156,22 +156,22 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-white/80 backdrop-blur-xl border border-slate-200/80 shadow-2xl rounded-3xl overflow-hidden p-8 md:p-12 relative"
+            className="bg-white/80 border border-black/10 shadow-editorial text-ink rounded-3xl overflow-hidden p-8 md:p-12 relative"
           >
             {/* Ambient glows inside card */}
-            <div className="absolute top-0 right-0 w-80 h-80 bg-sky-200/20 rounded-full filter blur-[80px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-100/20 rounded-full filter blur-[80px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-80 h-80 bg-accent/5 rounded-full filter blur-[80px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/3 rounded-full filter blur-[80px] pointer-events-none" />
 
             <div className="relative z-10">
               <div className="text-center max-w-2xl mx-auto mb-10">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-100 text-sky-700 rounded-full text-xs font-mono mb-4">
-                  <Sparkles size={12} className="text-sky-500" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-alt border border-black/5 text-accent rounded-full text-xs font-mono font-bold tracking-wider uppercase mb-4 shadow-sm">
+                  <Sparkles size={12} className="text-accent animate-pulse" />
                   FREE AI DIAGNOSTIC SUITE
                 </div>
-                <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 leading-tight">
+                <h2 className="text-3xl md:text-4xl font-display font-extrabold tracking-tight text-ink leading-tight">
                   Discover Your Back-Office Automation Potential
                 </h2>
-                <p className="text-slate-500 mt-3 text-base md:text-lg font-light leading-relaxed">
+                <p className="text-ink-light mt-3 text-base md:text-lg font-medium leading-relaxed">
                   Provide your business context using any channel below. Our constraints-driven auditor maps time leaks and builds an implementation roadmap in under 30 seconds.
                 </p>
               </div>
@@ -181,66 +181,66 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
-                  className="mb-6 bg-rose-50 border border-rose-100 text-rose-800 rounded-xl p-4 flex items-start gap-3"
+                  className="mb-6 bg-alert/15 border border-alert/20 text-alert rounded-xl p-4 flex items-start gap-3 text-left"
                 >
-                  <AlertCircle size={18} className="text-rose-500 mt-0.5 shrink-0" />
-                  <p className="text-sm font-medium">{error}</p>
+                  <AlertCircle size={18} className="text-alert mt-0.5 shrink-0" />
+                  <p className="text-sm font-semibold">{error}</p>
                 </motion.div>
               )}
 
               {/* Tabs Headers */}
-              <div className="flex border-b border-slate-100 mb-8 p-1 bg-slate-100/80 rounded-2xl md:max-w-xl md:mx-auto">
+              <div className="flex border border-black/10 mb-8 p-1 bg-surface-alt rounded-2xl md:max-w-xl md:mx-auto shadow-inner">
                 <button
                   type="button"
                   onClick={() => { setActiveTab('url'); setError(''); }}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
                     activeTab === 'url'
-                      ? 'bg-white text-sky-600 shadow-md shadow-slate-200'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white text-ink border border-black/10 backdrop-blur-md shadow-sm'
+                      : 'text-ink-light hover:text-ink'
                   }`}
                 >
-                  <Globe size={16} />
+                  <Globe size={15} />
                   <span>Website URL</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => { setActiveTab('description'); setError(''); }}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
                     activeTab === 'description'
-                      ? 'bg-white text-sky-600 shadow-md shadow-slate-200'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white text-ink border border-black/10 backdrop-blur-md shadow-sm'
+                      : 'text-ink-light hover:text-ink'
                   }`}
                 >
-                  <FileText size={16} />
+                  <FileText size={15} />
                   <span>Description</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => { setActiveTab('file'); setError(''); }}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
                     activeTab === 'file'
-                      ? 'bg-white text-sky-600 shadow-md shadow-slate-200'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white text-ink border border-black/10 backdrop-blur-md shadow-sm'
+                      : 'text-ink-light hover:text-ink'
                   }`}
                 >
-                  <UploadCloud size={16} />
+                  <UploadCloud size={15} />
                   <span>Upload Brief</span>
                 </button>
               </div>
 
               {/* Active Tab Form Body */}
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6 text-left">
                 {activeTab === 'url' && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="space-y-2"
                   >
-                    <label htmlFor="company-url" className="block text-sm font-medium text-slate-700">
+                    <label htmlFor="company-url" className="block text-[10px] font-mono uppercase tracking-widest text-ink-light">
                       Company Website
                     </label>
                     <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-sky-500 transition-colors">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-ink-light group-focus-within:text-accent transition-colors">
                         <Globe size={18} />
                       </div>
                       <input
@@ -249,10 +249,10 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                         placeholder="e.g. aimlpartner.com or acmecorp.net"
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
-                        className="block w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm transition-all text-base"
+                        className="block w-full pl-12 pr-4 py-4 bg-white border border-black/10 rounded-2xl text-ink placeholder:text-ink-lighter focus:outline-none focus:border-accent shadow-inner transition-colors text-base"
                       />
                     </div>
-                    <p className="text-xs text-slate-400 font-light mt-1">
+                    <p className="text-xs text-ink-light font-mono mt-1 leading-relaxed">
                       Our system securely scrapes visible web pages, stripping script and tags to fetch pure context up to 40,000 characters.
                     </p>
                   </motion.div>
@@ -264,7 +264,7 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                     animate={{ opacity: 1 }}
                     className="space-y-2"
                   >
-                    <label htmlFor="company-desc" className="block text-sm font-medium text-slate-700">
+                    <label htmlFor="company-desc" className="block text-[10px] font-mono uppercase tracking-widest text-ink-light">
                       Describe Your Business & Bottlenecks
                     </label>
                     <textarea
@@ -274,11 +274,11 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                       placeholder="Tell us about your team structure, manual tasks that waste hours (like sorting quotes, logging leads, copy-pasting customer records), and current CRM bottlenecks..."
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      className="block w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 shadow-sm transition-all text-base resize-none"
+                      className="block w-full px-5 py-4 bg-white border border-black/10 rounded-2xl text-ink placeholder:text-ink-lighter focus:outline-none focus:border-accent shadow-inner transition-colors text-base resize-none"
                     />
-                    <div className="flex justify-between text-xs text-slate-400 font-light mt-1">
-                      <span>Minimum 20 characters. The more specific details you share about workflows, the higher the fidelity of the generated playbooks.</span>
-                      <span className={description.length >= 2000 ? "text-rose-500 font-semibold" : ""}>{description.length} / 2000 characters</span>
+                    <div className="flex justify-between text-[10px] font-mono text-ink-light mt-1 leading-relaxed">
+                      <span>Minimum 20 characters. Share workflow details to improve audit playbooks.</span>
+                      <span className={description.length >= 2000 ? "text-alert font-bold" : ""}>{description.length} / 2000 characters</span>
                     </div>
                   </motion.div>
                 )}
@@ -289,7 +289,7 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                     animate={{ opacity: 1 }}
                     className="space-y-2"
                   >
-                    <label className="block text-sm font-medium text-slate-700">
+                    <label className="block text-[10px] font-mono uppercase tracking-widest text-ink-light">
                       Upload Brief / Operational Manual
                     </label>
                     
@@ -300,8 +300,8 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                       onDrop={handleDrop}
                       className={`relative border-2 border-dashed rounded-2xl p-8 md:p-12 text-center transition-all cursor-pointer ${
                         dragActive 
-                          ? 'border-sky-500 bg-sky-50/50' 
-                          : 'border-slate-200 hover:border-slate-300 bg-slate-50/30'
+                          ? 'border-accent bg-accent/5' 
+                          : 'border-black/20 hover:border-accent/40 bg-white'
                       }`}
                     >
                       <input
@@ -313,17 +313,17 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                       />
                       
                       <label htmlFor="file-upload" className="cursor-pointer block">
-                        <div className="w-16 h-16 bg-white border border-slate-100 rounded-2xl flex items-center justify-center mx-auto shadow-md shadow-slate-200/50 mb-4 text-slate-400 group-hover:text-sky-500 transition-colors">
-                          <UploadCloud size={28} className="text-sky-500" />
+                        <div className="w-14 h-14 bg-surface-alt border border-black/10 rounded-2xl flex items-center justify-center mx-auto shadow-md mb-4 text-ink-light transition-colors">
+                          <UploadCloud size={24} className="text-accent" />
                         </div>
-                        <span className="block text-slate-800 font-semibold text-base">
+                        <span className="block text-ink font-bold text-base">
                           {fileName ? fileName : 'Drag & Drop brief here'}
                         </span>
-                        <span className="block text-slate-400 text-xs mt-1.5 font-light">
+                        <span className="block text-ink-light text-xs mt-1.5 font-mono">
                           Supports text briefs, operational manuals, markdown, and CSV formats.
                         </span>
                         {fileName && (
-                          <span className="inline-block mt-3 bg-sky-50 text-sky-700 border border-sky-100 px-3 py-1 rounded-full text-xs font-medium">
+                          <span className="inline-block mt-3 bg-accent/15 text-accent border border-accent/20 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider font-mono">
                             Brief Loaded Successfully
                           </span>
                         )}
@@ -335,10 +335,10 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                 <div className="pt-4 flex justify-center">
                   <button
                     type="submit"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-500 to-sky-600 text-white rounded-full px-10 py-4 font-semibold text-base hover:from-sky-600 hover:to-sky-700 transition-all shadow-lg shadow-sky-500/20 hover:shadow-sky-500/40 cursor-pointer"
+                    className="w-full bg-ink text-white font-bold py-4 rounded-xl hover:bg-accent transition-all flex items-center justify-center gap-2 group/btn cursor-pointer"
                   >
                     <span>Run AI Operational Audit</span>
-                    <ArrowRight size={18} />
+                    <ArrowRight size={16} className="group-hover/btn:translate-x-0.5 transition-transform" />
                   </button>
                 </div>
               </form>
@@ -350,23 +350,23 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-slate-900 border border-slate-800 shadow-2xl rounded-3xl p-12 md:p-16 text-center text-white overflow-hidden relative min-h-[460px] flex flex-col justify-center items-center"
+            className="bg-surface-dark border border-white/10 shadow-glass rounded-3xl p-12 md:p-16 text-center text-white overflow-hidden relative min-h-[460px] flex flex-col justify-center items-center backdrop-blur-2xl"
           >
             {/* Glowing neon shapes */}
-            <div className="absolute top-0 right-1/4 w-96 h-96 bg-sky-500/20 rounded-full filter blur-[100px] pointer-events-none animate-pulse" />
-            <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-[100px] pointer-events-none animate-pulse" />
+            <div className="absolute top-0 right-1/4 w-96 h-96 bg-accent/20 rounded-full filter blur-[100px] pointer-events-none animate-pulse-slow" />
+            <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-accent/10 rounded-full filter blur-[100px] pointer-events-none animate-pulse-slow" />
 
             <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center">
               {/* Spinning Loader */}
               <div className="relative mb-8 flex items-center justify-center">
-                <div className="absolute inset-0 w-24 h-24 bg-sky-500/20 rounded-full filter blur-md animate-ping" />
-                <div className="w-20 h-20 border-t-2 border-b-2 border-l-2 border-sky-400 rounded-full animate-spin flex items-center justify-center relative">
-                  <Cpu size={28} className="text-sky-300 animate-pulse" />
+                <div className="absolute inset-0 w-24 h-24 bg-accent/20 rounded-full filter blur-md animate-ping" />
+                <div className="w-20 h-20 border-t-2 border-b-2 border-l-2 border-accent rounded-full animate-spin flex items-center justify-center relative">
+                  <Cpu size={28} className="text-accent animate-pulse" />
                 </div>
               </div>
 
               {/* Progress Title */}
-              <h3 className="text-2xl md:text-3xl font-semibold tracking-tight text-white mb-2">
+              <h3 className="text-2xl md:text-3xl font-display font-extrabold tracking-tight text-white mb-2">
                 Running Operational Audit
               </h3>
               
@@ -378,7 +378,7 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -15 }}
                     transition={{ duration: 0.3 }}
-                    className="text-sky-300/80 font-mono text-xs md:text-sm tracking-wide"
+                    className="text-accent font-mono text-xs md:text-sm tracking-wide"
                   >
                     {ROTATING_MESSAGES[messageIndex]}
                   </motion.p>
@@ -386,20 +386,20 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
               </div>
 
               {/* Mock holographic UI visualization lines */}
-              <div className="w-full bg-slate-800/50 rounded-xl p-4 border border-slate-700/50 space-y-2 max-w-sm">
-                <div className="flex justify-between text-[10px] font-mono text-slate-500">
+              <div className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 shadow-inner max-w-sm text-left">
+                <div className="flex justify-between text-[9px] font-mono text-white/40 mb-2">
                   <span>ANALYSIS STATUS</span>
-                  <span className="text-sky-400">PROCESSING</span>
+                  <span className="text-accent font-bold">PROCESSING</span>
                 </div>
-                <div className="h-1 w-full bg-slate-700 rounded-full overflow-hidden">
+                <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden mb-2">
                   <motion.div 
                     initial={{ width: '0%' }}
                     animate={{ width: '100%' }}
                     transition={{ duration: 30, ease: 'linear' }}
-                    className="h-full bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full" 
+                    className="h-full bg-gradient-to-r from-accent to-blue-300 rounded-full" 
                   />
                 </div>
-                <div className="flex justify-between text-[10px] font-mono text-slate-500">
+                <div className="flex justify-between text-[9px] font-mono text-white/40">
                   <span>MEMORY FOOTPRINT</span>
                   <span>40,000 CHARS MAX</span>
                 </div>
