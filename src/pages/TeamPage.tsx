@@ -3,8 +3,10 @@ import { Team } from '../components/Team';
 
 export function TeamPage() {
   return (
-    <main className="pt-24 min-h-screen bg-gradient-to-br from-slate-50 to-sky-50/30">
+    <div className="relative min-h-screen overflow-x-hidden bg-surface text-ink">
+      {/* Texture Overlays */}
+      <div className="grain-overlay"></div>
       <Team />
-    </main>
+    </div>
   );
 }
