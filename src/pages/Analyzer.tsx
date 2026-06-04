@@ -22,17 +22,19 @@ export function Analyzer() {
   const navigate = useNavigate();
 
   const handleAnalyze = async (payload: { url?: string; description?: string; fileContent?: string }) => {
-    // Strict client rate-limiting to maximum 2 diagnostic runs to prevent server/API abuse
+    // Strict client rate-limiting to maximum 5 diagnostic runs to prevent server/API abuse
     const auditCountStr = localStorage.getItem('aiml_analyzer_run_count');
     const auditCount = auditCountStr ? parseInt(auditCountStr, 10) : 0;
-    if (auditCount >= 2) {
-      setError('You have reached the maximum limit of 2 free diagnostics. Contact info@aimlpartner.com for a comprehensive enterprise AI audit.');
+    if (auditCount >= 5) {
+      setError('You have reached the maximum limit of 5 free diagnostics. Contact info@aimlpartner.com for a comprehensive enterprise AI audit.');
       return;
     }
 
     setIsLoading(true);
     setError('');
     setEmailCaptured(false); // Reset unlock state for new analysis
+    
+    console.log('[Analyzer] Sending payload:', JSON.stringify(payload));
     
     try {
       const response = await fetch('/api/analyze', {
@@ -43,18 +45,27 @@ export function Analyzer() {
         body: JSON.stringify(payload),
       });
 
+      console.log('[Analyzer] Response status:', response.status, response.statusText);
+
       if (!response.ok) {
-        throw new Error('Server returned an error. Please try again.');
+        const errorText = await response.text().catch(() => 'Unknown error');
+        console.error('[Analyzer] Server error response:', errorText);
+        throw new Error(`Server error (${response.status}). Please try again.`);
       }
 
       const data = await response.json();
+      console.log('[Analyzer] Received analysis for:', data.businessName);
       setResult(data);
       
       // Increment successful diagnostic audit run count
       localStorage.setItem('aiml_analyzer_run_count', String(auditCount + 1));
     } catch (err: any) {
       console.error('[Analyzer Client Error]:', err);
-      setError(err.message || 'Diagnostic failed. Please check your inputs and try again.');
+      if (err.message?.includes('Failed to fetch') || err.message?.includes('NetworkError')) {
+        setError('Could not connect to the analysis server. Please ensure the server is running and try again.');
+      } else {
+        setError(err.message || 'Diagnostic failed. Please check your inputs and try again.');
+      }
     } finally {
       setIsLoading(false);
     }
