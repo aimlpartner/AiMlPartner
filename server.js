@@ -71,6 +71,7 @@ function isDomainOrUrl(str) {
 
 function createFallbackResult() {
   return {
+    _source: 'fallback',
     businessName: "Your Business",
     sector: "Technology & Professional Services",
     executiveDiagnosis: "An initial diagnostic indicates strong potential for low-code and agentic AI integrations. By automating manual back-office tasks like document parsing, CRM updates, and lead routing, the business can significantly reduce manual operational overhead.",
@@ -181,8 +182,8 @@ async function startServer() {
 
     const ai = getGoogleGenAI();
     if (!ai) {
-      console.warn("[Analyzer API Production] Gemini API Client is not configured. Returning fallback data.");
-      return res.status(200).json(createFallbackResult());
+      console.error("[Analyzer API Production] Gemini API Client is not configured (missing GEMINI_API_KEY).");
+      return res.status(503).json({ error: "AI analysis engine is not configured on the server. Please check your environment variables." });
     }
 
     let finalContext = "";
@@ -310,7 +311,7 @@ JSON SCHEMA STRUCTURE:
 
       const rawText = aiResponse.text;
       if (!rawText) throw new Error("Empty text");
-      
+
       const parsedData = parseGeminiJson(rawText);
       const validatedData = {
         businessName: parsedData.businessName || "Your Business",
@@ -352,13 +353,14 @@ JSON SCHEMA STRUCTURE:
           gapAnalysis: parsedData.criticalRevenueLeak?.gapAnalysis || "Operational drag from manual handoffs.",
           lostCapitalScale: parsedData.criticalRevenueLeak?.lostCapitalScale || "$50,000 annually",
           agenticSolution: parsedData.criticalRevenueLeak?.agenticSolution || "Deploy CRM-synced automated webhook monitors."
-        }
+        },
+        _source: 'gemini'
       };
 
       res.status(200).json(validatedData);
     } catch (err) {
       console.error(`[Analyzer API Exception]:`, err);
-      res.status(200).json(createFallbackResult());
+      res.status(502).json({ error: `AI analysis failed: ${err.message || 'Unknown Gemini error'}` });
     }
   });
 
@@ -369,7 +371,7 @@ JSON SCHEMA STRUCTURE:
       try {
         const doc = new PDFDocument({ margin: 50 });
         const chunks = [];
-        
+
         doc.on('data', (chunk) => chunks.push(chunk));
         doc.on('end', () => resolve(Buffer.concat(chunks)));
         doc.on('error', (err) => reject(err));
@@ -383,10 +385,10 @@ JSON SCHEMA STRUCTURE:
 
         doc.fillColor('#0f172a').fontSize(12).font('Helvetica-Bold').text('Client Profile:');
         doc.fillColor('#334155').fontSize(10).font('Helvetica')
-           .text(`Name: ${leadName}`)
-           .text(`Work Email: ${leadEmail}`)
-           .text(`Company Name: ${leadCompany}`)
-           .text(`Assessed Sector: ${data.sector}`);
+          .text(`Name: ${leadName}`)
+          .text(`Work Email: ${leadEmail}`)
+          .text(`Company Name: ${leadCompany}`)
+          .text(`Assessed Sector: ${data.sector}`);
         doc.moveDown(1.5);
 
         doc.fillColor('#0f172a').fontSize(14).font('Helvetica-Bold').text(`Executive AI Diagnostic Assessment for ${data.businessName}`);
@@ -397,10 +399,10 @@ JSON SCHEMA STRUCTURE:
         doc.fillColor('#0f172a').fontSize(12).font('Helvetica-Bold').text('Key Operational Diagnostics & ROI Potential');
         doc.moveDown(0.5);
         doc.fillColor('#334155').fontSize(10).font('Helvetica')
-           .text(`- AI Readiness Score: ${data.readinessScore} / 100 (${data.readinessTier} Tier)`)
-           .text(`- Weekly Manual Overhead Drag: ${data.internalDragHours} Hours`)
-           .text(`- AI Reclaimable Efficiency Time: ${data.reclaimedTimeHours} Hours per Week`)
-           .text(`- Projected Annual Reclaimed Capital ROI: $${data.annualReclaimedROI.toLocaleString()}`);
+          .text(`- AI Readiness Score: ${data.readinessScore} / 100 (${data.readinessTier} Tier)`)
+          .text(`- Weekly Manual Overhead Drag: ${data.internalDragHours} Hours`)
+          .text(`- AI Reclaimable Efficiency Time: ${data.reclaimedTimeHours} Hours per Week`)
+          .text(`- Projected Annual Reclaimed Capital ROI: $${data.annualReclaimedROI.toLocaleString()}`);
         doc.moveDown(1.5);
 
         doc.fillColor('#0f172a').fontSize(14).font('Helvetica-Bold').text('Tactical Departmental Playbooks');
@@ -408,11 +410,11 @@ JSON SCHEMA STRUCTURE:
         data.departments.forEach((dept, index) => {
           doc.fillColor('#0284c7').fontSize(12).font('Helvetica-Bold').text(`${index + 1}. Department: ${dept.name} (Weekly Leak: ${dept.weeklyTimeLeak} Hours)`);
           doc.moveDown(0.25);
-          
+
           doc.fillColor('#0f172a').fontSize(10).font('Helvetica-Bold').text('Current Friction Process:');
           doc.fillColor('#334155').fontSize(10).font('Helvetica').text(dept.friction);
           doc.moveDown(0.4);
-          
+
           doc.fillColor('#0f172a').fontSize(10).font('Helvetica-Bold').text('Target Resolution Architecture:');
           doc.fillColor('#334155').fontSize(10).font('Helvetica').text(dept.resolution);
           doc.moveDown(0.4);
@@ -427,10 +429,10 @@ JSON SCHEMA STRUCTURE:
 
           doc.fillColor('#0f172a').fontSize(10).font('Helvetica-Bold').text('Implementation Timelines & Metrics:');
           doc.fillColor('#334155').fontSize(10).font('Helvetica')
-             .text(`- Complexity: ${dept.playbook.complexity}`)
-             .text(`- Duration: ${dept.playbook.timeline}`)
-             .text(`- Goal Success Metric: ${dept.playbook.successMetrics}`)
-             .text(`- Projected ROI: $${dept.playbook.roi.toLocaleString()}`);
+            .text(`- Complexity: ${dept.playbook.complexity}`)
+            .text(`- Duration: ${dept.playbook.timeline}`)
+            .text(`- Goal Success Metric: ${dept.playbook.successMetrics}`)
+            .text(`- Projected ROI: $${dept.playbook.roi.toLocaleString()}`);
           doc.moveDown(0.4);
 
           doc.fillColor('#1d4ed8').fontSize(10).font('Helvetica-Bold').text('AIMLpartner Proposed Service Offering:');
@@ -456,9 +458,9 @@ JSON SCHEMA STRUCTURE:
         doc.fillColor('#991b1b').fontSize(14).font('Helvetica-Bold').text('CONFIDENTIAL: Sector-Wide Critical Revenue Leak');
         doc.moveDown(0.5);
         doc.fillColor('#334155').fontSize(10).font('Helvetica')
-           .text(`- Gap Analysis: ${data.criticalRevenueLeak.gapAnalysis}`)
-           .text(`- Lost Capital Scale: ${data.criticalRevenueLeak.lostCapitalScale}`)
-           .text(`- Proposed Agentic Solution: ${data.criticalRevenueLeak.agenticSolution}`);
+          .text(`- Gap Analysis: ${data.criticalRevenueLeak.gapAnalysis}`)
+          .text(`- Lost Capital Scale: ${data.criticalRevenueLeak.lostCapitalScale}`)
+          .text(`- Proposed Agentic Solution: ${data.criticalRevenueLeak.agenticSolution}`);
 
         doc.end();
       } catch (err) {
@@ -549,8 +551,8 @@ JSON SCHEMA STRUCTURE:
     }
 
     try {
-      const answersText = answers.map((a, i) => `Q${i+1}: ${a.question}\nA${i+1}: ${a.answer}`).join('\n\n');
-      
+      const answersText = answers.map((a, i) => `Q${i + 1}: ${a.question}\nA${i + 1}: ${a.answer}`).join('\n\n');
+
       const systemPromptDraftInstruction = `You are a Principal AI Prompt Architect & Senior Systems Engineer.
 The client (${name} from ${company}) wants to build a customized AI Agent for their "${departmentName}" department.
 
@@ -644,8 +646,8 @@ Write a brief 1-sentence introduction, then output the complete Google AI Studio
             <h3 style="color: #0284c7; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Custom Requirements Clarified</h3>
             <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 20px; font-size: 14px;">
               ${answers.map((a, i) => `
-                <p style="margin: 0 0 8px 0;"><strong>Q${i+1}: ${a.question}</strong></p>
-                <p style="margin: 0 0 16px 0; color: #475569; font-style: italic;">A${i+1}: ${a.answer}</p>
+                <p style="margin: 0 0 8px 0;"><strong>Q${i + 1}: ${a.question}</strong></p>
+                <p style="margin: 0 0 16px 0; color: #475569; font-style: italic;">A${i + 1}: ${a.answer}</p>
               `).join('')}
             </div>
 

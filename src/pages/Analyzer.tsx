@@ -11,7 +11,7 @@ export function Analyzer() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<any | null>(null);
   const [error, setError] = useState('');
-  
+
   // Lead-capture gating state
   const [emailCaptured, setEmailCaptured] = useState(false);
   const [leadForm, setLeadForm] = useState({ name: '', email: '', company: '' });
@@ -33,9 +33,9 @@ export function Analyzer() {
     setIsLoading(true);
     setError('');
     setEmailCaptured(false); // Reset unlock state for new analysis
-    
+
     console.log('[Analyzer] Sending payload:', JSON.stringify(payload));
-    
+
     try {
       const response = await fetch('/api/analyze', {
         method: 'POST',
@@ -48,15 +48,26 @@ export function Analyzer() {
       console.log('[Analyzer] Response status:', response.status, response.statusText);
 
       if (!response.ok) {
-        const errorText = await response.text().catch(() => 'Unknown error');
-        console.error('[Analyzer] Server error response:', errorText);
-        throw new Error(`Server error (${response.status}). Please try again.`);
+        let errorMessage = `Server error (${response.status}). Please try again.`;
+        try {
+          const errData = await response.json();
+          if (errData && errData.error) {
+            errorMessage = errData.error;
+          }
+        } catch (parseErr) {
+          const errorText = await response.text().catch(() => '');
+          if (errorText) {
+            errorMessage += ` Details: ${errorText}`;
+          }
+        }
+        console.error('[Analyzer] Server error response:', errorMessage);
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
       console.log('[Analyzer] Received analysis for:', data.businessName);
       setResult(data);
-      
+
       // Increment successful diagnostic audit run count
       localStorage.setItem('aiml_analyzer_run_count', String(auditCount + 1));
     } catch (err: any) {
@@ -103,10 +114,10 @@ export function Analyzer() {
       setUnlockError('Please fill out all fields.');
       return;
     }
-    
+
     setIsUnlocking(true);
     setUnlockError('');
-    
+
     try {
       // 1. Record lead details in Firestore (validated fields only)
       await addDoc(collection(db, 'leads'), {
@@ -116,7 +127,7 @@ export function Analyzer() {
         source: `AI Analyzer: ${result.businessName}`.substring(0, 100),
         createdAt: serverTimestamp()
       });
-      
+
       // 2. Dispatch API call to send a gorgeous PDF to the administrator
       await fetch('/api/email-report', {
         method: 'POST',
@@ -130,7 +141,7 @@ export function Analyzer() {
           analysisResult: result
         })
       });
-      
+
       // 3. Mark capture completed and unlock the live interactive console!
       setEmailCaptured(true);
     } catch (err: any) {
@@ -201,8 +212,8 @@ export function Analyzer() {
               {error && (
                 <div className="max-w-4xl mx-auto mb-8 bg-alert/15 border border-alert/20 text-alert rounded-2xl p-5 flex items-center justify-between shadow-sm bg-white">
                   <span className="text-sm font-semibold">{error}</span>
-                  <button 
-                    onClick={() => setError('')} 
+                  <button
+                    onClick={() => setError('')}
                     className="text-alert hover:text-ink text-xs font-bold px-3 py-1 rounded-full border border-alert/30 transition-colors cursor-pointer"
                   >
                     Dismiss
@@ -233,9 +244,9 @@ export function Analyzer() {
             <div className="max-w-7xl mx-auto relative">
               {/* The dashboard is rendered behind, blurred and disabled until email is captured */}
               <div className={!emailCaptured ? "filter blur-md pointer-events-none select-none" : ""}>
-                <AnalyzerDashboard 
-                  data={result} 
-                  onReset={handleReset} 
+                <AnalyzerDashboard
+                  data={result}
+                  onReset={handleReset}
                   leadEmail={leadForm.email}
                   leadName={leadForm.name}
                   leadCompany={leadForm.company}
@@ -252,12 +263,12 @@ export function Analyzer() {
                     className="w-full max-w-2xl bg-slate-950/95 border border-white/10 shadow-glass rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden text-center my-auto backdrop-blur-2xl"
                   >
                     <div className="absolute top-0 right-1/4 w-80 h-80 bg-accent/10 rounded-full filter blur-[80px] pointer-events-none animate-pulse-slow" />
-                    
+
                     <div className="relative z-10 max-w-md mx-auto space-y-6">
                       <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto text-accent shadow-lg shadow-accent/5 mb-4">
                         <Lock size={26} className="animate-pulse" />
                       </div>
-                      
+
                       <div>
                         <span className="text-[10px] font-mono text-accent uppercase tracking-widest block font-bold mb-1">ANALYSIS COMPLETE</span>
                         <h3 className="text-2xl md:text-3xl font-display font-extrabold tracking-tight text-white leading-tight">

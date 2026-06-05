@@ -46,7 +46,7 @@ async function scrapeUrlText(url: string): Promise<string> {
 
     // Strip style tags and scripts along with their contents
     let text = html.replace(/<(script|style|head|noscript)\b[^>]*>([\s\S]*?)<\/\1>/gi, '');
-    
+
     // Strip other HTML tags
     text = text.replace(/<[^>]+>/g, ' ');
 
@@ -82,6 +82,7 @@ function isDomainOrUrl(str: string): boolean {
  * Standard interface for the parsed AI response payload.
  */
 interface AnalysisResult {
+  _source?: 'gemini' | 'fallback';
   businessName: string;
   sector: string;
   executiveDiagnosis: string;
@@ -129,6 +130,7 @@ interface AnalysisResult {
  */
 function createFallbackResult(inputDesc: string): AnalysisResult {
   return {
+    _source: 'fallback',
     businessName: "Your Business",
     sector: "Technology & Professional Services",
     executiveDiagnosis: "An initial diagnostic indicates strong potential for low-code and agentic AI integrations. By automating manual back-office tasks like document parsing, CRM updates, and lead routing, the business can significantly reduce manual operational overhead.",
@@ -209,7 +211,7 @@ function parseGeminiJson(rawText: string): any {
   if (cleaned.startsWith('```')) {
     cleaned = cleaned.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
   }
-  
+
   try {
     return JSON.parse(cleaned);
   } catch (error) {
@@ -234,9 +236,8 @@ export async function analyzeHandler(req: Request, res: Response): Promise<void>
 
   const ai = getGoogleGenAI();
   if (!ai) {
-    console.warn("[Analyzer API] Gemini API Client is not configured. Returning fallback data.");
-    const fallback = createFallbackResult(description || url || "Generic");
-    res.status(200).json(fallback);
+    console.error("[Analyzer API] Gemini API Client is not configured (missing GEMINI_API_KEY).");
+    res.status(503).json({ error: "AI analysis engine is not configured on the server. Please check your environment variables." });
     return;
   }
 
@@ -348,7 +349,7 @@ JSON SCHEMA STRUCTURE:
 }`;
 
     console.log(`[Analyzer API] Sending prompt to Gemini 2.5 Flash...`);
-    
+
     let aiResponse;
     try {
       // Execute the request utilizing Google's official grounding search tool
@@ -362,7 +363,7 @@ JSON SCHEMA STRUCTURE:
       });
     } catch (groundingError: any) {
       console.warn(`[Analyzer API] Grounding model call failed. Falling back to standard Flash.`, groundingError.message || groundingError);
-      
+
       // Fallback in case Google Search grounding is not available on the api key or has hit limits
       aiResponse = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
@@ -387,8 +388,8 @@ JSON SCHEMA STRUCTURE:
       sector: parsedData.sector || "Services",
       executiveDiagnosis: parsedData.executiveDiagnosis || "Diagnostic audit indicates multiple opportunities to streamline non-core operations through secure, low-impact integrations.",
       readinessScore: Number.isInteger(parsedData.readinessScore) ? parsedData.readinessScore : 50,
-      readinessTier: ['Novice', 'Exploring', 'Operational', 'Advanced'].includes(parsedData.readinessTier) 
-        ? parsedData.readinessTier 
+      readinessTier: ['Novice', 'Exploring', 'Operational', 'Advanced'].includes(parsedData.readinessTier)
+        ? parsedData.readinessTier
         : 'Exploring',
       annualReclaimedROI: Number.isInteger(parsedData.annualReclaimedROI) ? parsedData.annualReclaimedROI : 75000,
       internalDragHours: Number.isInteger(parsedData.internalDragHours) ? parsedData.internalDragHours : 40,
@@ -424,16 +425,15 @@ JSON SCHEMA STRUCTURE:
         gapAnalysis: parsedData.criticalRevenueLeak?.gapAnalysis || "Operational drag from manual handoffs.",
         lostCapitalScale: parsedData.criticalRevenueLeak?.lostCapitalScale || "$50,000 annually",
         agenticSolution: parsedData.criticalRevenueLeak?.agenticSolution || "Deploy CRM-synced automated webhook monitors."
-      }
+      },
+      _source: 'gemini'
     };
 
     console.log(`[Analyzer API] Analysis complete! Sending response...`);
     res.status(200).json(validatedData);
   } catch (err: any) {
     console.error(`[Analyzer API Exception]:`, err);
-    // If the API failed entirely, return the robust fallback result so that the user still gets a seamless diagnostic dashboard
-    const fallback = createFallbackResult(description || url || "Generic");
-    res.status(200).json(fallback);
+    res.status(502).json({ error: `AI analysis failed: ${err.message || 'Unknown Gemini error'}` });
   }
 }
 
@@ -445,7 +445,7 @@ function generatePdfReport(data: any, leadEmail: string, leadName: string, leadC
     try {
       const doc = new PDFDocument({ margin: 50 });
       const chunks: any[] = [];
-      
+
       doc.on('data', (chunk) => chunks.push(chunk));
       doc.on('end', () => resolve(Buffer.concat(chunks)));
       doc.on('error', (err) => reject(err));
@@ -462,10 +462,10 @@ function generatePdfReport(data: any, leadEmail: string, leadName: string, leadC
       // Client profile
       doc.fillColor('#0f172a').fontSize(12).font('Helvetica-Bold').text('Client Profile:');
       doc.fillColor('#334155').fontSize(10).font('Helvetica')
-         .text(`Name: ${leadName}`)
-         .text(`Work Email: ${leadEmail}`)
-         .text(`Company Name: ${leadCompany}`)
-         .text(`Assessed Sector: ${data.sector}`);
+        .text(`Name: ${leadName}`)
+        .text(`Work Email: ${leadEmail}`)
+        .text(`Company Name: ${leadCompany}`)
+        .text(`Assessed Sector: ${data.sector}`);
       doc.moveDown(1.5);
 
       // Qualitative summary
@@ -478,10 +478,10 @@ function generatePdfReport(data: any, leadEmail: string, leadName: string, leadC
       doc.fillColor('#0f172a').fontSize(12).font('Helvetica-Bold').text('Key Operational Diagnostics & ROI Potential');
       doc.moveDown(0.5);
       doc.fillColor('#334155').fontSize(10).font('Helvetica')
-         .text(`- AI Readiness Score: ${data.readinessScore} / 100 (${data.readinessTier} Tier)`)
-         .text(`- Weekly Manual Overhead Drag: ${data.internalDragHours} Hours`)
-         .text(`- AI Reclaimable Efficiency Time: ${data.reclaimedTimeHours} Hours per Week`)
-         .text(`- Projected Annual Reclaimed Capital ROI: $${data.annualReclaimedROI.toLocaleString()}`);
+        .text(`- AI Readiness Score: ${data.readinessScore} / 100 (${data.readinessTier} Tier)`)
+        .text(`- Weekly Manual Overhead Drag: ${data.internalDragHours} Hours`)
+        .text(`- AI Reclaimable Efficiency Time: ${data.reclaimedTimeHours} Hours per Week`)
+        .text(`- Projected Annual Reclaimed Capital ROI: $${data.annualReclaimedROI.toLocaleString()}`);
       doc.moveDown(1.5);
 
       // Departments Playbooks
@@ -490,11 +490,11 @@ function generatePdfReport(data: any, leadEmail: string, leadName: string, leadC
       data.departments.forEach((dept: any, index: number) => {
         doc.fillColor('#0284c7').fontSize(12).font('Helvetica-Bold').text(`${index + 1}. Department: ${dept.name} (Weekly Leak: ${dept.weeklyTimeLeak} Hours)`);
         doc.moveDown(0.25);
-        
+
         doc.fillColor('#0f172a').fontSize(10).font('Helvetica-Bold').text('Current Friction Process:');
         doc.fillColor('#334155').fontSize(10).font('Helvetica').text(dept.friction);
         doc.moveDown(0.4);
-        
+
         doc.fillColor('#0f172a').fontSize(10).font('Helvetica-Bold').text('Target Resolution Architecture:');
         doc.fillColor('#334155').fontSize(10).font('Helvetica').text(dept.resolution);
         doc.moveDown(0.4);
@@ -509,10 +509,10 @@ function generatePdfReport(data: any, leadEmail: string, leadName: string, leadC
 
         doc.fillColor('#0f172a').fontSize(10).font('Helvetica-Bold').text('Implementation Timelines & Metrics:');
         doc.fillColor('#334155').fontSize(10).font('Helvetica')
-           .text(`- Complexity: ${dept.playbook.complexity}`)
-           .text(`- Duration: ${dept.playbook.timeline}`)
-           .text(`- Goal Success Metric: ${dept.playbook.successMetrics}`)
-           .text(`- Projected ROI: $${dept.playbook.roi.toLocaleString()}`);
+          .text(`- Complexity: ${dept.playbook.complexity}`)
+          .text(`- Duration: ${dept.playbook.timeline}`)
+          .text(`- Goal Success Metric: ${dept.playbook.successMetrics}`)
+          .text(`- Projected ROI: $${dept.playbook.roi.toLocaleString()}`);
         doc.moveDown(0.4);
 
         doc.fillColor('#1d4ed8').fontSize(10).font('Helvetica-Bold').text('AIMLpartner Proposed Service Offering:');
@@ -540,9 +540,9 @@ function generatePdfReport(data: any, leadEmail: string, leadName: string, leadC
       doc.fillColor('#991b1b').fontSize(14).font('Helvetica-Bold').text('CONFIDENTIAL: Sector-Wide Critical Revenue Leak');
       doc.moveDown(0.5);
       doc.fillColor('#334155').fontSize(10).font('Helvetica')
-         .text(`- Gap Analysis: ${data.criticalRevenueLeak.gapAnalysis}`)
-         .text(`- Lost Capital Scale: ${data.criticalRevenueLeak.lostCapitalScale}`)
-         .text(`- Proposed Agentic Solution: ${data.criticalRevenueLeak.agenticSolution}`);
+        .text(`- Gap Analysis: ${data.criticalRevenueLeak.gapAnalysis}`)
+        .text(`- Lost Capital Scale: ${data.criticalRevenueLeak.lostCapitalScale}`)
+        .text(`- Proposed Agentic Solution: ${data.criticalRevenueLeak.agenticSolution}`);
 
       doc.end();
     } catch (err) {
@@ -574,9 +574,9 @@ export async function emailReportHandler(req: Request, res: Response): Promise<v
 
     if (!smtpUser || !smtpPass) {
       console.warn('[Email API] SMTP credentials not configured in .env. Logging report instead.');
-      res.status(200).json({ 
-        status: "mocked", 
-        message: "Report logged. To receive proper emails, please supply SMTP_USER and SMTP_PASS secrets in your .env configuration." 
+      res.status(200).json({
+        status: "mocked",
+        message: "Report logged. To receive proper emails, please supply SMTP_USER and SMTP_PASS secrets in your .env configuration."
       });
       return;
     }
@@ -655,7 +655,7 @@ export async function emailReportHandler(req: Request, res: Response): Promise<v
     console.log(`[Email API] Sending email report to ${toEmail}...`);
     const info = await transporter.sendMail(mailOptions);
     console.log(`[Email API] Transmitted successfully: ${info.messageId}`);
-    
+
     res.status(200).json({ status: "sent", messageId: info.messageId });
   } catch (err: any) {
     console.error(`[Email API Exception]:`, err);
@@ -684,8 +684,8 @@ export async function buildRequestHandler(req: Request, res: Response): Promise<
 
   try {
     // 1. Construct prompt for Gemini to compile the absolute ultimate Google AI Studio system prompt!
-    const answersText = answers.map((a: any, i: number) => `Q${i+1}: ${a.question}\nA${i+1}: ${a.answer}`).join('\n\n');
-    
+    const answersText = answers.map((a: any, i: number) => `Q${i + 1}: ${a.question}\nA${i + 1}: ${a.answer}`).join('\n\n');
+
     const systemPromptDraftInstruction = `You are a Principal AI Prompt Architect & Senior Systems Engineer.
 The client (${name} from ${company}) wants to build a customized AI Agent for their "${departmentName}" department.
 
@@ -784,8 +784,8 @@ Write a brief 1-sentence introduction, then output the complete Google AI Studio
           <h3 style="color: #0284c7; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Custom Requirements Clarified</h3>
           <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 20px; font-size: 14px;">
             ${answers.map((a: any, i: number) => `
-              <p style="margin: 0 0 8px 0;"><strong>Q${i+1}: ${a.question}</strong></p>
-              <p style="margin: 0 0 16px 0; color: #475569; font-style: italic;">A${i+1}: ${a.answer}</p>
+              <p style="margin: 0 0 8px 0;"><strong>Q${i + 1}: ${a.question}</strong></p>
+              <p style="margin: 0 0 16px 0; color: #475569; font-style: italic;">A${i + 1}: ${a.answer}</p>
             `).join('')}
           </div>
 
