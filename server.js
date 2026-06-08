@@ -313,7 +313,32 @@ JSON SCHEMA STRUCTURE:
       if (!rawText) throw new Error("Empty text");
 
       const parsedData = parseGeminiJson(rawText);
+
+      // Calculate token usage and cost for Gemini 2.5 Flash
+      const promptTokens = aiResponse.usageMetadata?.promptTokenCount || 0;
+      const completionTokens = (aiResponse.usageMetadata?.candidatesTokenCount || 0) + (aiResponse.usageMetadata?.thoughtsTokenCount || 0);
+      const totalTokens = aiResponse.usageMetadata?.totalTokenCount || (promptTokens + completionTokens);
+      
+      const hasGrounding = !!aiResponse.candidates?.[0]?.groundingMetadata?.webSearchQueries?.length;
+      const groundingQueries = hasGrounding ? 1 : 0;
+      
+      // Input: $0.075/1M tokens ($0.000000075/token)
+      // Output: $0.30/1M tokens ($0.00000030/token)
+      // Search Grounding: $0.0035/query
+      const costUsd = (promptTokens * 0.000000075) + 
+                      (completionTokens * 0.00000030) + 
+                      (hasGrounding ? 0.0035 : 0);
+
+      console.log(`[Analyzer API Production] Cost computed: $${costUsd.toFixed(6)} (In: ${promptTokens}, Out: ${completionTokens}, Grounding: ${hasGrounding ? 'Yes' : 'No'})`);
+
       const validatedData = {
+        tokenUsage: {
+          promptTokens,
+          completionTokens,
+          totalTokens,
+          groundingQueries,
+          costUsd
+        },
         businessName: parsedData.businessName || "Your Business",
         sector: parsedData.sector || "Services",
         executiveDiagnosis: parsedData.executiveDiagnosis || "Diagnostic audit indicates multiple opportunities to streamline non-core operations through secure, low-impact integrations.",
@@ -506,19 +531,59 @@ JSON SCHEMA STRUCTURE:
         subject: `[AI Lead Generated] Operational Audit Report for ${analysisResult.businessName} (${name})`,
         html: `
           <div style="font-family: sans-serif; color: #334155; line-height: 1.6;">
-            <h2>New High-Quality Lead Unlocked via AI Analyzer</h2>
-            <p>A user has just completed the Free AI Business Analyzer diagnostic on your site and submitted their details.</p>
-            <ul>
-              <li><strong>Name:</strong> ${name}</li>
-              <li><strong>Email:</strong> ${email}</li>
-              <li><strong>Company:</strong> ${company}</li>
-              <li><strong>Sector:</strong> ${analysisResult.sector}</li>
-              <li><strong>ROI Potential:</strong> $${analysisResult.annualReclaimedROI.toLocaleString()}</li>
-            </ul>
-            <h3>Confidential Sector Leak</h3>
+            <h2 style="color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">New High-Quality Lead Unlocked via AI Analyzer</h2>
+            <p>A user has just completed the Free AI Business Analyzer diagnostic on your site and submitted their details to unlock their results.</p>
+            
+            <h3 style="color: #0284c7;">Lead Contact Details</h3>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+              <tr style="background-color: #f8fafc;">
+                <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold; width: 30%;">Full Name</td>
+                <td style="padding: 8px; border: 1px solid #e2e8f0;">${name}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold;">Work Email</td>
+                <td style="padding: 8px; border: 1px solid #e2e8f0;"><a href="mailto:${email}">${email}</a></td>
+              </tr>
+              <tr style="background-color: #f8fafc;">
+                <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold;">Company Name</td>
+                <td style="padding: 8px; border: 1px solid #e2e8f0;">${company}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold;">Assessed Sector</td>
+                <td style="padding: 8px; border: 1px solid #e2e8f0;">${analysisResult.sector}</td>
+              </tr>
+              <tr style="background-color: #f8fafc;">
+                <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold;">Readiness Score</td>
+                <td style="padding: 8px; border: 1px solid #e2e8f0;">${analysisResult.readinessScore}/100 (${analysisResult.readinessTier})</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold;">Projected Annual ROI</td>
+                <td style="padding: 8px; border: 1px solid #e2e8f0; color: #16a34a; font-weight: bold;">$${analysisResult.annualReclaimedROI.toLocaleString()}</td>
+              </tr>
+              <tr style="background-color: #f8fafc;">
+                <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold;">Weekly Hours Drag</td>
+                <td style="padding: 8px; border: 1px solid #e2e8f0;">${analysisResult.internalDragHours} Hours</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold; color: #b91c1c;">API Analysis Cost</td>
+                <td style="padding: 8px; border: 1px solid #e2e8f0; color: #b91c1c; font-weight: bold;">
+                  $${analysisResult.tokenUsage?.costUsd?.toFixed(5) || '0.00000'}
+                  <span style="font-size: 11px; font-weight: normal; color: #64748b; margin-left: 8px;">
+                    (In: ${analysisResult.tokenUsage?.promptTokens || 0} tokens, Out: ${analysisResult.tokenUsage?.completionTokens || 0} tokens, Grounding: ${analysisResult.tokenUsage?.groundingQueries ? 'Yes' : 'No'})
+                  </span>
+                </td>
+              </tr>
+            </table>
+            
+            <h3 style="color: #991b1b;">Confidential Sector Leak Assessment</h3>
             <p><strong>Gap Analysis:</strong> ${analysisResult.criticalRevenueLeak.gapAnalysis}</p>
-            <p><strong>Lost Capital:</strong> ${analysisResult.criticalRevenueLeak.lostCapitalScale}</p>
+            <p><strong>Lost Capital Scale:</strong> ${analysisResult.criticalRevenueLeak.lostCapitalScale}</p>
             <p><strong>Agentic Tactic:</strong> ${analysisResult.criticalRevenueLeak.agenticSolution}</p>
+            
+            <br/>
+            <p style="font-size: 13px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+              Please review the attached formal PDF for a comprehensive breakdown of the tactical department playbooks, roadmaps, and custom AIMLpartner service pitches.
+            </p>
           </div>
         `,
         attachments: [
