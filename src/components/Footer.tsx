@@ -56,7 +56,7 @@ export function Footer() {
           </Link>
 
           <p className="text-sm font-medium leading-relaxed max-w-sm text-white/50">
-            Founder-led studio building revenue-focused AI agent systems for startups, SMBs, and enterprises.
+            AI Workforce Partner for Growing Businesses. We help small and mid-sized businesses implement practical AI, automation, and digital workforce solutions that save time, improve customer experience, and help teams scale without adding headcount.
           </p>
 
           <div className="flex flex-col gap-3 text-xs mt-4 font-mono text-white/40">

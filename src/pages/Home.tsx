@@ -108,21 +108,20 @@ export function Home() {
             <div className="flex items-center gap-3 mb-8 bg-white/10 backdrop-blur-md w-fit px-3 py-1.5 rounded-full border border-white/20 shadow-glow">
               <div className="w-2 h-2 rounded-full bg-accent animate-pulse-slow"></div>
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white font-semibold">
-                Operational Audit Engine
+                AI Workforce Partner
               </span>
             </div>
 
             <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-extrabold tracking-tighter leading-[1.05] text-white mb-8 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
-              Quantify your <br />
+              Your Team Is Busy. <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-300 italic font-medium pr-2">
-                AI agent
+                Your Systems
               </span>{' '}
-              ROI.
+              Shouldn’t Be.
             </h1>
 
             <p className="text-lg md:text-xl text-white/70 max-w-xl font-medium leading-relaxed">
-              Figure it out in under 30 seconds. Scan your site or outline an operational bottleneck to
-              generate your diagnostic blueprint.
+              We help growing businesses automate repetitive work, improve customer experience, and build practical AI workflows that save time and increase productivity.
             </p>
           </div>
 
@@ -203,7 +202,7 @@ export function Home() {
                     type="submit"
                     className="w-full bg-white text-ink font-bold py-3 md:py-4 rounded-xl hover:bg-surface-alt transition-all flex items-center justify-center gap-2 group/btn shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer"
                   >
-                    Launch Diagnostic{' '}
+                    Get Your AI Opportunity Report{' '}
                     <i className="ph-bold ph-arrow-right group-hover/btn:translate-x-1 transition-transform"></i>
                   </button>
                 </form>
@@ -231,7 +230,7 @@ export function Home() {
                     type="submit"
                     className="w-full bg-accent text-white font-bold py-3 md:py-4 rounded-xl hover:bg-accent-hover transition-all flex items-center justify-center gap-2 group/btn shadow-glow cursor-pointer"
                   >
-                    Analyze Workflow{' '}
+                    Get Your AI Opportunity Report{' '}
                     <i className="ph-bold ph-arrow-right group-hover/btn:translate-x-1 transition-transform"></i>
                   </button>
                 </form>
@@ -247,16 +246,15 @@ export function Home() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 reveal pt-10">
             <div className="max-w-2xl">
               <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">
-                Core Operations
+                Common Business Problems
               </span>
               <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink leading-[1.1]">
-                Where manual workflows <br className="hidden md:block" />
-                hold you back.
+                Do any of these <br className="hidden md:block" />
+                sound familiar?
               </h2>
             </div>
             <p className="text-ink-light max-w-md font-medium leading-relaxed pb-2">
-              We replace brittle, human-dependent processes with resilient agentic systems that run
-              continuously in the background.
+              The market doesn't trust another AI consultant. We help growing businesses solve painful workflow problems directly, eliminate repetitive work, and build a digital workforce.
             </p>
           </div>
 
@@ -271,11 +269,10 @@ export function Home() {
                       <i className="ph-fill ph-warning-circle text-sm"></i> The Friction
                     </div>
                     <h3 className="font-display text-2xl font-bold mb-4 tracking-tight">
-                      Manual lead research & profiling
+                      Leads go unanswered & customer inquiries pile up
                     </h3>
                     <p className="text-ink-light text-sm leading-relaxed">
-                      SDRs waste 12+ hours a week copy-pasting LinkedIn profiles, corporate news, and drafting
-                      personalized icebreakers. Highly prone to human error.
+                      Inquiries sit in shared inboxes or contact forms for hours, while team members are busy. Prospects move on to competitors before anyone responds.
                     </p>
                   </div>
                 </div>
@@ -283,14 +280,13 @@ export function Home() {
                   <div className="hidden md:block absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-black/10 to-transparent -ml-4"></div>
                   <div className="pt-6 md:pt-0">
                     <div className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-success font-bold mb-6 bg-success-soft px-2.5 py-1.5 rounded-md border border-success-border/50">
-                      <i className="ph-fill ph-cpu text-sm"></i> The Architecture
+                      <i className="ph-fill ph-cpu text-sm"></i> The Solution
                     </div>
                     <h3 className="font-display text-2xl font-bold mb-4 tracking-tight">
-                      Autonomous Context Enrichment
+                      Instant Automated Response & Triage
                     </h3>
                     <p className="text-ink-light text-sm leading-relaxed">
-                      AI agents auto-enrich accounts upon lead creation, drafting contextual sequence messages
-                      directly within Salesforce or Outreach in seconds.
+                      AI workflows instantly qualify incoming leads, sync them with your database, and route high-value prospects to the right team members.
                     </p>
                   </div>
                 </div>
@@ -312,24 +308,22 @@ export function Home() {
 
               <div className="relative z-10 mb-12">
                 <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/50 mb-4 block font-bold">
-                  Triage Bottleneck
+                  The Friction
                 </div>
                 <h3 className="font-display text-2xl font-bold mb-4 leading-tight text-white tracking-tight">
-                  Slow lead routing & manual ticket sorting
+                  Employees repeat the same manual tasks
                 </h3>
                 <p className="text-surface-alt/70 text-sm leading-relaxed">
-                  Inbound requests sit in shared inboxes for hours, drastically reducing response rates and
-                  losing pipeline.
+                  Team members waste hours copy-pasting data, sending repetitive email templates, and performing routine data entry across multiple apps, causing inconsistent productivity.
                 </p>
               </div>
 
               <div className="relative z-10 bg-white/10 rounded-xl p-5 border border-white/10 backdrop-blur-md mt-auto shadow-inner">
                 <div className="flex items-center gap-2 text-success bg-white w-fit px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider mb-3 rounded shadow-sm">
-                  <i className="ph-fill ph-lightning"></i> AI Resolution
+                  <i className="ph-fill ph-lightning"></i> The Solution
                 </div>
                 <p className="text-sm text-white/90 font-medium leading-relaxed">
-                  NLP agents parse queries instantly, routing high-value accounts straight to Slack with full
-                  context.
+                  Automate document generation, email sorting, and task handoffs so your team can focus on client-facing work.
                 </p>
               </div>
             </div>
@@ -344,11 +338,10 @@ export function Home() {
                   <i className="ph-fill ph-database text-sm"></i> The Friction
                 </div>
                 <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                  Siloed CRMs & manual database syncs
+                  Information lives in multiple systems & CRM data is outdated
                 </h3>
                 <p className="text-ink-light text-sm leading-relaxed">
-                  Reps manually update client records across CRM systems and internal SQL databases, leading to
-                  double reach-outs and stale, fractured data.
+                  Customer info, operational data, and task lists are scattered across different platforms with no single source of truth, making processes depend entirely on specific employees.
                 </p>
               </div>
 
@@ -360,14 +353,13 @@ export function Home() {
 
               <div className="md:w-[45%]">
                 <div className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-success font-bold mb-4 bg-success-soft px-2.5 py-1.5 rounded-md border border-success-border/50">
-                  <i className="ph-fill ph-arrows-clockwise text-sm"></i> The Architecture
+                  <i className="ph-fill ph-arrows-clockwise text-sm"></i> The Solution
                 </div>
                 <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                  Real-Time Agentic Sync
+                  System-Wide Synchronization
                 </h3>
                 <p className="text-ink-light text-sm leading-relaxed">
-                  Vetted database listeners update records automatically, cleaning data fields and maintaining
-                  compliance logs overhead-free.
+                  Sync data automatically between your CRM, email, and internal databases so information is always clean, compliant, and up-to-date.
                 </p>
               </div>
             </div>
@@ -413,13 +405,13 @@ export function Home() {
         <div className="max-w-[1000px] mx-auto relative z-10">
           <div className="mb-16 reveal text-center">
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">
-              Core Offerings
+              Capabilities
             </span>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink">
-              How we partner.
+              What We Help Automate
             </h2>
             <p className="text-ink-light mt-6 max-w-2xl mx-auto font-medium text-lg">
-              We build custom, production-ready AI systems directly integrated into your operational stack.
+              We help growing businesses eliminate repetitive work and build a digital workforce.
             </p>
           </div>
 
@@ -430,13 +422,12 @@ export function Home() {
                 <div className="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">01/</div>
                 <div className="md:col-span-3">
                   <h3 className="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">
-                    Strategy & Audit
+                    Sales & CRM Workflows
                   </h3>
                 </div>
                 <div className="md:col-span-7">
                   <p className="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">
-                    Map bottlenecks. We analyze team structure, SaaS overhead, and friction to generate a
-                    detailed roadmap.
+                    Automate lead research, data enrichment, CRM cleanup, and real-time database updates to eliminate manual entry.
                   </p>
                 </div>
                 <div className="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
@@ -456,13 +447,12 @@ export function Home() {
                 <div className="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">02/</div>
                 <div className="md:col-span-3">
                   <h3 className="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">
-                    Agent Engineering
+                    Marketing & Outreach
                   </h3>
                 </div>
                 <div className="md:col-span-7">
                   <p className="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">
-                    Replace repetitive work. We design AI agents built to handle specific business processes
-                    flawlessly, 24/7.
+                    Speed up lead responses with auto-generated proposals, email triage, and automated follow-up sequences.
                   </p>
                 </div>
                 <div className="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
@@ -481,14 +471,13 @@ export function Home() {
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center text-left">
                 <div className="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">03/</div>
                 <div className="md:col-span-3">
-                  <h3 class="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">
-                    Low-Code Portals
+                  <h3 className="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">
+                    Customer Experience
                   </h3>
                 </div>
                 <div className="md:col-span-7">
                   <p className="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">
-                    Keep humans in the loop. Custom dashboards to let staff review outputs, approve reports,
-                    and monitor safely.
+                    Streamline client onboarding, coordinate appointment reminders, and deploy interactive knowledge assistants.
                   </p>
                 </div>
                 <div className="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
@@ -508,13 +497,12 @@ export function Home() {
                 <div className="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">04/</div>
                 <div className="md:col-span-3">
                   <h3 className="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">
-                    Enterprise Sync
+                    Operations & Support
                   </h3>
                 </div>
                 <div className="md:col-span-7">
                   <p className="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">
-                    Bridge CRM triggers directly with LLM pipelines. We set up robust observability logs and
-                    security standards.
+                    Automate reporting, structure internal knowledge bases, and coordinate repetitive back-office operations.
                   </p>
                 </div>
                 <div className="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
@@ -534,10 +522,10 @@ export function Home() {
         <div className="max-w-[1400px] mx-auto relative z-10">
           <div className="text-center mb-20 reveal">
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">
-              System Performance
+              Typical Results
             </span>
             <h2 className="font-display text-4xl font-extrabold tracking-tight text-ink">
-              Production-grade results.
+              Practical, Measurable Outcomes
             </h2>
           </div>
 
@@ -545,14 +533,13 @@ export function Home() {
             {/* Stat 1 */}
             <div className="reveal relative bg-white/80 backdrop-blur-sm p-8 rounded-3xl border border-white shadow-editorial tangible-card text-left">
               <div className="font-display text-6xl lg:text-[6rem] font-black text-ink leading-none tracking-tighter mb-6">
-                320<span className="text-accent">%</span>
+                20-40<span className="text-accent">%</span>
               </div>
               <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent mb-3">
-                Qualified Pipeline
+                Repetitive Work Reduced
               </div>
               <p className="text-ink-light text-sm font-medium leading-relaxed">
-                Account Enrichment & Acceleration. AI extracts LinkedIn context and drafts sequences in 90
-                seconds flat.
+                Free your team from tedious data copy-pasting, admin overhead, and manual follow-ups with standardized processes.
               </p>
             </div>
 
@@ -562,14 +549,13 @@ export function Home() {
               style={{ transitionDelay: '100ms' }}
             >
               <div className="font-display text-6xl lg:text-[6rem] font-black text-ink leading-none tracking-tighter mb-6">
-                $14<span className="text-accent text-5xl">k</span>
+                Instant
               </div>
               <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent mb-3">
-                Overhead Reclaimed
+                Lead Response & Routing
               </div>
               <p className="text-ink-light text-sm font-medium leading-relaxed">
-                Automated Support Triaging. NLP parses queries instantly and routes high-priority tickets to
-                specific channels.
+                Respond to leads significantly faster. Auto-qualify contacts and route high-value accounts instantly.
               </p>
             </div>
 
@@ -579,16 +565,13 @@ export function Home() {
               style={{ transitionDelay: '200ms' }}
             >
               <div className="font-display text-6xl lg:text-[6rem] font-black text-ink leading-none tracking-tighter mb-6">
-                99<span className="text-accent">
-                  .8<span className="text-4xl">%</span>
-                </span>
+                100<span className="text-accent">%</span>
               </div>
               <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent mb-3">
-                Accuracy Vetted
+                CRM Data & Adoption
               </div>
               <p className="text-ink-light text-sm font-medium leading-relaxed">
-                Enterprise Syncing. Secure listeners clean and perfectly sync records across multiple SQL
-                databases.
+                Improve CRM accuracy and system hygiene. Minimize employee onboarding times and scale with digital systems.
               </p>
             </div>
           </div>
@@ -600,10 +583,10 @@ export function Home() {
         <div className="max-w-[1400px] mx-auto">
           <div className="mb-20 reveal text-left">
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">
-              Delivery Framework
+              How It Works
             </span>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink max-w-2xl">
-              How we ship systems that drive growth.
+              Our Onboarding Process
             </h2>
           </div>
 
@@ -619,11 +602,10 @@ export function Home() {
                 </div>
                 <div className="lg:pt-2 max-w-2xl">
                   <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                    Diagnostics & ROI Modeling
+                    Business Assessment
                   </h3>
                   <p className="text-ink-light font-medium leading-relaxed text-sm">
-                    We audit your CRM pipelines, team sizes, and manual entry points to compile a detailed ROI
-                    forecast and operational blueprint before writing any code.
+                    Complete our 15-minute Intake Form. We analyze your company size, current tech stack, biggest challenges, and organizational goals to prepare our analysis.
                   </p>
                 </div>
               </div>
@@ -635,11 +617,10 @@ export function Home() {
                 </div>
                 <div className="lg:pt-2 max-w-2xl">
                   <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                    Orchestration & Agent Engineering
+                    Discovery Session
                   </h3>
                   <p className="text-ink-light font-medium leading-relaxed text-sm">
-                    We design custom agent loops, configure vector stores for context grounding, and write
-                    custom tool-calling schemas tailored strictly to your business rules.
+                    Join us for a 60-90 minute deep-dive. We map your current manual workflows, locate bottlenecks, and identify high-value automation opportunities.
                   </p>
                 </div>
               </div>
@@ -651,11 +632,10 @@ export function Home() {
                 </div>
                 <div className="lg:pt-2 max-w-2xl">
                   <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                    Human-in-the-Loop Portals
+                    Opportunity Report
                   </h3>
                   <p className="text-ink-light font-medium leading-relaxed text-sm">
-                    We build intuitive low-code control panels that let your operations team monitor agent
-                    tasks, edit drafted responses, and approve outbound actions safely.
+                    Receive your priority scorecard and a recommended roadmap mapping out top opportunities, expected ROI, and implementation paths.
                   </p>
                 </div>
               </div>
@@ -667,15 +647,47 @@ export function Home() {
                 </div>
                 <div className="lg:pt-2 max-w-2xl">
                   <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                    CRM & Enterprise Syncing
+                    Implementation
                   </h3>
                   <p className="text-ink-light font-medium leading-relaxed text-sm">
-                    We bridge agent webhooks directly with Salesforce Agentforce, HubSpot, or SQL backends,
-                    deploying continuous observability logs and API rate limits.
+                    We design and build workflows, check progress with weekly updates, compile system documentation, and run user training sessions.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 5 */}
+              <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start reveal group text-left">
+                <div className="w-14 h-14 bg-white border border-black/10 rounded-full text-ink font-display text-lg font-bold flex items-center justify-center shrink-0 group-hover:border-accent group-hover:text-accent group-hover:shadow-md transition-all duration-500 bg-surface-glass backdrop-blur-sm">
+                  5
+                </div>
+                <div className="lg:pt-2 max-w-2xl">
+                  <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
+                    Launch & Adoption
+                  </h3>
+                  <p className="text-ink-light font-medium leading-relaxed text-sm">
+                    Train users on your new systems, establish clear SOPs, record interactive video walkthroughs, and monitor results in real-time.
                   </p>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 7: TRUST BUILDING */}
+      <section className="py-20 bg-surface-alt/40 border-t border-black/5 px-6 text-center">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="mb-8 font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+            Built for Trust & Transparency
+          </div>
+          <div className="flex flex-wrap justify-center gap-y-4 gap-x-8 md:gap-x-12 text-sm font-semibold text-ink-light">
+            <span className="flex items-center gap-2">✓ Fixed pricing</span>
+            <span className="flex items-center gap-2">✓ Clear timelines</span>
+            <span className="flex items-center gap-2">✓ No long-term contracts</span>
+            <span className="flex items-center gap-2">✓ Human support</span>
+            <span className="flex items-center gap-2">✓ Documented workflows</span>
+            <span className="flex items-center gap-2">✓ Team training included</span>
+            <span className="flex items-center gap-2">✓ Ownership of deliverables</span>
           </div>
         </div>
       </section>

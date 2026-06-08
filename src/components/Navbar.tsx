@@ -71,10 +71,10 @@ export function Navbar() {
               Shop
             </Link>
             <Link to="/low-code-pods" className={linkClass}>
-              Pods
+              Services
             </Link>
             <Link to="/agentforce-services" className={linkClass}>
-              Agentforce
+              Salesforce
             </Link>
             <Link to="/team" className={linkClass}>
               Team
@@ -144,7 +144,7 @@ export function Navbar() {
               className="text-sm font-semibold text-white/80 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Low-Code Pods</span>
+              <span>Services</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
             <Link
@@ -152,7 +152,7 @@ export function Navbar() {
               className="text-sm font-semibold text-white/80 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Agentforce Services</span>
+              <span>Salesforce Services</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
             <Link

@@ -6,31 +6,31 @@ export function AgentStudio() {
   const featuredAgents = [
     {
       icon: <Bot className="text-accent" size={24} />,
-      title: "Automated SDR Agent",
-      desc: "Qualify leads and book meetings 24/7. Auto-enriches data from LinkedIn/Outreach to draft personalized icebreakers in seconds.",
+      title: "AI Sales Assistant",
+      desc: "Qualify leads, enrich CRM contact data, and automate outreach follow-ups 24/7. Auto-enriches data from LinkedIn/Outreach to draft personalized icebreakers in seconds.",
       colSpan: "md:col-span-8",
       friction: "SDRs waste 12+ hrs copy-pasting profiles",
-      architecture: "Salesforce CRM Trigger -> enrichment -> Auto Draft"
+      architecture: "Lead Created -> LinkedIn Scraping -> CRM Sync & Draft"
     },
     {
       icon: <Zap className="text-success" size={24} />,
-      title: "Instant Support Triage",
-      desc: "Categorize and route support tickets instantly. NLP queries route high-priority accounts straight to Slack with CRM context.",
+      title: "AI Customer Service Agent",
+      desc: "Resolve repetitive customer inquiries, answer FAQs, manage appointment reminders, and route high-priority tickets straight to Slack with CRM context.",
       colSpan: "md:col-span-4",
       bgImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop"
     },
     {
       icon: <Shield className="text-alert" size={24} />,
-      title: "Compliance Checker",
-      desc: "Autonomously review legal documents, contracts, and filings against regulatory standards with detailed compliance verification logs.",
+      title: "AI Operations Coordinator",
+      desc: "Sync inventory levels across warehousing databases, automate administrative compliance checking, and manage recurring task handoffs between teams.",
       colSpan: "md:col-span-12"
     }
   ];
 
   const directoryAgents = [
-    { num: "04/", icon: <Workflow size={18} />, title: "Onboarding Assistant", desc: "Guide new hires through paperwork, internal tool setups, and reading schedules." },
-    { num: "05/", icon: <Database size={18} />, title: "Data Enrichment", desc: "Listen for CRM updates to pull and append fresh corporate data, cleaning field parameters." },
-    { num: "06/", icon: <LineChart size={18} />, title: "Financial Analyst", desc: "Query databases to auto-generate weekly performance briefings, charts, and anomaly warnings." },
+    { num: "04/", icon: <Workflow size={18} />, title: "AI Knowledge Assistant", desc: "Scan internal company wikis, SOP manuals, and team documents to answer operational questions instantly." },
+    { num: "05/", icon: <Database size={18} />, title: "AI Recruiting Assistant", desc: "Pre-screen candidate resumes against custom job rules, matching profiles to schedule initial interviews." },
+    { num: "06/", icon: <LineChart size={18} />, title: "AI Executive Assistant", desc: "Triage shared email inboxes, organize calendar schedules, and auto-summarize team meetings into action points." },
     { num: "07/", icon: <Users size={18} />, title: "HR Screener", desc: "Pre-screen candidates based on custom job rules, matching profiles to schedule initial interviews." },
     { num: "08/", icon: <MessageSquare size={18} />, title: "Social Listener", desc: "Track digital mentions across channels, summarizing sentiment and queueing drafted replies." },
     { num: "09/", icon: <Clock size={18} />, title: "Meeting Summarizer", desc: "Record audio streams, transcribe conversations, and extract action tables instantly." },

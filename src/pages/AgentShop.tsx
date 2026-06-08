@@ -6,16 +6,16 @@ export function AgentShop() {
   const featuredShop = [
     {
       icon: <ShoppingCart className="text-accent" size={24} />,
-      title: "E-commerce Recommender",
-      desc: "Pre-built agent for dynamic product suggestions, cart recovery, and user-grounded personalization. Installs into Shopify or WooCommerce in minutes.",
+      title: "AI Sales Assistant",
+      desc: "Pre-built agent for lead qualification, CRM contact data enrichment, and automated outreach follow-ups. Integrates into Salesforce or HubSpot in minutes.",
       colSpan: "md:col-span-8",
       badge: "Deploy Ready",
       price: "$49/mo"
     },
     {
       icon: <LayoutTemplate className="text-success" size={24} />,
-      title: "Blog Generator",
-      desc: "Autonomously drafts SEO-optimized blog posts, selects keywords, formats markup headers, and updates WordPress pages directly.",
+      title: "AI Customer Service Agent",
+      desc: "Autonomously answers FAQs, routes support tickets, and manages appointment reminders directly from customer service channels.",
       colSpan: "md:col-span-4",
       badge: "Free Trial",
       price: "$29/mo",
@@ -23,18 +23,18 @@ export function AgentShop() {
     },
     {
       icon: <Copy className="text-alert" size={24} />,
-      title: "Copywriting Assistant",
-      desc: "Generates high-converting marketing copywriting parameters, Facebook/Google ad variations, and social media captions based on prompt constraints.",
+      title: "AI Operations Coordinator",
+      desc: "Synchronizes inventory levels across warehousing databases, automates administrative compliance checking, and manages task handoffs.",
       colSpan: "md:col-span-12",
       badge: "Popular Choice",
-      price: "$19/mo"
+      price: "$99/mo"
     }
   ];
 
   const directoryShop = [
-    { num: "04/", icon: <Rocket size={18} />, title: "Launch Coordinator", desc: "Manage complicated marketing schedules, notify channels on Slack, and sync project statuses." },
-    { num: "05/", icon: <Settings size={18} />, title: "IT Helpdesk", desc: "Instantly respond to tier-1 tickets, guide reset credentials, and audit security permissions." },
-    { num: "06/", icon: <Code size={18} />, title: "Code Reviewer", desc: "Auto-scan pull requests for common performance leaks, formatting rules, and code coverage metrics." },
+    { num: "04/", icon: <Rocket size={18} />, title: "AI Knowledge Assistant", desc: "Scan internal company wikis, SOP manuals, and team documents to answer operational questions instantly." },
+    { num: "05/", icon: <Settings size={18} />, title: "AI Recruiting Assistant", desc: "Pre-screen candidate resumes against custom job rules, matching profiles to schedule initial interviews." },
+    { num: "06/", icon: <Code size={18} />, title: "AI Executive Assistant", desc: "Triage shared email inboxes, organize calendar schedules, and auto-summarize team meetings into action points." },
     { num: "07/", icon: <Lock size={18} />, title: "Security Scanner", desc: "Audit server configuration schemas, detect vulnerabilities, and ping compliance dashboards." },
     { num: "08/", icon: <RefreshCw size={18} />, title: "Inventory Sync", desc: "Bridge CRM triggers directly with SQL inventory databases, monitoring warehouse levels." },
     { num: "09/", icon: <Star size={18} />, title: "Review Manager", desc: "Listen for incoming app store or Google reviews, drafting context-aware replies automatically." },

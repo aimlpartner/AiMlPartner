@@ -68,6 +68,31 @@ export function Analyzer() {
       console.log('[Analyzer] Received analysis for:', data.businessName);
       setResult(data);
 
+      // Log audit details to Firestore
+      try {
+        const auditPayload: any = {
+          businessName: data.businessName || "Your Business",
+          promptTokens: data.tokenUsage?.promptTokens || 0,
+          completionTokens: data.tokenUsage?.completionTokens || 0,
+          totalTokens: data.tokenUsage?.totalTokens || 0,
+          groundingQueries: data.tokenUsage?.groundingQueries || 0,
+          costUsd: data.tokenUsage?.costUsd || 0.0,
+          createdAt: serverTimestamp()
+        };
+        if (payload.url) {
+          auditPayload.url = payload.url;
+        }
+        if (payload.description) {
+          auditPayload.description = payload.description;
+        } else if (payload.fileContent) {
+          auditPayload.description = `Uploaded document: ${payload.fileContent.substring(0, 150)}...`;
+        }
+        await addDoc(collection(db, 'audits'), auditPayload);
+        console.log('[Analyzer] Audit logged successfully in Firestore.');
+      } catch (dbErr) {
+        console.error('[Analyzer] Failed to write audit log to Firestore:', dbErr);
+      }
+
       // Increment successful diagnostic audit run count
       localStorage.setItem('aiml_analyzer_run_count', String(auditCount + 1));
     } catch (err: any) {

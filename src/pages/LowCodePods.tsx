@@ -6,34 +6,34 @@ export function LowCodePods() {
   const featuredPods = [
     {
       icon: <Layers className="text-accent" size={24} />,
-      title: "Internal Admin Panels",
-      desc: "Custom operational control centers for review teams, customer success, and database managers. Allows staff to monitor processes and audit logs safely.",
+      title: "AI Quick Win Sprint (Most Popular)",
+      desc: "Solve one painful workflow in 2-4 weeks. Ideal for lead follow-up automation, customer onboarding, appointment reminders, proposal generation, CRM cleanup, email triage, or internal knowledge assistants. Price: $3,500 - $7,500. Includes Discovery, Design, Implementation, Team Training, and full documentation.",
       colSpan: "md:col-span-8",
       mockUi: true
     },
     {
       icon: <Smartphone className="text-success" size={24} />,
-      title: "Client Portals",
-      desc: "Secure, authenticated areas for your partners or clients to view live progress, upload briefs, and approve drafted reports.",
+      title: "AI Business Clarity Session",
+      desc: "Our low-risk entry point. A 90-minute workshop to review sales, service, operations, marketing, and workflows. Price: $495. You receive an AI Opportunity Report, Priority Scorecard, and 90-Day Roadmap.",
       colSpan: "md:col-span-4",
       bgImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800"
     },
     {
       icon: <Monitor className="text-alert" size={24} />,
-      title: "Inventory Trackers",
-      desc: "Unified stock controllers syncing levels dynamically across warehouse databases, Shopify store accounts, and vendor APIs.",
+      title: "AI Workforce Launch (Complete Transformation)",
+      desc: "Our complete transformation package for growing businesses. A 6-10 week deep engagement. Includes complete business assessment, AI roadmap, multiple custom automations, CRM optimization, internal knowledge base, custom AI agents, comprehensive team training, and 90-day post-launch support. Price: $12,000 - $25,000.",
       colSpan: "md:col-span-12"
     }
   ];
 
   const directoryPods = [
-    { num: "04/", icon: <Cpu size={18} />, title: "AI Wrappers", desc: "Turn raw prompts, vector stores, and custom script modules into fully monetized SaaS products in a week." },
-    { num: "05/", icon: <Database size={18} />, title: "CRM Extensions", desc: "Embed customized dashboards, action toggles, and client widgets directly within Salesforce or Hubspot panels." },
-    { num: "06/", icon: <Cloud size={18} />, title: "Partner Portals", desc: "Connect affiliate links, trigger commission calculations, and sync partner lead sheets automatically." },
-    { num: "07/", icon: <ShieldCheck size={18} />, title: "Approval Workflows", desc: "Deploy strict human-in-the-loop gating models, requiring manager review before sending automated drafts." },
-    { num: "08/", icon: <Activity size={18} />, title: "Analytics Dashboards", desc: "Unify metrics from disparate databases, Stripe subscriptions, and GA4 trackers into clear executive reports." },
-    { num: "09/", icon: <Users size={18} />, title: "Employee Directories", desc: "Design interactive org charts, manage team roles, and trigger calendar invites automatically." },
-    { num: "10/", icon: <Zap size={18} />, title: "Event Management", desc: "Build registrations interfaces, dispatch check-in QR codes, and sync database lists." }
+    { num: "01/", icon: <Cpu size={18} />, title: "Monthly Optimization", desc: "We continuously refine prompting, model configurations, and operational flows as AI technology evolves." },
+    { num: "02/", icon: <Database size={18} />, title: "New Automations", desc: "Build and deploy new triggers, handlers, and workflow scripts overhead-free as your operational needs scale." },
+    { num: "03/", icon: <Cloud size={18} />, title: "System Support & Maintenance", desc: "Access dedicated support channels for instant bug fixes, API updates, and server maintenance." },
+    { num: "04/", icon: <ShieldCheck size={18} />, title: "AI Executive Coaching", desc: "Ongoing consultation sessions to keep your leadership team aligned on AI capabilities and emerging solutions." },
+    { num: "05/", icon: <Activity size={18} />, title: "Team Training & Workshops", desc: "Regular training sessions and interactive documentation updates to ensure high adoption rates among new staff." },
+    { num: "06/", icon: <Users size={18} />, title: "Performance & ROI Reporting", desc: "Receive detailed monthly analytics tracking time saved, execution logs, and system accuracy metrics." },
+    { num: "07/", icon: <Zap size={18} />, title: "100% Ownership of Deliverables", desc: "You maintain full intellectual property, accounts, and clean codebase ownership for everything we implement." }
   ];
 
   return (
@@ -63,14 +63,14 @@ export function LowCodePods() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-mono text-accent font-bold mb-8 tracking-wider uppercase rounded-md shadow-glow">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              Core Offering
+              Our Services
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white mb-6 leading-tight [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
-              Rapid Low-Code <br />
-              Product Pods.
+              Simple, Practical <br />
+              AI Services.
             </h1>
             <p className="text-lg text-white/70 font-medium leading-relaxed max-w-xl">
-              We build custom dashboards, client portals, and administrative views rapidly. Bridge the gap between AI backend logic and your operations team.
+              Three simple offers. Nothing more. We help small and mid-sized businesses implement practical AI, automation, and digital workforce solutions that scale teams without adding headcount.
             </p>
           </motion.div>
         </div>
@@ -80,8 +80,8 @@ export function LowCodePods() {
       <section className="bg-surface rounded-t-[3rem] -mt-10 py-24 relative z-10 text-ink border-t border-black/5 px-6">
         <div className="max-w-[1400px] mx-auto space-y-8">
           <div className="text-left">
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">Focus Areas</span>
-            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-ink tracking-tight">Interactive interfaces</h2>
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">Our Core Offers</span>
+            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-ink tracking-tight">Three simple offers. Nothing more.</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -153,9 +153,9 @@ export function LowCodePods() {
 
         <div className="max-w-[1000px] mx-auto relative z-10 space-y-8">
           <div className="text-left max-w-xl">
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">Complete Capabilities</span>
-            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-ink tracking-tight">Services catalog</h2>
-            <p className="text-ink-light text-sm mt-2 leading-relaxed font-medium">Leverage vetted templates to launch operational apps quickly.</p>
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">Monthly Program</span>
+            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-ink tracking-tight">AI Workforce Partner</h2>
+            <p className="text-ink-light text-sm mt-2 leading-relaxed font-medium">Ongoing monthly optimization and support program after implementation.</p>
           </div>
 
           <div className="space-y-4">
@@ -191,6 +191,24 @@ export function LowCodePods() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: TRUST BUILDING */}
+      <section className="py-20 bg-surface-alt/40 border-t border-black/5 px-6 text-center">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="mb-8 font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+            Built for Trust & Transparency
+          </div>
+          <div className="flex flex-wrap justify-center gap-y-4 gap-x-8 md:gap-x-12 text-sm font-semibold text-ink-light">
+            <span className="flex items-center gap-2">✓ Fixed pricing</span>
+            <span className="flex items-center gap-2">✓ Clear timelines</span>
+            <span className="flex items-center gap-2">✓ No long-term contracts</span>
+            <span className="flex items-center gap-2">✓ Human support</span>
+            <span className="flex items-center gap-2">✓ Documented workflows</span>
+            <span className="flex items-center gap-2">✓ Team training included</span>
+            <span className="flex items-center gap-2">✓ Ownership of deliverables</span>
           </div>
         </div>
       </section>

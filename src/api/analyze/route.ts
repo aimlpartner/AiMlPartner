@@ -123,6 +123,13 @@ interface AnalysisResult {
     lostCapitalScale: string;
     agenticSolution: string;
   };
+  tokenUsage?: {
+    promptTokens: number;
+    completionTokens: number;
+    totalTokens: number;
+    groundingQueries: number;
+    costUsd: number;
+  };
 }
 
 /**
@@ -131,6 +138,13 @@ interface AnalysisResult {
 function createFallbackResult(inputDesc: string): AnalysisResult {
   return {
     _source: 'fallback',
+    tokenUsage: {
+      promptTokens: 0,
+      completionTokens: 0,
+      totalTokens: 0,
+      groundingQueries: 0,
+      costUsd: 0
+    },
     businessName: "Your Business",
     sector: "Technology & Professional Services",
     executiveDiagnosis: "An initial diagnostic indicates strong potential for low-code and agentic AI integrations. By automating manual back-office tasks like document parsing, CRM updates, and lead routing, the business can significantly reduce manual operational overhead.",
@@ -382,8 +396,32 @@ JSON SCHEMA STRUCTURE:
     console.log(`[Analyzer API] Raw response received. Parsing...`);
     const parsedData = parseGeminiJson(rawText);
 
+    // Calculate token usage and cost for Gemini 2.5 Flash
+    const promptTokens = aiResponse.usageMetadata?.promptTokenCount || 0;
+    const completionTokens = (aiResponse.usageMetadata?.candidatesTokenCount || 0) + (aiResponse.usageMetadata?.thoughtsTokenCount || 0);
+    const totalTokens = aiResponse.usageMetadata?.totalTokenCount || (promptTokens + completionTokens);
+    
+    const hasGrounding = !!aiResponse.candidates?.[0]?.groundingMetadata?.webSearchQueries?.length;
+    const groundingQueries = hasGrounding ? 1 : 0;
+    
+    // Input: $0.075/1M tokens ($0.000000075/token)
+    // Output: $0.30/1M tokens ($0.00000030/token)
+    // Search Grounding: $0.0035/query
+    const costUsd = (promptTokens * 0.000000075) + 
+                    (completionTokens * 0.00000030) + 
+                    (hasGrounding ? 0.0035 : 0);
+
+    console.log(`[Analyzer API] Cost computed: $${costUsd.toFixed(6)} (In: ${promptTokens}, Out: ${completionTokens}, Grounding: ${hasGrounding ? 'Yes' : 'No'})`);
+
     // Validate fields to ensure dashboard rendering is bulletproof
     const validatedData: AnalysisResult = {
+      tokenUsage: {
+        promptTokens,
+        completionTokens,
+        totalTokens,
+        groundingQueries,
+        costUsd
+      },
       businessName: parsedData.businessName || "Your Business",
       sector: parsedData.sector || "Services",
       executiveDiagnosis: parsedData.executiveDiagnosis || "Diagnostic audit indicates multiple opportunities to streamline non-core operations through secure, low-impact integrations.",
@@ -630,6 +668,15 @@ export async function emailReportHandler(req: Request, res: Response): Promise<v
             <tr style="background-color: #f8fafc;">
               <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold;">Weekly Hours Drag</td>
               <td style="padding: 8px; border: 1px solid #e2e8f0;">${analysisResult.internalDragHours} Hours</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold; color: #b91c1c;">API Analysis Cost</td>
+              <td style="padding: 8px; border: 1px solid #e2e8f0; color: #b91c1c; font-weight: bold;">
+                $${analysisResult.tokenUsage?.costUsd?.toFixed(5) || '0.00000'}
+                <span style="font-size: 11px; font-weight: normal; color: #64748b; margin-left: 8px;">
+                  (In: ${analysisResult.tokenUsage?.promptTokens || 0} tokens, Out: ${analysisResult.tokenUsage?.completionTokens || 0} tokens, Grounding: ${analysisResult.tokenUsage?.groundingQueries ? 'Yes' : 'No'})
+                </span>
+              </td>
             </tr>
           </table>
           

@@ -6,34 +6,34 @@ export function AgentforceServices() {
   const featuredServices = [
     {
       icon: <ShieldCheck className="text-accent" size={24} />,
-      title: "Agentforce Readiness Audit",
-      desc: "Assess your Salesforce organization's data models, sharing rules, object schemas, and compliance boundaries. We produce a detailed operational blueprint before any deployment.",
+      title: "Salesforce AI Accelerator",
+      desc: "Get your Salesforce setup optimized for AI in 3-5 weeks. Includes a comprehensive CRM pipeline review, complete data hygiene cleanup, custom Salesforce Flow automation setup, Agentforce planning, and custom AI agent designs. Price: $5,000 - $15,000.",
       colSpan: "md:col-span-8",
-      auditDetails: "Data Readiness Score: Vetted • CRM Pipeline Audit • Security Risk Map"
+      auditDetails: "CRM Review • Flow Optimization • Custom AI Agents • User Training"
     },
     {
       icon: <Workflow className="text-success" size={24} />,
-      title: "Custom Copilot Actions",
-      desc: "Build Apex, Flow, and MuleSoft custom actions triggered dynamically by user queries or database updates, bridging agent logic to external SaaS endpoints.",
+      title: "Advanced Agentforce Implementation",
+      desc: "For complex systems looking for deep AI orchestration. Build Apex custom actions, configure secure MuleSoft integrations, set up Data Cloud syncs, and deploy context-grounded prompt templates. Price: $15,000 - $40,000.",
       colSpan: "md:col-span-4",
       bgImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800"
     },
     {
       icon: <Lightbulb className="text-alert" size={24} />,
-      title: "Prompt Builder Templates",
-      desc: "Configure context-grounded prompt templates mapped directly to your Salesforce merge fields. Safe from injections, highly structured, and optimized for low LLM latency.",
+      title: "User Adoption & SOP Training",
+      desc: "AI is only as good as the team using it. We provide comprehensive team training, create clear Standard Operating Procedures (SOPs), and build custom interfaces that make it easy for your staff to adopt new workflows.",
       colSpan: "md:col-span-12"
     }
   ];
 
   const directoryServices = [
-    { num: "04/", icon: <Database size={18} />, title: "Data Cloud Integration", desc: "Ingest and unify unstructured emails, PDF contracts, and database records to ground your AI agents in real time." },
-    { num: "05/", icon: <MessageSquare size={18} />, title: "Service Cloud Autonomous Agents", desc: "Deploy tier-1 support agents capable of resolving password resets, status checks, and ticket triage without human overhead." },
-    { num: "06/", icon: <LineChart size={18} />, title: "Sales Cloud Deal Summaries", desc: "Automatically draft deal reports, extract action items from calls, and compile sales briefs inside Salesforce record fields." },
-    { num: "07/", icon: <Target size={18} />, title: "Marketing Cloud Personalization", desc: "Construct segmented, context-aware campaigns and trigger hyper-personalized outbound sequences via automated listeners." },
-    { num: "08/", icon: <Zap size={18} />, title: "Apex & Flow AI Integration", desc: "Embed autonomous LLM decision loops directly inside standard Salesforce flows and legacy Apex scripts safely." },
-    { num: "09/", icon: <Cloud size={18} />, title: "Security & Trust Layer Setup", desc: "Establish strict PII masking, configure audit logs, and establish rate limits to comply with enterprise security constraints." },
-    { num: "10/", icon: <Users size={18} />, title: "Agentforce Training & Adoption", desc: "Up-skill sales and support staff to prompt efficiently, audit outputs, and manage human-in-the-loop control panels." }
+    { num: "01/", icon: <Database size={18} />, title: "CRM Optimization", desc: "Review objects, resolve duplicates, and clean up pipelines to ensure data quality and integrity before AI deployment." },
+    { num: "02/", icon: <MessageSquare size={18} />, title: "Agentforce Implementation", desc: "Configure, verify, and deploy Agentforce agents directly in your Salesforce environment to automate interactions." },
+    { num: "03/", icon: <LineChart size={18} />, title: "Custom AI Agents", desc: "Program custom agents to handle specific, high-fidelity operations like automated outreach enrichment and ticketing." },
+    { num: "04/", icon: <Target size={18} />, title: "Salesforce Flows", desc: "Re-engineer legacy scripts and create modern Flows that automate task handoffs and trigger AI actions." },
+    { num: "05/", icon: <Zap size={18} />, title: "Data Quality Improvements", desc: "Establish automated database cleaning listeners to maintain data hygiene and accuracy overhead-free." },
+    { num: "06/", icon: <Cloud size={18} />, title: "User Adoption & SOPs", desc: "Conduct hands-on training sessions and build clear SOP documentation to drive high adoption rates among team members." },
+    { num: "07/", icon: <Users size={18} />, title: "Trust Layer Setup", desc: "Mask PII, set rate limits, and establish strict compliance rules to comply with security requirements." }
   ];
 
   return (
@@ -63,14 +63,14 @@ export function AgentforceServices() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-mono text-accent font-bold mb-8 tracking-wider uppercase rounded-md shadow-glow">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              Consulting & Advisory
+              Specialized Service
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white mb-6 leading-tight [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
-              Salesforce Agentforce <br />
-              Services & Integration.
+              Make Salesforce Work <br />
+              The Way Your Business Operates.
             </h1>
             <p className="text-lg text-white/70 font-medium leading-relaxed max-w-xl">
-              Expert implementation and advisory to deploy secure, compliant, and highly functional AI agents within your Salesforce CRM environment.
+              Salesforce AI Accelerator. A dedicated service for businesses already using Salesforce. We clean data, optimize flows, implement custom AI agents, and ensure high user adoption.
             </p>
           </motion.div>
         </div>
@@ -80,8 +80,8 @@ export function AgentforceServices() {
       <section className="bg-surface rounded-t-[3rem] -mt-10 py-24 relative z-10 text-ink border-t border-black/5 px-6">
         <div className="max-w-[1400px] mx-auto space-y-8">
           <div className="text-left">
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">Deployment Core</span>
-            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-ink tracking-tight">Enterprise foundations</h2>
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">Salesforce Services</span>
+            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-ink tracking-tight">Dedicated service packages</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -128,9 +128,9 @@ export function AgentforceServices() {
 
         <div className="max-w-[1000px] mx-auto relative z-10 space-y-8">
           <div className="text-left max-w-xl">
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">Roadmap Offerings</span>
-            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-ink tracking-tight">Integration packages</h2>
-            <p className="text-ink-light text-sm mt-2 leading-relaxed font-medium">Unlock complete CRM automation capabilities with our structured modules.</p>
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">Advisory & Setup</span>
+            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-ink tracking-tight">How we make Salesforce work</h2>
+            <p className="text-ink-light text-sm mt-2 leading-relaxed font-medium">Unlock complete CRM automation capabilities with our structured implementation modules.</p>
           </div>
 
           <div className="space-y-4">

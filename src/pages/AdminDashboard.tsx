@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, orderBy, onSnapshot, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth, signInWithGoogle, logOut } from '../lib/firebase';
-import { LogOut, Users, FileText, Activity } from 'lucide-react';
+import { LogOut, Users, FileText, Activity, DollarSign } from 'lucide-react';
 
 export function AdminDashboard() {
   const [user, setUser] = useState<any>(null);
   const [leads, setLeads] = useState<any[]>([]);
   const [visitorCount, setVisitorCount] = useState(0);
+  const [audits, setAudits] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -43,6 +44,19 @@ export function AdminDashboard() {
       setLoading(false);
     });
 
+    // Fetch Audits
+    const auditsQuery = query(collection(db, 'audits'), orderBy('createdAt', 'desc'));
+    const unsubscribeAudits = onSnapshot(auditsQuery, (snapshot) => {
+      const auditsData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate()
+      }));
+      setAudits(auditsData);
+    }, (err) => {
+      console.error("Error fetching audits:", err);
+    });
+
     // Fetch Visitor Count
     const fetchVisitors = async () => {
       try {
@@ -54,8 +68,14 @@ export function AdminDashboard() {
     };
     fetchVisitors();
 
-    return () => unsubscribeLeads();
+    return () => {
+      unsubscribeLeads();
+      unsubscribeAudits();
+    };
   }, [user]);
+
+  const totalSpend = audits.reduce((sum, audit) => sum + (audit.costUsd || 0), 0);
+  const avgCostPerAudit = audits.length > 0 ? totalSpend / audits.length : 0;
 
   if (!user) {
     return (
@@ -140,7 +160,7 @@ export function AdminDashboard() {
           )}
 
           {/* Stats Cards */}
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <div className="bg-white border border-black/5 p-6 rounded-2xl flex items-center gap-6 shadow-editorial hover:shadow-editorial-hover transition-all duration-300 relative overflow-hidden">
               <div className="w-12 h-12 bg-surface-alt border border-black/5 rounded-xl flex items-center justify-center text-accent">
                 <FileText size={20} />
@@ -150,6 +170,7 @@ export function AdminDashboard() {
                 <div className="text-3xl font-display font-extrabold text-ink">{leads.length}</div>
               </div>
             </div>
+            
             <div className="bg-white border border-black/5 p-6 rounded-2xl flex items-center gap-6 shadow-editorial hover:shadow-editorial-hover transition-all duration-300 relative overflow-hidden">
               <div className="w-12 h-12 bg-surface-alt border border-black/5 rounded-xl flex items-center justify-center text-accent">
                 <Activity size={20} />
@@ -157,6 +178,26 @@ export function AdminDashboard() {
               <div>
                 <div className="text-[10px] font-mono text-ink-light uppercase tracking-widest mb-1">Unique Visitors</div>
                 <div className="text-3xl font-display font-extrabold text-ink">{visitorCount}</div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-black/5 p-6 rounded-2xl flex items-center gap-6 shadow-editorial hover:shadow-editorial-hover transition-all duration-300 relative overflow-hidden">
+              <div className="w-12 h-12 bg-surface-alt border border-black/5 rounded-xl flex items-center justify-center text-accent">
+                <DollarSign size={20} />
+              </div>
+              <div>
+                <div className="text-[10px] font-mono text-ink-light uppercase tracking-widest mb-1">Total API Spend</div>
+                <div className="text-3xl font-display font-extrabold text-ink">${totalSpend.toFixed(5)}</div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-black/5 p-6 rounded-2xl flex items-center gap-6 shadow-editorial hover:shadow-editorial-hover transition-all duration-300 relative overflow-hidden">
+              <div className="w-12 h-12 bg-surface-alt border border-black/5 rounded-xl flex items-center justify-center text-accent">
+                <DollarSign size={20} />
+              </div>
+              <div>
+                <div className="text-[10px] font-mono text-ink-light uppercase tracking-widest mb-1">Avg. Audit Cost</div>
+                <div className="text-3xl font-display font-extrabold text-ink">${avgCostPerAudit.toFixed(5)}</div>
               </div>
             </div>
           </div>
@@ -204,6 +245,72 @@ export function AdminDashboard() {
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded bg-surface-alt border border-black/5 text-[10px] font-semibold text-ink-light uppercase font-mono tracking-wider">
                             {lead.source}
                           </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* Recent API Audits Table Card */}
+          <div className="bg-white border border-black/5 rounded-2xl overflow-hidden shadow-editorial mt-12">
+            <div className="px-6 py-5 border-b border-black/5 bg-surface-alt/30">
+              <h2 className="font-display font-bold text-ink text-lg">AI Analysis Cost Logs</h2>
+            </div>
+            
+            {loading ? (
+              <div className="p-8 text-center text-ink-light font-medium text-sm">Loading audits...</div>
+            ) : audits.length === 0 ? (
+              <div className="p-8 text-center text-ink-light font-medium text-sm">No analysis runs recorded yet.</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-black/5 text-[10px] font-mono text-ink-light uppercase tracking-widest bg-surface-alt/10">
+                      <th className="px-6 py-4 font-bold">Date</th>
+                      <th className="px-6 py-4 font-bold">Business Name</th>
+                      <th className="px-6 py-4 font-bold">Details / Source</th>
+                      <th className="px-6 py-4 font-bold">Tokens (Prompt/Completion)</th>
+                      <th className="px-6 py-4 font-bold">Grounding</th>
+                      <th className="px-6 py-4 font-bold">Cost (USD)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {audits.map((audit) => (
+                      <tr key={audit.id} className="border-b border-black/5 last:border-0 hover:bg-surface-alt/30 transition-colors">
+                        <td className="px-6 py-4 text-xs text-ink-light whitespace-nowrap font-mono">
+                          {audit.createdAt ? new Intl.DateTimeFormat('en-US', { 
+                            month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' 
+                          }).format(audit.createdAt) : 'N/A'}
+                        </td>
+                        <td className="px-6 py-4 text-sm font-semibold text-ink whitespace-nowrap font-display">
+                          {audit.businessName || '-'}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-ink-light max-w-xs truncate">
+                          {audit.url ? (
+                            <span className="text-accent underline break-all">{audit.url}</span>
+                          ) : (
+                            audit.description || '-'
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-xs text-ink-light whitespace-nowrap font-mono">
+                          {(audit.promptTokens || 0).toLocaleString()} / {(audit.completionTokens || 0).toLocaleString()} <span className="text-[10px] text-ink-light/50">({(audit.totalTokens || 0).toLocaleString()} total)</span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {audit.groundingQueries > 0 ? (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded bg-accent/15 border border-accent/20 text-[9px] font-bold text-accent uppercase font-mono tracking-wider">
+                              Grounded
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded bg-surface-alt border border-black/5 text-[9px] font-semibold text-ink-light/60 uppercase font-mono tracking-wider">
+                              None
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-sm font-bold text-ink whitespace-nowrap font-mono">
+                          ${(audit.costUsd || 0).toFixed(5)}
                         </td>
                       </tr>
                     ))}

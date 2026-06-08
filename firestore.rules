@@ -82,6 +82,19 @@ service cloud.firestore {
              data.pageViews is number && data.pageViews >= 0;
     }
 
+    function isValidAudit(data) {
+      return hasOnlyAllowedFields(['businessName', 'url', 'description', 'promptTokens', 'completionTokens', 'totalTokens', 'groundingQueries', 'costUsd', 'createdAt']) &&
+             data.businessName is string &&
+             (!('url' in data) || data.url is string) &&
+             (!('description' in data) || data.description is string) &&
+             data.promptTokens is number &&
+             data.completionTokens is number &&
+             data.totalTokens is number &&
+             data.groundingQueries is number &&
+             data.costUsd is number &&
+             data.createdAt is timestamp;
+    }
+
     // ===============================================================
     // Rules
     // ===============================================================
@@ -101,6 +114,13 @@ service cloud.firestore {
       // Anyone can create a lead (unauthenticated users submitting forms)
       allow create: if isValidLead(request.resource.data);
       // Only admins can read, update, or delete leads
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /audits/{auditId} {
+      // Anyone can log an audit run (triggered when an analysis succeeds)
+      allow create: if isValidAudit(request.resource.data);
+      // Only admins can read, list, update or delete audit logs
       allow read, update, delete: if isAdmin();
     }
 
