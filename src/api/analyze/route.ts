@@ -404,12 +404,12 @@ JSON SCHEMA STRUCTURE:
     const hasGrounding = !!aiResponse.candidates?.[0]?.groundingMetadata?.webSearchQueries?.length;
     const groundingQueries = hasGrounding ? 1 : 0;
     
-    // Input: $0.075/1M tokens ($0.000000075/token)
-    // Output: $0.30/1M tokens ($0.00000030/token)
-    // Search Grounding: $0.0035/query
-    const costUsd = (promptTokens * 0.000000075) + 
-                    (completionTokens * 0.00000030) + 
-                    (hasGrounding ? 0.0035 : 0);
+    // Input: $0.30/1M tokens ($0.00000030/token)
+    // Output: $2.50/1M tokens ($0.00000250/token)
+    // Search Grounding: $0.035/query ($35/1K prompts)
+    const costUsd = (promptTokens * 0.00000030) + 
+                    (completionTokens * 0.00000250) + 
+                    (hasGrounding ? 0.035 : 0);
 
     console.log(`[Analyzer API] Cost computed: $${costUsd.toFixed(6)} (In: ${promptTokens}, Out: ${completionTokens}, Grounding: ${hasGrounding ? 'Yes' : 'No'})`);
 

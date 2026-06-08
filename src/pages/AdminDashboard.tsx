@@ -187,7 +187,12 @@ export function AdminDashboard() {
               </div>
               <div>
                 <div className="text-[10px] font-mono text-ink-light uppercase tracking-widest mb-1">Total API Spend</div>
-                <div className="text-3xl font-display font-extrabold text-ink">${totalSpend.toFixed(5)}</div>
+                <div className="text-3xl font-display font-extrabold text-ink">
+                  ${totalSpend.toFixed(5)}
+                  <span className="text-sm font-semibold text-ink-light/75 ml-2">
+                    (₹{(totalSpend * 83.5).toFixed(3)})
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -197,7 +202,12 @@ export function AdminDashboard() {
               </div>
               <div>
                 <div className="text-[10px] font-mono text-ink-light uppercase tracking-widest mb-1">Avg. Audit Cost</div>
-                <div className="text-3xl font-display font-extrabold text-ink">${avgCostPerAudit.toFixed(5)}</div>
+                <div className="text-3xl font-display font-extrabold text-ink">
+                  ${avgCostPerAudit.toFixed(5)}
+                  <span className="text-sm font-semibold text-ink-light/75 ml-2">
+                    (₹{(avgCostPerAudit * 83.5).toFixed(3)})
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -311,6 +321,9 @@ export function AdminDashboard() {
                         </td>
                         <td className="px-6 py-4 text-sm font-bold text-ink whitespace-nowrap font-mono">
                           ${(audit.costUsd || 0).toFixed(5)}
+                          <span className="text-xs font-normal text-ink-light/70 ml-2 block sm:inline">
+                            (₹{((audit.costUsd || 0) * 83.5).toFixed(3)})
+                          </span>
                         </td>
                       </tr>
                     ))}
