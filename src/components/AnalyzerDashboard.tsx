@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import { 
-  TrendingUp, 
-  Clock, 
-  Zap, 
-  ArrowRight, 
-  Layers, 
-  Calendar, 
-  Activity, 
+import {
+  TrendingUp,
+  Clock,
+  Zap,
+  ArrowRight,
+  Layers,
+  Calendar,
+  Activity,
   ShieldAlert,
-  Truck, 
-  Megaphone, 
-  FileText, 
-  Shield, 
-  Users, 
-  DollarSign, 
-  ShieldCheck, 
-  Inbox, 
+  Truck,
+  Megaphone,
+  FileText,
+  Shield,
+  Users,
+  DollarSign,
+  ShieldCheck,
+  Inbox,
   Headphones,
   Info,
   X,
@@ -171,7 +171,7 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
 
       {/* ----------------- SECTION 2: EXECUTIVE SUMMARY & OVERVIEW GRID ----------------- */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
+
         {/* Executive summary and core qualitative diagnosis */}
         <div className="lg:col-span-8 bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-sky-100/30 rounded-full filter blur-[60px] pointer-events-none" />
@@ -187,7 +187,7 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
               {data.executiveDiagnosis}
             </p>
           </div>
-          
+
           {/* Efficiency indicators comparing Drag vs Reclaimed hours */}
           <div className="mt-8 pt-8 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
             <div>
@@ -196,11 +196,11 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
                 <span className="text-rose-500 font-semibold">{data.internalDragHours} Hours</span>
               </div>
               <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                <motion.div 
+                <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: '100%' }}
                   transition={{ duration: 1, ease: 'easeOut' }}
-                  className="h-full bg-rose-400 rounded-full" 
+                  className="h-full bg-rose-400 rounded-full"
                 />
               </div>
               <p className="text-[11px] text-slate-400 mt-1.5">Hours lost per week in administrative copy-pasting & pipeline friction.</p>
@@ -211,11 +211,11 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
                 <span className="text-emerald-500 font-semibold">{data.reclaimedTimeHours} Hours</span>
               </div>
               <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                <motion.div 
+                <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${(data.reclaimedTimeHours / data.internalDragHours) * 100}%` }}
                   transition={{ duration: 1.2, ease: 'easeOut' }}
-                  className="h-full bg-emerald-400 rounded-full" 
+                  className="h-full bg-emerald-400 rounded-full"
                 />
               </div>
               <p className="text-[11px] text-slate-400 mt-1.5">Unlocked weekly productivity. Up to {Math.round((data.reclaimedTimeHours / data.internalDragHours) * 100)}% administrative streamlining.</p>
@@ -228,7 +228,7 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
           {/* SVG Radial Progress circular tracker */}
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between text-white relative overflow-hidden shrink-0">
             <div className="absolute -bottom-20 -right-20 w-48 h-48 bg-sky-500/10 rounded-full filter blur-[50px] pointer-events-none" />
-            
+
             <div className="space-y-3">
               <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">AI READINESS TIER</span>
               <span className={`inline-flex items-center gap-1.5 border px-2.5 py-0.5 rounded-full text-xs font-semibold ${tierStyles.bg}`}>
@@ -305,7 +305,7 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* Department side selector list */}
           <div className="lg:col-span-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 gap-3 scrollbar-none">
             {data.departments.map((dept, index) => {
@@ -315,11 +315,10 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
                 <button
                   key={dept.name}
                   onClick={() => setSelectedDeptIndex(index)}
-                  className={`w-full sm:w-auto lg:w-full shrink-0 flex items-center justify-between p-4 sm:p-5 rounded-2xl border text-left transition-all relative overflow-hidden cursor-pointer ${
-                    isSelected
+                  className={`w-full sm:w-auto lg:w-full shrink-0 flex items-center justify-between p-4 sm:p-5 rounded-2xl border text-left transition-all relative overflow-hidden cursor-pointer ${isSelected
                       ? 'bg-slate-900 border-slate-950 text-white shadow-xl shadow-slate-900/10'
                       : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50/50'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-4 relative z-10 pr-4">
                     <div className={`p-2.5 rounded-xl ${isSelected ? 'bg-sky-500/20 text-sky-400' : 'bg-slate-100 text-slate-500'}`}>
@@ -379,7 +378,7 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
                   {/* Playbook Documentation Spec Sheet */}
                   <div className="border border-slate-100 rounded-2xl p-6 bg-slate-50/50 space-y-6">
                     <span className="text-xs font-mono text-slate-500 uppercase tracking-widest block border-b border-slate-100 pb-3">PLAYBOOK DOCUMENTATION SHEET</span>
-                    
+
                     {/* Workflow */}
                     <div className="space-y-1.5">
                       <span className="text-[10px] font-mono text-slate-400 block tracking-wider font-semibold">RECOMMENDED WORKFLOW PIPELINE</span>
@@ -426,13 +425,12 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-100">
                       <div>
                         <span className="text-[10px] font-mono text-slate-400 block">COMPLEXITY</span>
-                        <span className={`inline-block text-xs font-semibold mt-1 px-3 py-0.5 rounded-full ${
-                          activeDept.playbook.complexity === 'Low' 
+                        <span className={`inline-block text-xs font-semibold mt-1 px-3 py-0.5 rounded-full ${activeDept.playbook.complexity === 'Low'
                             ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
                             : activeDept.playbook.complexity === 'Medium'
-                            ? 'bg-amber-50 text-amber-600 border border-amber-100'
-                            : 'bg-rose-50 text-rose-600 border border-rose-100'
-                        }`}>
+                              ? 'bg-amber-50 text-amber-600 border border-amber-100'
+                              : 'bg-rose-50 text-rose-600 border border-rose-100'
+                          }`}>
                           {activeDept.playbook.complexity}
                         </span>
                       </div>
@@ -721,7 +719,7 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                   <h3 className="text-xl font-bold text-slate-900 leading-snug tracking-tight">
                     {currentQuestion}
                   </h3>
-                  
+
                   {error && (
                     <p className="text-rose-600 text-xs font-semibold mt-2">{error}</p>
                   )}
@@ -779,7 +777,7 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                 <div className="w-16 h-16 bg-gradient-to-br from-sky-50 to-indigo-50 border border-sky-100 rounded-2xl flex items-center justify-center text-indigo-500 shadow-md">
                   <LockOpen size={28} className="animate-pulse" />
                 </div>
-                
+
                 <div>
                   <h3 className="text-xl font-bold text-slate-950 tracking-tight">
                     Custom Agent Blueprint Locked In!

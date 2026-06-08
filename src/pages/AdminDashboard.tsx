@@ -100,7 +100,7 @@ export function AdminDashboard() {
           <p className="text-ink-light font-medium text-sm mb-8 leading-relaxed">
             Sign in with your authorized Google account to access the dashboard.
           </p>
-          <button 
+          <button
             onClick={signInWithGoogle}
             className="w-full bg-ink text-white font-bold hover:bg-accent px-6 py-3 rounded-full transition-all cursor-pointer shadow-md"
           >
@@ -139,7 +139,7 @@ export function AdminDashboard() {
                 Logged in as <span className="font-semibold text-accent">{user.email}</span>
               </p>
             </div>
-            <button 
+            <button
               onClick={logOut}
               className="flex items-center gap-2 text-sm font-semibold text-white/75 hover:text-white bg-white/10 border border-white/20 px-5 py-2.5 rounded-xl transition-all cursor-pointer shadow-sm hover:bg-white/20"
             >
@@ -170,7 +170,7 @@ export function AdminDashboard() {
                 <div className="text-3xl font-display font-extrabold text-ink">{leads.length}</div>
               </div>
             </div>
-            
+
             <div className="bg-white border border-black/5 p-6 rounded-2xl flex items-center gap-6 shadow-editorial hover:shadow-editorial-hover transition-all duration-300 relative overflow-hidden">
               <div className="w-12 h-12 bg-surface-alt border border-black/5 rounded-xl flex items-center justify-center text-accent">
                 <Activity size={20} />
@@ -217,7 +217,7 @@ export function AdminDashboard() {
             <div className="px-6 py-5 border-b border-black/5 bg-surface-alt/30">
               <h2 className="font-display font-bold text-ink text-lg">Recent Leads</h2>
             </div>
-            
+
             {loading ? (
               <div className="p-8 text-center text-ink-light font-medium text-sm">Loading leads...</div>
             ) : leads.length === 0 ? (
@@ -238,8 +238,8 @@ export function AdminDashboard() {
                     {leads.map((lead) => (
                       <tr key={lead.id} className="border-b border-black/5 last:border-0 hover:bg-surface-alt/30 transition-colors">
                         <td className="px-6 py-4 text-xs text-ink-light whitespace-nowrap font-mono">
-                          {lead.createdAt ? new Intl.DateTimeFormat('en-US', { 
-                            month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' 
+                          {lead.createdAt ? new Intl.DateTimeFormat('en-US', {
+                            month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
                           }).format(lead.createdAt) : 'N/A'}
                         </td>
                         <td className="px-6 py-4 text-sm font-semibold text-ink whitespace-nowrap font-display">
@@ -269,7 +269,7 @@ export function AdminDashboard() {
             <div className="px-6 py-5 border-b border-black/5 bg-surface-alt/30">
               <h2 className="font-display font-bold text-ink text-lg">AI Analysis Cost Logs</h2>
             </div>
-            
+
             {loading ? (
               <div className="p-8 text-center text-ink-light font-medium text-sm">Loading audits...</div>
             ) : audits.length === 0 ? (
@@ -291,8 +291,8 @@ export function AdminDashboard() {
                     {audits.map((audit) => (
                       <tr key={audit.id} className="border-b border-black/5 last:border-0 hover:bg-surface-alt/30 transition-colors">
                         <td className="px-6 py-4 text-xs text-ink-light whitespace-nowrap font-mono">
-                          {audit.createdAt ? new Intl.DateTimeFormat('en-US', { 
-                            month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' 
+                          {audit.createdAt ? new Intl.DateTimeFormat('en-US', {
+                            month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
                           }).format(audit.createdAt) : 'N/A'}
                         </td>
                         <td className="px-6 py-4 text-sm font-semibold text-ink whitespace-nowrap font-display">

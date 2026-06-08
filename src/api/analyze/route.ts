@@ -400,16 +400,16 @@ JSON SCHEMA STRUCTURE:
     const promptTokens = aiResponse.usageMetadata?.promptTokenCount || 0;
     const completionTokens = (aiResponse.usageMetadata?.candidatesTokenCount || 0) + (aiResponse.usageMetadata?.thoughtsTokenCount || 0);
     const totalTokens = aiResponse.usageMetadata?.totalTokenCount || (promptTokens + completionTokens);
-    
+
     const hasGrounding = !!aiResponse.candidates?.[0]?.groundingMetadata?.webSearchQueries?.length;
     const groundingQueries = hasGrounding ? 1 : 0;
-    
+
     // Input: $0.30/1M tokens ($0.00000030/token)
     // Output: $2.50/1M tokens ($0.00000250/token)
     // Search Grounding: $0.035/query ($35/1K prompts)
-    const costUsd = (promptTokens * 0.00000030) + 
-                    (completionTokens * 0.00000250) + 
-                    (hasGrounding ? 0.035 : 0);
+    const costUsd = (promptTokens * 0.00000030) +
+      (completionTokens * 0.00000250) +
+      (hasGrounding ? 0.035 : 0);
 
     console.log(`[Analyzer API] Cost computed: $${costUsd.toFixed(6)} (In: ${promptTokens}, Out: ${completionTokens}, Grounding: ${hasGrounding ? 'Yes' : 'No'})`);
 
