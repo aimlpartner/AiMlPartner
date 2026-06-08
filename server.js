@@ -567,10 +567,10 @@ JSON SCHEMA STRUCTURE:
               <tr>
                 <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold; color: #b91c1c;">API Analysis Cost</td>
                 <td style="padding: 8px; border: 1px solid #e2e8f0; color: #b91c1c; font-weight: bold;">
-                  $${analysisResult.tokenUsage?.costUsd?.toFixed(5) || '0.00000'}
-                  <span style="font-size: 11px; font-weight: normal; color: #64748b; margin-left: 8px;">
-                    (In: ${analysisResult.tokenUsage?.promptTokens || 0} tokens, Out: ${analysisResult.tokenUsage?.completionTokens || 0} tokens, Grounding: ${analysisResult.tokenUsage?.groundingQueries ? 'Yes' : 'No'})
-                  </span>
+                $${analysisResult.tokenUsage?.costUsd?.toFixed(5) || '0.00000'} (₹${((analysisResult.tokenUsage?.costUsd || 0) * 83.5).toFixed(3)})
+                <span style="font-size: 11px; font-weight: normal; color: #64748b; margin-left: 8px;">
+                  (In: ${analysisResult.tokenUsage?.promptTokens || 0} tokens, Out: ${analysisResult.tokenUsage?.completionTokens || 0} tokens, Grounding: ${analysisResult.tokenUsage?.groundingQueries ? 'Yes' : 'No'})
+                </span>
                 </td>
               </tr>
             </table>
