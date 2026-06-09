@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { WorkflowSimulator } from '../components/WorkflowSimulator';
+import { BookCallWidget } from '../components/BookCallWidget';
 
 export function Home() {
   const navigate = useNavigate();
@@ -670,6 +671,48 @@ export function Home() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 6.5: HOMEPAGE CALL BOOKING */}
+      <section className="py-24 md:py-32 px-6 bg-slate-50 border-t border-black/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>
+        <div className="absolute top-1/2 right-1/4 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div className="max-w-[1400px] mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+          {/* Left Column - Benefits Pitch */}
+          <div className="lg:col-span-6 reveal text-left space-y-6">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-indigo-600 block font-bold">
+              1-ON-1 CONSULTATION
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-ink leading-tight">
+              Schedule Your Free <br className="hidden md:block" />
+              AI Operational Audit
+            </h2>
+            <p className="text-ink-light text-base md:text-lg font-medium leading-relaxed max-w-xl">
+              Meet our systems engineering team for a 30-minute workspace audit. We will analyze your bottlenecks and map a step-by-step roadmap to reclaim manual team hours.
+            </p>
+
+            <ul className="space-y-4 pt-4">
+              <li className="flex items-start gap-3 text-sm text-ink-light font-medium">
+                <span className="w-5 h-5 rounded-full bg-indigo-50 text-indigo-600 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">✓</span>
+                <span>Map manual workflow bottlenecks and data silos in your business.</span>
+              </li>
+              <li className="flex items-start gap-3 text-sm text-ink-light font-medium">
+                <span className="w-5 h-5 rounded-full bg-indigo-50 text-indigo-600 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">✓</span>
+                <span>Evaluate low-code integrations (Make.com, webhooks) for immediate time savings.</span>
+              </li>
+              <li className="flex items-start gap-3 text-sm text-ink-light font-medium">
+                <span className="w-5 h-5 rounded-full bg-indigo-50 text-indigo-600 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">✓</span>
+                <span>Receive custom AI agent prompts and architectural blueprints.</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Right Column - Inline Custom Calendar Booking Card */}
+          <div className="lg:col-span-6 reveal w-full" style={{ transitionDelay: '150ms' }}>
+            <BookCallWidget source="Homepage Inline Booking" />
           </div>
         </div>
       </section>

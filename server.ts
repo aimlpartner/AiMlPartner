@@ -2,7 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
-import { analyzeHandler, emailReportHandler, buildRequestHandler } from './src/api/analyze/route';
+import { analyzeHandler, emailReportHandler, buildRequestHandler, bookCallHandler } from './src/api/analyze/route';
 
 // Resolve and load .env using the absolute working directory path
 dotenv.config({ path: path.join(process.cwd(), '.env') });
@@ -22,6 +22,7 @@ async function startServer() {
   app.post('/api/analyze', analyzeHandler);
   app.post('/api/email-report', emailReportHandler);
   app.post('/api/build-request', buildRequestHandler);
+  app.post('/api/book-call', bookCallHandler);
 
   // Health-check endpoint for hosting platforms
   app.get('/health', (_req, res) => {

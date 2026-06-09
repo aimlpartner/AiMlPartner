@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AnalyzerInput } from '../components/AnalyzerInput';
 import { AnalyzerDashboard } from '../components/AnalyzerDashboard';
-import { Sparkles, Brain, Cpu, Lock, ArrowRight, Loader2 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { BookCallWidget } from '../components/BookCallWidget';
+import { Sparkles, Brain, Cpu, Lock, ArrowRight, Loader2, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
@@ -18,15 +19,28 @@ export function Analyzer() {
   const [isUnlocking, setIsUnlocking] = useState(false);
   const [unlockError, setUnlockError] = useState('');
 
+  // Limit Gate & Booking Modal State
+  const [limitExceeded, setLimitExceeded] = useState(false);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const auditCountStr = localStorage.getItem('aiml_analyzer_run_count');
+    const auditCount = auditCountStr ? parseInt(auditCountStr, 10) : 0;
+    if (auditCount >= 5) {
+      setLimitExceeded(true);
+    }
+  }, []);
 
   const handleAnalyze = async (payload: { url?: string; description?: string; fileContent?: string }) => {
     // Strict client rate-limiting to maximum 5 diagnostic runs to prevent server/API abuse
     const auditCountStr = localStorage.getItem('aiml_analyzer_run_count');
     const auditCount = auditCountStr ? parseInt(auditCountStr, 10) : 0;
     if (auditCount >= 5) {
-      setError('You have reached the maximum limit of 5 free diagnostics. Contact info@aimlpartner.com for a comprehensive enterprise AI audit.');
+      setLimitExceeded(true);
+      setError('You have reached the maximum limit of 5 free diagnostics. Schedule a free AI strategy call to get a comprehensive enterprise audit.');
       return;
     }
 
@@ -234,18 +248,54 @@ export function Analyzer() {
           <section className="flowing-gradient py-24 px-6 relative z-10 border-t border-black/5 text-ink rounded-t-[3rem] -mt-10 min-h-[500px]">
             <div className="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>
             <div className="max-w-4xl mx-auto relative z-10">
-              {error && (
-                <div className="max-w-4xl mx-auto mb-8 bg-alert/15 border border-alert/20 text-alert rounded-2xl p-5 flex items-center justify-between shadow-sm bg-white">
-                  <span className="text-sm font-semibold">{error}</span>
-                  <button
-                    onClick={() => setError('')}
-                    className="text-alert hover:text-ink text-xs font-bold px-3 py-1 rounded-full border border-alert/30 transition-colors cursor-pointer"
-                  >
-                    Dismiss
-                  </button>
+              {limitExceeded ? (
+                <div className="max-w-2xl mx-auto bg-slate-900/90 border border-slate-800 rounded-3xl p-8 sm:p-12 text-center text-white shadow-2xl relative overflow-hidden backdrop-blur-md">
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-sky-500/10 rounded-full blur-[80px] pointer-events-none" />
+                  
+                  <div className="relative z-10 space-y-6">
+                    <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto text-amber-400 shadow-lg mb-4">
+                      <Lock size={26} className="animate-pulse" />
+                    </div>
+
+                    <div className="space-y-3">
+                      <span className="text-[10px] font-mono text-amber-400 tracking-widest uppercase font-semibold block mb-2">
+                        FREE DIAGNOSTIC LIMIT REACHED
+                      </span>
+                      <h2 className="text-3xl font-display font-extrabold tracking-tight text-white leading-tight">
+                        You've Completed Your 5 Audits
+                      </h2>
+                      <p className="text-slate-300 font-medium text-sm leading-relaxed max-w-md mx-auto">
+                        To unlock deeper business automation opportunities, custom low-code tools, and structured ROI maps, schedule a free 1-on-1 strategy call with our expert systems engineers.
+                      </p>
+                    </div>
+
+                    <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
+                      <button
+                        onClick={() => setIsBookingModalOpen(true)}
+                        className="bg-gradient-to-r from-sky-400 to-indigo-500 hover:from-sky-500 hover:to-indigo-600 text-white font-semibold px-8 py-3.5 rounded-full transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer text-sm"
+                      >
+                        <span>Book Free 1-on-1 Consultation</span>
+                        <ArrowRight size={16} />
+                      </button>
+                    </div>
+                  </div>
                 </div>
+              ) : (
+                <>
+                  {error && (
+                    <div className="max-w-4xl mx-auto mb-8 bg-alert/15 border border-alert/20 text-alert rounded-2xl p-5 flex items-center justify-between shadow-sm bg-white">
+                      <span className="text-sm font-semibold">{error}</span>
+                      <button
+                        onClick={() => setError('')}
+                        className="text-alert hover:text-ink text-xs font-bold px-3 py-1 rounded-full border border-alert/30 transition-colors cursor-pointer"
+                      >
+                        Dismiss
+                      </button>
+                    </div>
+                  )}
+                  <AnalyzerInput onAnalyze={handleAnalyze} isLoading={isLoading} />
+                </>
               )}
-              <AnalyzerInput onAnalyze={handleAnalyze} isLoading={isLoading} />
             </div>
           </section>
         </>
@@ -380,6 +430,38 @@ export function Analyzer() {
           </section>
         </>
       )}
+
+      {/* Consultation Booking Modal popup */}
+      <AnimatePresence>
+        {isBookingModalOpen && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 sm:p-6">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+              onClick={() => setIsBookingModalOpen(false)}
+            />
+            {/* Modal Container */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-lg z-10 max-h-[90vh] overflow-y-auto"
+            >
+              <button
+                onClick={() => setIsBookingModalOpen(false)}
+                className="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors z-20 cursor-pointer"
+              >
+                <X size={20} />
+              </button>
+              <BookCallWidget source="Analyzer Limit Overlay" onSuccess={() => setIsBookingModalOpen(false)} />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

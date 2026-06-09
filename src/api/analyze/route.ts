@@ -630,7 +630,87 @@ export async function emailReportHandler(req: Request, res: Response): Promise<v
       },
     });
 
-    const mailOptions = {
+    const websiteUrl = req.headers.origin || 'https://aimlpartner.com';
+
+    // 1. Client-Facing Diagnostic Report Email Options
+    const clientMailOptions = {
+      from: `"AIMLpartner Diagnostics" <${smtpUser}>`,
+      to: email,
+      subject: `Your AI Operational Diagnostic Audit Report - ${analysisResult.businessName}`,
+      html: `
+        <div style="font-family: 'Outfit', 'Inter', sans-serif; background-color: #f8fafc; padding: 40px 20px; color: #1e293b; margin: 0;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; background: #ffffff; border-radius: 24px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);">
+            <!-- Header banner -->
+            <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 35px; text-align: center; border-bottom: 3px solid #0284c7;">
+              <img src="https://darkgray-finch-838850.hostingersite.com/wp-content/uploads/2026/04/WhatsApp_Image_2026-04-28_at_12.18.40_AM-removebg-preview.png" alt="AIMLpartner Logo" style="height: 45px; width: auto; display: block; margin: 0 auto;" />
+              <h1 style="color: #ffffff; font-size: 22px; font-weight: 800; margin-top: 20px; margin-bottom: 0; letter-spacing: -0.5px;">AI Operational Audit Report</h1>
+              <p style="color: #94a3b8; font-size: 12px; margin-top: 5px; margin-bottom: 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Enterprise Diagnostic Insights</p>
+            </div>
+
+            <!-- Body -->
+            <div style="padding: 40px 30px;">
+              <p style="font-size: 16px; line-height: 1.6; margin-top: 0; color: #0f172a;">Hello <strong>${name || 'Visitor'}</strong>,</p>
+              <p style="font-size: 14px; line-height: 1.6; color: #475569;">We have successfully compiled your customized <strong>Enterprise AI Operational Diagnostic Report</strong> for <strong>${company || 'your business'}</strong>. Below is a summary of the efficiency opportunities unlocked by our analyzer.</p>
+              
+              <!-- Score Dashboard -->
+              <div style="background-color: #f1f5f9; border-radius: 16px; padding: 25px; margin: 30px 0; border: 1px solid #e2e8f0;">
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr>
+                    <td style="width: 50%; text-align: left; vertical-align: middle;">
+                      <span style="font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 5px;">AI Readiness Score</span>
+                      <span style="font-size: 28px; font-weight: 800; color: #0f172a; display: block;">${analysisResult.readinessScore}<span style="font-size: 18px; color: #94a3b8; font-weight: 500;">/100</span></span>
+                      <span style="display: inline-block; font-size: 11px; font-weight: bold; background-color: #0284c7; color: #ffffff; padding: 3px 10px; border-radius: 12px; margin-top: 5px;">${analysisResult.readinessTier} Tier</span>
+                    </td>
+                    <td style="width: 50%; text-align: right; vertical-align: middle; border-left: 2px solid #e2e8f0; padding-left: 15px;">
+                      <span style="font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 5px;">Projected Reclaimable ROI</span>
+                      <span style="font-size: 28px; font-weight: 800; color: #16a34a; display: block;">$${analysisResult.annualReclaimedROI.toLocaleString()}</span>
+                      <span style="font-size: 12px; color: #64748b; display: block; margin-top: 5px;">${analysisResult.reclaimedTimeHours} hours saved / week</span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- Quick Summary -->
+              <h3 style="font-size: 16px; font-weight: bold; color: #0f172a; margin-top: 0; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Executive Diagnosis</h3>
+              <p style="font-size: 13.5px; line-height: 1.6; color: #475569; font-style: italic; margin-bottom: 30px; background-color: #f8fafc; border-left: 3px solid #64748b; padding: 12px 15px; border-radius: 0 8px 8px 0;">"${analysisResult.executiveDiagnosis}"</p>
+
+              <h3 style="font-size: 16px; font-weight: bold; color: #0f172a; margin-top: 0; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Audited Focus Areas</h3>
+              <table style="width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 30px;">
+                ${analysisResult.departments.map((dept: any, idx: number) => `
+                  <tr style="${idx % 2 === 0 ? 'background-color: #f8fafc;' : ''}">
+                    <td style="padding: 12px 10px; font-weight: bold; color: #0f172a; width: 40%; border-bottom: 1px solid #f1f5f9; vertical-align: top;">${dept.name}</td>
+                    <td style="padding: 12px 10px; color: #475569; width: 60%; border-bottom: 1px solid #f1f5f9; vertical-align: top;">${dept.friction}</td>
+                  </tr>
+                `).join('')}
+              </table>
+
+              <!-- CTA Button -->
+              <div style="text-align: center; margin: 35px 0 10px 0;">
+                <a href="${websiteUrl}/analyzer" style="background: linear-gradient(135deg, #0284c7 0%, #3b82f6 100%); color: #ffffff; text-decoration: none; padding: 15px 35px; font-size: 14px; font-weight: 700; border-radius: 50px; display: inline-block; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35); text-transform: uppercase; letter-spacing: 0.5px;">Access Your Live Dashboard</a>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 0 30px;" />
+
+            <!-- Footer -->
+            <div style="padding: 30px; text-align: center; background-color: #f8fafc;">
+              <p style="font-size: 13px; color: #64748b; margin-top: 0; margin-bottom: 5px;">Your comprehensive operational audit report PDF is attached to this email.</p>
+              <p style="font-size: 11px; color: #94a3b8; margin-top: 0; margin-bottom: 0;">&copy; 2026 AIMLpartner. All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+      `,
+      attachments: [
+        {
+          filename: `operational-audit-${analysisResult.businessName.replace(/\s+/g, '-').toLowerCase()}.pdf`,
+          content: pdfBuffer,
+        },
+      ],
+    };
+
+    // 2. Admin-Facing Notification Email Options
+    const adminMailOptions = {
       from: `"AIMLpartner Diagnostics" <${smtpUser}>`,
       to: toEmail,
       subject: `[AI Lead Generated] Operational Audit Report for ${analysisResult.businessName} (${name})`,
@@ -699,9 +779,12 @@ export async function emailReportHandler(req: Request, res: Response): Promise<v
       ],
     };
 
-    console.log(`[Email API] Sending email report to ${toEmail}...`);
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`[Email API] Transmitted successfully: ${info.messageId}`);
+    console.log(`[Email API] Sending email report to client: ${email}...`);
+    await transporter.sendMail(clientMailOptions);
+
+    console.log(`[Email API] Sending email report to admin: ${toEmail}...`);
+    const info = await transporter.sendMail(adminMailOptions);
+    console.log(`[Email API] Transmitted successfully to both: ${info.messageId}`);
 
     res.status(200).json({ status: "sent", messageId: info.messageId });
   } catch (err: any) {
@@ -716,7 +799,7 @@ export async function emailReportHandler(req: Request, res: Response): Promise<v
  * then emails the details to support@brandtopost.com.
  */
 export async function buildRequestHandler(req: Request, res: Response): Promise<void> {
-  const { email, name, company, departmentName, answers, playbookDetails, analysisResult } = req.body;
+  const { email, name, company, departmentName, answers, playbookDetails, analysisResult, selectedDate, selectedTime } = req.body;
 
   if (!email || !departmentName || !answers || !playbookDetails) {
     res.status(400).json({ error: "Missing required client customization parameters." });
@@ -774,7 +857,7 @@ Write a brief 1-sentence introduction, then output the complete Google AI Studio
       throw new Error("Gemini returned empty text for AI Studio prompt generation.");
     }
 
-    // 2. Transmit the details to the administrator inbox support@brandtopost.com
+    // 2. Transmit the details to the administrator and client
     const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
     const smtpPort = Number(process.env.SMTP_PORT) || 587;
     const smtpUser = process.env.SMTP_USER;
@@ -799,15 +882,104 @@ Write a brief 1-sentence introduction, then output the complete Google AI Studio
       },
     });
 
-    const mailOptions = {
+    // 1. Client-Facing Confirmation Email
+    const clientMailOptions = {
+      from: `"AIMLpartner Customizer" <${smtpUser}>`,
+      to: email,
+      subject: `Confirmed: Your Custom AI Agent Demo - AIMLpartner`,
+      html: `
+        <div style="font-family: 'Outfit', 'Inter', sans-serif; background-color: #f8fafc; padding: 40px 20px; color: #1e293b; margin: 0;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; background: #ffffff; border-radius: 24px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);">
+            <!-- Header banner -->
+            <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 35px; text-align: center; border-bottom: 3px solid #6366f1;">
+              <img src="https://darkgray-finch-838850.hostingersite.com/wp-content/uploads/2026/04/WhatsApp_Image_2026-04-28_at_12.18.40_AM-removebg-preview.png" alt="AIMLpartner Logo" style="height: 45px; width: auto; display: block; margin: 0 auto;" />
+              <h1 style="color: #ffffff; font-size: 22px; font-weight: 800; margin-top: 20px; margin-bottom: 0; letter-spacing: -0.5px;">Custom Agent Demo Booked</h1>
+              <p style="color: #a5b4fc; font-size: 12px; margin-top: 5px; margin-bottom: 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Customized AI Blueprint Locked In</p>
+            </div>
+
+            <!-- Body -->
+            <div style="padding: 40px 30px;">
+              <p style="font-size: 16px; line-height: 1.6; margin-top: 0; color: #0f172a;">Hello <strong>${name || 'Visitor'}</strong>,</p>
+              <p style="font-size: 14px; line-height: 1.6; color: #475569;">Thank you for requesting a custom AI Agent build for your <strong>${departmentName}</strong> department. We are excited to build and present your tailored workflow solution.</p>
+              
+              <!-- Meeting Details Card -->
+              <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px; padding: 25px; margin: 30px 0; border: 1px solid #e2e8f0;">
+                <h3 style="font-size: 15px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">🗓️ Live Demo Schedule Details</h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px; color: #334155;">
+                  <tr>
+                    <td style="padding: 6px 0; font-weight: bold; width: 30%;">Date:</td>
+                    <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">${selectedDate || 'To be scheduled'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 0; font-weight: bold;">Time:</td>
+                    <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">${selectedTime || 'To be scheduled'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 0; font-weight: bold;">Google Meet:</td>
+                    <td style="padding: 6px 0;"><a href="https://meet.google.com/msi-aiml-demo" style="color: #6366f1; text-decoration: none; font-weight: 600;">Join Live GMeet Session</a></td>
+                  </tr>
+                </table>
+                <p style="font-size: 11px; color: #64748b; margin-top: 15px; margin-bottom: 0; font-style: italic;">A separate Google Calendar invitation with details has been sent to your email.</p>
+              </div>
+
+              <!-- Questionnaire Summary -->
+              <h3 style="font-size: 16px; font-weight: bold; color: #0f172a; margin-top: 0; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Your custom requirements:</h3>
+              <div style="background-color: #f8fafc; border-left: 3px solid #6366f1; padding: 15px; border-radius: 0 12px 12px 0; margin-bottom: 30px;">
+                ${answers.map((a: any) => `
+                  <p style="margin: 0 0 5px 0; font-size: 13px; font-weight: bold; color: #0f172a;">Q: ${a.question}</p>
+                  <p style="margin: 0 0 15px 0; font-size: 13px; color: #475569; font-style: italic;">A: ${a.answer}</p>
+                `).join('')}
+              </div>
+
+              <!-- Google AI Studio System Prompt Blueprint -->
+              <h3 style="font-size: 16px; font-weight: bold; color: #0f172a; margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Google AI Studio System Prompt</h3>
+              <p style="font-size: 13px; color: #64748b; margin-bottom: 15px; line-height: 1.5;">You can copy and paste the prompt blueprint below directly into Google AI Studio system instructions to test the agent sandbox immediately:</p>
+              <div style="background-color: #0f172a; color: #e2e8f0; font-family: monospace; font-size: 12px; padding: 20px; border-radius: 12px; overflow-x: auto; white-space: pre-wrap; border: 1px solid #1e293b; max-height: 350px; line-height: 1.5; margin-bottom: 30px;">
+${systemPromptText}
+              </div>
+
+              <!-- Quick Message -->
+              <p style="font-size: 13.5px; line-height: 1.6; color: #475569; text-align: center;">Our engineering team has already started constructing a prototype sandboxed AI agent matching these instructions. We look forward to meeting you on the scheduled call!</p>
+            </div>
+
+            <!-- Divider -->
+            <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 0 30px;" />
+
+            <!-- Footer -->
+            <div style="padding: 30px; text-align: center; background-color: #f8fafc;">
+              <p style="font-size: 11px; color: #94a3b8; margin-top: 0; margin-bottom: 0;">&copy; 2026 AIMLpartner. All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+      `
+    };
+
+    // 2. Admin-Facing Notification Email
+    const adminMailOptions = {
       from: `"AIMLpartner Customizer" <${smtpUser}>`,
       to: toEmail,
-      subject: `[Let's Build It Request] Custom ${departmentName} Agent for ${company}`,
+      subject: `[Agent Build + Demo Booked] Custom ${departmentName} Agent for ${company}`,
       html: `
         <div style="font-family: sans-serif; color: #334155; line-height: 1.6; max-width: 650px; margin: auto; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);">
-          <h2 style="color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-top: 0;">Let's Build It! Custom Agent Request</h2>
-          <p>A client has completed the Playbook Questionnaire on your site for a customized AI Agent in their <strong>${departmentName}</strong> department.</p>
+          <h2 style="color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-top: 0;">Let's Build It! Custom Agent Request & Demo Booked</h2>
+          <p>A client has completed the Playbook Questionnaire and scheduled a live prototype walk-through for a custom AI Agent in their <strong>${departmentName}</strong> department.</p>
           
+          <h3 style="color: #0284c7; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">🗓️ Live Demo Schedule</h3>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;">
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold; width: 30%;">Date/Day:</td>
+              <td style="padding: 6px 0; color: #4338ca; font-weight: bold;">${selectedDate || 'Not specified'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold;">Time slot:</td>
+              <td style="padding: 6px 0; color: #4338ca; font-weight: bold;">${selectedTime || 'Not specified'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold;">Meet Link:</td>
+              <td style="padding: 6px 0;"><a href="https://meet.google.com/msi-aiml-demo">https://meet.google.com/msi-aiml-demo</a></td>
+            </tr>
+          </table>
+
           <h3 style="color: #0284c7; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Client Profile</h3>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;">
             <tr>
@@ -846,19 +1018,183 @@ ${systemPromptText}
           
           <br/>
           <p style="font-size: 12px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 10px; margin-bottom: 0;">
-            This email was automatically generated by the AIMLpartner Custom Analyzer Engine. Follow up with the lead at ${email} within 72 hours with their prototype demo.
+            This email was automatically generated by the AIMLpartner Custom Analyzer Engine. Confirm the Google Meet demo and follow up with the lead at ${email}.
           </p>
         </div>
       `
     };
 
-    console.log(`[Build Request API] Sending email blueprint to ${toEmail}...`);
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`[Build Request API] Transmitted successfully: ${info.messageId}`);
+    console.log(`[Build Request API] Sending email confirmation to client: ${email}...`);
+    await transporter.sendMail(clientMailOptions);
+
+    console.log(`[Build Request API] Sending email blueprint to admin: ${toEmail}...`);
+    const info = await transporter.sendMail(adminMailOptions);
+    console.log(`[Build Request API] Transmitted successfully to both: ${info.messageId}`);
 
     res.status(200).json({ status: "sent", messageId: info.messageId });
   } catch (err: any) {
     console.error(`[Build Request API Exception]:`, err);
     res.status(500).json({ error: "Failed to compile AI Studio blueprint or send email: " + err.message });
+  }
+}
+
+/**
+ * Controller to handle consultation call bookings.
+ * Emails a GMeet confirmation to the client and a lead notification to support@brandtopost.com.
+ */
+export async function bookCallHandler(req: Request, res: Response): Promise<void> {
+  const { name, email, company, selectedDate, selectedTime, source } = req.body;
+
+  if (!email || !selectedDate || !selectedTime) {
+    res.status(400).json({ error: "Missing required booking details (email, date, or time)." });
+    return;
+  }
+
+  try {
+    const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+    const smtpPort = Number(process.env.SMTP_PORT) || 587;
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+    const toEmail = process.env.TO_EMAIL || 'support@brandtopost.com';
+
+    if (!smtpUser || !smtpPass) {
+      console.warn('[Book Call API] SMTP credentials missing in .env. Logging details.');
+      res.status(200).json({ status: "mocked", message: "SMTP credentials not configured." });
+      return;
+    }
+
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass,
+      },
+    });
+
+    // 1. Client-Facing Confirmation Email
+    const clientMailOptions = {
+      from: `"AIMLpartner Consultation" <${smtpUser}>`,
+      to: email,
+      subject: `Confirmed: 1-on-1 AI Strategy Session - AIMLpartner`,
+      html: `
+        <div style="font-family: 'Outfit', 'Inter', sans-serif; background-color: #f8fafc; padding: 40px 20px; color: #1e293b; margin: 0;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; background: #ffffff; border-radius: 24px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);">
+            <!-- Header banner -->
+            <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 35px; text-align: center; border-bottom: 3px solid #6366f1;">
+              <img src="https://darkgray-finch-838850.hostingersite.com/wp-content/uploads/2026/04/WhatsApp_Image_2026-04-28_at_12.18.40_AM-removebg-preview.png" alt="AIMLpartner Logo" style="height: 45px; width: auto; display: block; margin: 0 auto;" />
+              <h1 style="color: #ffffff; font-size: 22px; font-weight: 800; margin-top: 20px; margin-bottom: 0; letter-spacing: -0.5px;">1-on-1 Session Confirmed</h1>
+              <p style="color: #a5b4fc; font-size: 12px; margin-top: 5px; margin-bottom: 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">AI Operational Strategy</p>
+            </div>
+
+            <!-- Body -->
+            <div style="padding: 40px 30px;">
+              <p style="font-size: 16px; line-height: 1.6; margin-top: 0; color: #0f172a;">Hello <strong>${name || 'Visitor'}</strong>,</p>
+              <p style="font-size: 14px; line-height: 1.6; color: #475569;">Your free 1-on-1 AI Strategy consultation has been successfully booked! We look forward to analyzing your operational bottlenecks together.</p>
+              
+              <!-- Meeting Details Card -->
+              <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px; padding: 25px; margin: 30px 0; border: 1px solid #e2e8f0;">
+                <h3 style="font-size: 15px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">🗓️ Meeting Details</h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px; color: #334155;">
+                  <tr>
+                    <td style="padding: 6px 0; font-weight: bold; width: 30%;">Date:</td>
+                    <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">${selectedDate}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 0; font-weight: bold;">Time slot:</td>
+                    <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">${selectedTime} (30-Minute Session)</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 0; font-weight: bold;">Google Meet:</td>
+                    <td style="padding: 6px 0;"><a href="https://meet.google.com/msi-aiml-demo" style="color: #6366f1; text-decoration: none; font-weight: 600;">Join Live GMeet Session</a></td>
+                  </tr>
+                </table>
+                <p style="font-size: 11px; color: #64748b; margin-top: 15px; margin-bottom: 0; font-style: italic;">A Google Calendar invitation has been sent to your email.</p>
+              </div>
+
+              <h3 style="font-size: 16px; font-weight: bold; color: #0f172a; margin-top: 0; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">What we'll accomplish on the call:</h3>
+              <ul style="font-size: 13.5px; color: #475569; line-height: 1.6; padding-left: 20px;">
+                <li>Map your business's manual data pipelines and software silos</li>
+                <li>Evaluate specific low-code integrations and custom AI agent candidates</li>
+                <li>Structure a clear ROI and timeline roadmap with zero team disruption</li>
+              </ul>
+
+              <p style="font-size: 13.5px; line-height: 1.6; color: #475569; text-align: center; margin-top: 30px;">If you have any documents or workflow walkthroughs to share before the call, feel free to reply directly to this email!</p>
+            </div>
+
+            <!-- Divider -->
+            <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 0 30px;" />
+
+            <!-- Footer -->
+            <div style="padding: 30px; text-align: center; background-color: #f8fafc;">
+              <p style="font-size: 11px; color: #94a3b8; margin-top: 0; margin-bottom: 0;">&copy; 2026 AIMLpartner. All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+      `
+    };
+
+    // 2. Admin-Facing Notification Email
+    const adminMailOptions = {
+      from: `"AIMLpartner Consultation" <${smtpUser}>`,
+      to: toEmail,
+      subject: `[Consultation Booked] Strategy Call scheduled by ${company || 'Visitor'} (${name})`,
+      html: `
+        <div style="font-family: sans-serif; color: #334155; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px;">
+          <h2 style="color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-top: 0;">New Consultation Call Booked!</h2>
+          <p>A client has scheduled a 1-on-1 AI Strategy Session from the <strong>${source || 'Website'}</strong>.</p>
+          
+          <h3 style="color: #0284c7; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">🗓️ Meeting Schedule</h3>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;">
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold; width: 30%;">Date/Day:</td>
+              <td style="padding: 6px 0; color: #4338ca; font-weight: bold;">${selectedDate}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold;">Time slot:</td>
+              <td style="padding: 6px 0; color: #4338ca; font-weight: bold;">${selectedTime}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold;">Meet Link:</td>
+              <td style="padding: 6px 0;"><a href="https://meet.google.com/msi-aiml-demo">https://meet.google.com/msi-aiml-demo</a></td>
+            </tr>
+          </table>
+
+          <h3 style="color: #0284c7; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Client Profile</h3>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;">
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold; width: 30%;">Lead Name:</td>
+              <td style="padding: 6px 0;">${name || 'Anonymous'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold;">Work Email:</td>
+              <td style="padding: 6px 0;"><a href="mailto:${email}">${email}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold;">Company Name:</td>
+              <td style="padding: 6px 0;">${company || 'N/A'}</td>
+            </tr>
+          </table>
+          
+          <br/>
+          <p style="font-size: 12px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 10px; margin-bottom: 0;">
+            This email was automatically generated by the AIMLpartner Call Booking Engine.
+          </p>
+        </div>
+      `
+    };
+
+    console.log(`[Book Call API] Sending email confirmation to client: ${email}...`);
+    await transporter.sendMail(clientMailOptions);
+
+    console.log(`[Book Call API] Sending email notification to admin: ${toEmail}...`);
+    const info = await transporter.sendMail(adminMailOptions);
+    console.log(`[Book Call API] Booked successfully: ${info.messageId}`);
+
+    res.status(200).json({ status: "sent", messageId: info.messageId });
+  } catch (err: any) {
+    console.error(`[Book Call API Exception]:`, err);
+    res.status(500).json({ error: "Failed to book call: " + err.message });
   }
 }

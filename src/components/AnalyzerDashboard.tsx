@@ -571,35 +571,81 @@ interface BuildAgentModalProps {
 
 function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysisResult, onClose }: BuildAgentModalProps) {
   const questions = getDepartmentQuestions(activeDept.name);
-  const [step, setStep] = useState<1 | 2 | 3 | 'success'>(1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 'success'>(1);
   const [answers, setAnswers] = useState<string[]>(['', '', '']);
   const [currentVal, setCurrentVal] = useState('');
+  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [selectedTime, setSelectedTime] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  const currentQuestionIdx = (step === 'success') ? 0 : (step - 1);
+  const currentQuestionIdx = (step === 'success' || step === 4) ? 0 : (step - 1);
   const currentQuestion = questions[currentQuestionIdx];
+
+  // Helper to format date display values
+  const formatDateValue = (date: Date) => {
+    return date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  // Generate next 10 weekday booking dates (skipping Sundays)
+  const bookingDates = React.useMemo(() => {
+    const dates = [];
+    const current = new Date();
+    // Start booking from tomorrow
+    current.setDate(current.getDate() + 1);
+    
+    while (dates.length < 10) {
+      // 0 = Sunday
+      if (current.getDay() !== 0) {
+        dates.push(new Date(current));
+      }
+      current.setDate(current.getDate() + 1);
+    }
+    return dates;
+  }, []);
+
+  const TIME_SLOTS = [
+    "10:00 AM",
+    "11:30 AM",
+    "1:00 PM",
+    "2:30 PM",
+    "4:00 PM",
+    "5:30 PM"
+  ];
 
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!currentVal.trim()) {
-      setError('Please answer the question to proceed.');
-      return;
-    }
+    
+    if (step <= 3) {
+      if (!currentVal.trim()) {
+        setError('Please answer the question to proceed.');
+        return;
+      }
+      setError('');
+      const newAnswers = [...answers];
+      newAnswers[step - 1] = currentVal.trim();
+      setAnswers(newAnswers);
 
-    setError('');
-    const newAnswers = [...answers];
-    newAnswers[currentQuestionIdx] = currentVal.trim();
-    setAnswers(newAnswers);
-
-    if (step === 1) {
-      setCurrentVal(answers[1]);
-      setStep(2);
-    } else if (step === 2) {
-      setCurrentVal(answers[2]);
-      setStep(3);
-    } else if (step === 3) {
-      submitAnswers(newAnswers);
+      if (step === 1) {
+        setCurrentVal(answers[1]);
+        setStep(2);
+      } else if (step === 2) {
+        setCurrentVal(answers[2]);
+        setStep(3);
+      } else if (step === 3) {
+        setStep(4);
+      }
+    } else if (step === 4) {
+      if (!selectedDate) {
+        setError('Please select a date for your demo.');
+        return;
+      }
+      if (!selectedTime) {
+        setError('Please select a time slot.');
+        return;
+      }
+      setError('');
+      submitAnswers(answers, selectedDate, selectedTime);
     }
   };
 
@@ -611,10 +657,13 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
     } else if (step === 3) {
       setCurrentVal(answers[1]);
       setStep(2);
+    } else if (step === 4) {
+      setCurrentVal(answers[2]);
+      setStep(3);
     }
   };
 
-  const submitAnswers = async (finalAnswers: string[]) => {
+  const submitAnswers = async (finalAnswers: string[], date: string, time: string) => {
     setIsSubmitting(true);
     setError('');
 
@@ -634,6 +683,8 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
             { question: questions[1], answer: finalAnswers[1] },
             { question: questions[2], answer: finalAnswers[2] }
           ],
+          selectedDate: date,
+          selectedTime: time,
           playbookDetails: {
             friction: activeDept.friction,
             resolution: activeDept.resolution,
@@ -695,7 +746,7 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
             <motion.div
               className="h-full bg-gradient-to-r from-sky-400 to-indigo-500"
               initial={{ width: 0 }}
-              animate={{ width: `${(step / 3) * 100}%` }}
+              animate={{ width: `${(step / 4) * 100}%` }}
               transition={{ duration: 0.4 }}
             />
           </div>
@@ -712,29 +763,118 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                 transition={{ duration: 0.25 }}
                 className="flex-grow flex flex-col justify-between space-y-6"
               >
-                <div>
-                  <span className="text-[10px] font-mono text-sky-600 tracking-widest uppercase font-semibold block mb-3">
-                    STEP {step} OF 3 • {activeDept.name.toUpperCase()} AGENT
-                  </span>
-                  <h3 className="text-xl font-bold text-slate-900 leading-snug tracking-tight">
-                    {currentQuestion}
-                  </h3>
+                {step <= 3 ? (
+                  <div>
+                    <span className="text-[10px] font-mono text-sky-600 tracking-widest uppercase font-semibold block mb-3">
+                      STEP {step} OF 4 • {activeDept.name.toUpperCase()} AGENT
+                    </span>
+                    <h3 className="text-xl font-bold text-slate-900 leading-snug tracking-tight">
+                      {currentQuestion}
+                    </h3>
 
-                  {error && (
-                    <p className="text-rose-600 text-xs font-semibold mt-2">{error}</p>
-                  )}
+                    {error && (
+                      <p className="text-rose-600 text-xs font-semibold mt-2">{error}</p>
+                    )}
 
-                  <form onSubmit={handleNext} className="mt-6">
-                    <textarea
-                      rows={4}
-                      required
-                      placeholder="Type your requirements here..."
-                      value={currentVal}
-                      onChange={(e) => { setCurrentVal(e.target.value); setError(''); }}
-                      className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all text-sm resize-none"
-                    />
-                  </form>
-                </div>
+                    <form onSubmit={handleNext} className="mt-6">
+                      <textarea
+                        rows={4}
+                        required
+                        placeholder="Type your requirements here..."
+                        value={currentVal}
+                        onChange={(e) => { setCurrentVal(e.target.value); setError(''); }}
+                        className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all text-sm resize-none"
+                      />
+                    </form>
+                  </div>
+                ) : (
+                  // STEP 4: CALENDAR SCHEDULER
+                  <div>
+                    <span className="text-[10px] font-mono text-indigo-600 tracking-widest uppercase font-semibold block mb-3">
+                      STEP 4 OF 4 • DEMO SCHEDULER
+                    </span>
+                    <h3 className="text-xl font-bold text-slate-900 leading-snug tracking-tight mb-1">
+                      Schedule a Live Prototype Walk-Through
+                    </h3>
+                    <p className="text-xs text-slate-500 leading-relaxed font-light mb-6">
+                      Our system is compiling your custom Google AI Studio prompt. Select a convenient date and time slot for a live GMeet demo where our engineers will show you the fully automated version.
+                    </p>
+
+                    {error && (
+                      <p className="text-rose-600 text-xs font-semibold mt-2 mb-4">{error}</p>
+                    )}
+
+                    <div className="space-y-6">
+                      {/* Date list horizontal scroll */}
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-mono text-slate-400 block tracking-wider font-semibold uppercase">
+                          Select Date
+                        </label>
+                        <div className="flex gap-2.5 overflow-x-auto pb-3 scrollbar-none">
+                          {bookingDates.map((date) => {
+                            const dateStr = formatDateValue(date);
+                            const isSelected = selectedDate === dateStr;
+                            return (
+                              <button
+                                key={date.toISOString()}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedDate(dateStr);
+                                  setError('');
+                                }}
+                                className={`flex flex-col items-center justify-center p-3 rounded-2xl border min-w-[75px] transition-all cursor-pointer ${
+                                  isSelected
+                                    ? 'bg-slate-900 border-slate-950 text-white shadow-md'
+                                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300'
+                                }`}
+                              >
+                                <span className="text-[9px] font-mono uppercase tracking-wider opacity-65">
+                                  {date.toLocaleDateString('en-US', { weekday: 'short' })}
+                                </span>
+                                <span className="text-lg font-extrabold mt-1 mb-0.5">{date.getDate()}</span>
+                                <span className="text-[9px] font-mono uppercase tracking-wider opacity-65">
+                                  {date.toLocaleDateString('en-US', { month: 'short' })}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Time slot grid */}
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-mono text-slate-400 block tracking-wider font-semibold uppercase">
+                          Select Time Slot
+                        </label>
+                        <div className="grid grid-cols-3 gap-2">
+                          {TIME_SLOTS.map((time) => {
+                            const isSelected = selectedTime === time;
+                            return (
+                              <button
+                                key={time}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedTime(time);
+                                  setError('');
+                                }}
+                                className={`py-3 px-2 rounded-xl border text-center text-xs font-semibold transition-all cursor-pointer ${
+                                  isSelected
+                                    ? 'bg-indigo-600 border-indigo-700 text-white shadow-md'
+                                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
+                                }`}
+                              >
+                                {time}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <p className="text-[10px] text-slate-400 font-mono text-center mt-3">
+                          🕒 Times are shown in your local timezone.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex justify-between items-center pt-4">
                   {step > 1 ? (
@@ -760,7 +900,13 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                       </>
                     ) : (
                       <>
-                        <span>{step === 3 ? 'Generate Blueprint' : 'Next Question'}</span>
+                        <span>
+                          {step === 3
+                            ? 'Next: Schedule Demo'
+                            : step === 4
+                            ? 'Book Demo & Build Agent'
+                            : 'Next Question'}
+                        </span>
                         <ArrowRight size={12} />
                       </>
                     )}
@@ -774,16 +920,30 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                 animate={{ opacity: 1, scale: 1 }}
                 className="flex flex-col items-center justify-center text-center py-6 flex-grow space-y-6"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-sky-50 to-indigo-50 border border-sky-100 rounded-2xl flex items-center justify-center text-indigo-500 shadow-md">
+                <div className="w-16 h-16 bg-gradient-to-br from-indigo-50 to-sky-50 border border-indigo-100 rounded-2xl flex items-center justify-center text-indigo-500 shadow-md">
                   <LockOpen size={28} className="animate-pulse" />
                 </div>
 
                 <div>
                   <h3 className="text-xl font-bold text-slate-950 tracking-tight">
-                    Custom Agent Blueprint Locked In!
+                    Custom Agent Blueprint & Demo Booked!
                   </h3>
-                  <p className="text-slate-500 text-xs md:text-sm font-light mt-3 leading-relaxed max-w-sm">
-                    Your customization parameters have been locked in! Our engineering team is already spinning up a custom sandbox demo for your workflow. We will reach out to you within <strong className="text-slate-900 font-semibold">72 hours</strong> with a live prototype demo to showcase.
+                  <p className="text-slate-500 text-xs md:text-sm font-light mt-3 leading-relaxed max-w-sm mx-auto">
+                    Your custom prompt instructions have been compiled and sent to your email. We have also reserved your live walk-through demo on:
+                  </p>
+                  
+                  {/* Demo Schedule Display */}
+                  <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 mt-4 text-left max-w-sm mx-auto">
+                    <span className="text-[10px] font-mono text-indigo-600 block tracking-wider uppercase font-semibold mb-2">🗓️ Booking Details</span>
+                    <p className="text-sm font-semibold text-slate-800">Date: <span className="font-normal text-slate-600">{selectedDate}</span></p>
+                    <p className="text-sm font-semibold text-slate-800 mt-1">Time: <span className="font-normal text-slate-600">{selectedTime}</span></p>
+                    <p className="text-sm font-semibold text-slate-800 mt-1 flex items-center gap-1.5">
+                      GMeet Link: <a href="https://meet.google.com/msi-aiml-demo" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline inline-flex items-center gap-0.5">Join Demo Session <ArrowRight size={10} /></a>
+                    </p>
+                  </div>
+                  
+                  <p className="text-slate-400 text-[10px] mt-4 leading-relaxed max-w-xs mx-auto">
+                    A Google Meet calendar invitation has been sent to <span className="font-semibold text-slate-600">{leadEmail || 'your email'}</span>.
                   </p>
                 </div>
 
