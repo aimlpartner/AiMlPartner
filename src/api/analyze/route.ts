@@ -19,6 +19,96 @@ function getGoogleGenAI(): GoogleGenAI | null {
   return new GoogleGenAI({ apiKey });
 }
 
+function parseDateTime(dateStr: string, timeStr: string): Date {
+  try {
+    const parts = dateStr.split(',');
+    if (parts.length < 3) return new Date();
+    
+    const monthDay = parts[1].trim(); // e.g. "Jun 10"
+    const year = parts[2].trim(); // e.g. "2026"
+    
+    const timeParts = timeStr.match(/^(\d+):(\d+)\s*(AM|PM)$/i);
+    if (!timeParts) return new Date();
+    
+    let hour = parseInt(timeParts[1], 10);
+    const minute = parseInt(timeParts[2], 10);
+    const ampm = timeParts[3].toUpperCase();
+    
+    if (ampm === 'PM' && hour < 12) hour += 12;
+    if (ampm === 'AM' && hour === 12) hour = 0;
+    
+    const months: Record<string, number> = {
+      jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+      jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11
+    };
+    months["january"] = 0; months["february"] = 1; months["march"] = 2; months["april"] = 3;
+    months["may"] = 4; months["june"] = 5; months["july"] = 6; months["august"] = 7;
+    months["september"] = 8; months["october"] = 9; months["november"] = 10; months["december"] = 11;
+    
+    const monthParts = monthDay.split(' ');
+    const monthName = monthParts[0].substring(0, 3).toLowerCase();
+    const day = parseInt(monthParts[1], 10);
+    const monthIndex = months[monthName] !== undefined ? months[monthName] : 5;
+    
+    return new Date(parseInt(year, 10), monthIndex, day, hour, minute, 0);
+  } catch (err) {
+    console.error("Error parsing date/time:", err);
+    return new Date();
+  }
+}
+
+function formatIcsDateTime(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  const h = String(date.getHours()).padStart(2, '0');
+  const min = String(date.getMinutes()).padStart(2, '0');
+  const s = String(date.getSeconds()).padStart(2, '0');
+  return `${y}${m}${d}T${h}${min}${s}`;
+}
+
+function generateIcsContent(name: string, email: string, selectedDate: string, selectedTime: string, isDemo: boolean, smtpUser: string): string {
+  const startDate = parseDateTime(selectedDate, selectedTime);
+  const durationMinutes = isDemo ? 90 : 30;
+  const endDate = new Date(startDate.getTime() + durationMinutes * 60000);
+
+  const dtStart = formatIcsDateTime(startDate);
+  const dtEnd = formatIcsDateTime(endDate);
+  const dtStamp = formatIcsDateTime(new Date()) + 'Z';
+  const meetingTitle = isDemo ? 'Custom AI Agent Demo - AIMLpartner' : '1-on-1 AI Strategy Session - AIMLpartner';
+  const meetingDesc = isDemo 
+    ? `Your 90-minute Custom AI Agent Prototype Walkthrough with AIMLpartner.`
+    : `Your 30-minute AI Strategy Consultation with AIMLpartner.`;
+
+  return [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//AIMLpartner//NONSGML Consultation Calendar//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:REQUEST',
+    'BEGIN:VEVENT',
+    `UID:${Date.now()}-${isDemo ? 'demo' : 'consult'}@aimlpartner.com`,
+    `DTSTAMP:${dtStamp}`,
+    `DTSTART:${dtStart}`,
+    `DTEND:${dtEnd}`,
+    `SUMMARY:${meetingTitle}`,
+    `DESCRIPTION:${meetingDesc}`,
+    'LOCATION:Google Meet',
+    `ORGANIZER;CN="AIMLpartner Counselor":MAILTO:ai.designsbygarvit@gmail.com`,
+    `ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN="${name || 'Visitor'}":MAILTO:${email}`,
+    `ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=FALSE;CN="AIMLpartner Counselor":MAILTO:ai.designsbygarvit@gmail.com`,
+    'STATUS:CONFIRMED',
+    'SEQUENCE:0',
+    'BEGIN:VALARM',
+    'TRIGGER:-PT15M',
+    'ACTION:DISPLAY',
+    'DESCRIPTION:Reminder',
+    'END:VALARM',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+}
+
 /**
  * Strips all HTML tags, scripts, styles, and extracts pure visible web texts up to 40,000 characters.
  */
@@ -862,7 +952,7 @@ Write a brief 1-sentence introduction, then output the complete Google AI Studio
     const smtpPort = Number(process.env.SMTP_PORT) || 587;
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
-    const toEmail = process.env.TO_EMAIL || 'support@brandtopost.com';
+    const toEmail = process.env.TO_EMAIL || 'ai.designsbygarvit@gmail.com';
 
     if (!smtpUser || !smtpPass) {
       console.warn('[Build Request API] SMTP credentials missing in .env. Logging details.');
@@ -915,8 +1005,8 @@ Write a brief 1-sentence introduction, then output the complete Google AI Studio
                     <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">${selectedTime || 'To be scheduled'}</td>
                   </tr>
                   <tr>
-                    <td style="padding: 6px 0; font-weight: bold;">Google Meet:</td>
-                    <td style="padding: 6px 0;"><a href="https://meet.google.com/msi-aiml-demo" style="color: #6366f1; text-decoration: none; font-weight: 600;">Join Live GMeet Session</a></td>
+                    <td style="padding: 6px 0; font-weight: bold; width: 30%;">Meeting:</td>
+                    <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">Google Meet (Link automatically generated in your calendar event)</td>
                   </tr>
                 </table>
                 <p style="font-size: 11px; color: #64748b; margin-top: 15px; margin-bottom: 0; font-style: italic;">A separate Google Calendar invitation with details has been sent to your email.</p>
@@ -975,8 +1065,8 @@ ${systemPromptText}
               <td style="padding: 6px 0; color: #4338ca; font-weight: bold;">${selectedTime || 'Not specified'}</td>
             </tr>
             <tr>
-              <td style="padding: 6px 0; font-weight: bold;">Meet Link:</td>
-              <td style="padding: 6px 0;"><a href="https://meet.google.com/msi-aiml-demo">https://meet.google.com/msi-aiml-demo</a></td>
+              <td style="padding: 6px 0; font-weight: bold; width: 30%;">Meet Link:</td>
+              <td style="padding: 6px 0;">Google Meet (Link will generate automatically inside your calendar)</td>
             </tr>
           </table>
 
@@ -1024,11 +1114,31 @@ ${systemPromptText}
       `
     };
 
+    let inviteAttachments: any[] = [];
+    if (selectedDate && selectedTime) {
+      try {
+        const icsContent = generateIcsContent(name || 'Visitor', email, selectedDate, selectedTime, true, smtpUser);
+        inviteAttachments.push({
+          filename: 'invite.ics',
+          content: Buffer.from(icsContent, 'utf-8'),
+          contentType: 'text/calendar; charset=utf-8; method=REQUEST'
+        });
+      } catch (icsErr) {
+        console.error('[Build Request API] Failed to generate ICS calendar invite:', icsErr);
+      }
+    }
+
     console.log(`[Build Request API] Sending email confirmation to client: ${email}...`);
-    await transporter.sendMail(clientMailOptions);
+    await transporter.sendMail({
+      ...clientMailOptions,
+      attachments: inviteAttachments
+    });
 
     console.log(`[Build Request API] Sending email blueprint to admin: ${toEmail}...`);
-    const info = await transporter.sendMail(adminMailOptions);
+    const info = await transporter.sendMail({
+      ...adminMailOptions,
+      attachments: inviteAttachments
+    });
     console.log(`[Build Request API] Transmitted successfully to both: ${info.messageId}`);
 
     res.status(200).json({ status: "sent", messageId: info.messageId });
@@ -1055,7 +1165,7 @@ export async function bookCallHandler(req: Request, res: Response): Promise<void
     const smtpPort = Number(process.env.SMTP_PORT) || 587;
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
-    const toEmail = process.env.TO_EMAIL || 'support@brandtopost.com';
+    const toEmail = process.env.TO_EMAIL || 'ai.designsbygarvit@gmail.com';
 
     if (!smtpUser || !smtpPass) {
       console.warn('[Book Call API] SMTP credentials missing in .env. Logging details.');
@@ -1106,8 +1216,8 @@ export async function bookCallHandler(req: Request, res: Response): Promise<void
                     <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">${selectedTime} (30-Minute Session)</td>
                   </tr>
                   <tr>
-                    <td style="padding: 6px 0; font-weight: bold;">Google Meet:</td>
-                    <td style="padding: 6px 0;"><a href="https://meet.google.com/msi-aiml-demo" style="color: #6366f1; text-decoration: none; font-weight: 600;">Join Live GMeet Session</a></td>
+                    <td style="padding: 6px 0; font-weight: bold; width: 30%;">Meeting:</td>
+                    <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">Google Meet (Link automatically generated in your calendar event)</td>
                   </tr>
                 </table>
                 <p style="font-size: 11px; color: #64748b; margin-top: 15px; margin-bottom: 0; font-style: italic;">A Google Calendar invitation has been sent to your email.</p>
@@ -1156,8 +1266,8 @@ export async function bookCallHandler(req: Request, res: Response): Promise<void
               <td style="padding: 6px 0; color: #4338ca; font-weight: bold;">${selectedTime}</td>
             </tr>
             <tr>
-              <td style="padding: 6px 0; font-weight: bold;">Meet Link:</td>
-              <td style="padding: 6px 0;"><a href="https://meet.google.com/msi-aiml-demo">https://meet.google.com/msi-aiml-demo</a></td>
+              <td style="padding: 6px 0; font-weight: bold; width: 30%;">Meet Link:</td>
+              <td style="padding: 6px 0;">Google Meet (Link will generate automatically inside your calendar)</td>
             </tr>
           </table>
 
@@ -1185,11 +1295,31 @@ export async function bookCallHandler(req: Request, res: Response): Promise<void
       `
     };
 
+    let inviteAttachments: any[] = [];
+    if (selectedDate && selectedTime) {
+      try {
+        const icsContent = generateIcsContent(name || 'Visitor', email, selectedDate, selectedTime, false, smtpUser);
+        inviteAttachments.push({
+          filename: 'invite.ics',
+          content: Buffer.from(icsContent, 'utf-8'),
+          contentType: 'text/calendar; charset=utf-8; method=REQUEST'
+        });
+      } catch (icsErr) {
+        console.error('[Book Call API] Failed to generate ICS calendar invite:', icsErr);
+      }
+    }
+
     console.log(`[Book Call API] Sending email confirmation to client: ${email}...`);
-    await transporter.sendMail(clientMailOptions);
+    await transporter.sendMail({
+      ...clientMailOptions,
+      attachments: inviteAttachments
+    });
 
     console.log(`[Book Call API] Sending email notification to admin: ${toEmail}...`);
-    const info = await transporter.sendMail(adminMailOptions);
+    const info = await transporter.sendMail({
+      ...adminMailOptions,
+      attachments: inviteAttachments
+    });
     console.log(`[Book Call API] Booked successfully: ${info.messageId}`);
 
     res.status(200).json({ status: "sent", messageId: info.messageId });

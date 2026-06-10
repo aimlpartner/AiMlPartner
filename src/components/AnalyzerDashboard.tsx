@@ -587,14 +587,14 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
     return date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
   };
 
-  // Generate next 10 weekday booking dates (skipping Sundays)
+  // Generate next 30 weekday booking dates (skipping Sundays)
   const bookingDates = React.useMemo(() => {
     const dates = [];
     const current = new Date();
     // Start booking from tomorrow
     current.setDate(current.getDate() + 1);
     
-    while (dates.length < 10) {
+    while (dates.length < 30) {
       // 0 = Sunday
       if (current.getDay() !== 0) {
         dates.push(new Date(current));
@@ -603,6 +603,14 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
     }
     return dates;
   }, []);
+
+  const monthHeader = React.useMemo(() => {
+    if (bookingDates.length === 0) return '';
+    const firstMonth = bookingDates[0].toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const lastMonth = bookingDates[bookingDates.length - 1].toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    if (firstMonth === lastMonth) return firstMonth;
+    return `${firstMonth} - ${bookingDates[bookingDates.length - 1].toLocaleDateString('en-US', { month: 'long' })}`;
+  }, [bookingDates]);
 
   const TIME_SLOTS = [
     "10:00 AM",
@@ -805,12 +813,16 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                     )}
 
                     <div className="space-y-6">
-                      {/* Date list horizontal scroll */}
+                      {/* Date list grid (30 days in one go) */}
                       <div className="space-y-2">
                         <label className="text-[10px] font-mono text-slate-400 block tracking-wider font-semibold uppercase">
                           Select Date
                         </label>
-                        <div className="flex gap-2.5 overflow-x-auto pb-3 scrollbar-none">
+                        <div className="text-xs font-bold text-slate-800 flex items-center gap-1.5 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 w-fit mb-2">
+                          <Calendar size={14} className="text-indigo-600 animate-pulse" />
+                          <span>{monthHeader}</span>
+                        </div>
+                        <div className="grid grid-cols-5 sm:grid-cols-6 gap-2">
                           {bookingDates.map((date) => {
                             const dateStr = formatDateValue(date);
                             const isSelected = selectedDate === dateStr;
@@ -822,17 +834,17 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                                   setSelectedDate(dateStr);
                                   setError('');
                                 }}
-                                className={`flex flex-col items-center justify-center p-3 rounded-2xl border min-w-[75px] transition-all cursor-pointer ${
+                                className={`flex flex-col items-center justify-center p-2 rounded-xl border transition-all cursor-pointer ${
                                   isSelected
                                     ? 'bg-slate-900 border-slate-950 text-white shadow-md'
                                     : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300'
                                 }`}
                               >
-                                <span className="text-[9px] font-mono uppercase tracking-wider opacity-65">
+                                <span className="text-[8px] font-mono uppercase tracking-wider opacity-65">
                                   {date.toLocaleDateString('en-US', { weekday: 'short' })}
                                 </span>
-                                <span className="text-lg font-extrabold mt-1 mb-0.5">{date.getDate()}</span>
-                                <span className="text-[9px] font-mono uppercase tracking-wider opacity-65">
+                                <span className="text-base font-extrabold my-0.5">{date.getDate()}</span>
+                                <span className="text-[8px] font-mono uppercase tracking-wider opacity-65">
                                   {date.toLocaleDateString('en-US', { month: 'short' })}
                                 </span>
                               </button>
@@ -937,8 +949,8 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                     <span className="text-[10px] font-mono text-indigo-600 block tracking-wider uppercase font-semibold mb-2">🗓️ Booking Details</span>
                     <p className="text-sm font-semibold text-slate-800">Date: <span className="font-normal text-slate-600">{selectedDate}</span></p>
                     <p className="text-sm font-semibold text-slate-800 mt-1">Time: <span className="font-normal text-slate-600">{selectedTime}</span></p>
-                    <p className="text-sm font-semibold text-slate-800 mt-1 flex items-center gap-1.5">
-                      GMeet Link: <a href="https://meet.google.com/msi-aiml-demo" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline inline-flex items-center gap-0.5">Join Demo Session <ArrowRight size={10} /></a>
+                    <p className="text-sm font-semibold text-slate-800 mt-1">
+                      Meeting: <span className="font-normal text-slate-600 text-xs">Google Meet (Link automatically added to calendar invite)</span>
                     </p>
                   </div>
                   

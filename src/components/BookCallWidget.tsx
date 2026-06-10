@@ -48,6 +48,14 @@ export function BookCallWidget({ source = 'Website', onSuccess }: BookCallWidget
     return date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
   };
 
+  const monthHeader = useMemo(() => {
+    if (bookingDates.length === 0) return '';
+    const firstMonth = bookingDates[0].toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const lastMonth = bookingDates[bookingDates.length - 1].toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    if (firstMonth === lastMonth) return firstMonth;
+    return `${firstMonth} - ${bookingDates[bookingDates.length - 1].toLocaleDateString('en-US', { month: 'long' })}`;
+  }, [bookingDates]);
+
   const handleNextToTime = () => {
     if (!selectedDate) {
       setError('Please select a date first.');
@@ -176,8 +184,12 @@ export function BookCallWidget({ source = 'Website', onSuccess }: BookCallWidget
             )}
 
             {/* Date Grid */}
-            <div className="space-y-2">
-              <div className="grid grid-cols-5 gap-2 max-h-[240px] overflow-y-auto pr-1">
+            <div className="space-y-3">
+              <div className="text-xs font-bold text-slate-800 flex items-center gap-1.5 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 w-fit">
+                <CalendarIcon size={14} className="text-indigo-600 animate-pulse" />
+                <span>{monthHeader}</span>
+              </div>
+              <div className="grid grid-cols-5 sm:grid-cols-6 gap-2">
                 {bookingDates.map((date) => {
                   const dateStr = formatDateValue(date);
                   const isSelected = selectedDate === dateStr;
@@ -403,7 +415,7 @@ export function BookCallWidget({ source = 'Website', onSuccess }: BookCallWidget
               <p className="text-slate-800 font-semibold">Date: <span className="font-normal text-slate-600">{selectedDate}</span></p>
               <p className="text-slate-800 font-semibold">Time: <span className="font-normal text-slate-600">{selectedTime}</span></p>
               <p className="text-slate-800 font-semibold">
-                Google Meet: <a href="https://meet.google.com/msi-aiml-demo" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">Join Live GMeet</a>
+                Meeting: <span className="font-normal text-slate-600">Google Meet (Link automatically added to calendar invite)</span>
               </p>
             </div>
 
