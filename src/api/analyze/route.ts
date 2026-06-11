@@ -67,7 +67,7 @@ function formatIcsDateTime(date: Date): string {
   return `${y}${m}${d}T${h}${min}${s}`;
 }
 
-function generateIcsContent(name: string, email: string, selectedDate: string, selectedTime: string, isDemo: boolean, smtpUser: string): string {
+function generateIcsContent(name: string, email: string, selectedDate: string, selectedTime: string, isDemo: boolean, smtpUser: string, meetLink: string): string {
   const startDate = parseDateTime(selectedDate, selectedTime);
   const durationMinutes = isDemo ? 90 : 30;
   const endDate = new Date(startDate.getTime() + durationMinutes * 60000);
@@ -77,8 +77,10 @@ function generateIcsContent(name: string, email: string, selectedDate: string, s
   const dtStamp = formatIcsDateTime(new Date()) + 'Z';
   const meetingTitle = isDemo ? 'Custom AI Agent Demo - AIMLpartner' : '1-on-1 AI Strategy Session - AIMLpartner';
   const meetingDesc = isDemo 
-    ? `Your 90-minute Custom AI Agent Prototype Walkthrough with AIMLpartner.`
-    : `Your 30-minute AI Strategy Consultation with AIMLpartner.`;
+    ? `Your 90-minute Custom AI Agent Prototype Walkthrough with AIMLpartner.\\nJoin via Google Meet: ${meetLink}`
+    : `Your 30-minute AI Strategy Consultation with AIMLpartner.\\nJoin via Google Meet: ${meetLink}`;
+
+  const counselorEmail = process.env.TO_EMAIL || 'garvitbansal2303@gmail.com';
 
   return [
     'BEGIN:VCALENDAR',
@@ -93,10 +95,10 @@ function generateIcsContent(name: string, email: string, selectedDate: string, s
     `DTEND:${dtEnd}`,
     `SUMMARY:${meetingTitle}`,
     `DESCRIPTION:${meetingDesc}`,
-    'LOCATION:Google Meet',
-    `ORGANIZER;CN="AIMLpartner Counselor":MAILTO:ai.designsbygarvit@gmail.com`,
+    `LOCATION:${meetLink}`,
+    `ORGANIZER;CN="AIMLpartner Counselor":MAILTO:${counselorEmail}`,
     `ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN="${name || 'Visitor'}":MAILTO:${email}`,
-    `ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=FALSE;CN="AIMLpartner Counselor":MAILTO:ai.designsbygarvit@gmail.com`,
+    `ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=FALSE;CN="AIMLpartner Counselor":MAILTO:${counselorEmail}`,
     'STATUS:CONFIRMED',
     'SEQUENCE:0',
     'BEGIN:VALARM',
@@ -952,7 +954,8 @@ Write a brief 1-sentence introduction, then output the complete Google AI Studio
     const smtpPort = Number(process.env.SMTP_PORT) || 587;
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
-    const toEmail = process.env.TO_EMAIL || 'ai.designsbygarvit@gmail.com';
+    const toEmail = process.env.TO_EMAIL || 'garvitbansal2303@gmail.com';
+    const meetLink = process.env.MEETING_LINK || 'https://meet.google.com/qeh-diqr-pek';
 
     if (!smtpUser || !smtpPass) {
       console.warn('[Build Request API] SMTP credentials missing in .env. Logging details.');
@@ -1005,8 +1008,8 @@ Write a brief 1-sentence introduction, then output the complete Google AI Studio
                     <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">${selectedTime || 'To be scheduled'}</td>
                   </tr>
                   <tr>
-                    <td style="padding: 6px 0; font-weight: bold; width: 30%;">Meeting:</td>
-                    <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">Google Meet (Link automatically generated in your calendar event)</td>
+                    <td style="padding: 6px 0; font-weight: bold; width: 30%;">Google Meet:</td>
+                    <td style="padding: 6px 0;"><a href="${meetLink}" style="color: #6366f1; text-decoration: none; font-weight: 600;">Join Live GMeet Session</a></td>
                   </tr>
                 </table>
                 <p style="font-size: 11px; color: #64748b; margin-top: 15px; margin-bottom: 0; font-style: italic;">A separate Google Calendar invitation with details has been sent to your email.</p>
@@ -1066,7 +1069,7 @@ ${systemPromptText}
             </tr>
             <tr>
               <td style="padding: 6px 0; font-weight: bold; width: 30%;">Meet Link:</td>
-              <td style="padding: 6px 0;">Google Meet (Link will generate automatically inside your calendar)</td>
+              <td style="padding: 6px 0;"><a href="${meetLink}">${meetLink}</a></td>
             </tr>
           </table>
 
@@ -1117,7 +1120,7 @@ ${systemPromptText}
     let inviteAttachments: any[] = [];
     if (selectedDate && selectedTime) {
       try {
-        const icsContent = generateIcsContent(name || 'Visitor', email, selectedDate, selectedTime, true, smtpUser);
+        const icsContent = generateIcsContent(name || 'Visitor', email, selectedDate, selectedTime, true, smtpUser, meetLink);
         inviteAttachments.push({
           filename: 'invite.ics',
           content: Buffer.from(icsContent, 'utf-8'),
@@ -1141,7 +1144,7 @@ ${systemPromptText}
     });
     console.log(`[Build Request API] Transmitted successfully to both: ${info.messageId}`);
 
-    res.status(200).json({ status: "sent", messageId: info.messageId });
+    res.status(200).json({ status: "sent", messageId: info.messageId, meetLink });
   } catch (err: any) {
     console.error(`[Build Request API Exception]:`, err);
     res.status(500).json({ error: "Failed to compile AI Studio blueprint or send email: " + err.message });
@@ -1165,7 +1168,8 @@ export async function bookCallHandler(req: Request, res: Response): Promise<void
     const smtpPort = Number(process.env.SMTP_PORT) || 587;
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
-    const toEmail = process.env.TO_EMAIL || 'ai.designsbygarvit@gmail.com';
+    const toEmail = process.env.TO_EMAIL || 'garvitbansal2303@gmail.com';
+    const meetLink = process.env.MEETING_LINK || 'https://meet.google.com/qeh-diqr-pek';
 
     if (!smtpUser || !smtpPass) {
       console.warn('[Book Call API] SMTP credentials missing in .env. Logging details.');
@@ -1216,8 +1220,8 @@ export async function bookCallHandler(req: Request, res: Response): Promise<void
                     <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">${selectedTime} (30-Minute Session)</td>
                   </tr>
                   <tr>
-                    <td style="padding: 6px 0; font-weight: bold; width: 30%;">Meeting:</td>
-                    <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">Google Meet (Link automatically generated in your calendar event)</td>
+                    <td style="padding: 6px 0; font-weight: bold; width: 30%;">Google Meet:</td>
+                    <td style="padding: 6px 0;"><a href="${meetLink}" style="color: #6366f1; text-decoration: none; font-weight: 600;">Join Live GMeet Session</a></td>
                   </tr>
                 </table>
                 <p style="font-size: 11px; color: #64748b; margin-top: 15px; margin-bottom: 0; font-style: italic;">A Google Calendar invitation has been sent to your email.</p>
@@ -1267,7 +1271,7 @@ export async function bookCallHandler(req: Request, res: Response): Promise<void
             </tr>
             <tr>
               <td style="padding: 6px 0; font-weight: bold; width: 30%;">Meet Link:</td>
-              <td style="padding: 6px 0;">Google Meet (Link will generate automatically inside your calendar)</td>
+              <td style="padding: 6px 0;"><a href="${meetLink}">${meetLink}</a></td>
             </tr>
           </table>
 
@@ -1298,7 +1302,7 @@ export async function bookCallHandler(req: Request, res: Response): Promise<void
     let inviteAttachments: any[] = [];
     if (selectedDate && selectedTime) {
       try {
-        const icsContent = generateIcsContent(name || 'Visitor', email, selectedDate, selectedTime, false, smtpUser);
+        const icsContent = generateIcsContent(name || 'Visitor', email, selectedDate, selectedTime, false, smtpUser, meetLink);
         inviteAttachments.push({
           filename: 'invite.ics',
           content: Buffer.from(icsContent, 'utf-8'),
@@ -1322,7 +1326,7 @@ export async function bookCallHandler(req: Request, res: Response): Promise<void
     });
     console.log(`[Book Call API] Booked successfully: ${info.messageId}`);
 
-    res.status(200).json({ status: "sent", messageId: info.messageId });
+    res.status(200).json({ status: "sent", messageId: info.messageId, meetLink });
   } catch (err: any) {
     console.error(`[Book Call API Exception]:`, err);
     res.status(500).json({ error: "Failed to book call: " + err.message });
