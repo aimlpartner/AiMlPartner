@@ -69,11 +69,16 @@ export function Footer() {
               </span>
               info@aimlpartner.com
             </a>
-            <div className="flex items-center gap-3">
-              <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center shrink-0">
+            <div className="flex items-start gap-3">
+              <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
                 <MapPin size={12} className="text-white/60" />
               </span>
-              San Francisco, CA
+              <div className="flex flex-col gap-1 leading-normal pt-1.5">
+                <div>San Francisco, CA</div>
+                <div>New York</div>
+                <div>New Jersey</div>
+                <div>Boulder, Colorado</div>
+              </div>
             </div>
           </div>
         </motion.div>
