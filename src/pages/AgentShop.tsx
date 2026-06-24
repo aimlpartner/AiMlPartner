@@ -42,7 +42,7 @@ export function AgentShop() {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-surface text-ink">
+    <div className="relative min-h-screen bg-surface text-ink">
       {/* Texture Overlays */}
       <div className="grain-overlay"></div>
 

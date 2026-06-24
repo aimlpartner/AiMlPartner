@@ -200,7 +200,7 @@ export function Analyzer() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-surface text-ink font-sans">
+    <div className="relative min-h-screen bg-surface text-ink font-sans">
       {/* Texture Overlays */}
       <div className="grain-overlay"></div>
 

@@ -26,6 +26,9 @@ const AdminDashboard = lazy(() =>
 const Analyzer = lazy(() =>
   import('./pages/Analyzer').then((module) => ({ default: module.Analyzer })),
 );
+const PartnerWaitlist = lazy(() =>
+  import('./pages/PartnerWaitlist').then((module) => ({ default: module.PartnerWaitlist })),
+);
 
 export default function App() {
   const { pathname } = useLocation();
@@ -37,7 +40,7 @@ export default function App() {
   useVisitorTracking();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-sky-50/30 font-sans text-slate-900 selection:bg-slate-200 selection:text-slate-900">
+    <div className="min-h-screen overflow-x-hidden bg-gradient-to-br from-slate-50 to-sky-50/30 font-sans text-slate-900 selection:bg-slate-200 selection:text-slate-900">
       <Navbar />
       
       <Suspense fallback={<div className="px-6 py-16 text-center text-slate-500">Loading page...</div>}>
@@ -51,6 +54,7 @@ export default function App() {
           <Route path="/events" element={<EventsPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/analyzer" element={<Analyzer />} />
+          <Route path="/partner-waitlist" element={<PartnerWaitlist />} />
         </Routes>
       </Suspense>
       

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { WorkflowSimulator } from '../components/WorkflowSimulator';
 import { BookCallWidget } from '../components/BookCallWidget';
+import { motion, AnimatePresence } from 'motion/react';
 
 export function Home() {
   const navigate = useNavigate();
@@ -84,13 +85,13 @@ export function Home() {
   };
 
   return (
-    <div className="relative overflow-x-hidden min-h-screen">
+    <div className="relative min-h-screen">
       {/* Texture Overlays */}
       <div className="grain-overlay"></div>
       <div className="absolute inset-0 bg-architectural-grid opacity-50 pointer-events-none -z-10 h-full"></div>
 
       {/* SECTION 1: IMMERSIVE SPACE HERO */}
-      <section id="audit" className="relative pt-40 pb-32 lg:pt-56 lg:pb-48 px-6 overflow-hidden">
+      <section id="audit" className="relative min-h-screen flex items-start justify-center pt-32 md:pt-40 lg:pt-48 pb-32 px-6 overflow-hidden">
         {/* Hero Background Image & Overlays */}
         <div className="absolute inset-0 z-0">
           {/* Deep Space / Nebula Background representing the "Universe of Data" */}
@@ -103,17 +104,10 @@ export function Home() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-accent/30 md:bg-accent/20 rounded-full blur-[80px] md:blur-[120px] pointer-events-none"></div>
         </div>
 
-        <div className="max-w-[1400px] mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-          {/* Left Content: Typography over Dark Space */}
-          <div className="lg:col-span-7 reveal">
-            <div className="flex items-center gap-3 mb-8 bg-white/10 backdrop-blur-md w-fit px-3 py-1.5 rounded-full border border-white/20 shadow-glow">
-              <div className="w-2 h-2 rounded-full bg-accent animate-pulse-slow"></div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white font-semibold">
-                AI Workforce Partner
-              </span>
-            </div>
-
-            <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-extrabold tracking-tighter leading-[1.05] text-white mb-8 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
+        <div className="max-w-[900px] mx-auto text-center relative z-10 flex flex-col items-center justify-center">
+          {/* Main Content: Centered Typography & Search Bar */}
+          <div className="reveal flex flex-col items-center w-full">
+            <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-extrabold tracking-tighter leading-[1.05] text-white mb-6 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
               Your Team Is Busy. <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-300 italic font-medium pr-2">
                 Your Systems
@@ -121,121 +115,141 @@ export function Home() {
               Shouldn’t Be.
             </h1>
 
-            <p className="text-lg md:text-xl text-white/70 max-w-xl font-medium leading-relaxed">
-              We help growing businesses automate repetitive work, improve customer experience, and build practical AI workflows that save time and increase productivity.
+            <p className="text-xs md:text-sm text-white/50 max-w-lg font-medium leading-relaxed mb-6">
+              Automate repetitive work, improve customer experience, and build practical AI workflows.
             </p>
-          </div>
 
-          {/* Right Content: The Glass Audit Tool floating in space */}
-          <div className="lg:col-span-5 w-full reveal" style={{ transitionDelay: '200ms' }}>
-            <div className="relative bg-surface-glassDark backdrop-blur-2xl p-2.5 rounded-3xl shadow-glass border border-white/20 animate-float-slow group overflow-hidden">
-              {/* Decorative Application Header */}
-              <div className="flex items-center px-4 pt-3 pb-3 mb-1 border-b border-white/10">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-alert/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-success/80"></div>
-                </div>
-              </div>
+            {/* Pill Tab Switcher */}
+            <div className="flex bg-black/50 border border-white/10 rounded-full p-1 mb-6 w-fit mx-auto shadow-inner backdrop-blur-md">
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab('website');
+                  setError('');
+                }}
+                className={`flex items-center gap-1.5 px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer ${
+                  activeTab === 'website'
+                    ? 'bg-white text-ink shadow-md font-extrabold'
+                    : 'text-white/60 hover:text-white'
+                }`}
+              >
+                <i className="ph-bold ph-globe"></i>
+                <span>Website Scan</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab('workflow');
+                  setError('');
+                }}
+                className={`flex items-center gap-1.5 px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer ${
+                  activeTab === 'workflow'
+                    ? 'bg-white text-ink shadow-md font-extrabold'
+                    : 'text-white/60 hover:text-white'
+                }`}
+              >
+                <i className="ph-bold ph-text-align-left"></i>
+                <span>Manual Workflow</span>
+              </button>
+            </div>
 
-              {/* Tabs Minimal (Dark Mode for Glass) */}
-              <div className="flex p-1.5 bg-black/40 rounded-2xl mb-4 relative z-10 mx-2 mt-4 shadow-inner">
-                <div
-                  className={`absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-6px)] bg-white/10 rounded-xl shadow-sm transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) z-0 border border-white/10 backdrop-blur-md ${
-                    activeTab === 'workflow' ? 'translate-x-[calc(100%+6px)]' : 'translate-x-0'
-                  }`}
-                ></div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveTab('website');
-                    setError('');
-                  }}
-                  className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider relative z-10 transition-colors duration-300 ${
-                    activeTab === 'website' ? 'text-white' : 'text-white/50 hover:text-white'
+            {/* Centered Gemini-style Search Bar Container */}
+            <div className="w-full max-w-2xl px-4">
+              <form onSubmit={activeTab === 'website' ? handleWebsiteSubmit : handleWorkflowSubmit} className="relative w-full">
+                {/* Flowing animated gradient border wrapper with dynamic rounding */}
+                <motion.div
+                  layout
+                  transition={{ type: 'spring', stiffness: 220, damping: 28 }}
+                  className={`gemini-search-container p-[1.5px] overflow-hidden ${
+                    activeTab === 'website' ? 'rounded-full' : 'rounded-3xl'
                   }`}
                 >
-                  Website Scan
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveTab('workflow');
-                    setError('');
-                  }}
-                  className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider relative z-10 transition-colors duration-300 ${
-                    activeTab === 'workflow' ? 'text-white' : 'text-white/50 hover:text-white'
-                  }`}
-                >
-                  Manual Workflow
-                </button>
-              </div>
+                  <motion.div
+                    layout
+                    transition={{ type: 'spring', stiffness: 220, damping: 28 }}
+                    className={`flex bg-zinc-900/85 backdrop-blur-md px-5 border border-white/10 ${
+                      activeTab === 'website' 
+                        ? 'rounded-full items-center py-2.5 md:py-3.5' 
+                        : 'rounded-3xl flex-col items-stretch py-4 gap-3'
+                    }`}
+                  >
+                    <AnimatePresence mode="wait">
+                      {activeTab === 'website' ? (
+                        <motion.div
+                          key="website-form"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.18 }}
+                          className="flex items-center w-full"
+                        >
+                          {/* Left Globe Icon */}
+                          <i className="ph-bold ph-globe text-white/50 text-xl mr-3 animate-pulse"></i>
+                          
+                          {/* Input Field */}
+                          <input
+                            type="text"
+                            placeholder="Analyze your company website (e.g. company.com)..."
+                            value={url}
+                            onChange={(e) => setUrl(e.target.value)}
+                            className="flex-1 bg-transparent border-none text-white placeholder-white/40 focus:outline-none focus:ring-0 text-base md:text-lg outline-none pr-2"
+                          />
+
+                          {/* Right Action Button */}
+                          <button
+                            type="submit"
+                            className="bg-white text-ink font-bold px-5 py-2 md:px-7 md:py-2.5 rounded-full hover:bg-white/90 transition-all flex items-center justify-center gap-1.5 shadow-md hover:shadow-lg cursor-pointer text-sm shrink-0 font-display"
+                          >
+                            <span>Analyze</span>
+                            <i className="ph-bold ph-arrow-right text-xs"></i>
+                          </button>
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="workflow-form"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.18 }}
+                          className="flex flex-col gap-3 w-full"
+                        >
+                          {/* Top Line: Icon and Textarea */}
+                          <div className="flex items-start">
+                            <i className="ph-bold ph-text-align-left text-white/50 text-xl mr-3 mt-1.5 animate-pulse"></i>
+                            <textarea
+                              rows={3}
+                              placeholder="Describe your manual workflow bottleneck (e.g., We spend 10 hours a week copying files and records to HubSpot...)"
+                              value={description}
+                              onChange={(e) => setDescription(e.target.value)}
+                              className="flex-1 bg-transparent border-none text-white placeholder-white/40 focus:outline-none focus:ring-0 text-base outline-none resize-none pt-1"
+                              autoFocus
+                            />
+                          </div>
+
+                          {/* Bottom Line: Submit Button right-aligned */}
+                          <div className="flex justify-between items-center border-t border-white/10 pt-3 mt-1">
+                            <span className="text-[10px] font-mono text-white/40">Min. 20 characters</span>
+                            <button
+                              type="submit"
+                              className="bg-white text-ink font-bold px-5 py-2 rounded-full hover:bg-white/90 transition-all flex items-center justify-center gap-1.5 shadow-md hover:shadow-lg cursor-pointer text-sm font-display self-end"
+                            >
+                              <span>Analyze Workflow</span>
+                              <i className="ph-bold ph-arrow-right text-xs"></i>
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                </motion.div>
+              </form>
 
               {/* Error Notice */}
               {error && (
-                <div className="mx-2 mb-4 bg-alert/15 border border-alert/20 text-alert-soft text-xs py-2.5 px-4 rounded-xl">
+                <div className="mt-4 bg-alert/20 border border-alert/30 text-alert-soft text-xs py-2.5 px-4 rounded-xl text-center max-w-md mx-auto shadow-md">
                   {error}
                 </div>
               )}
-
-              {/* Input Area (Responsive Grid Stack) */}
-              <div className="px-5 md:px-6 pb-5 md:pb-6 pt-2 grid relative">
-                {/* Website */}
-                <form
-                  onSubmit={handleWebsiteSubmit}
-                  className={`col-start-1 row-start-1 transition-all duration-500 w-full ${
-                    activeTab === 'website'
-                      ? 'opacity-100 translate-x-0 z-10 pointer-events-auto'
-                      : 'opacity-0 translate-x-[-20px] z-0 pointer-events-none'
-                  }`}
-                >
-                  <label className="block font-mono text-[10px] uppercase text-white/60 mb-2 tracking-[0.2em] font-semibold">
-                    Website Domain
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. company.com (no https or www)"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    className="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 md:py-4 text-base md:text-lg font-display text-white placeholder-white/30 mb-4 focus:border-accent focus:bg-black/50 transition-all shadow-inner outline-none"
-                  />
-                  <button
-                    type="submit"
-                    className="w-full bg-white text-ink font-bold py-3 md:py-4 rounded-xl hover:bg-surface-alt transition-all flex items-center justify-center gap-2 group/btn shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer"
-                  >
-                    Get Your AI Opportunity Report{' '}
-                    <i className="ph-bold ph-arrow-right group-hover/btn:translate-x-1 transition-transform"></i>
-                  </button>
-                </form>
-
-                {/* Workflow */}
-                <form
-                  onSubmit={handleWorkflowSubmit}
-                  className={`col-start-1 row-start-1 transition-all duration-500 w-full ${
-                    activeTab === 'workflow'
-                      ? 'opacity-100 translate-x-0 z-10 pointer-events-auto'
-                      : 'opacity-0 translate-x-[20px] z-0 pointer-events-none'
-                  }`}
-                >
-                  <label className="block font-mono text-[10px] uppercase text-white/60 mb-2 tracking-[0.2em] font-semibold">
-                    Friction Point Description
-                  </label>
-                  <textarea
-                    rows={2}
-                    placeholder="e.g., We spend 10 hrs/week moving data from HubSpot..."
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-sm font-display text-white placeholder-white/30 resize-none mb-4 focus:border-accent focus:bg-black/50 transition-all shadow-inner outline-none"
-                  ></textarea>
-                  <button
-                    type="submit"
-                    className="w-full bg-accent text-white font-bold py-3 md:py-4 rounded-xl hover:bg-accent-hover transition-all flex items-center justify-center gap-2 group/btn shadow-glow cursor-pointer"
-                  >
-                    Get Your AI Opportunity Report{' '}
-                    <i className="ph-bold ph-arrow-right group-hover/btn:translate-x-1 transition-transform"></i>
-                  </button>
-                </form>
-              </div>
             </div>
           </div>
         </div>

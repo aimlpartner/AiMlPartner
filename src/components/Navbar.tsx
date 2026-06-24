@@ -23,10 +23,10 @@ export function Navbar() {
     : 'fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-500';
 
   const containerClass = isScrolled
-    ? 'w-full max-w-[1200px] bg-surface-dark/85 backdrop-blur-xl border border-white/10 shadow-glass rounded-full py-2.5 px-6 md:px-8 flex items-center justify-between text-white transition-all duration-500'
+    ? 'w-full max-w-[1200px] bg-surface-dark/85 backdrop-blur-xl border border-white/10 shadow-glass rounded-full py-2.5 px-6 md:px-8 flex items-center justify-between text-white transition-all duration-500 relative'
     : isHome
-      ? 'w-full bg-transparent border-b border-transparent py-6 px-6 md:px-12 flex items-center justify-between text-white transition-all duration-500'
-      : 'w-full bg-white/80 backdrop-blur-md border-b border-black/5 py-5 px-6 md:px-12 flex items-center justify-between text-ink transition-all duration-500';
+      ? 'w-full bg-transparent border-b border-transparent py-6 px-6 md:px-12 flex items-center justify-between text-white transition-all duration-500 relative'
+      : 'w-full bg-white/80 backdrop-blur-md border-b border-black/5 py-5 px-6 md:px-12 flex items-center justify-between text-ink transition-all duration-500 relative';
 
   const linkClass = isScrolled
     ? 'text-xs uppercase tracking-wider font-semibold text-white/70 hover:text-white hover:bg-white/5 px-3 py-1.5 rounded-full transition-all duration-300'
@@ -105,6 +105,15 @@ export function Navbar() {
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
+
+          {/* Hanging Poppy Sticky Label */}
+          <Link 
+            to="/partner-waitlist"
+            className="absolute -bottom-[21px] left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-500 via-purple-600 to-orange-500 text-white text-[9px] font-black uppercase tracking-[0.25em] px-4 py-1 rounded-b-xl border-x border-b border-white/20 shadow-[0_4px_12px_rgba(236,72,153,0.3)] hover:shadow-[0_4px_20px_rgba(236,72,153,0.6)] animate-pulse hover:scale-105 transition-all duration-300 z-30 cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+            <span>Become a Verified AI/ML Partner →</span>
+          </Link>
         </div>
       </header>
 
