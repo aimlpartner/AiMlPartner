@@ -252,6 +252,28 @@ function parseGeminiJson(rawText) {
   }
 }
 
+const CURRENCIES = {
+  USD: { code: 'USD', symbol: '$', rate: 1.0, locale: 'en-US' },
+  INR: { code: 'INR', symbol: '₹', rate: 83.5, locale: 'en-IN' },
+  EUR: { code: 'EUR', symbol: '€', rate: 0.92, locale: 'de-DE' },
+  GBP: { code: 'GBP', symbol: '£', rate: 0.79, locale: 'en-GB' },
+  JPY: { code: 'JPY', symbol: '¥', rate: 158.0, locale: 'ja-JP' },
+  CNY: { code: 'CNY', symbol: '¥', rate: 7.25, locale: 'zh-CN' },
+  AUD: { code: 'AUD', symbol: 'A$', rate: 1.50, locale: 'en-AU' },
+  CAD: { code: 'CAD', symbol: 'C$', rate: 1.37, locale: 'en-CA' },
+};
+
+function formatCurrencyValue(valInUsd, currencyCode) {
+  const config = CURRENCIES[currencyCode] || CURRENCIES.USD;
+  const converted = valInUsd * config.rate;
+  return new Intl.NumberFormat(config.locale, {
+    style: 'currency',
+    currency: config.code,
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0
+  }).format(converted);
+}
+
 async function startServer() {
   const app = express();
 
@@ -481,7 +503,7 @@ JSON SCHEMA STRUCTURE:
   });
 
   // Compiler helper for in-memory PDF
-  async function generatePdfReport(data, leadEmail, leadName, leadCompany) {
+  async function generatePdfReport(data, leadEmail, leadName, leadCompany, currencyCode = 'USD') {
     const PDFDocument = (await import('pdfkit')).default;
     return new Promise((resolve, reject) => {
       try {
@@ -518,7 +540,7 @@ JSON SCHEMA STRUCTURE:
           .text(`- AI Readiness Score: ${data.readinessScore} / 100 (${data.readinessTier} Tier)`)
           .text(`- Weekly Manual Overhead Drag: ${data.internalDragHours} Hours`)
           .text(`- AI Reclaimable Efficiency Time: ${data.reclaimedTimeHours} Hours per Week`)
-          .text(`- Projected Annual Reclaimed Capital ROI: $${data.annualReclaimedROI.toLocaleString()}`);
+          .text(`- Projected Annual Reclaimed Capital ROI: ${formatCurrencyValue(data.annualReclaimedROI, currencyCode)}`);
         doc.moveDown(1.5);
 
         doc.fillColor('#0f172a').fontSize(14).font('Helvetica-Bold').text('Tactical Departmental Playbooks');
@@ -548,7 +570,7 @@ JSON SCHEMA STRUCTURE:
             .text(`- Complexity: ${dept.playbook.complexity}`)
             .text(`- Duration: ${dept.playbook.timeline}`)
             .text(`- Goal Success Metric: ${dept.playbook.successMetrics}`)
-            .text(`- Projected ROI: $${dept.playbook.roi.toLocaleString()}`);
+            .text(`- Projected ROI: ${formatCurrencyValue(dept.playbook.roi, currencyCode)}`);
           doc.moveDown(0.4);
 
           doc.fillColor('#1d4ed8').fontSize(10).font('Helvetica-Bold').text('AIMLpartner Proposed Service Offering:');
@@ -588,15 +610,15 @@ JSON SCHEMA STRUCTURE:
   // Register email POST route
   app.post('/api/email-report', async (req, res) => {
     const nodemailer = (await import('nodemailer')).default;
-    const { email, name, company, analysisResult } = req.body;
+    const { email, name, company, analysisResult, currencyCode = 'USD' } = req.body;
 
     if (!email || !analysisResult) {
       return res.status(400).json({ error: "Missing metadata" });
     }
 
     try {
-      console.log(`[Email API Prod] Compiling PDF Buffer...`);
-      const pdfBuffer = await generatePdfReport(analysisResult, email, name || "Visitor", company || "N/A");
+      console.log(`[Email API Prod] Compiling PDF Buffer for ${analysisResult.businessName} in ${currencyCode}...`);
+      const pdfBuffer = await generatePdfReport(analysisResult, email, name || "Visitor", company || "N/A", currencyCode);
 
       const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
       const smtpPort = Number(process.env.SMTP_PORT) || 587;
@@ -649,7 +671,7 @@ JSON SCHEMA STRUCTURE:
                       </td>
                       <td style="width: 50%; text-align: right; vertical-align: middle; border-left: 2px solid #e2e8f0; padding-left: 15px;">
                         <span style="font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 5px;">Projected Reclaimable ROI</span>
-                        <span style="font-size: 28px; font-weight: 800; color: #16a34a; display: block;">$${analysisResult.annualReclaimedROI.toLocaleString()}</span>
+                        <span style="font-size: 28px; font-weight: 800; color: #16a34a; display: block;">${formatCurrencyValue(analysisResult.annualReclaimedROI, currencyCode)}</span>
                         <span style="font-size: 12px; color: #64748b; display: block; margin-top: 5px;">${analysisResult.reclaimedTimeHours} hours saved / week</span>
                       </td>
                     </tr>
@@ -729,7 +751,7 @@ JSON SCHEMA STRUCTURE:
               </tr>
               <tr>
                 <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold;">Projected Annual ROI</td>
-                <td style="padding: 8px; border: 1px solid #e2e8f0; color: #16a34a; font-weight: bold;">$${analysisResult.annualReclaimedROI.toLocaleString()}</td>
+                <td style="padding: 8px; border: 1px solid #e2e8f0; color: #16a34a; font-weight: bold;">${formatCurrencyValue(analysisResult.annualReclaimedROI, currencyCode)}</td>
               </tr>
               <tr style="background-color: #f8fafc;">
                 <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold;">Weekly Hours Drag</td>

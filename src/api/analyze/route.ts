@@ -5,6 +5,7 @@ import PDFDocument from 'pdfkit';
 import nodemailer from 'nodemailer';
 
 import path from 'path';
+import { formatCurrencyValue } from '../../lib/currencies';
 
 // Resolve and load .env using the absolute working directory path
 dotenv.config({ path: path.join(process.cwd(), '.env') });
@@ -570,7 +571,7 @@ JSON SCHEMA STRUCTURE:
 /**
  * Compiles in-memory PDF document using pdfkit.
  */
-function generatePdfReport(data: any, leadEmail: string, leadName: string, leadCompany: string): Promise<Buffer> {
+function generatePdfReport(data: any, leadEmail: string, leadName: string, leadCompany: string, currencyCode = 'USD'): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     try {
       const doc = new PDFDocument({ margin: 50 });
@@ -611,7 +612,7 @@ function generatePdfReport(data: any, leadEmail: string, leadName: string, leadC
         .text(`- AI Readiness Score: ${data.readinessScore} / 100 (${data.readinessTier} Tier)`)
         .text(`- Weekly Manual Overhead Drag: ${data.internalDragHours} Hours`)
         .text(`- AI Reclaimable Efficiency Time: ${data.reclaimedTimeHours} Hours per Week`)
-        .text(`- Projected Annual Reclaimed Capital ROI: $${data.annualReclaimedROI.toLocaleString()}`);
+        .text(`- Projected Annual Reclaimed Capital ROI: ${formatCurrencyValue(data.annualReclaimedROI, currencyCode)}`);
       doc.moveDown(1.5);
 
       // Departments Playbooks
@@ -642,7 +643,7 @@ function generatePdfReport(data: any, leadEmail: string, leadName: string, leadC
           .text(`- Complexity: ${dept.playbook.complexity}`)
           .text(`- Duration: ${dept.playbook.timeline}`)
           .text(`- Goal Success Metric: ${dept.playbook.successMetrics}`)
-          .text(`- Projected ROI: $${dept.playbook.roi.toLocaleString()}`);
+          .text(`- Projected ROI: ${formatCurrencyValue(dept.playbook.roi, currencyCode)}`);
         doc.moveDown(0.4);
 
         doc.fillColor('#1d4ed8').fontSize(10).font('Helvetica-Bold').text('AIMLpartner Proposed Service Offering:');
@@ -685,7 +686,7 @@ function generatePdfReport(data: any, leadEmail: string, leadName: string, leadC
  * Controller to generate proper PDF and email it directly.
  */
 export async function emailReportHandler(req: Request, res: Response): Promise<void> {
-  const { email, name, company, analysisResult } = req.body;
+  const { email, name, company, analysisResult, currencyCode = 'USD' } = req.body;
 
   if (!email || !analysisResult) {
     res.status(400).json({ error: "Missing required e-mail lead metadata or analysis contents." });
@@ -693,8 +694,8 @@ export async function emailReportHandler(req: Request, res: Response): Promise<v
   }
 
   try {
-    console.log(`[Email API] Generating PDF report buffer for ${analysisResult.businessName}...`);
-    const pdfBuffer = await generatePdfReport(analysisResult, email, name || "Visitor", company || "N/A");
+    console.log(`[Email API] Generating PDF report buffer for ${analysisResult.businessName} in ${currencyCode}...`);
+    const pdfBuffer = await generatePdfReport(analysisResult, email, name || "Visitor", company || "N/A", currencyCode);
 
     const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
     const smtpPort = Number(process.env.SMTP_PORT) || 587;
@@ -755,7 +756,7 @@ export async function emailReportHandler(req: Request, res: Response): Promise<v
                     </td>
                     <td style="width: 50%; text-align: right; vertical-align: middle; border-left: 2px solid #e2e8f0; padding-left: 15px;">
                       <span style="font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 5px;">Projected Reclaimable ROI</span>
-                      <span style="font-size: 28px; font-weight: 800; color: #16a34a; display: block;">$${analysisResult.annualReclaimedROI.toLocaleString()}</span>
+                      <span style="font-size: 28px; font-weight: 800; color: #16a34a; display: block;">${formatCurrencyValue(analysisResult.annualReclaimedROI, currencyCode)}</span>
                       <span style="font-size: 12px; color: #64748b; display: block; margin-top: 5px;">${analysisResult.reclaimedTimeHours} hours saved / week</span>
                     </td>
                   </tr>
@@ -835,7 +836,7 @@ export async function emailReportHandler(req: Request, res: Response): Promise<v
             </tr>
             <tr>
               <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold;">Projected Annual ROI</td>
-              <td style="padding: 8px; border: 1px solid #e2e8f0; color: #16a34a; font-weight: bold;">$${analysisResult.annualReclaimedROI.toLocaleString()}</td>
+              <td style="padding: 8px; border: 1px solid #e2e8f0; color: #16a34a; font-weight: bold;">${formatCurrencyValue(analysisResult.annualReclaimedROI, currencyCode)}</td>
             </tr>
             <tr style="background-color: #f8fafc;">
               <td style="padding: 8px; border: 1px solid #e2e8f0; font-weight: bold;">Weekly Hours Drag</td>

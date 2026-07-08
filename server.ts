@@ -29,10 +29,11 @@ async function startServer() {
     res.status(200).json({ status: 'ok' });
   });
 
-  // Always prefer serving the built output when available.
+  // Always prefer serving the built output when available in production.
   // Hostinger sometimes doesn't set NODE_ENV=production, which would otherwise
   // cause Vite middleware to start and potentially crash.
-  if (fs.existsSync(distIndexPath)) {
+  const isDev = process.env.NODE_ENV !== 'production';
+  if (!isDev && fs.existsSync(distIndexPath)) {
     app.use(express.static(distPath));
     app.get('*', (_req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));

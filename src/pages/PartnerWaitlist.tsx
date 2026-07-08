@@ -54,7 +54,7 @@ export function PartnerWaitlist() {
       setIsSuccess(true);
     } catch (err: any) {
       console.error('[Waitlist Registration Error]:', err);
-      setError('Failed to submit application. Please check your network and try again.');
+      setError('Something went wrong. Please check your connection and try again.');
     } finally {
       setIsLoading(false);
     }

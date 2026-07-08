@@ -86,8 +86,8 @@ export function Navbar() {
 
           {/* CTA & Mobile Toggle */}
           <div className="flex items-center gap-3">
-            <Link to="/analyzer" className={ctaClass}>
-              <span>AI Analyzer</span>
+            <Link to="/partner-waitlist" className={ctaClass}>
+              <span>Join Waitlist</span>
               <ArrowRight size={13} className="group-hover/cta:translate-x-0.5 transition-transform" />
             </Link>
 
@@ -181,11 +181,11 @@ export function Navbar() {
               <ArrowRight size={14} className="opacity-40" />
             </Link>
             <Link
-              to="/analyzer"
+              to="/partner-waitlist"
               className="mt-4 bg-accent text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl text-center shadow-glow hover:bg-accent-hover transition-colors flex items-center justify-center gap-2"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Run AI Audit</span>
+              <span>Join Waitlist</span>
               <ArrowRight size={14} />
             </Link>
           </motion.div>

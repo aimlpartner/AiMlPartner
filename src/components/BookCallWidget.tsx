@@ -125,7 +125,7 @@ export function BookCallWidget({ source = 'Website', onSuccess }: BookCallWidget
       }
     } catch (err: any) {
       console.error('[Call Booking Form Error]:', err);
-      setError(err.message || 'Something went wrong. Please try again.');
+      setError('Something went wrong. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }

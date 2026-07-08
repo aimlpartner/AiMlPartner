@@ -7,11 +7,13 @@ import { Sparkles, Brain, Cpu, Lock, ArrowRight, Loader2, X } from 'lucide-react
 import { motion, AnimatePresence } from 'motion/react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import { detectCurrency } from '../lib/currencies';
 
 export function Analyzer() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<any | null>(null);
   const [error, setError] = useState('');
+  const [selectedCurrency, setSelectedCurrency] = useState(detectCurrency());
 
   // Lead-capture gating state
   const [emailCaptured, setEmailCaptured] = useState(false);
@@ -112,9 +114,9 @@ export function Analyzer() {
     } catch (err: any) {
       console.error('[Analyzer Client Error]:', err);
       if (err.message?.includes('Failed to fetch') || err.message?.includes('NetworkError')) {
-        setError('Could not connect to the analysis server. Please ensure the server is running and try again.');
+        setError('Unable to connect. Please check your network connection and try again.');
       } else {
-        setError(err.message || 'Diagnostic failed. Please check your inputs and try again.');
+        setError('Something went wrong. Please try again.');
       }
     } finally {
       setIsLoading(false);
@@ -177,7 +179,8 @@ export function Analyzer() {
           email: leadForm.email.trim(),
           name: leadForm.name.trim(),
           company: leadForm.company.trim(),
-          analysisResult: result
+          analysisResult: result,
+          currencyCode: selectedCurrency
         })
       });
 
@@ -325,6 +328,8 @@ export function Analyzer() {
                   leadEmail={leadForm.email}
                   leadName={leadForm.name}
                   leadCompany={leadForm.company}
+                  selectedCurrency={selectedCurrency}
+                  setSelectedCurrency={setSelectedCurrency}
                 />
               </div>
 
