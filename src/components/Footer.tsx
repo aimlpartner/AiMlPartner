@@ -48,7 +48,7 @@ export function Footer() {
         >
           <Link to="/" className="flex items-center group cursor-pointer" aria-label="AIMLPartner Home">
             <img
-              src="https://darkgray-finch-838850.hostingersite.com/wp-content/uploads/2026/04/WhatsApp_Image_2026-04-28_at_12.18.40_AM-removebg-preview.png"
+              src="/aimlpartner_logo.png"
               alt="AIMLPartner Logo"
               className="h-11 md:h-13 w-auto object-contain brightness-0 invert transition-all duration-300 group-hover:scale-105"
               referrerPolicy="no-referrer"

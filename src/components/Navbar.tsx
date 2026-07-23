@@ -53,7 +53,7 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center group cursor-pointer animate-fade-in" aria-label="AIMLPartner Home">
             <img
-              src="https://darkgray-finch-838850.hostingersite.com/wp-content/uploads/2026/04/WhatsApp_Image_2026-04-28_at_12.18.40_AM-removebg-preview.png"
+              src="/aimlpartner_logo.png"
               alt="AIMLPartner Logo"
               className={`h-9 md:h-11 w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
                 isScrolled || isHome ? 'brightness-0 invert' : 'brightness-0'
