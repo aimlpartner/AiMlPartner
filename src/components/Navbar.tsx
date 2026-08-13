@@ -67,27 +67,24 @@ export function Navbar() {
             <Link to="/agent-studio" className={linkClass}>
               Studio
             </Link>
-            <Link to="/agent-shop" className={linkClass}>
-              Shop
+            <Link to="/pricing" className={linkClass}>
+              Pricing
             </Link>
             <Link to="/low-code-pods" className={linkClass}>
               Services
             </Link>
-            <Link to="/agentforce-services" className={linkClass}>
-              Salesforce
-            </Link>
             <Link to="/team" className={linkClass}>
               Team
             </Link>
-            <Link to="/events" className={linkClass}>
-              Events
+            <Link to="/partner-waitlist" className={linkClass}>
+              Partners
             </Link>
           </nav>
 
           {/* CTA & Mobile Toggle */}
           <div className="flex items-center gap-3">
-            <Link to="/partner-waitlist" className={ctaClass}>
-              <span>Join Waitlist</span>
+            <Link to="/analyzer" className={ctaClass}>
+              <span>Run AI Scan</span>
               <ArrowRight size={13} className="group-hover/cta:translate-x-0.5 transition-transform" />
             </Link>
 
@@ -105,15 +102,6 @@ export function Navbar() {
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
-
-          {/* Hanging Poppy Sticky Label */}
-          <Link 
-            to="/partner-waitlist"
-            className="absolute -bottom-[21px] left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-500 via-purple-600 to-orange-500 text-white text-[9px] font-black uppercase tracking-[0.25em] px-4 py-1 rounded-b-xl border-x border-b border-white/20 shadow-[0_4px_12px_rgba(236,72,153,0.3)] hover:shadow-[0_4px_20px_rgba(236,72,153,0.6)] animate-pulse hover:scale-105 transition-all duration-300 z-30 cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
-            <span>Become a Verified AI/ML Partner →</span>
-          </Link>
         </div>
       </header>
 
@@ -141,11 +129,11 @@ export function Navbar() {
               <ArrowRight size={14} className="opacity-40" />
             </Link>
             <Link
-              to="/agent-shop"
+              to="/pricing"
               className="text-sm font-semibold text-white/80 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Agent Shop</span>
+              <span>Pricing</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
             <Link
@@ -157,14 +145,6 @@ export function Navbar() {
               <ArrowRight size={14} className="opacity-40" />
             </Link>
             <Link
-              to="/agentforce-services"
-              className="text-sm font-semibold text-white/80 hover:text-white py-2 transition-colors flex items-center justify-between"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <span>Salesforce Services</span>
-              <ArrowRight size={14} className="opacity-40" />
-            </Link>
-            <Link
               to="/team"
               className="text-sm font-semibold text-white/80 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
@@ -173,19 +153,19 @@ export function Navbar() {
               <ArrowRight size={14} className="opacity-40" />
             </Link>
             <Link
-              to="/events"
+              to="/partner-waitlist"
               className="text-sm font-semibold text-white/80 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Events & Webinars</span>
+              <span>Partner Program</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
             <Link
-              to="/partner-waitlist"
+              to="/analyzer"
               className="mt-4 bg-accent text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl text-center shadow-glow hover:bg-accent-hover transition-colors flex items-center justify-center gap-2"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Join Waitlist</span>
+              <span>Run AI Scan</span>
               <ArrowRight size={14} />
             </Link>
           </motion.div>

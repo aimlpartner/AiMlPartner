@@ -52,7 +52,7 @@ function AgentXRay() {
           <p><strong className="text-slate-900">Subject:</strong> Need help scaling our outbound</p>
           <p className="pt-2">Hi team,</p>
           <p>
-            We're currently doing about $5M ARR but our SDR team is drowning in manual lead research. We use Salesforce and Outreach, but reps spend 30% of their time just looking up LinkedIn profiles and company news.
+            We're currently doing about $5M ARR but our SDR team is drowning in manual lead research. We use HubSpot and Outreach, but reps spend 30% of their time just looking up LinkedIn profiles and company news.
           </p>
           <p>
             Looking to automate this so they can just focus on calling. Budget is around $10k/mo if we can prove ROI. Let me know if you can help.
@@ -85,7 +85,7 @@ function AgentXRay() {
     `}
     <span className="text-sky-400 font-semibold">"revenue_arr"</span>{`: `}<span className="text-amber-400">5000000</span>{`,
     `}
-    <span className="text-sky-400 font-semibold">"current_stack"</span>{`: [`}<span className="text-white">"Salesforce"</span>{`, `}<span className="text-white">"Outreach"</span>{`]
+    <span className="text-sky-400 font-semibold">"current_stack"</span>{`: [`}<span className="text-white">"HubSpot"</span>{`, `}<span className="text-white">"Outreach"</span>{`]
   },
   `}
   <span className="text-sky-400 font-semibold">"pain_point"</span>{`: `}<span className="text-white">"Manual SDR research"</span>{`,

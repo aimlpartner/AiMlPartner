@@ -255,126 +255,183 @@ export function Home() {
         </div>
       </section>
 
+      {/* SECTION 1.5: SMB TICKER */}
+      <section className="py-8 bg-surface-alt border-y border-black/5 overflow-hidden relative z-20 shadow-[0_10px_30px_rgba(0,0,0,0.02)]">
+        <style>{`
+          @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-marquee {
+            animation: marquee-scroll 40s linear infinite;
+            display: inline-flex;
+            white-space: nowrap;
+          }
+          .animate-marquee:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
+        
+        <div className="max-w-[1400px] mx-auto px-6 mb-5 flex justify-center text-center">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-light font-bold">
+            We build automation systems for
+          </span>
+        </div>
+
+        {/* Ticker Container */}
+        <div className="relative w-full overflow-hidden flex">
+          {/* Gradient masks for smooth fading on edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-surface-alt to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-surface-alt to-transparent z-10 pointer-events-none"></div>
+          
+          {/* Marquee Track (Double content for seamless loop) */}
+          <div className="animate-marquee flex items-center gap-4 pl-4 text-ink font-display font-semibold text-sm md:text-base">
+            {/* Set 1 */}
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-blue-200 transition-all cursor-default"><i className="ph-fill ph-house text-blue-500 text-lg"></i> Roofers</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-cyan-200 transition-all cursor-default"><i className="ph-fill ph-drop text-cyan-500 text-lg"></i> Plumbers</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-yellow-200 transition-all cursor-default"><i className="ph-fill ph-lightning text-yellow-500 text-lg"></i> Electricians</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-red-200 transition-all cursor-default"><i className="ph-fill ph-car text-red-500 text-lg"></i> Auto Repair</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-green-200 transition-all cursor-default"><i className="ph-fill ph-plant text-green-500 text-lg"></i> Landscapers</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-purple-200 transition-all cursor-default"><i className="ph-fill ph-broom text-purple-500 text-lg"></i> Cleaning Services</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-orange-200 transition-all cursor-default"><i className="ph-fill ph-bug text-orange-500 text-lg"></i> Pest Control</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-stone-200 transition-all cursor-default"><i className="ph-fill ph-hammer text-stone-500 text-lg"></i> Contractors</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-teal-200 transition-all cursor-default"><i className="ph-fill ph-tooth text-teal-500 text-lg"></i> Dentists</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-indigo-200 transition-all cursor-default"><i className="ph-fill ph-truck text-indigo-500 text-lg"></i> Movers</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-slate-200 transition-all cursor-default"><i className="ph-fill ph-buildings text-slate-500 text-lg"></i> Property Managers</div>
+            
+            {/* Set 2 (Exact Duplicate for Loop) */}
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-blue-200 transition-all cursor-default"><i className="ph-fill ph-house text-blue-500 text-lg"></i> Roofers</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-cyan-200 transition-all cursor-default"><i className="ph-fill ph-drop text-cyan-500 text-lg"></i> Plumbers</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-yellow-200 transition-all cursor-default"><i className="ph-fill ph-lightning text-yellow-500 text-lg"></i> Electricians</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-red-200 transition-all cursor-default"><i className="ph-fill ph-car text-red-500 text-lg"></i> Auto Repair</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-green-200 transition-all cursor-default"><i className="ph-fill ph-plant text-green-500 text-lg"></i> Landscapers</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-purple-200 transition-all cursor-default"><i className="ph-fill ph-broom text-purple-500 text-lg"></i> Cleaning Services</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-orange-200 transition-all cursor-default"><i className="ph-fill ph-bug text-orange-500 text-lg"></i> Pest Control</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-stone-200 transition-all cursor-default"><i className="ph-fill ph-hammer text-stone-500 text-lg"></i> Contractors</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-teal-200 transition-all cursor-default"><i className="ph-fill ph-tooth text-teal-500 text-lg"></i> Dentists</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-indigo-200 transition-all cursor-default"><i className="ph-fill ph-truck text-indigo-500 text-lg"></i> Movers</div>
+            <div className="flex items-center gap-2 bg-white border border-black/5 px-5 py-2.5 rounded-full shadow-sm hover:shadow-md hover:border-slate-200 transition-all cursor-default"><i className="ph-fill ph-buildings text-slate-500 text-lg"></i> Property Managers</div>
+          </div>
+        </div>
+      </section>
+
       {/* SECTION 2: PROBLEM & SOLUTION (Asymmetric Bento Grid - Light Theme) */}
       <section id="bottlenecks" className="py-24 md:py-32 px-6 relative z-10 -mt-10 bg-surface rounded-t-[3rem]">
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 reveal pt-10">
             <div className="max-w-2xl">
               <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">
-                Common Business Problems
+                Why We Exist
               </span>
-              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink leading-[1.1]">
-                Do any of these <br className="hidden md:block" />
-                sound familiar?
+              <h2 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight text-ink leading-[1.1] text-balance">
+                Running a business is hard. Your systems shouldn't be.
               </h2>
             </div>
             <p className="text-ink-light max-w-md font-medium leading-relaxed pb-2">
-              The market doesn't trust another AI consultant. We help growing businesses solve painful workflow problems directly, eliminate repetitive work, and build a digital workforce.
+              You don't need another consultant handing you a 50-page report. You need solutions that work. We help businesses automate repetitive tasks, save time, and increase profits—without needing an IT degree.
             </p>
           </div>
 
-          {/* Bento Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            {/* Large Feature Card */}
-            <div className="md:col-span-8 bg-white border border-black/5 rounded-3xl p-8 md:p-12 flex flex-col justify-between tangible-card reveal shadow-editorial">
-              <div className="grid md:grid-cols-2 gap-8 h-full">
-                <div className="flex flex-col justify-between">
-                  <div>
-                    <div className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-alert font-bold mb-6 bg-alert-soft px-2.5 py-1.5 rounded-md border border-alert-border/50">
-                      <i className="ph-fill ph-warning-circle text-sm"></i> The Friction
-                    </div>
-                    <h3 className="font-display text-2xl font-bold mb-4 tracking-tight">
-                      Leads go unanswered & customer inquiries pile up
-                    </h3>
-                    <p className="text-ink-light text-sm leading-relaxed">
-                      Inquiries sit in shared inboxes or contact forms for hours, while team members are busy. Prospects move on to competitors before anyone responds.
-                    </p>
-                  </div>
+          {/* Simple 3-Column Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Card 1: Leads */}
+            <div className="bg-white border border-black/5 rounded-3xl p-8 tangible-card reveal shadow-editorial flex flex-col h-full">
+              {/* Problem */}
+              <div className="mb-6">
+                <div className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-alert font-bold mb-4 bg-alert-soft px-2.5 py-1.5 rounded-md border border-alert-border/50">
+                  <i className="ph-fill ph-warning-circle text-sm"></i> The Problem
                 </div>
-                <div className="flex flex-col justify-between relative">
-                  <div className="hidden md:block absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-black/10 to-transparent -ml-4"></div>
-                  <div className="pt-6 md:pt-0">
-                    <div className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-success font-bold mb-6 bg-success-soft px-2.5 py-1.5 rounded-md border border-success-border/50">
-                      <i className="ph-fill ph-cpu text-sm"></i> The Solution
-                    </div>
-                    <h3 className="font-display text-2xl font-bold mb-4 tracking-tight">
-                      Instant Automated Response & Triage
-                    </h3>
-                    <p className="text-ink-light text-sm leading-relaxed">
-                      AI workflows instantly qualify incoming leads, sync them with your database, and route high-value prospects to the right team members.
-                    </p>
-                  </div>
+                <h3 className="font-display text-xl font-bold mb-3 tracking-tight text-ink">
+                  Leads go cold & inquiries pile up
+                </h3>
+                <p className="text-ink-light text-sm leading-relaxed">
+                  New customer inquiries sit in your inbox for hours while your team is busy. By the time you reply, they've already gone to a competitor.
+                </p>
+              </div>
+
+              {/* Divider */}
+              <div className="w-full h-px bg-black/5 my-4"></div>
+
+              {/* Solution */}
+              <div className="mt-auto pt-4">
+                <div className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-success font-bold mb-4 bg-success-soft px-2.5 py-1.5 rounded-md border border-success-border/50">
+                  <i className="ph-fill ph-cpu text-sm"></i> How We Fix It
                 </div>
+                <h3 className="font-display text-xl font-bold mb-3 tracking-tight text-ink">
+                  Instant, intelligent replies
+                </h3>
+                <p className="text-ink-light text-sm leading-relaxed">
+                  We set up AI agents that instantly answer questions, qualify leads, and book meetings on your calendar—24/7, without any human effort.
+                </p>
               </div>
             </div>
 
-            {/* Vertical Card (Dark with Space overlay) */}
+            {/* Card 2: Manual Tasks */}
             <div
-              className="md:col-span-4 bg-ink text-surface rounded-3xl p-8 md:p-10 flex flex-col justify-between relative overflow-hidden tangible-card reveal shadow-editorial"
+              className="bg-white border border-black/5 rounded-3xl p-8 tangible-card reveal shadow-editorial flex flex-col h-full"
               style={{ transitionDelay: '100ms' }}
             >
-              {/* Space Nebula Background */}
-              <img
-                src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop"
-                className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen pointer-events-none"
-                alt="Cosmic Data Infrastructure"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-transparent pointer-events-none"></div>
-
-              <div className="relative z-10 mb-12">
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/50 mb-4 block font-bold">
-                  The Friction
+              {/* Problem */}
+              <div className="mb-6">
+                <div className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-alert font-bold mb-4 bg-alert-soft px-2.5 py-1.5 rounded-md border border-alert-border/50">
+                  <i className="ph-fill ph-warning-circle text-sm"></i> The Problem
                 </div>
-                <h3 className="font-display text-2xl font-bold mb-4 leading-tight text-white tracking-tight">
-                  Employees repeat the same manual tasks
+                <h3 className="font-display text-xl font-bold mb-3 tracking-tight text-ink">
+                  Your team is stuck doing manual data entry
                 </h3>
-                <p className="text-surface-alt/70 text-sm leading-relaxed">
-                  Team members waste hours copy-pasting data, sending repetitive email templates, and performing routine data entry across multiple apps, causing inconsistent productivity.
+                <p className="text-ink-light text-sm leading-relaxed">
+                  Your employees waste countless hours copy-pasting information from emails into spreadsheets or your CRM, slowing down real work.
                 </p>
               </div>
 
-              <div className="relative z-10 bg-white/10 rounded-xl p-5 border border-white/10 backdrop-blur-md mt-auto shadow-inner">
-                <div className="flex items-center gap-2 text-success bg-white w-fit px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider mb-3 rounded shadow-sm">
-                  <i className="ph-fill ph-lightning"></i> The Solution
+              {/* Divider */}
+              <div className="w-full h-px bg-black/5 my-4"></div>
+
+              {/* Solution */}
+              <div className="mt-auto pt-4">
+                <div className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-success font-bold mb-4 bg-success-soft px-2.5 py-1.5 rounded-md border border-success-border/50">
+                  <i className="ph-fill ph-lightning text-sm"></i> How We Fix It
                 </div>
-                <p className="text-sm text-white/90 font-medium leading-relaxed">
-                  Automate document generation, email sorting, and task handoffs so your team can focus on client-facing work.
+                <h3 className="font-display text-xl font-bold mb-3 tracking-tight text-ink">
+                  We automate the busywork
+                </h3>
+                <p className="text-ink-light text-sm leading-relaxed">
+                  Invoices, data entry, and email sorting happen instantly in the background so your team can focus on client-facing tasks.
                 </p>
               </div>
             </div>
 
-            {/* Wide Horizontal Card */}
+            {/* Card 3: Messy Data */}
             <div
-              className="md:col-span-12 bg-white border border-black/5 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 tangible-card reveal shadow-editorial"
+              className="bg-white border border-black/5 rounded-3xl p-8 tangible-card reveal shadow-editorial flex flex-col h-full"
               style={{ transitionDelay: '200ms' }}
             >
-              <div className="md:w-[45%]">
+              {/* Problem */}
+              <div className="mb-6">
                 <div className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-alert font-bold mb-4 bg-alert-soft px-2.5 py-1.5 rounded-md border border-alert-border/50">
-                  <i className="ph-fill ph-database text-sm"></i> The Friction
+                  <i className="ph-fill ph-warning-circle text-sm"></i> The Problem
                 </div>
-                <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                  Information lives in multiple systems & CRM data is outdated
+                <h3 className="font-display text-xl font-bold mb-3 tracking-tight text-ink">
+                  Your information is messy and scattered
                 </h3>
                 <p className="text-ink-light text-sm leading-relaxed">
-                  Customer info, operational data, and task lists are scattered across different platforms with no single source of truth, making processes depend entirely on specific employees.
+                  Customer details are in emails, spreadsheets, and different apps. Nobody knows what the most up-to-date information is, leading to mistakes.
                 </p>
               </div>
 
-              <div className="hidden md:flex w-12 h-12 rounded-full bg-surface-alt shadow-inner border border-black/5 items-center justify-center shrink-0 z-10 relative">
-                <i className="ph-bold ph-arrow-right text-ink-light text-lg"></i>
-                <div className="absolute w-24 h-px bg-gradient-to-r from-transparent to-black/10 right-full top-1/2"></div>
-                <div className="absolute w-24 h-px bg-gradient-to-l from-transparent to-black/10 left-full top-1/2"></div>
-              </div>
+              {/* Divider */}
+              <div className="w-full h-px bg-black/5 my-4"></div>
 
-              <div className="md:w-[45%]">
+              {/* Solution */}
+              <div className="mt-auto pt-4">
                 <div className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-success font-bold mb-4 bg-success-soft px-2.5 py-1.5 rounded-md border border-success-border/50">
-                  <i className="ph-fill ph-arrows-clockwise text-sm"></i> The Solution
+                  <i className="ph-fill ph-arrows-clockwise text-sm"></i> How We Fix It
                 </div>
-                <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                  System-Wide Synchronization
+                <h3 className="font-display text-xl font-bold mb-3 tracking-tight text-ink">
+                  Everything connected, automatically
                 </h3>
                 <p className="text-ink-light text-sm leading-relaxed">
-                  Sync data automatically between your CRM, email, and internal databases so information is always clean, compliant, and up-to-date.
+                  We link your tools together. When an email comes in, your CRM is updated. When a deal closes, the invoice is sent. Zero human error.
                 </p>
               </div>
             </div>
@@ -383,18 +440,17 @@ export function Home() {
       </section>
 
       {/* SECTION 4: SHOWCASE (Visual Workflow) */}
-      <section id="showcase" className="py-24 md:py-32 px-6 border-y border-black/5 relative overflow-hidden bg-white">
+      <section id="showcase" className="py-16 md:py-20 px-6 border-y border-black/5 relative overflow-hidden bg-white">
         <div className="max-w-[1400px] mx-auto relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-20 reveal">
+          <div className="text-center max-w-3xl mx-auto mb-10 reveal">
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold mb-4 block">
-              Visualized Workflow
+              See It In Action
             </span>
-            <h2 className="font-display text-4xl md:text-5xl font-extrabold mb-6 text-ink tracking-tight">
-              See value extracted in real-time.
+            <h2 className="font-display text-4xl md:text-5xl font-extrabold mb-6 text-ink tracking-tight text-balance">
+              Watch your busywork disappear.
             </h2>
-            <p className="text-ink-light text-lg leading-relaxed font-medium">
-              AI doesn't have to be a black box. Our agents interpret messy, unstructured data and translate
-              it into clean records automatically.
+            <p className="text-ink-light text-lg leading-relaxed font-medium text-balance">
+              We take messy emails, PDFs, and scattered notes and automatically turn them into clean data inside your CRM and spreadsheets.
             </p>
           </div>
 
@@ -403,292 +459,259 @@ export function Home() {
             <WorkflowSimulator />
           </div>
 
-          <div className="mt-12 text-center">
+          <div className="mt-8 text-center">
             <a
               href="#audit"
               className="inline-flex items-center gap-2 px-8 py-4 bg-ink text-surface font-semibold text-sm hover:bg-accent hover:text-white transition-all duration-300 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
-              Design Your Agent Flow <i className="ph-bold ph-arrow-right"></i>
+              Find out what you can automate <i className="ph-bold ph-arrow-right"></i>
             </a>
           </div>
         </div>
       </section>
 
-      {/* SECTION 3: OFFERINGS (Interactive Gallery with Space/Tech imagery) */}
-      <section id="offerings" className="py-24 md:py-32 px-6 flowing-gradient border-y border-black/5 relative">
-        <div className="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>
-        <div className="max-w-[1000px] mx-auto relative z-10">
-          <div className="mb-16 reveal text-center">
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">
-              Capabilities
+      {/* SECTION 3: OFFERINGS (Space/Nebula Theme) */}
+      <section id="offerings" className="py-24 md:py-32 px-6 bg-black relative overflow-hidden border-y border-white/10">
+        {/* Galaxy/Nebula Background Effects */}
+        <div className="absolute inset-0 z-0">
+          {/* Deep Space Background (Different from Hero) */}
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1464802686167-b939a6910659?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-70"></div>
+          {/* Gradient Overlays for readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80"></div>
+        </div>
+        
+        <div className="max-w-[1400px] mx-auto relative z-10">
+          <div className="mb-20 reveal text-center">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-blue-400 mb-4 block font-bold">
+              What We Do
             </span>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink">
-              What We Help Automate
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-sm">
+              How We Help You Save Time
             </h2>
-            <p className="text-ink-light mt-6 max-w-2xl mx-auto font-medium text-lg">
-              We help growing businesses eliminate repetitive work and build a digital workforce.
+            <p className="text-white/70 mt-6 max-w-2xl mx-auto font-medium text-lg">
+              We build digital systems that handle your busywork, so you can get back to running your business.
             </p>
           </div>
 
-          <div className="relative z-10 space-y-4" id="offering-list">
-            {/* Row 01 */}
-            <div className="offering-row block border border-black/10 bg-white/60 backdrop-blur-md rounded-2xl py-8 px-6 md:px-10 reveal group cursor-pointer shadow-sm hover:shadow-md">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center text-left">
-                <div className="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">01/</div>
-                <div className="md:col-span-3">
-                  <h3 className="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">
-                    Sales & CRM Workflows
-                  </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10" id="offering-grid">
+            {/* Card 01 */}
+            <div className="group bg-white border border-black/5 rounded-[2rem] p-8 md:p-10 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden cursor-default reveal">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-bl-[100px] -z-10 transition-transform duration-500 group-hover:scale-125"></div>
+              <div className="w-16 h-16 bg-surface rounded-2xl flex items-center justify-center mb-8 text-accent border border-black/5 group-hover:bg-accent group-hover:text-white group-hover:-translate-y-1 transition-all duration-300">
+                <i className="ph-fill ph-database text-3xl"></i>
+              </div>
+              <h3 className="font-display text-2xl font-bold text-ink mb-4 tracking-tight">
+                Sales & CRM Automation
+              </h3>
+              <p className="text-ink-light leading-relaxed font-medium">
+                Stop copying and pasting. We automate lead data entry, keep your CRM clean, and update your spreadsheets instantly.
+              </p>
+            </div>
+
+            {/* Card 02 */}
+            <div className="group bg-white border border-black/5 rounded-[2rem] p-8 md:p-10 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden cursor-default reveal" style={{ transitionDelay: '50ms' }}>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-success/5 rounded-bl-[100px] -z-10 transition-transform duration-500 group-hover:scale-125"></div>
+              <div className="w-16 h-16 bg-surface rounded-2xl flex items-center justify-center mb-8 text-success border border-black/5 group-hover:bg-success group-hover:text-white group-hover:-translate-y-1 transition-all duration-300">
+                <i className="ph-fill ph-lightning text-3xl"></i>
+              </div>
+              <h3 className="font-display text-2xl font-bold text-ink mb-4 tracking-tight">
+                Instant Lead Follow-ups
+              </h3>
+              <p className="text-ink-light leading-relaxed font-medium">
+                Reply to leads in seconds, not hours. We set up automated emails, instant proposals, and smart follow-ups that win deals.
+              </p>
+            </div>
+
+            {/* Card 03 */}
+            <div className="group bg-white border border-black/5 rounded-[2rem] p-8 md:p-10 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden cursor-default reveal" style={{ transitionDelay: '100ms' }}>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-alert/5 rounded-bl-[100px] -z-10 transition-transform duration-500 group-hover:scale-125"></div>
+              <div className="w-16 h-16 bg-surface rounded-2xl flex items-center justify-center mb-8 text-alert border border-black/5 group-hover:bg-alert group-hover:text-white group-hover:-translate-y-1 transition-all duration-300">
+                <i className="ph-fill ph-star text-3xl"></i>
+              </div>
+              <h3 className="font-display text-2xl font-bold text-ink mb-4 tracking-tight">
+                Better Customer Experience
+              </h3>
+              <p className="text-ink-light leading-relaxed font-medium">
+                Give clients a 5-star experience. We automate onboarding, schedule reminders, and provide 24/7 AI support for common questions.
+              </p>
+            </div>
+
+            {/* Card 04 */}
+            <div className="group bg-white border border-black/5 rounded-[2rem] p-8 md:p-10 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden cursor-default reveal" style={{ transitionDelay: '150ms' }}>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-bl-[100px] -z-10 transition-transform duration-500 group-hover:scale-125"></div>
+              <div className="w-16 h-16 bg-surface rounded-2xl flex items-center justify-center mb-8 text-purple-500 border border-black/5 group-hover:bg-purple-500 group-hover:text-white group-hover:-translate-y-1 transition-all duration-300">
+                <i className="ph-fill ph-robot text-3xl"></i>
+              </div>
+              <h3 className="font-display text-2xl font-bold text-ink mb-4 tracking-tight">
+                Back-Office Autopilot
+              </h3>
+              <p className="text-ink-light leading-relaxed font-medium">
+                Run operations on autopilot. We automate your daily reports, sort invoices, and handle the repetitive tasks that slow you down.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: OUR PROCESS (How it works) */}
+      <section id="process" className="py-16 md:py-24 px-6 bg-white relative border-y border-black/5 overflow-hidden">
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] pointer-events-none z-0"></div>
+
+        <div className="max-w-[1200px] mx-auto relative z-10">
+          <div className="text-center mb-16 reveal">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">
+              How We Work
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-ink mb-6">
+              AI Where You Need It. <br className="hidden md:block"/> Human Where It Counts.
+            </h2>
+            <p className="text-ink-light max-w-2xl mx-auto font-medium text-lg">
+              We don't just blindly throw AI at every problem. We use our proprietary scanner to find your bottlenecks, then sit down with you to build what actually helps.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 relative z-10">
+            {/* Step 1 */}
+            <div className="reveal relative bg-surface p-10 rounded-[2.5rem] border border-black/5 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-2 transition-all duration-300 text-left overflow-hidden group cursor-default">
+              {/* Massive Watermark */}
+              <div className="absolute -bottom-8 -right-4 text-[140px] font-black text-black/[0.03] leading-none z-0 group-hover:scale-110 group-hover:text-accent/[0.05] transition-all duration-500 font-display">
+                1
+              </div>
+              
+              <div className="relative z-10">
+                <div className="w-14 h-14 bg-white shadow-sm border border-black/5 rounded-2xl flex items-center justify-center mb-8 text-2xl text-accent group-hover:bg-accent group-hover:text-white transition-colors duration-300">
+                  <i className="ph-fill ph-magnifying-glass"></i>
                 </div>
-                <div className="md:col-span-7">
-                  <p className="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">
-                    Automate lead research, data enrichment, CRM cleanup, and real-time database updates to eliminate manual entry.
-                  </p>
-                </div>
-                <div className="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
-                  <div className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent group-hover:text-white transition-all shadow-sm">
-                    <i className="ph-bold ph-arrow-right arrow-icon"></i>
-                  </div>
-                </div>
+                <h3 className="font-display text-2xl font-bold text-ink mb-4 tracking-tight group-hover:text-accent transition-colors">The AI Scan</h3>
+                <p className="text-ink-light text-sm font-medium leading-relaxed mb-4">
+                  You tell the AI what software you use and what your daily tasks look like. 
+                </p>
+                <p className="text-ink-light text-sm font-medium leading-relaxed">
+                  Our system maps your workflow, calculates exactly how many hours you lose to manual data entry, and spits out a custom roadmap highlighting <strong>only</strong> the areas that actually need automation.
+                </p>
               </div>
             </div>
 
-            {/* Row 02 */}
-            <div
-              className="offering-row block border border-black/10 bg-white/60 backdrop-blur-md rounded-2xl py-8 px-6 md:px-10 reveal group cursor-pointer shadow-sm hover:shadow-md"
-              style={{ transitionDelay: '50ms' }}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center text-left">
-                <div className="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">02/</div>
-                <div className="md:col-span-3">
-                  <h3 className="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">
-                    Marketing & Outreach
-                  </h3>
+            {/* Step 2 (Offset for zig-zag) */}
+            <div className="reveal relative bg-surface p-10 rounded-[2.5rem] border border-black/5 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-2 transition-all duration-300 text-left overflow-hidden group cursor-default md:mt-12" style={{ transitionDelay: '100ms' }}>
+              {/* Massive Watermark */}
+              <div className="absolute -bottom-8 -right-4 text-[140px] font-black text-black/[0.03] leading-none z-0 group-hover:scale-110 group-hover:text-success/[0.05] transition-all duration-500 font-display">
+                2
+              </div>
+              
+              <div className="relative z-10">
+                <div className="w-14 h-14 bg-white shadow-sm border border-black/5 rounded-2xl flex items-center justify-center mb-8 text-2xl text-success group-hover:bg-success group-hover:text-white transition-colors duration-300">
+                  <i className="ph-fill ph-users"></i>
                 </div>
-                <div className="md:col-span-7">
-                  <p className="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">
-                    Speed up lead responses with auto-generated proposals, email triage, and automated follow-up sequences.
-                  </p>
-                </div>
-                <div className="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
-                  <div className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent group-hover:text-white transition-all shadow-sm">
-                    <i className="ph-bold ph-arrow-right arrow-icon"></i>
-                  </div>
-                </div>
+                <h3 className="font-display text-2xl font-bold text-ink mb-4 tracking-tight group-hover:text-success transition-colors">Human Strategy</h3>
+                <p className="text-ink-light text-sm font-medium leading-relaxed">
+                  We review the scan results together in a proper human-to-human meeting. We listen to your goals and decide what makes sense for your specific team.
+                </p>
               </div>
             </div>
 
-            {/* Row 03 */}
-            <div
-              className="offering-row block border border-black/10 bg-white/60 backdrop-blur-md rounded-2xl py-8 px-6 md:px-10 reveal group cursor-pointer shadow-sm hover:shadow-md"
-              style={{ transitionDelay: '100ms' }}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center text-left">
-                <div className="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">03/</div>
-                <div className="md:col-span-3">
-                  <h3 className="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">
-                    Customer Experience
-                  </h3>
-                </div>
-                <div className="md:col-span-7">
-                  <p className="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">
-                    Streamline client onboarding, coordinate appointment reminders, and deploy interactive knowledge assistants.
-                  </p>
-                </div>
-                <div className="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
-                  <div className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent group-hover:text-white transition-all shadow-sm">
-                    <i className="ph-bold ph-arrow-right arrow-icon"></i>
-                  </div>
-                </div>
+            {/* Step 3 */}
+            <div className="reveal relative bg-surface p-10 rounded-[2.5rem] border border-black/5 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-2 transition-all duration-300 text-left overflow-hidden group cursor-default md:mt-24" style={{ transitionDelay: '200ms' }}>
+              {/* Massive Watermark */}
+              <div className="absolute -bottom-8 -right-4 text-[140px] font-black text-black/[0.03] leading-none z-0 group-hover:scale-110 group-hover:text-alert/[0.05] transition-all duration-500 font-display">
+                3
               </div>
-            </div>
-
-            {/* Row 04 */}
-            <div
-              className="offering-row block border border-black/10 bg-white/60 backdrop-blur-md rounded-2xl py-8 px-6 md:px-10 reveal group cursor-pointer shadow-sm hover:shadow-md"
-              style={{ transitionDelay: '150ms' }}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center text-left">
-                <div className="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">04/</div>
-                <div className="md:col-span-3">
-                  <h3 className="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">
-                    Operations & Support
-                  </h3>
+              
+              <div className="relative z-10">
+                <div className="w-14 h-14 bg-white shadow-sm border border-black/5 rounded-2xl flex items-center justify-center mb-8 text-2xl text-alert group-hover:bg-alert group-hover:text-white transition-colors duration-300">
+                  <i className="ph-fill ph-crosshair"></i>
                 </div>
-                <div className="md:col-span-7">
-                  <p className="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">
-                    Automate reporting, structure internal knowledge bases, and coordinate repetitive back-office operations.
-                  </p>
-                </div>
-                <div className="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
-                  <div className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent group-hover:text-white transition-all shadow-sm">
-                    <i className="ph-bold ph-arrow-right arrow-icon"></i>
-                  </div>
-                </div>
+                <h3 className="font-display text-2xl font-bold text-ink mb-4 tracking-tight group-hover:text-alert transition-colors">Precision Build</h3>
+                <p className="text-ink-light text-sm font-medium leading-relaxed">
+                  No unnecessary hype. We only build and integrate AI where it is actually required to help you out, ensuring you get maximum ROI without the fluff.
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 5: PROOF (Massive Metrics) */}
-      <section id="proof" className="py-24 md:py-32 px-6 bg-surface-alt/40 border-y border-black/5 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent pointer-events-none"></div>
+      {/* SECTION 5: PROOF (Massive Metrics & Trust) */}
+      <section id="proof" className="py-20 md:py-28 px-6 bg-[#030014] relative overflow-hidden border-y border-white/10">
+        {/* Galaxy Background Elements */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-40 mix-blend-screen"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#030014] via-transparent to-[#030014]"></div>
+          {/* Glowing Orbs */}
+          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[150px] pointer-events-none"></div>
+        </div>
+
         <div className="max-w-[1400px] mx-auto relative z-10">
-          <div className="text-center mb-20 reveal">
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">
-              Typical Results
+          <div className="text-center mb-16 reveal">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-400 mb-4 block font-bold drop-shadow-[0_0_8px_rgba(52,211,153,0.5)]">
+              The Bottom Line
             </span>
-            <h2 className="font-display text-4xl font-extrabold tracking-tight text-ink">
-              Practical, Measurable Outcomes
+            <h2 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6">
+              We Turn Operational Chaos into Pure Profit.
             </h2>
+            <p className="text-gray-300 max-w-2xl mx-auto font-medium text-lg">
+              Forget the tech jargon. We don't just sell software—we build automated profit engines. Here is exactly how our systems will increase your revenue.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-12 md:gap-8 border-t border-black/5 pt-16">
+          <div className="grid md:grid-cols-3 gap-8 md:gap-8 border-t border-white/10 pt-16">
             {/* Stat 1 */}
-            <div className="reveal relative bg-white/80 backdrop-blur-sm p-8 rounded-3xl border border-white shadow-editorial tangible-card text-left">
-              <div className="font-display text-6xl lg:text-[6rem] font-black text-ink leading-none tracking-tighter mb-6">
-                20-40<span className="text-accent">%</span>
+            <div className="reveal relative bg-white/5 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] text-left hover:-translate-y-2 hover:bg-white/10 transition-all duration-300 group">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2.5rem]"></div>
+              
+              <div className="font-display text-5xl lg:text-[5.5rem] font-black text-white leading-none tracking-tighter mb-6 group-hover:scale-105 origin-left transition-transform duration-500">
+                -30<span className="text-emerald-400">%</span>
               </div>
-              <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent mb-3">
-                Repetitive Work Reduced
+              <div className="font-mono text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4">
+                Slash Payroll Waste
               </div>
-              <p className="text-ink-light text-sm font-medium leading-relaxed">
-                Free your team from tedious data copy-pasting, admin overhead, and manual follow-ups with standardized processes.
+              <p className="text-gray-300 text-sm font-medium leading-relaxed relative z-10">
+                Stop paying employees to do robotic data entry. Save thousands of dollars in payroll every single month by letting AI do the heavy lifting.
               </p>
             </div>
 
             {/* Stat 2 */}
             <div
-              className="reveal relative bg-white/80 backdrop-blur-sm p-8 rounded-3xl border border-white shadow-editorial tangible-card text-left"
+              className="reveal relative bg-white/5 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] text-left hover:-translate-y-2 hover:bg-white/10 transition-all duration-300 group"
               style={{ transitionDelay: '100ms' }}
             >
-              <div className="font-display text-6xl lg:text-[6rem] font-black text-ink leading-none tracking-tighter mb-6">
-                Instant
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2.5rem]"></div>
+              
+              <div className="font-display text-5xl lg:text-[5.5rem] font-black text-white leading-none tracking-tighter mb-6 group-hover:scale-105 origin-left transition-transform duration-500">
+                3X
               </div>
-              <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent mb-3">
-                Lead Response & Routing
+              <div className="font-mono text-xs font-bold uppercase tracking-widest text-blue-400 mb-4">
+                More Closed Deals
               </div>
-              <p className="text-ink-light text-sm font-medium leading-relaxed">
-                Respond to leads significantly faster. Auto-qualify contacts and route high-value accounts instantly.
+              <p className="text-gray-300 text-sm font-medium leading-relaxed relative z-10">
+                Never lose a paying customer to a slow reply again. Instant, automated follow-ups mean you book more calls, close more deals, and cash more checks.
               </p>
             </div>
 
             {/* Stat 3 */}
             <div
-              className="reveal relative bg-white/80 backdrop-blur-sm p-8 rounded-3xl border border-white shadow-editorial tangible-card text-left"
+              className="reveal relative bg-white/5 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] text-left hover:-translate-y-2 hover:bg-white/10 transition-all duration-300 group"
               style={{ transitionDelay: '200ms' }}
             >
-              <div className="font-display text-6xl lg:text-[6rem] font-black text-ink leading-none tracking-tighter mb-6">
-                100<span className="text-accent">%</span>
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2.5rem]"></div>
+
+              <div className="font-display text-5xl lg:text-[5.5rem] font-black text-white leading-none tracking-tighter mb-6 group-hover:scale-105 origin-left transition-transform duration-500">
+                +40<span className="text-indigo-400">%</span>
               </div>
-              <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent mb-3">
-                CRM Data & Adoption
+              <div className="font-mono text-xs font-bold uppercase tracking-widest text-indigo-400 mb-4">
+                Profit Margins
               </div>
-              <p className="text-ink-light text-sm font-medium leading-relaxed">
-                Improve CRM accuracy and system hygiene. Minimize employee onboarding times and scale with digital systems.
+              <p className="text-gray-300 text-sm font-medium leading-relaxed relative z-10">
+                When you slash operational costs and scale your output without hiring more staff, your profit margins skyrocket. We put cash directly back into your pocket.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 6: PROCESS (Architectural Timeline) */}
-      <section id="process" className="py-24 md:py-32 px-6 bg-white">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="mb-20 reveal text-left">
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">
-              How It Works
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink max-w-2xl">
-              Our Onboarding Process
-            </h2>
-          </div>
-
-          <div className="relative">
-            {/* The continuous line */}
-            <div className="hidden lg:block absolute top-0 bottom-0 left-[27px] w-px bg-gradient-to-b from-black/10 via-black/10 to-transparent z-0"></div>
-
-            <div className="space-y-12 lg:space-y-20 relative z-10">
-              {/* Step 1 */}
-              <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start reveal group text-left">
-                <div className="w-14 h-14 bg-ink text-white rounded-full font-display text-lg font-bold flex items-center justify-center shrink-0 shadow-md group-hover:bg-accent transition-all duration-500">
-                  1
-                </div>
-                <div className="lg:pt-2 max-w-2xl">
-                  <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                    Business Assessment
-                  </h3>
-                  <p className="text-ink-light font-medium leading-relaxed text-sm">
-                    Complete our 15-minute Intake Form. We analyze your company size, current tech stack, biggest challenges, and organizational goals to prepare our analysis.
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start reveal group text-left">
-                <div className="w-14 h-14 bg-white border border-black/10 rounded-full text-ink font-display text-lg font-bold flex items-center justify-center shrink-0 group-hover:border-accent group-hover:text-accent group-hover:shadow-md transition-all duration-500 bg-surface-glass backdrop-blur-sm">
-                  2
-                </div>
-                <div className="lg:pt-2 max-w-2xl">
-                  <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                    Discovery Session
-                  </h3>
-                  <p className="text-ink-light font-medium leading-relaxed text-sm">
-                    Join us for a 60-90 minute deep-dive. We map your current manual workflows, locate bottlenecks, and identify high-value automation opportunities.
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start reveal group text-left">
-                <div className="w-14 h-14 bg-white border border-black/10 rounded-full text-ink font-display text-lg font-bold flex items-center justify-center shrink-0 group-hover:border-accent group-hover:text-accent group-hover:shadow-md transition-all duration-500 bg-surface-glass backdrop-blur-sm">
-                  3
-                </div>
-                <div className="lg:pt-2 max-w-2xl">
-                  <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                    Opportunity Report
-                  </h3>
-                  <p className="text-ink-light font-medium leading-relaxed text-sm">
-                    Receive your priority scorecard and a recommended roadmap mapping out top opportunities, expected ROI, and implementation paths.
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 4 */}
-              <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start reveal group text-left">
-                <div className="w-14 h-14 bg-white border border-black/10 rounded-full text-ink font-display text-lg font-bold flex items-center justify-center shrink-0 group-hover:border-accent group-hover:text-accent group-hover:shadow-md transition-all duration-500 bg-surface-glass backdrop-blur-sm">
-                  4
-                </div>
-                <div className="lg:pt-2 max-w-2xl">
-                  <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                    Implementation
-                  </h3>
-                  <p className="text-ink-light font-medium leading-relaxed text-sm">
-                    We design and build workflows, check progress with weekly updates, compile system documentation, and run user training sessions.
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 5 */}
-              <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start reveal group text-left">
-                <div className="w-14 h-14 bg-white border border-black/10 rounded-full text-ink font-display text-lg font-bold flex items-center justify-center shrink-0 group-hover:border-accent group-hover:text-accent group-hover:shadow-md transition-all duration-500 bg-surface-glass backdrop-blur-sm">
-                  5
-                </div>
-                <div className="lg:pt-2 max-w-2xl">
-                  <h3 className="font-display text-2xl font-bold mb-3 tracking-tight">
-                    Launch & Adoption
-                  </h3>
-                  <p className="text-ink-light font-medium leading-relaxed text-sm">
-                    Train users on your new systems, establish clear SOPs, record interactive video walkthroughs, and monitor results in real-time.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      {/* SECTION 6: (Old Process Section Removed) */}
       {/* SECTION 6.5: HOMEPAGE CALL BOOKING */}
       <section className="py-24 md:py-32 px-6 bg-slate-50 border-t border-black/5 relative overflow-hidden">
         <div className="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>
@@ -698,28 +721,28 @@ export function Home() {
           {/* Left Column - Benefits Pitch */}
           <div className="lg:col-span-6 reveal text-left space-y-6">
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-indigo-600 block font-bold">
-              1-ON-1 CONSULTATION
+              ZERO PRESSURE. 100% FREE.
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-ink leading-tight">
-              Schedule Your Free <br className="hidden md:block" />
-              AI Operational Audit
+              Let's see if we're a good fit. <br className="hidden md:block" />
+              <span className="text-3xl md:text-4xl text-ink-light font-bold">You have nothing to lose.</span>
             </h2>
             <p className="text-ink-light text-base md:text-lg font-medium leading-relaxed max-w-xl">
-              Meet our systems engineering team for a 30-minute workspace audit. We will analyze your bottlenecks and map a step-by-step roadmap to reclaim manual team hours.
+              We aren't here to aggressively sell you software you don't need. Book a casual, completely free chat. If nothing else, you'll walk away knowing exactly where your business is bleeding money.
             </p>
 
             <ul className="space-y-4 pt-4">
               <li className="flex items-start gap-3 text-sm text-ink-light font-medium">
                 <span className="w-5 h-5 rounded-full bg-indigo-50 text-indigo-600 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">✓</span>
-                <span>Map manual workflow bottlenecks and data silos in your business.</span>
+                <span><strong>No pushy sales tactics.</strong> Just an honest look at your workflows.</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-ink-light font-medium">
                 <span className="w-5 h-5 rounded-full bg-indigo-50 text-indigo-600 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">✓</span>
-                <span>Evaluate low-code integrations (Make.com, webhooks) for immediate time savings.</span>
+                <span><strong>Free bottleneck mapping.</strong> We'll tell you exactly what's slowing you down.</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-ink-light font-medium">
                 <span className="w-5 h-5 rounded-full bg-indigo-50 text-indigo-600 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">✓</span>
-                <span>Receive custom AI agent prompts and architectural blueprints.</span>
+                <span><strong>Total transparency.</strong> If we can't make you money, we will tell you upfront.</span>
               </li>
             </ul>
           </div>
@@ -731,20 +754,32 @@ export function Home() {
         </div>
       </section>
 
-      {/* SECTION 7: TRUST BUILDING */}
-      <section className="py-20 bg-surface-alt/40 border-t border-black/5 px-6 text-center">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="mb-8 font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
-            Built for Trust & Transparency
+      {/* SECTION 7: TRUST BUILDING (Tight & Sleek) */}
+      <section className="py-8 bg-slate-950 px-6 border-t border-white/5 relative overflow-hidden">
+        {/* Subtle glow */}
+        <div className="absolute top-0 left-1/4 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+        
+        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-6 relative z-10">
+          <div className="flex items-center gap-4 shrink-0 reveal">
+            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></div>
+            <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-white font-bold">
+              The Partner Guarantee
+            </span>
           </div>
-          <div className="flex flex-wrap justify-center gap-y-4 gap-x-8 md:gap-x-12 text-sm font-semibold text-ink-light">
-            <span className="flex items-center gap-2">✓ Fixed pricing</span>
-            <span className="flex items-center gap-2">✓ Clear timelines</span>
-            <span className="flex items-center gap-2">✓ No long-term contracts</span>
-            <span className="flex items-center gap-2">✓ Human support</span>
-            <span className="flex items-center gap-2">✓ Documented workflows</span>
-            <span className="flex items-center gap-2">✓ Team training included</span>
-            <span className="flex items-center gap-2">✓ Ownership of deliverables</span>
+          
+          <div className="flex flex-wrap justify-center lg:justify-end gap-x-6 md:gap-x-10 gap-y-3 reveal" style={{ transitionDelay: '100ms' }}>
+            {[
+              "Fixed Pricing",
+              "No Long-Term Contracts",
+              "Clear Timelines",
+              "Documented Workflows",
+              "Total Code Ownership"
+            ].map((text, i) => (
+              <div key={i} className="flex items-center gap-2 group cursor-default">
+                <span className="text-emerald-400 font-bold group-hover:scale-125 transition-transform">✓</span>
+                <span className="text-sm font-medium text-slate-400 group-hover:text-white transition-colors">{text}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -7,7 +7,7 @@ export function ProblemSolution() {
       pain: "Manual lead research & profile copy-pasting",
       painDesc: "SDRs waste 12+ hours a week copy-pasting LinkedIn profiles, corporate news, and drafting personalized icebreakers.",
       solution: "Autonomous Context Enrichment",
-      solutionDesc: "AI agents auto-enrich accounts upon lead creation, drafting contextual sequence messages directly within Salesforce/Outreach."
+      solutionDesc: "AI agents auto-enrich accounts upon lead creation, drafting contextual sequence messages directly within HubSpot/Outreach."
     },
     {
       pain: "Slow lead routing & manual ticket triage",

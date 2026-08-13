@@ -13,13 +13,9 @@ import { useVisitorTracking } from './hooks/useVisitorTracking';
 // Pages
 const Home = lazy(() => import('./pages/Home').then((module) => ({ default: module.Home })));
 const AgentStudio = lazy(() => import('./pages/AgentStudio').then((module) => ({ default: module.AgentStudio })));
-const AgentShop = lazy(() => import('./pages/AgentShop').then((module) => ({ default: module.AgentShop })));
+const Pricing = lazy(() => import('./pages/Pricing').then((module) => ({ default: module.Pricing })));
 const LowCodePods = lazy(() => import('./pages/LowCodePods').then((module) => ({ default: module.LowCodePods })));
-const AgentforceServices = lazy(() =>
-  import('./pages/AgentforceServices').then((module) => ({ default: module.AgentforceServices })),
-);
 const TeamPage = lazy(() => import('./pages/TeamPage').then((module) => ({ default: module.TeamPage })));
-const EventsPage = lazy(() => import('./pages/EventsPage').then((module) => ({ default: module.EventsPage })));
 const AdminDashboard = lazy(() =>
   import('./pages/AdminDashboard').then((module) => ({ default: module.AdminDashboard })),
 );
@@ -47,11 +43,9 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/agent-studio" element={<AgentStudio />} />
-          <Route path="/agent-shop" element={<AgentShop />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="/low-code-pods" element={<LowCodePods />} />
-          <Route path="/agentforce-services" element={<AgentforceServices />} />
           <Route path="/team" element={<TeamPage />} />
-          <Route path="/events" element={<EventsPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/analyzer" element={<Analyzer />} />
           <Route path="/partner-waitlist" element={<PartnerWaitlist />} />
@@ -61,7 +55,7 @@ export default function App() {
       <Footer />
       
       {/* Modals and Overlays */}
-      <StickyCTA />
+      {/* <StickyCTA /> */}
     </div>
   );
 }

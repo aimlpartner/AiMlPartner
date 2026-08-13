@@ -13,17 +13,14 @@ We design, build, and deploy custom AI agents tailored to your unique business l
 ### 2. Low-Code Pods
 We leverage powerful low-code platforms like n8n to build scalable, flexible, and robust AI-driven workflows. This allows for rapid iteration and deployment, reducing time-to-value for our clients.
 
-### 3. Agentforce Services
-We architect and implement Salesforce Agentforce solutions. We integrate AI directly into your CRM to empower your sales and support teams, providing them with actionable insights and automated assistance directly within their existing workflows.
-
-### 4. Agent Shop
+### 3. Agent Shop
 A marketplace of pre-built, ready-to-deploy AI agents designed for common business use cases. Start scaling immediately with our proven, battle-tested solutions.
 
 ## Target Audience
 We partner with:
 - **Startups:** Looking to scale rapidly without massive headcount overhead.
 - **SMBs (Small to Medium Businesses):** Seeking to optimize operations and improve profit margins.
-- **Enterprises:** Requiring secure, compliant, and scalable AI infrastructure integrated with existing systems like Salesforce.
+- **Enterprises:** Requiring secure, compliant, and scalable AI infrastructure integrated with existing systems.
 
 ## Value Proposition
 - **Revenue-Focused:** We don't just build cool tech; we build systems designed to increase your bottom line.
@@ -32,4 +29,4 @@ We partner with:
 
 ## Contact and Links
 - **Website:** https://aimlpartner.com
-- **Services:** Agent Studio, Agent Shop, Low-Code Pods, Agentforce Services
+- **Services:** Agent Studio, Agent Shop, Low-Code Pods

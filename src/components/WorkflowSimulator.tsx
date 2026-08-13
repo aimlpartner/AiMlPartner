@@ -2,188 +2,160 @@ import React from 'react';
 
 export function WorkflowSimulator() {
   return (
-    <div className="w-full relative bg-gradient-to-tr from-slate-50 via-white to-blue-50/30 border border-slate-100 rounded-[2.5rem] p-8 md:p-14 shadow-editorial overflow-hidden font-sans select-none flex flex-col items-center justify-center min-h-[380px]">
+    <div className="w-full relative bg-slate-50 border border-black/5 rounded-[2.5rem] p-8 md:p-14 shadow-inner overflow-hidden font-sans select-none flex flex-col items-center justify-center min-h-[450px]">
       
       {/* Self-contained CSS keyframe animations for floating elements and particle flows */}
       <style>{`
-        @keyframes float-left-card {
-          0%, 100% { transform: translateY(0px) rotate(-1deg); }
-          50% { transform: translateY(-8px) rotate(1deg); }
+        @keyframes scanline {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(100%); }
         }
-        @keyframes float-right-card-a {
-          0%, 100% { transform: translateY(-10px) rotate(-2deg); }
-          50% { transform: translateY(-18px) rotate(0deg); }
+        @keyframes pulse-border {
+          0%, 100% { border-color: rgba(99, 102, 241, 0.2); }
+          50% { border-color: rgba(99, 102, 241, 0.8); box-shadow: 0 0 15px rgba(99,102,241,0.2); }
         }
-        @keyframes float-right-card-b {
-          0%, 100% { transform: translate(16px, 10px) rotate(2deg); }
-          50% { transform: translate(16px, 2px) rotate(-1deg); }
+        @keyframes pop-in {
+          0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+          100% { opacity: 1; transform: scale(1) translateY(0); }
         }
-        @keyframes orbit-pulse {
-          0%, 100% { transform: scale(1); box-shadow: 0 10px 40px rgba(99, 102, 241, 0.15); }
-          50% { transform: scale(1.04); box-shadow: 0 20px 50px rgba(99, 102, 241, 0.25); }
+        .animate-scan {
+          animation: scanline 3s linear infinite;
         }
-        .animate-float-left {
-          animation: float-left-card 6s ease-in-out infinite;
+        .animate-pulse-border {
+          animation: pulse-border 2s ease-in-out infinite;
         }
-        .animate-float-right-a {
-          animation: float-right-card-a 7s ease-in-out infinite;
-        }
-        .animate-float-right-b {
-          animation: float-right-card-b 8s ease-in-out infinite;
-        }
-        .animate-orbit-pulse {
-          animation: orbit-pulse 5s ease-in-out infinite;
-        }
+        .animate-pop-1 { animation: pop-in 0.5s ease-out 0.5s forwards; opacity: 0; }
+        .animate-pop-2 { animation: pop-in 0.5s ease-out 1.5s forwards; opacity: 0; }
+        .animate-pop-3 { animation: pop-in 0.5s ease-out 2.5s forwards; opacity: 0; }
       `}</style>
 
-      {/* Delicate background mesh glows */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] bg-blue-400/10 rounded-full blur-[80px] pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[220px] h-[220px] bg-purple-400/10 rounded-full blur-[80px] pointer-events-none"></div>
-
       {/* Main Designer Layout */}
-      <div className="w-full flex flex-col md:flex-row items-center justify-center gap-6 relative z-10">
+      <div className="w-full flex flex-col xl:flex-row items-center xl:items-stretch justify-center gap-6 xl:gap-8 relative z-10 max-w-6xl mx-auto">
         
-        {/* NODE 1: CAPTURE GLASS CARD */}
-        <div className="flex flex-col items-center">
-          <div className="w-56 h-48 bg-white/80 border border-slate-200/50 rounded-3xl p-5 flex flex-col items-center justify-center shadow-[0_15px_35px_rgba(0,0,0,0.02)] backdrop-blur-md relative z-10 animate-float-left">
-            {/* Gradient badge representing incoming signal */}
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-blue-500/15 mb-4">
-              <i className="ph-bold ph-envelope text-xl"></i>
+        {/* STEP 1: INCOMING EMAIL (The Mess) */}
+        <div className="flex flex-col flex-1 w-full max-w-sm">
+          <div className="font-mono text-[10px] uppercase tracking-widest text-ink-light font-bold mb-3 flex items-center gap-2">
+            <span className="w-5 h-5 rounded-full bg-black/5 flex items-center justify-center">1</span>
+            Incoming Email
+          </div>
+          
+          <div className="bg-white border border-black/10 rounded-2xl p-5 shadow-sm h-full flex flex-col relative overflow-hidden group">
+            <div className="flex items-center gap-3 mb-4 border-b border-black/5 pb-3">
+              <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                <i className="ph-fill ph-user text-sm"></i>
+              </div>
+              <div>
+                <div className="text-xs font-bold text-ink">Mike Jenkins</div>
+                <div className="text-[10px] text-ink-light">mike@apexroofingtx.com</div>
+              </div>
             </div>
             
-            {/* Mock message bubble */}
-            <div className="bg-slate-50 border border-slate-100 rounded-xl p-3 text-[10px] text-slate-650 font-sans shadow-sm w-full leading-normal text-left">
-              <span className="font-bold text-slate-800">Inbound Request:</span>
-              <div className="mt-1 italic text-slate-500 font-medium">"We'd love to automate our lead updates..."</div>
-            </div>
-          </div>
-          <span className="font-mono text-[9px] uppercase tracking-widest text-slate-400 font-bold mt-4">01 / Capture</span>
-        </div>
-
-        {/* CONNECTOR 1: Left -> Center */}
-        <div className="flex items-center justify-center shrink-0 relative">
-          <ConnectorLine id="line-1" direction="horizontal" delay="0s" color1="#3b82f6" color2="#8b5cf6" />
-          <ConnectorLine id="line-1-mob" direction="vertical" delay="0s" color1="#3b82f6" color2="#8b5cf6" />
-        </div>
-
-        {/* NODE 2: ORCHESTRATOR LENS */}
-        <div className="flex flex-col items-center">
-          <div className="w-36 h-36 rounded-full bg-white/80 border border-slate-200/60 flex items-center justify-center relative backdrop-blur-lg z-10 animate-orbit-pulse">
-            {/* Dashed outer spinning ring */}
-            <div className="absolute inset-0 rounded-full border border-dashed border-slate-300 animate-[spin_25s_linear_infinite]"></div>
+            <div className="text-xs font-bold text-ink mb-2">Quote Request - Urgent</div>
             
-            {/* Dotted inner reverse spinning ring */}
-            <div className="absolute inset-2.5 rounded-full border-2 border-dotted border-slate-200 animate-[spin_12s_linear_infinite_reverse]"></div>
-
-            {/* Glowing gradient color background */}
-            <div className="absolute w-24 h-24 rounded-full bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 opacity-[0.09] animate-pulse"></div>
-
-            {/* Core Sparkle Lens */}
-            <div className="absolute w-20 h-20 rounded-full bg-white/90 shadow-md border border-slate-100 flex items-center justify-center">
-              <i className="ph-fill ph-sparkle text-3xl text-indigo-600 animate-[pulse_2s_infinite]"></i>
+            <div className="text-[11px] text-ink-light leading-relaxed font-medium">
+              Hi, <br/><br/>
+              My name is Mike. I run Apex Roofing (about 15 guys). We need someone to look at our warehouse at 124 Main St, Austin TX. The roof has been leaking since last Tuesday. 
+              <br/><br/>
+              Can someone call me at 555-0198 to schedule?
             </div>
           </div>
-          <span className="font-mono text-[9px] uppercase tracking-widest text-slate-400 font-bold mt-4">02 / Refine</span>
         </div>
 
-        {/* CONNECTOR 2: Center -> Right */}
-        <div className="flex items-center justify-center shrink-0 relative">
-          <ConnectorLine id="line-2" direction="horizontal" delay="1.2s" color1="#8b5cf6" color2="#10b981" />
-          <ConnectorLine id="line-2-mob" direction="vertical" delay="1.2s" color1="#8b5cf6" color2="#10b981" />
+        {/* CONNECTOR 1 */}
+        <div className="flex items-center justify-center shrink-0 py-4 xl:py-0">
+          <i className="ph-bold ph-arrow-right text-black/20 text-2xl hidden xl:block animate-pulse"></i>
+          <i className="ph-bold ph-arrow-down text-black/20 text-2xl block xl:hidden animate-pulse"></i>
         </div>
 
-        {/* NODE 3: OUTCOME GLASS CARD STACK */}
-        <div className="flex flex-col items-center">
-          <div className="w-56 h-48 relative flex items-center justify-center">
-            {/* Slack target bubble */}
-            <div className="absolute bg-white/90 border border-slate-200/50 rounded-2xl p-3.5 shadow-[0_12px_30px_rgba(0,0,0,0.03)] w-[190px] flex items-center gap-3 backdrop-blur-md z-20 animate-float-right-a text-left">
-              <div className="w-7 h-7 rounded-lg bg-pink-50 text-pink-500 flex items-center justify-center shrink-0 border border-pink-100 shadow-sm">
-                <i className="ph-bold ph-slack-logo text-sm"></i>
-              </div>
-              <div className="flex-grow">
-                <div className="text-[10px] font-bold text-slate-800">Slack Dispatch</div>
-                <div className="text-[8px] font-medium text-slate-400">Team notified in real-time</div>
-              </div>
-              <i className="ph-bold ph-circle-wavy-check text-emerald-500 text-base shrink-0"></i>
+        {/* STEP 2: AI PROCESSING (The Brain) */}
+        <div className="flex flex-col flex-1 w-full max-w-sm">
+          <div className="font-mono text-[10px] uppercase tracking-widest text-indigo-600 font-bold mb-3 flex items-center gap-2">
+            <span className="w-5 h-5 rounded-full bg-indigo-100 flex items-center justify-center">2</span>
+            AI Extraction
+          </div>
+          
+          <div className="bg-white border-2 border-indigo-100 rounded-2xl p-5 shadow-md h-full flex flex-col relative overflow-hidden animate-pulse-border">
+            {/* Scanning line effect */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-500/10 to-transparent w-full h-1/3 animate-scan pointer-events-none"></div>
+
+            <div className="flex items-center gap-2 mb-4 text-indigo-600">
+              <i className="ph-fill ph-sparkle text-lg"></i>
+              <span className="text-xs font-bold">Reading & Understanding...</span>
             </div>
-
-            {/* CRM target bubble */}
-            <div className="absolute bg-white/90 border border-slate-200/50 rounded-2xl p-3.5 shadow-[0_12px_30px_rgba(0,0,0,0.03)] w-[190px] flex items-center gap-3 backdrop-blur-md z-10 animate-float-right-b text-left">
-              <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0 border border-blue-100 shadow-sm">
-                <i className="ph-bold ph-database text-sm"></i>
+            
+            <div className="space-y-3 relative z-10">
+              <div className="animate-pop-1 flex items-center justify-between bg-slate-50 rounded-lg p-2 border border-slate-100">
+                <span className="text-[10px] text-slate-500 font-bold uppercase">Company</span>
+                <span className="text-xs font-semibold text-ink">Apex Roofing</span>
               </div>
-              <div className="flex-grow">
-                <div className="text-[10px] font-bold text-slate-800">CRM Synchronized</div>
-                <div className="text-[8px] font-medium text-slate-400">Sales pipeline updated</div>
+              <div className="animate-pop-2 flex items-center justify-between bg-slate-50 rounded-lg p-2 border border-slate-100">
+                <span className="text-[10px] text-slate-500 font-bold uppercase">Size</span>
+                <span className="text-xs font-semibold text-ink">15 Employees</span>
               </div>
-              <i className="ph-bold ph-circle-wavy-check text-emerald-500 text-base shrink-0"></i>
+              <div className="animate-pop-3 flex items-center justify-between bg-slate-50 rounded-lg p-2 border border-slate-100">
+                <span className="text-[10px] text-slate-500 font-bold uppercase">Phone</span>
+                <span className="text-xs font-semibold text-ink">555-0198</span>
+              </div>
             </div>
           </div>
-          <span className="font-mono text-[9px] uppercase tracking-widest text-slate-400 font-bold mt-4">03 / Sync</span>
+        </div>
+
+        {/* CONNECTOR 2 */}
+        <div className="flex items-center justify-center shrink-0 py-4 xl:py-0">
+          <i className="ph-bold ph-arrow-right text-black/20 text-2xl hidden xl:block animate-pulse"></i>
+          <i className="ph-bold ph-arrow-down text-black/20 text-2xl block xl:hidden animate-pulse"></i>
+        </div>
+
+        {/* STEP 3: CRM RESULT (The Outcome) */}
+        <div className="flex flex-col flex-1 w-full max-w-sm">
+          <div className="font-mono text-[10px] uppercase tracking-widest text-emerald-600 font-bold mb-3 flex items-center gap-2">
+            <span className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center">3</span>
+            CRM Updated
+          </div>
+          
+          <div className="bg-white border border-emerald-200 rounded-2xl shadow-lg h-full flex flex-col relative overflow-hidden">
+            {/* Fake CRM Header */}
+            <div className="bg-slate-800 text-white p-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <i className="ph-bold ph-kanban text-sm"></i>
+                <span className="text-xs font-bold">Sales Pipeline</span>
+              </div>
+              <span className="bg-emerald-500 text-white text-[9px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">New Deal</span>
+            </div>
+
+            <div className="p-5 flex-1 bg-gradient-to-b from-white to-emerald-50/30">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h4 className="text-sm font-bold text-ink mb-1">Apex Roofing - Warehouse</h4>
+                  <div className="text-[10px] text-ink-light flex items-center gap-1">
+                    <i className="ph-fill ph-map-pin"></i> Austin, TX
+                  </div>
+                </div>
+                <div className="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-lg flex items-center justify-center shrink-0">
+                  <i className="ph-bold ph-check text-lg"></i>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 mt-4">
+                <div className="border border-black/5 rounded-md p-2 bg-white">
+                  <div className="text-[9px] text-ink-light font-bold uppercase mb-1">Contact</div>
+                  <div className="text-[10px] font-semibold text-ink">Mike Jenkins</div>
+                </div>
+                <div className="border border-black/5 rounded-md p-2 bg-white">
+                  <div className="text-[9px] text-ink-light font-bold uppercase mb-1">Type</div>
+                  <div className="text-[10px] font-semibold text-ink">Repair / Leak</div>
+                </div>
+              </div>
+              
+              <div className="mt-4 flex items-center gap-2 text-[10px] text-ink-light bg-white border border-black/5 p-2 rounded-md">
+                <i className="ph-fill ph-slack-logo text-pink-500"></i>
+                <span>Sales team notified on Slack</span>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
-    </div>
-  );
-}
-
-interface ConnectorLineProps {
-  id: string;
-  direction: 'horizontal' | 'vertical';
-  delay: string;
-  color1: string;
-  color2: string;
-}
-
-// Directional connecting line with animated flowing particle
-function ConnectorLine({ id, direction, delay, color1, color2 }: ConnectorLineProps) {
-  const gradientId = `grad-${id}`;
-  
-  if (direction === 'horizontal') {
-    return (
-      <div className="hidden md:block w-24 h-6 overflow-visible select-none pointer-events-none">
-        <svg className="w-full h-full overflow-visible" fill="none">
-          <path
-            id={id}
-            d="M0,12 L96,12"
-            stroke="#e2e8f0"
-            strokeWidth="1.5"
-            strokeDasharray="5 3"
-          />
-          <circle r="4.5" fill={`url(#${gradientId})`}>
-            <animateMotion dur="2.4s" repeatCount="indefinite" path="M0,12 L96,12" begin={delay} />
-          </circle>
-          <defs>
-            <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor={color1} />
-              <stop offset="100%" stopColor={color2} />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-    );
-  }
-
-  return (
-    <div className="block md:hidden h-14 w-6 overflow-visible select-none pointer-events-none">
-      <svg className="w-full h-full overflow-visible" fill="none">
-        <path
-          id={id}
-          d="M12,0 L12,56"
-          stroke="#e2e8f0"
-          strokeWidth="1.5"
-          strokeDasharray="5 3"
-        />
-        <circle r="4" fill={`url(#${gradientId})`}>
-          <animateMotion dur="2.4s" repeatCount="indefinite" path="M12,0 L12,56" begin={delay} />
-        </circle>
-        <defs>
-          <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={color1} />
-            <stop offset="100%" stopColor={color2} />
-          </linearGradient>
-        </defs>
-      </svg>
     </div>
   );
 }

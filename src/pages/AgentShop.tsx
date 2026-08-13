@@ -7,7 +7,7 @@ export function AgentShop() {
     {
       icon: <ShoppingCart className="text-accent" size={24} />,
       title: "AI Sales Assistant",
-      desc: "Pre-built agent for lead qualification, CRM contact data enrichment, and automated outreach follow-ups. Integrates into Salesforce or HubSpot in minutes.",
+      desc: "Pre-built agent for lead qualification, CRM contact data enrichment, and automated outreach follow-ups. Integrates into HubSpot or custom CRM in minutes.",
       colSpan: "md:col-span-8",
       badge: "Deploy Ready",
       price: "$49/mo"

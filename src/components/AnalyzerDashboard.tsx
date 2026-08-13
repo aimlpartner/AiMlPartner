@@ -615,7 +615,7 @@ const getDepartmentQuestions = (deptName: string): string[] => {
   if (name.includes('operat') || name.includes('admin') || name.includes('logist')) {
     return [
       "What is the primary format of your files (e.g. scanned PDFs, spreadsheets, emails)?",
-      "Which databases or CRM systems should this automation synchronize with (e.g. HubSpot, Salesforce)?",
+      "Which databases or CRM systems should this automation synchronize with (e.g. HubSpot, SQL/Custom CRM)?",
       "Do you want the AI to run fully autonomous, or flag complex files for human approval first?"
     ];
   } else if (name.includes('market') || name.includes('sale') || name.includes('lead')) {

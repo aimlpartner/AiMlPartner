@@ -7,7 +7,6 @@ export function TechStackMarquee() {
     { name: "OpenAI", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg" },
     { name: "Anthropic", logo: "https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg" },
     { name: "n8n", logo: "https://n8n.io/favicon.ico" },
-    { name: "Salesforce", logo: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg" },
     { name: "LangChain", logo: "https://js.langchain.com/v0.2/img/favicon.ico" },
     { name: "CrewAI", logo: "https://docs.crewai.com/favicon.ico" },
     { name: "Supabase", logo: "https://supabase.com/favicon/favicon-196x196.png" }

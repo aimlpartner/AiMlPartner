@@ -242,6 +242,6 @@ Phases:
     - Lead: 
       Led by Anand
     - Description: 
-      We bridge agent webhooks directly with Salesforce Agentforce, HubSpot, 
+      We bridge agent webhooks directly with HubSpot, custom CRM systems, 
       or SQL backends, deploying continuous observability logs and rate limits.
 ================================================================================
