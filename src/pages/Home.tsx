@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { WorkflowSimulator } from '../components/WorkflowSimulator';
 import { BookCallWidget } from '../components/BookCallWidget';
 import { motion, AnimatePresence } from 'motion/react';
-
+import { Sparkles } from 'lucide-react';
 export function Home() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'website' | 'workflow'>('website');
@@ -91,7 +91,7 @@ export function Home() {
       <div className="absolute inset-0 bg-architectural-grid opacity-50 pointer-events-none -z-10 h-full"></div>
 
       {/* SECTION 1: IMMERSIVE SPACE HERO */}
-      <section id="audit" className="relative min-h-screen flex items-start justify-center pt-32 md:pt-40 lg:pt-48 pb-32 px-6 overflow-hidden">
+      <section id="audit" className="relative min-h-screen flex items-center justify-center pt-24 pb-12 px-6 overflow-hidden">
         {/* Hero Background Image & Overlays */}
         <div className="absolute inset-0 z-0">
           {/* Deep Space / Nebula Background representing the "Universe of Data" */}
@@ -154,7 +154,7 @@ export function Home() {
             </div>
 
             {/* Centered Gemini-style Search Bar Container */}
-            <div className="w-full max-w-2xl px-4">
+            <div className="w-full max-w-2xl px-4 min-h-[80px] flex justify-center">
               <form onSubmit={activeTab === 'website' ? handleWebsiteSubmit : handleWorkflowSubmit} className="relative w-full">
                 {/* Flowing animated gradient border wrapper with dynamic rounding */}
                 <motion.div
@@ -173,14 +173,14 @@ export function Home() {
                         : 'rounded-3xl flex-col items-stretch py-4 gap-3'
                     }`}
                   >
-                    <AnimatePresence mode="wait">
+                    <AnimatePresence mode="popLayout" initial={false}>
                       {activeTab === 'website' ? (
                         <motion.div
                           key="website-form"
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -8 }}
-                          transition={{ duration: 0.18 }}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
                           className="flex items-center w-full"
                         >
                           {/* Left Globe Icon */}
@@ -207,17 +207,17 @@ export function Home() {
                       ) : (
                         <motion.div
                           key="workflow-form"
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -8 }}
-                          transition={{ duration: 0.18 }}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
                           className="flex flex-col gap-3 w-full"
                         >
                           {/* Top Line: Icon and Textarea */}
                           <div className="flex items-start">
                             <i className="ph-bold ph-text-align-left text-white/50 text-xl mr-3 mt-1.5 animate-pulse"></i>
                             <textarea
-                              rows={3}
+                              rows={2}
                               placeholder="Describe your manual workflow bottleneck (e.g., We spend 10 hours a week copying files and records to HubSpot...)"
                               value={description}
                               onChange={(e) => setDescription(e.target.value)}
@@ -243,13 +243,22 @@ export function Home() {
                   </motion.div>
                 </motion.div>
               </form>
+            </div>
 
-              {/* Error Notice */}
-              {error && (
-                <div className="mt-4 bg-alert/20 border border-alert/30 text-alert-soft text-xs py-2.5 px-4 rounded-xl text-center max-w-md mx-auto shadow-md">
-                  {error}
-                </div>
-              )}
+            {/* Error Notice */}
+            <div className="h-10 mt-4 flex items-center justify-center w-full">
+              <AnimatePresence>
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="bg-alert/20 border border-alert/30 text-alert-soft text-xs py-2.5 px-4 rounded-xl text-center shadow-md w-full max-w-md"
+                  >
+                    {error}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
@@ -711,7 +720,98 @@ export function Home() {
         </div>
       </section>
 
-      {/* SECTION 6: (Old Process Section Removed) */}
+      {/* TESTIMONIALS - WALL OF LOVE (Modern Marquee) */}
+      <section className="py-24 md:py-32 bg-[#030014] relative overflow-hidden border-t border-white/5">
+        <div className="max-w-[1200px] mx-auto reveal relative z-10 px-6 mb-12">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 text-emerald-400 rounded-full text-xs font-mono font-bold tracking-wider uppercase mb-6 shadow-sm">
+              <Sparkles size={12} className="text-emerald-400 animate-pulse" />
+              Real World Results
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">Don't just take our word for it.</h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto font-medium">See how we're transforming back-office operations and unlocking hours of weekly bandwidth for our partners.</p>
+          </div>
+        </div>
+
+        {/* Scrolling Marquees */}
+        <div 
+          className="relative w-full flex flex-col gap-6" 
+          style={{ maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}
+        >
+          {/* Row 1 (Scrolling Left) */}
+          <div className="flex w-max animate-marquee pause-on-hover hover:z-20 relative">
+            {[
+              { quote: "They took our 15-hour weekly manual data entry process and reduced it to zero. Immediate ROI.", author: "Sarah Jenkins", role: "Ops Director, LogiCorp", img: "https://i.pravatar.cc/150?u=a042581f4e29026024d" },
+              { quote: "Our AI agent handles 80% of tier-1 support tickets perfectly. It's insane.", author: "Mike T.", role: "VP Success, SendIt", img: "https://i.pravatar.cc/150?u=a042581f4e29026704d" },
+              { quote: "Constraints-driven integration meant we got ROI in week one.", author: "Elena R.", role: "Partner, LegalTech", img: "https://i.pravatar.cc/150?u=a04258114e29026702d" },
+              { quote: "Best operational decision we've made this year. Period.", author: "David C.", role: "CEO, Nexa", img: "https://i.pravatar.cc/150?u=a048581f4e29026701d" },
+              { quote: "Saved us $40k/mo in payroll waste.", author: "Amanda Lee", role: "CFO, TechFlow", img: "https://i.pravatar.cc/150?u=a042581f4e29026703d" },
+              // Duplicate for infinite scroll
+              { quote: "They took our 15-hour weekly manual data entry process and reduced it to zero. Immediate ROI.", author: "Sarah Jenkins", role: "Ops Director, LogiCorp", img: "https://i.pravatar.cc/150?u=a042581f4e29026024d" },
+              { quote: "Our AI agent handles 80% of tier-1 support tickets perfectly. It's insane.", author: "Mike T.", role: "VP Success, SendIt", img: "https://i.pravatar.cc/150?u=a042581f4e29026704d" },
+              { quote: "Constraints-driven integration meant we got ROI in week one.", author: "Elena R.", role: "Partner, LegalTech", img: "https://i.pravatar.cc/150?u=a04258114e29026702d" },
+              { quote: "Best operational decision we've made this year. Period.", author: "David C.", role: "CEO, Nexa", img: "https://i.pravatar.cc/150?u=a048581f4e29026701d" },
+              { quote: "Saved us $40k/mo in payroll waste.", author: "Amanda Lee", role: "CFO, TechFlow", img: "https://i.pravatar.cc/150?u=a042581f4e29026703d" },
+            ].map((testimonial, i) => (
+              <div
+                key={`r1-${i}`}
+                className="mx-3 w-[320px] md:w-[400px] shrink-0 bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:scale-[1.02] cursor-default"
+              >
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, j) => (
+                    <svg key={j} className="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                  ))}
+                </div>
+                <p className="text-gray-200 text-[15px] leading-relaxed mb-6">"{testimonial.quote}"</p>
+                <div className="flex items-center gap-3">
+                  <img src={testimonial.img} alt={testimonial.author} className="w-10 h-10 rounded-full border border-white/20 object-cover" />
+                  <div>
+                    <div className="text-white font-bold text-sm">{testimonial.author}</div>
+                    <div className="text-gray-500 text-xs">{testimonial.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Row 2 (Scrolling Right) */}
+          <div className="flex w-max animate-marquee-reverse pause-on-hover hover:z-20 relative">
+            {[
+              { quote: "We scale without hiring more admin staff. The margins are incredible.", author: "Chris P.", role: "Founder, ScaleUp", img: "https://i.pravatar.cc/150?u=a042581f4e29026705d" },
+              { quote: "Finally, an AI agency that actually understands business operations.", author: "Rachel K.", role: "COO, RetailPro", img: "https://i.pravatar.cc/150?u=a042581f4e29026706d" },
+              { quote: "Lead follow-up is instant. Close rate jumped 30%.", author: "James B.", role: "Head of Sales, Grow", img: "https://i.pravatar.cc/150?u=a042581f4e29026707d" },
+              { quote: "The workflow simulator blew my mind. The actual product is even better.", author: "Sophia W.", role: "Director, Media", img: "https://i.pravatar.cc/150?u=a042581f4e29026708d" },
+              { quote: "Our CRM is finally clean. We literally do nothing now.", author: "Tom H.", role: "Sales Ops, CloudSy", img: "https://i.pravatar.cc/150?u=a042581f4e29026709d" },
+              // Duplicate for infinite scroll
+              { quote: "We scale without hiring more admin staff. The margins are incredible.", author: "Chris P.", role: "Founder, ScaleUp", img: "https://i.pravatar.cc/150?u=a042581f4e29026705d" },
+              { quote: "Finally, an AI agency that actually understands business operations.", author: "Rachel K.", role: "COO, RetailPro", img: "https://i.pravatar.cc/150?u=a042581f4e29026706d" },
+              { quote: "Lead follow-up is instant. Close rate jumped 30%.", author: "James B.", role: "Head of Sales, Grow", img: "https://i.pravatar.cc/150?u=a042581f4e29026707d" },
+              { quote: "The workflow simulator blew my mind. The actual product is even better.", author: "Sophia W.", role: "Director, Media", img: "https://i.pravatar.cc/150?u=a042581f4e29026708d" },
+              { quote: "Our CRM is finally clean. We literally do nothing now.", author: "Tom H.", role: "Sales Ops, CloudSy", img: "https://i.pravatar.cc/150?u=a042581f4e29026709d" },
+            ].map((testimonial, i) => (
+              <div
+                key={`r2-${i}`}
+                className="mx-3 w-[320px] md:w-[400px] shrink-0 bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:scale-[1.02] cursor-default"
+              >
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, j) => (
+                    <svg key={j} className="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                  ))}
+                </div>
+                <p className="text-gray-200 text-[15px] leading-relaxed mb-6">"{testimonial.quote}"</p>
+                <div className="flex items-center gap-3">
+                  <img src={testimonial.img} alt={testimonial.author} className="w-10 h-10 rounded-full border border-white/20 object-cover" />
+                  <div>
+                    <div className="text-white font-bold text-sm">{testimonial.author}</div>
+                    <div className="text-gray-500 text-xs">{testimonial.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* SECTION 6.5: HOMEPAGE CALL BOOKING */}
       <section className="py-24 md:py-32 px-6 bg-slate-50 border-t border-black/5 relative overflow-hidden">
         <div className="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>

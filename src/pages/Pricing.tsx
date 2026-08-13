@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Check, X, TrendingUp, PhoneCall, Shield, ArrowRight } from 'lucide-react';
+import { Check, X, TrendingUp, PhoneCall, Shield, ArrowRight, Sparkles } from 'lucide-react';
+import { motion } from 'motion/react';
 import { BookCallWidget } from '../components/BookCallWidget';
-
 export function Pricing() {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -51,176 +51,133 @@ export function Pricing() {
           </p>
         </div>
 
-        {/* TOP ROW: 3 Equal Columns */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-[1400px] mx-auto mb-8 px-4 items-stretch">
-          
-          {/* Card 1: FREE CONSULTATION */}
-          <div className="reveal relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.15)] overflow-hidden flex flex-col group hover:border-emerald-500/60 transition-colors h-full">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+        {/* PRICING COMPARISON TABLE (Like Blaze) */}
+        <div className="w-full max-w-[1100px] mx-auto overflow-x-auto pb-12 reveal px-4">
+          <div className="min-w-[800px]">
             
-            <div className="mb-8">
-              <span className="bg-emerald-500/10 text-emerald-400 text-xs font-bold uppercase tracking-wider py-1.5 px-3 rounded-full mb-4 inline-block">
-                Start Here
-              </span>
-              <h3 className="text-2xl font-bold mb-2">Discovery & Blueprint</h3>
-              <div className="flex items-baseline gap-1 mt-4">
-                <span className="text-5xl font-black">$0</span>
-                <span className="text-gray-400 font-medium text-sm">/ 100% Free</span>
+            {/* Table Header */}
+            <div className="grid grid-cols-5 items-end mb-4">
+              <div className="col-span-1"></div>
+              
+              <div className="col-span-1 text-center pb-4">
+                <span className="text-gray-400 font-medium text-lg">Human Hire</span>
               </div>
-              <p className="text-sm text-gray-400 mt-4 leading-relaxed">
-                Let's map your operational bottlenecks and see exactly how much money automation can save you. Zero pressure.
-              </p>
-            </div>
-
-            <ul className="space-y-4 mb-8 flex-1">
-              <li className="flex items-start gap-3 text-sm font-medium text-gray-300">
-                <Check size={18} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span>1-on-1 Strategy Call with an Expert</span>
-              </li>
-              <li className="flex items-start gap-3 text-sm font-medium text-gray-300">
-                <Check size={18} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span>Custom Workflow Bottleneck Mapping</span>
-              </li>
-              <li className="flex items-start gap-3 text-sm font-medium text-gray-300">
-                <Check size={18} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span>Hard ROI & Cost-Savings Projection</span>
-              </li>
-              <li className="flex items-start gap-3 text-sm font-medium text-gray-500 italic mt-6 border-t border-white/10 pt-4">
-                <Shield size={16} className="text-gray-500 shrink-0 mt-0.5" />
-                <span>Includes free access to automated AI Scan tool.</span>
-              </li>
-            </ul>
-
-            <button onClick={handleScrollToBooking} className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2 group-hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] cursor-pointer mt-auto">
-              <PhoneCall size={18} />
-              Book Free Consultation
-            </button>
-          </div>
-
-          {/* Card 2: DIGITAL WORKER POD */}
-          <div className="reveal relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 flex flex-col hover:bg-white/10 transition-colors h-full" style={{ transitionDelay: '100ms' }}>
-            <div className="mb-8">
-              <span className="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-4 inline-block opacity-80">
-                Most Popular
-              </span>
-              <h3 className="text-2xl font-bold mb-2">Digital Worker Pod</h3>
-              <div className="flex items-baseline gap-1 mt-4">
-                <span className="text-sm text-gray-400 font-medium">From</span>
-                <span className="text-5xl font-black">$1,500</span>
-                <span className="text-gray-400 font-medium text-sm">/ mo</span>
+              
+              <div className="col-span-1 text-center pb-4">
+                <span className="text-gray-400 font-medium text-lg">Traditional Agency</span>
               </div>
-              <p className="text-sm text-gray-400 mt-4 leading-relaxed">
-                A dedicated, customized AI agent integrated directly into your business tools to handle repetitive tasks 24/7.
-              </p>
-            </div>
 
-            <ul className="space-y-4 mb-8 flex-1">
-              <li className="flex items-start gap-3 text-sm font-medium text-gray-300">
-                <Check size={18} className="text-blue-400 shrink-0 mt-0.5" />
-                <span>24/7 Automated Workflows</span>
-              </li>
-              <li className="flex items-start gap-3 text-sm font-medium text-gray-300">
-                <Check size={18} className="text-blue-400 shrink-0 mt-0.5" />
-                <span>Seamless CRM/SaaS Integration</span>
-              </li>
-              <li className="flex items-start gap-3 text-sm font-medium text-gray-300">
-                <Check size={18} className="text-blue-400 shrink-0 mt-0.5" />
-                <span>Continuous Optimization & Updates</span>
-              </li>
-              <li className="flex items-start gap-3 text-sm font-medium text-gray-300">
-                <Check size={18} className="text-blue-400 shrink-0 mt-0.5" />
-                <span>Dedicated Tech Support</span>
-              </li>
-            </ul>
-
-            <button onClick={handleScrollToBooking} className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer mt-auto">
-              Request Quote
-            </button>
-          </div>
-
-          {/* Card 3: REALITY CHECK COMPARISON */}
-          <div className="reveal relative bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-xl overflow-hidden shadow-2xl h-full flex flex-col md:col-span-2 lg:col-span-1" style={{ transitionDelay: '200ms' }}>
-            <div className="absolute top-0 right-0 w-48 h-48 bg-rose-500/5 rounded-full blur-[60px]"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-[60px]"></div>
-            
-            <div className="mb-8 relative z-10 text-center lg:text-left">
-              <h2 className="text-2xl font-bold mb-2">The Reality Check</h2>
-              <p className="text-gray-400 text-sm font-medium">Cost of Software vs Humans</p>
-            </div>
-
-            <div className="flex flex-col gap-6 relative z-10 flex-1 justify-center">
-              {/* The Old Way */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                  <h3 className="text-lg font-bold text-gray-300">Human Hire</h3>
-                  <span className="text-rose-400 font-mono font-bold text-sm">~$75,000/yr</span>
+              <div className="col-span-2 bg-white/5 border border-white/10 border-b-0 rounded-t-2xl relative pt-6 pb-4">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-2xl"></div>
+                <div className="grid grid-cols-2">
+                  <div className="text-center border-r border-white/5">
+                    <h3 className="text-lg font-bold text-white">Discovery</h3>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-lg font-bold text-white">Worker Pod</h3>
+                  </div>
                 </div>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3 text-sm text-gray-400 font-medium">
-                    <X size={16} className="text-rose-400 shrink-0 mt-0.5" />
-                    <span>Works exactly 40 hours per week</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-sm text-gray-400 font-medium">
-                    <X size={16} className="text-rose-400 shrink-0 mt-0.5" />
-                    <span>Takes 3-6 months to onboard</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-sm text-gray-400 font-medium">
-                    <X size={16} className="text-rose-400 shrink-0 mt-0.5" />
-                    <span>Requires benefits & HR overhead</span>
-                  </li>
-                </ul>
               </div>
+            </div>
 
-              <div className="w-full h-px bg-white/10"></div>
-
-              {/* The New Way */}
-              <div className="space-y-4 relative">
-                <div className="absolute -inset-4 bg-emerald-500/5 rounded-2xl -z-10 hidden lg:block"></div>
-                <div className="flex items-center justify-between border-b border-emerald-500/30 pb-3">
-                  <h3 className="text-lg font-bold text-emerald-400">AI Worker</h3>
-                  <span className="text-emerald-400 font-mono font-bold flex items-center gap-1 text-xs uppercase">
-                    <TrendingUp size={14} /> ~70% Cheaper
-                  </span>
+            {/* Table Rows */}
+            <div className="flex flex-col">
+              {[
+                {
+                  title: "Monthly cost",
+                  human: "~$6,250/mo",
+                  agency: "~$4,000/mo",
+                  free: "$0",
+                  pod: "$1,500",
+                  isPrice: true
+                },
+                {
+                  title: "Working hours",
+                  human: "40 hrs/week",
+                  agency: "Varies",
+                  free: "—",
+                  pod: "24/7 (168 hrs)",
+                },
+                {
+                  title: "Time to value",
+                  human: "3-6 months",
+                  agency: "1-3 months",
+                  free: "Immediate",
+                  pod: "2-4 weeks",
+                },
+                {
+                  title: "Custom Workflow Mapping",
+                  human: "No",
+                  agency: "Sometimes",
+                  free: "check",
+                  pod: "check",
+                },
+                {
+                  title: "Hard ROI Projection",
+                  human: "Manual",
+                  agency: "Extra cost",
+                  free: "check",
+                  pod: "check",
+                },
+                {
+                  title: "SaaS / CRM Integration",
+                  human: "Slow",
+                  agency: "Extra cost",
+                  free: "—",
+                  pod: "check",
+                },
+                {
+                  title: "Contract required",
+                  human: "Full-time hire",
+                  agency: "6 months min",
+                  free: "None",
+                  pod: "None",
+                }
+              ].map((row, idx) => (
+                <div key={idx} className="grid grid-cols-5 items-center border-b border-white/10 group hover:bg-white/[0.02] transition-colors relative">
+                  <div className="col-span-1 py-5 pr-4 font-bold text-white text-base">{row.title}</div>
+                  <div className="col-span-1 py-5 text-center text-gray-400 text-sm">{row.human}</div>
+                  <div className="col-span-1 py-5 text-center text-gray-400 text-sm">{row.agency}</div>
+                  
+                  <div className="col-span-2 bg-white/5 border-x border-white/10 grid grid-cols-2 h-full">
+                    <div className="py-5 text-center flex items-center justify-center border-r border-white/5">
+                      {row.isPrice ? (
+                        <span className="text-3xl font-black text-white">{row.free}<span className="text-sm text-gray-400 font-normal">/mo</span></span>
+                      ) : row.free === 'check' ? (
+                        <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center"><Check size={14} className="text-emerald-400" /></div>
+                      ) : row.free === '—' ? (
+                        <span className="text-gray-500 font-normal">—</span>
+                      ) : (
+                        <span className="text-gray-200 font-medium text-sm">{row.free}</span>
+                      )}
+                    </div>
+                    <div className="py-5 text-center flex items-center justify-center">
+                      {row.isPrice ? (
+                        <span className="text-3xl font-black text-white">{row.pod}<span className="text-sm text-gray-400 font-normal">/mo</span></span>
+                      ) : row.pod === 'check' ? (
+                        <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center"><Check size={14} className="text-emerald-400" /></div>
+                      ) : row.pod === '—' ? (
+                        <span className="text-gray-500 font-normal">—</span>
+                      ) : (
+                        <span className="text-gray-200 font-medium text-sm">{row.pod}</span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3 text-sm text-gray-200 font-medium">
-                    <Check size={16} className="text-emerald-400 shrink-0 mt-0.5" />
-                    <span>Works 168 hours per week (24/7)</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-sm text-gray-200 font-medium">
-                    <Check size={16} className="text-emerald-400 shrink-0 mt-0.5" />
-                    <span>Deployed in weeks, not months</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-sm text-gray-200 font-medium">
-                    <Check size={16} className="text-emerald-400 shrink-0 mt-0.5" />
-                    <span>Zero sick days, flat monthly fee</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+              ))}
 
-        </div>
-
-        {/* BOTTOM ROW: ENTERPRISE BANNER */}
-        <div className="max-w-[1400px] mx-auto mb-24 px-4">
-          <div className="reveal relative bg-white/5 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 hover:bg-white/10 transition-colors" style={{ transitionDelay: '300ms' }}>
-            <div className="flex-1 max-w-3xl">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-indigo-400 text-[10px] font-bold uppercase tracking-widest opacity-80">
-                  Scale
-                </span>
-                <h3 className="text-xl font-bold">Enterprise Overhaul</h3>
+              {/* CTA Row */}
+              <div className="grid grid-cols-5 items-center">
+                <div className="col-span-3"></div>
+                <div className="col-span-2 bg-white/5 border-x border-b border-white/10 rounded-b-2xl grid grid-cols-2 p-6 gap-4">
+                  <button onClick={handleScrollToBooking} className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-sm font-bold py-3 rounded-xl transition-all text-center flex items-center justify-center gap-2">
+                    <PhoneCall size={16} /> Book Consult
+                  </button>
+                  <button onClick={handleScrollToBooking} className="w-full bg-white/10 hover:bg-white/20 text-white text-sm font-bold py-3 rounded-xl transition-all text-center">
+                    Request Quote
+                  </button>
+                </div>
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Complete operational transformation. Multiple interconnected AI agents replacing entire departments of manual labor. Includes legacy system migration and staff training.
-              </p>
-            </div>
-            <div className="shrink-0 w-full md:w-auto flex flex-col items-center md:items-end gap-3">
-              <span className="text-2xl font-black">Custom</span>
-              <button onClick={handleScrollToBooking} className="w-full md:w-auto bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
-                Discuss Enterprise
-              </button>
             </div>
           </div>
         </div>

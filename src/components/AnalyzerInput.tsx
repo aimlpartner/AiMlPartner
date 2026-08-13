@@ -164,22 +164,22 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-white/80 border border-black/10 shadow-editorial text-ink rounded-3xl overflow-hidden p-8 md:p-12 relative"
+            className="bg-white/5 border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] backdrop-blur-xl text-white rounded-3xl overflow-hidden p-8 md:p-12 relative"
           >
             {/* Ambient glows inside card */}
-            <div className="absolute top-0 right-0 w-80 h-80 bg-accent/5 rounded-full filter blur-[80px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/3 rounded-full filter blur-[80px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-80 h-80 bg-accent/20 rounded-full filter blur-[80px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/10 rounded-full filter blur-[80px] pointer-events-none" />
 
             <div className="relative z-10">
               <div className="text-center max-w-2xl mx-auto mb-10">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-alt border border-black/5 text-accent rounded-full text-xs font-mono font-bold tracking-wider uppercase mb-4 shadow-sm">
-                  <Sparkles size={12} className="text-accent animate-pulse" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/20 text-emerald-400 rounded-full text-xs font-mono font-bold tracking-wider uppercase mb-4 shadow-sm">
+                  <Sparkles size={12} className="text-emerald-400 animate-pulse" />
                   FREE AI DIAGNOSTIC SUITE
                 </div>
-                <h2 className="text-3xl md:text-4xl font-display font-extrabold tracking-tight text-ink leading-tight">
+                <h2 className="text-3xl md:text-4xl font-display font-extrabold tracking-tight text-white leading-tight">
                   Discover Your Back-Office Automation Potential
                 </h2>
-                <p className="text-ink-light mt-3 text-base md:text-lg font-medium leading-relaxed">
+                <p className="text-gray-400 mt-3 text-base md:text-lg font-medium leading-relaxed">
                   Provide your business context using any channel below. Our constraints-driven auditor maps time leaks and builds an implementation roadmap in under 30 seconds.
                 </p>
               </div>
@@ -197,14 +197,14 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
               )}
 
               {/* Tabs Headers */}
-              <div className="flex border border-black/10 mb-8 p-1 bg-surface-alt rounded-2xl md:max-w-xl md:mx-auto shadow-inner">
+              <div className="flex border border-white/10 mb-8 p-1 bg-black/50 rounded-2xl md:max-w-xl md:mx-auto shadow-inner">
                 <button
                   type="button"
                   onClick={() => { setActiveTab('url'); setError(''); }}
                   className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-4 rounded-xl text-[10px] sm:text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
                     activeTab === 'url'
                       ? 'bg-white text-ink border border-black/10 backdrop-blur-md shadow-sm'
-                      : 'text-ink-light hover:text-ink'
+                      : 'text-gray-400 hover:text-white'
                   }`}
                 >
                   <Globe size={14} className="shrink-0" />
@@ -216,7 +216,7 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                   className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-4 rounded-xl text-[10px] sm:text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
                     activeTab === 'description'
                       ? 'bg-white text-ink border border-black/10 backdrop-blur-md shadow-sm'
-                      : 'text-ink-light hover:text-ink'
+                      : 'text-gray-400 hover:text-white'
                   }`}
                 >
                   <FileText size={14} className="shrink-0" />
@@ -228,7 +228,7 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                   className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-4 rounded-xl text-[10px] sm:text-xs uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${
                     activeTab === 'file'
                       ? 'bg-white text-ink border border-black/10 backdrop-blur-md shadow-sm'
-                      : 'text-ink-light hover:text-ink'
+                      : 'text-gray-400 hover:text-white'
                   }`}
                 >
                   <UploadCloud size={14} className="shrink-0" />
@@ -244,11 +244,11 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                     animate={{ opacity: 1 }}
                     className="space-y-2"
                   >
-                    <label htmlFor="company-url" className="block text-[10px] font-mono uppercase tracking-widest text-ink-light">
+                    <label htmlFor="company-url" className="block text-[10px] font-mono uppercase tracking-widest text-gray-400">
                       Website Domain
                     </label>
                     <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-ink-light group-focus-within:text-accent transition-colors">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-emerald-400 transition-colors">
                         <Globe size={18} />
                       </div>
                       <input
@@ -257,10 +257,10 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                         placeholder="e.g. company.com (no https or www)"
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
-                        className="block w-full pl-12 pr-4 py-4 bg-white border border-black/10 rounded-2xl text-ink placeholder:text-ink-lighter focus:outline-none focus:border-accent shadow-inner transition-colors text-base"
+                        className="block w-full pl-12 pr-4 py-4 bg-black/50 border border-white/10 rounded-2xl text-white placeholder:text-gray-600 focus:outline-none focus:border-emerald-400 shadow-inner transition-colors text-base"
                       />
                     </div>
-                    <p className="text-xs text-ink-light font-mono mt-1 leading-relaxed">
+                    <p className="text-xs text-gray-400 font-mono mt-1 leading-relaxed">
                       Our system securely performs an operational audit based on your website domain name, using search grounding and scraping.
                     </p>
                   </motion.div>
@@ -272,7 +272,7 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                     animate={{ opacity: 1 }}
                     className="space-y-2"
                   >
-                    <label htmlFor="company-desc" className="block text-[10px] font-mono uppercase tracking-widest text-ink-light">
+                    <label htmlFor="company-desc" className="block text-[10px] font-mono uppercase tracking-widest text-gray-400">
                       Describe Your Business & Bottlenecks
                     </label>
                     <textarea
@@ -282,9 +282,9 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                       placeholder="Tell us about your team structure, manual tasks that waste hours (like sorting quotes, logging leads, copy-pasting customer records), and current CRM bottlenecks..."
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      className="block w-full px-5 py-4 bg-white border border-black/10 rounded-2xl text-ink placeholder:text-ink-lighter focus:outline-none focus:border-accent shadow-inner transition-colors text-base resize-none"
+                      className="block w-full px-5 py-4 bg-black/50 border border-white/10 rounded-2xl text-white placeholder:text-gray-600 focus:outline-none focus:border-emerald-400 shadow-inner transition-colors text-base resize-none"
                     />
-                    <div className="flex justify-between text-[10px] font-mono text-ink-light mt-1 leading-relaxed">
+                    <div className="flex justify-between text-[10px] font-mono text-gray-400 mt-1 leading-relaxed">
                       <span>Minimum 20 characters. Share workflow details to improve audit playbooks.</span>
                       <span className={description.length >= 2000 ? "text-alert font-bold" : ""}>{description.length} / 2000 characters</span>
                     </div>
@@ -297,7 +297,7 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                     animate={{ opacity: 1 }}
                     className="space-y-2"
                   >
-                    <label className="block text-[10px] font-mono uppercase tracking-widest text-ink-light">
+                    <label className="block text-[10px] font-mono uppercase tracking-widest text-gray-400">
                       Upload Brief / Operational Manual
                     </label>
                     
@@ -308,8 +308,8 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                       onDrop={handleDrop}
                       className={`relative border-2 border-dashed rounded-2xl p-8 md:p-12 text-center transition-all cursor-pointer ${
                         dragActive 
-                          ? 'border-accent bg-accent/5' 
-                          : 'border-black/20 hover:border-accent/40 bg-white'
+                          ? 'border-emerald-400 bg-emerald-400/5' 
+                          : 'border-white/20 hover:border-emerald-400/40 bg-black/50'
                       }`}
                     >
                       <input
@@ -321,17 +321,17 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                       />
                       
                       <label htmlFor="file-upload" className="cursor-pointer block">
-                        <div className="w-14 h-14 bg-surface-alt border border-black/10 rounded-2xl flex items-center justify-center mx-auto shadow-md mb-4 text-ink-light transition-colors">
-                          <UploadCloud size={24} className="text-accent" />
+                        <div className="w-14 h-14 bg-white/10 border border-white/10 rounded-2xl flex items-center justify-center mx-auto shadow-md mb-4 text-gray-400 transition-colors">
+                          <UploadCloud size={24} className="text-emerald-400" />
                         </div>
-                        <span className="block text-ink font-bold text-base">
+                        <span className="block text-white font-bold text-base">
                           {fileName ? fileName : 'Drag & Drop brief here'}
                         </span>
-                        <span className="block text-ink-light text-xs mt-1.5 font-mono">
+                        <span className="block text-gray-400 text-xs mt-1.5 font-mono">
                           Supports text briefs, operational manuals, markdown, and CSV formats.
                         </span>
                         {fileName && (
-                          <span className="inline-block mt-3 bg-accent/15 text-accent border border-accent/20 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider font-mono">
+                          <span className="inline-block mt-3 bg-emerald-400/15 text-emerald-400 border border-emerald-400/20 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider font-mono">
                             Brief Loaded Successfully
                           </span>
                         )}
@@ -343,7 +343,7 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
                 <div className="pt-4 flex justify-center">
                   <button
                     type="submit"
-                    className="w-full bg-ink text-white font-bold py-4 rounded-xl hover:bg-accent transition-all flex items-center justify-center gap-2 group/btn cursor-pointer"
+                    className="w-full bg-emerald-500 text-slate-950 font-bold py-4 rounded-xl hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 group/btn cursor-pointer"
                   >
                     <span>Run AI Operational Audit</span>
                     <ArrowRight size={16} className="group-hover/btn:translate-x-0.5 transition-transform" />
