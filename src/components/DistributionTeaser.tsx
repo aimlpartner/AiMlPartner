@@ -25,10 +25,10 @@ export function DistributionTeaser() {
         </p>
         
         <a 
-          href="/events" 
+          href="/analyzer" 
           className="inline-flex items-center justify-center gap-2 bg-gradient-to-br from-slate-50 to-sky-50/30 text-slate-900 px-8 py-4 font-medium hover:bg-slate-200 transition-colors"
         >
-          Explore /events
+          Run AI Operational Scan
           <ArrowRight size={16} />
         </a>
       </motion.div>

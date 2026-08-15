@@ -11,24 +11,29 @@ import { StickyCTA } from './components/StickyCTA';
 import { useVisitorTracking } from './hooks/useVisitorTracking';
 
 // Pages
-const Home = lazy(() => import('./pages/Home').then((module) => ({ default: module.Home })));
+const HomeUS = lazy(() => import('./pages/HomeUS').then((module) => ({ default: module.HomeUS })));
+const HomeIN = lazy(() => import('./pages/Home').then((module) => ({ default: module.Home })));
 const AgentStudio = lazy(() => import('./pages/AgentStudio').then((module) => ({ default: module.AgentStudio })));
-const AgentShop = lazy(() => import('./pages/AgentShop').then((module) => ({ default: module.AgentShop })));
+const Pricing = lazy(() => import('./pages/Pricing').then((module) => ({ default: module.Pricing })));
 const LowCodePods = lazy(() => import('./pages/LowCodePods').then((module) => ({ default: module.LowCodePods })));
-const AgentforceServices = lazy(() =>
-  import('./pages/AgentforceServices').then((module) => ({ default: module.AgentforceServices })),
-);
 const TeamPage = lazy(() => import('./pages/TeamPage').then((module) => ({ default: module.TeamPage })));
-const EventsPage = lazy(() => import('./pages/EventsPage').then((module) => ({ default: module.EventsPage })));
 const AdminDashboard = lazy(() =>
   import('./pages/AdminDashboard').then((module) => ({ default: module.AdminDashboard })),
 );
 const Analyzer = lazy(() =>
   import('./pages/Analyzer').then((module) => ({ default: module.Analyzer })),
 );
+const PartnerWaitlist = lazy(() =>
+  import('./pages/PartnerWaitlist').then((module) => ({ default: module.PartnerWaitlist })),
+);
+
+// Footers
+import { USFooter } from './components/us/USFooter';
 
 export default function App() {
   const { pathname } = useLocation();
+  const isIN = pathname.startsWith('/in');
+  const isUS = pathname === '/' || pathname.startsWith('/us');
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -37,27 +42,32 @@ export default function App() {
   useVisitorTracking();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-sky-50/30 font-sans text-slate-900 selection:bg-slate-200 selection:text-slate-900">
+    <div className={`min-h-screen overflow-x-hidden font-sans ${
+      isUS ? 'bg-black text-white selection:bg-[#FF5500] selection:text-black' : isIN ? 'bg-black text-white' : 'bg-gradient-to-br from-slate-50 to-sky-50/30 text-slate-900'
+    }`}>
       <Navbar />
       
-      <Suspense fallback={<div className="px-6 py-16 text-center text-slate-500">Loading page...</div>}>
+      <Suspense fallback={<div className="px-6 py-24 text-center text-zinc-500 font-mono text-xs">Loading AIML Partner...</div>}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Flagship US-Market Landing Page (Default & /us) */}
+          <Route path="/" element={<HomeUS />} />
+          <Route path="/us" element={<HomeUS />} />
+
+          {/* Preserved Indian-Market Landing Page (/in) */}
+          <Route path="/in" element={<HomeIN />} />
+
+          {/* Deep Tools & Shared Enterprise Pages */}
           <Route path="/agent-studio" element={<AgentStudio />} />
-          <Route path="/agent-shop" element={<AgentShop />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="/low-code-pods" element={<LowCodePods />} />
-          <Route path="/agentforce-services" element={<AgentforceServices />} />
           <Route path="/team" element={<TeamPage />} />
-          <Route path="/events" element={<EventsPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/analyzer" element={<Analyzer />} />
+          <Route path="/partner-waitlist" element={<PartnerWaitlist />} />
         </Routes>
       </Suspense>
       
-      <Footer />
-      
-      {/* Modals and Overlays */}
-      <StickyCTA />
+      {isIN ? <Footer /> : <USFooter />}
     </div>
   );
 }

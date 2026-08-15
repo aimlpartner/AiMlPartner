@@ -26,7 +26,7 @@ export function HowWeWork() {
       title: "CRM & Enterprise Syncing",
       lead: "Led by Anand",
       icon: <Link2 size={20} className="text-slate-900" />,
-      description: "We bridge agent webhooks directly with Salesforce Agentforce, HubSpot, or SQL backends, deploying continuous observability logs and rate limits."
+      description: "We bridge agent webhooks directly with HubSpot, custom CRM systems, or SQL backends, deploying continuous observability logs and rate limits."
     }
   ];
 

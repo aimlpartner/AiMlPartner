@@ -7,11 +7,13 @@ import { Sparkles, Brain, Cpu, Lock, ArrowRight, Loader2, X } from 'lucide-react
 import { motion, AnimatePresence } from 'motion/react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import { detectCurrency } from '../lib/currencies';
 
 export function Analyzer() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<any | null>(null);
   const [error, setError] = useState('');
+  const [selectedCurrency, setSelectedCurrency] = useState(detectCurrency());
 
   // Lead-capture gating state
   const [emailCaptured, setEmailCaptured] = useState(false);
@@ -112,9 +114,9 @@ export function Analyzer() {
     } catch (err: any) {
       console.error('[Analyzer Client Error]:', err);
       if (err.message?.includes('Failed to fetch') || err.message?.includes('NetworkError')) {
-        setError('Could not connect to the analysis server. Please ensure the server is running and try again.');
+        setError('Unable to connect. Please check your network connection and try again.');
       } else {
-        setError(err.message || 'Diagnostic failed. Please check your inputs and try again.');
+        setError('Something went wrong. Please try again.');
       }
     } finally {
       setIsLoading(false);
@@ -177,7 +179,8 @@ export function Analyzer() {
           email: leadForm.email.trim(),
           name: leadForm.name.trim(),
           company: leadForm.company.trim(),
-          analysisResult: result
+          analysisResult: result,
+          currencyCode: selectedCurrency
         })
       });
 
@@ -200,7 +203,7 @@ export function Analyzer() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-surface text-ink font-sans">
+    <div className="relative min-h-screen bg-[#030014] text-white font-sans">
       {/* Texture Overlays */}
       <div className="grain-overlay"></div>
 
@@ -244,9 +247,9 @@ export function Analyzer() {
             </div>
           </section>
 
-          {/* SECTION 2: INPUT AREA (Flowing Gradient Background) */}
-          <section className="flowing-gradient py-24 px-6 relative z-10 border-t border-black/5 text-ink rounded-t-[3rem] -mt-10 min-h-[500px]">
-            <div className="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>
+          {/* SECTION 2: INPUT AREA */}
+          <section className="py-24 px-6 relative z-10 min-h-[500px] -mt-10">
+            <div className="absolute inset-0 bg-[#030014]/80 backdrop-blur-3xl border-t border-white/10 rounded-t-[3rem] z-0 shadow-[0_-20px_50px_rgba(3,0,20,0.8)]"></div>
             <div className="max-w-4xl mx-auto relative z-10">
               {limitExceeded ? (
                 <div className="max-w-2xl mx-auto bg-slate-900/90 border border-slate-800 rounded-3xl p-8 sm:p-12 text-center text-white shadow-2xl relative overflow-hidden backdrop-blur-md">
@@ -325,6 +328,8 @@ export function Analyzer() {
                   leadEmail={leadForm.email}
                   leadName={leadForm.name}
                   leadCompany={leadForm.company}
+                  selectedCurrency={selectedCurrency}
+                  setSelectedCurrency={setSelectedCurrency}
                 />
               </div>
 

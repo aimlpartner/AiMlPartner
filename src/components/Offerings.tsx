@@ -28,14 +28,6 @@ export function Offerings() {
       cta: "View Operational Portals",
       link: "/low-code-pods",
       i: 2
-    },
-    {
-      title: "CRM & Enterprise Architecture",
-      icon: <Cloud size={20} className="text-slate-900" />,
-      description: "Secure Salesforce Agentforce and custom database integrations. We bridge your CRM triggers directly with LLM orchestration pipelines, setting up robust observability logs and strict security standards.",
-      cta: "Learn Enterprise Services",
-      link: "/agentforce-services",
-      i: 3
     }
   ];
 
@@ -60,7 +52,7 @@ export function Offerings() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {offerings.map((offering, i) => (
             <motion.div 
               key={i} 

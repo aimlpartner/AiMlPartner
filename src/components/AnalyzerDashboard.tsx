@@ -20,9 +20,11 @@ import {
   Info,
   X,
   LockOpen,
-  Loader2
+  Loader2,
+  Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { CURRENCIES, formatCurrencyValue } from '../lib/currencies';
 
 // Map icon names from Gemini response to actual Lucide component instances
 const ICON_MAP: Record<string, React.ComponentType<any>> = {
@@ -89,20 +91,26 @@ interface AnalyzerDashboardProps {
   leadEmail?: string;
   leadName?: string;
   leadCompany?: string;
+  selectedCurrency: string;
+  setSelectedCurrency: (c: string) => void;
 }
 
-export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadCompany }: AnalyzerDashboardProps) {
+export function AnalyzerDashboard({
+  data,
+  onReset,
+  leadEmail,
+  leadName,
+  leadCompany,
+  selectedCurrency,
+  setSelectedCurrency
+}: AnalyzerDashboardProps) {
   const [selectedDeptIndex, setSelectedDeptIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const activeDept = data.departments[selectedDeptIndex] || data.departments[0];
 
-  // Helper to format values as currency
+  // Helper to format values as currency using selected currency
   const formatCurrency = (val: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0
-    }).format(val);
+    return formatCurrencyValue(val, selectedCurrency);
   };
 
   // Readiness Tier Styling configuration
@@ -161,12 +169,33 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
             Sector: {data.sector}
           </span>
         </div>
-        <button
-          onClick={onReset}
-          className="bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-6 py-3 rounded-full shadow-lg transition-colors cursor-pointer"
-        >
-          Run Another Analysis
-        </button>
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+          {/* Custom Styled Currency Dropdown */}
+          <div className="relative inline-flex items-center">
+            <span className="absolute left-3.5 text-slate-400 pointer-events-none">
+              <Globe size={13} />
+            </span>
+            <select
+              value={selectedCurrency}
+              onChange={(e) => setSelectedCurrency(e.target.value)}
+              className="pl-9 pr-8 py-2.5 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 text-xs font-semibold rounded-full shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-sky-500/20 cursor-pointer appearance-none"
+            >
+              {Object.values(CURRENCIES).map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            <span className="absolute right-3.5 text-[9px] text-slate-400 pointer-events-none">▼</span>
+          </div>
+
+          <button
+            onClick={onReset}
+            className="bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold px-6 py-2.5 sm:py-3 rounded-full shadow-lg transition-colors cursor-pointer"
+          >
+            Run Another Analysis
+          </button>
+        </div>
       </div>
 
       {/* ----------------- SECTION 2: EXECUTIVE SUMMARY & OVERVIEW GRID ----------------- */}
@@ -290,6 +319,56 @@ export function AnalyzerDashboard({ data, onReset, leadEmail, leadName, leadComp
           </div>
         </div>
 
+      </div>
+
+      {/* Financial Profitability & ROI breakdown card */}
+      <div className="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50/30 rounded-full filter blur-[60px] pointer-events-none animate-pulse-slow" />
+        <div className="relative z-10 space-y-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div>
+              <span className="text-xs font-mono text-indigo-600 uppercase tracking-widest block font-bold">FINANCIAL ROI PROJECTION</span>
+              <h3 className="text-2xl font-bold text-slate-900 mt-1">Reclaimed Revenue Breakdown & Value Projections</h3>
+            </div>
+            <span className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 text-xs px-3 py-1 border border-indigo-100 rounded-full font-medium">
+              Based on Analysis Audit
+            </span>
+          </div>
+
+          <p className="text-slate-500 text-sm font-light leading-relaxed max-w-3xl">
+            This projection details how the reclaimed capital savings accumulate over time based strictly on the audited weekly leakage hours and operational inefficiencies identified in the departments.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+            {/* Weekly card */}
+            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 hover:bg-slate-100/50 transition-colors">
+              <span className="text-[10px] font-mono text-slate-400 block tracking-wider uppercase font-semibold">Weekly Profit / Savings</span>
+              <h4 className="text-2xl font-extrabold text-slate-800 mt-2">
+                {formatCurrencyValue(data.annualReclaimedROI / 52, selectedCurrency)}
+              </h4>
+              <p className="text-xs text-slate-400 mt-1 font-light">Based on {data.reclaimedTimeHours} hours saved per week.</p>
+            </div>
+
+            {/* Monthly card */}
+            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 hover:bg-slate-100/50 transition-colors">
+              <span className="text-[10px] font-mono text-slate-400 block tracking-wider uppercase font-semibold">Monthly Profit / Savings</span>
+              <h4 className="text-2xl font-extrabold text-slate-800 mt-2">
+                {formatCurrencyValue(data.annualReclaimedROI / 12, selectedCurrency)}
+              </h4>
+              <p className="text-xs text-slate-400 mt-1 font-light">Direct back-office overhead reductions.</p>
+            </div>
+
+            {/* 3-Year Projection card */}
+            <div className="bg-gradient-to-br from-indigo-50/50 to-sky-50/50 border border-indigo-100/50 rounded-2xl p-5 hover:from-indigo-50 hover:to-sky-50 transition-colors relative overflow-hidden">
+              <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-indigo-500/5 rounded-full blur-lg pointer-events-none" />
+              <span className="text-[10px] font-mono text-indigo-600 block tracking-wider uppercase font-semibold">3-Year Cumulative Value</span>
+              <h4 className="text-2xl font-extrabold text-indigo-700 mt-2">
+                {formatCurrencyValue(data.annualReclaimedROI * 3, selectedCurrency)}
+              </h4>
+              <p className="text-xs text-indigo-500 mt-1 font-light font-medium">Long-term compound efficiency gains.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* ----------------- SECTION 3: INTERACTIVE DEPARTMENT DEEP DIVE ----------------- */}
@@ -536,7 +615,7 @@ const getDepartmentQuestions = (deptName: string): string[] => {
   if (name.includes('operat') || name.includes('admin') || name.includes('logist')) {
     return [
       "What is the primary format of your files (e.g. scanned PDFs, spreadsheets, emails)?",
-      "Which databases or CRM systems should this automation synchronize with (e.g. HubSpot, Salesforce)?",
+      "Which databases or CRM systems should this automation synchronize with (e.g. HubSpot, SQL/Custom CRM)?",
       "Do you want the AI to run fully autonomous, or flag complex files for human approval first?"
     ];
   } else if (name.includes('market') || name.includes('sale') || name.includes('lead')) {

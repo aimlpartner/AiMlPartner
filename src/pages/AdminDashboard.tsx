@@ -79,7 +79,7 @@ export function AdminDashboard() {
 
   if (!user) {
     return (
-      <div className="relative min-h-screen overflow-x-hidden bg-surface text-ink flex items-center justify-center font-sans">
+      <div className="relative min-h-screen bg-surface text-ink flex items-center justify-center font-sans">
         {/* Texture Overlays */}
         <div className="grain-overlay"></div>
 
@@ -112,7 +112,7 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-surface text-ink font-sans">
+    <div className="relative min-h-screen bg-surface text-ink font-sans">
       {/* Texture Overlays */}
       <div className="grain-overlay"></div>
 

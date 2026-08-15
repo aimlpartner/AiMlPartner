@@ -15,22 +15,52 @@ export function BookCallWidget({ source = 'Website', onSuccess }: BookCallWidget
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // Generate next 30 weekday/Saturday booking dates (skipping Sundays)
+  // Month navigation state
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+
+  // Generate valid booking dates for the current viewed month
   const bookingDates = useMemo(() => {
-    const dates = [];
-    const current = new Date();
-    // Start booking from tomorrow
-    current.setDate(current.getDate() + 1);
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
     
-    while (dates.length < 30) {
-      // 0 = Sunday
-      if (current.getDay() !== 0) {
-        dates.push(new Date(current));
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const dates = [];
+    for (let i = 1; i <= daysInMonth; i++) {
+      const d = new Date(year, month, i);
+      // Skip Sundays (0) and past dates
+      if (d.getDay() !== 0 && d > today) { // Using > today to start from tomorrow, like before
+        dates.push(d);
       }
-      current.setDate(current.getDate() + 1);
     }
     return dates;
-  }, []);
+  }, [currentMonth]);
+
+  const monthHeader = currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  const handleNextMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
+  };
+
+  const handlePrevMonth = () => {
+    const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
+    const today = new Date();
+    // Prevent going to past months
+    if (
+      newMonth.getFullYear() < today.getFullYear() ||
+      (newMonth.getFullYear() === today.getFullYear() && newMonth.getMonth() < today.getMonth())
+    ) {
+      return;
+    }
+    setCurrentMonth(newMonth);
+  };
+
+  const isPrevMonthDisabled = useMemo(() => {
+    const today = new Date();
+    return currentMonth.getFullYear() === today.getFullYear() && currentMonth.getMonth() === today.getMonth();
+  }, [currentMonth]);
 
   const TIME_SLOTS = [
     "09:00 AM", "09:30 AM",
@@ -47,14 +77,6 @@ export function BookCallWidget({ source = 'Website', onSuccess }: BookCallWidget
   const formatDateValue = (date: Date) => {
     return date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
   };
-
-  const monthHeader = useMemo(() => {
-    if (bookingDates.length === 0) return '';
-    const firstMonth = bookingDates[0].toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-    const lastMonth = bookingDates[bookingDates.length - 1].toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-    if (firstMonth === lastMonth) return firstMonth;
-    return `${firstMonth} - ${bookingDates[bookingDates.length - 1].toLocaleDateString('en-US', { month: 'long' })}`;
-  }, [bookingDates]);
 
   const handleNextToTime = () => {
     if (!selectedDate) {
@@ -125,7 +147,7 @@ export function BookCallWidget({ source = 'Website', onSuccess }: BookCallWidget
       }
     } catch (err: any) {
       console.error('[Call Booking Form Error]:', err);
-      setError(err.message || 'Something went wrong. Please try again.');
+      setError('Something went wrong. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -175,7 +197,7 @@ export function BookCallWidget({ source = 'Website', onSuccess }: BookCallWidget
                 Select Consultation Date
               </h3>
               <p className="text-xs text-slate-500 leading-relaxed font-light mt-1">
-                Choose a date from the next 30 days (excluding Sundays).
+                Choose a date for your consultation (excluding Sundays).
               </p>
             </div>
 
@@ -185,9 +207,26 @@ export function BookCallWidget({ source = 'Website', onSuccess }: BookCallWidget
 
             {/* Date Grid */}
             <div className="space-y-3">
-              <div className="text-xs font-bold text-slate-800 flex items-center gap-1.5 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 w-fit">
-                <CalendarIcon size={14} className="text-indigo-600 animate-pulse" />
-                <span>{monthHeader}</span>
+              <div className="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl px-2 py-1.5 w-full sm:w-auto">
+                <div className="flex items-center gap-2 px-2">
+                  <CalendarIcon size={14} className="text-indigo-600 animate-pulse" />
+                  <span className="text-xs font-bold text-slate-800">{monthHeader}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <button 
+                    onClick={handlePrevMonth} 
+                    disabled={isPrevMonthDisabled}
+                    className={`p-1.5 rounded-lg transition-colors ${isPrevMonthDisabled ? 'text-slate-300 cursor-not-allowed' : 'text-slate-600 hover:bg-slate-200 cursor-pointer'}`}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                  </button>
+                  <button 
+                    onClick={handleNextMonth}
+                    className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </button>
+                </div>
               </div>
               <div className="grid grid-cols-5 sm:grid-cols-6 gap-2">
                 {bookingDates.map((date) => {

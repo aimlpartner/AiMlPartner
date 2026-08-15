@@ -16,7 +16,7 @@ export function Proof() {
       image: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&q=80&w=400&h=300"
     },
     {
-      headline: "Enterprise Compliance & Real-Time Salesforce Synchronization",
+      headline: "Enterprise Compliance & Real-Time Database Synchronization",
       description: "Deployed secure database listeners to clean and synchronize contact records automatically across multiple SQL databases, maintaining full observability logs and compliance rules.",
       metric: "99.8% CRM Record Accuracy Vetted",
       image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=400&h=300"
