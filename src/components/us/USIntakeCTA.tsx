@@ -236,11 +236,17 @@ export function USIntakeCTA({ source = 'US Flagship Landing Page', onSuccess }: 
             </div>
 
             {/* Direct Line */}
-            <div className="p-6 rounded-2xl bg-zinc-950 border border-zinc-900 flex items-center justify-between font-mono text-xs">
-              <span className="text-zinc-500 uppercase">Direct Desk:</span>
-              <a href="mailto:info@aimlpartner.com" className="text-[#FF5500] hover:underline font-bold">
-                info@aimlpartner.com ↗
-              </a>
+            <div className="p-6 rounded-2xl bg-zinc-950 border border-zinc-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs">
+              <span className="text-zinc-500 uppercase tracking-wider shrink-0">Direct Desk:</span>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 sm:justify-end">
+                <a href="mailto:info@aimlpartner.com" className="text-[#FF5500] hover:underline font-bold transition-colors">
+                  info@aimlpartner.com ↗
+                </a>
+                <span className="text-zinc-700 hidden sm:inline">•</span>
+                <a href="mailto:porwaldeepak22@gmail.com" className="text-zinc-300 hover:text-[#FF5500] hover:underline font-medium transition-colors">
+                  porwaldeepak22@gmail.com ↗
+                </a>
+              </div>
             </div>
           </div>
 
