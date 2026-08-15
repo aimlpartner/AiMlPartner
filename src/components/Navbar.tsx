@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -7,7 +7,6 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const isHome = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,34 +16,18 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Determine navbar styles based on scroll & route page
+  // Determine navbar styles based on scroll
   const headerWrapperClass = isScrolled
     ? 'fixed top-4 left-0 right-0 z-50 flex justify-center px-4 md:px-8 transition-all duration-500'
     : 'fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-500';
 
   const containerClass = isScrolled
-    ? 'w-full max-w-[1200px] bg-surface-dark/85 backdrop-blur-xl border border-white/10 shadow-glass rounded-full py-2.5 px-6 md:px-8 flex items-center justify-between text-white transition-all duration-500 relative'
-    : isHome
-      ? 'w-full bg-transparent border-b border-transparent py-6 px-6 md:px-12 flex items-center justify-between text-white transition-all duration-500 relative'
-      : 'w-full bg-white/80 backdrop-blur-md border-b border-black/5 py-5 px-6 md:px-12 flex items-center justify-between text-ink transition-all duration-500 relative';
+    ? 'w-full max-w-[1200px] bg-black/85 backdrop-blur-xl border border-zinc-800 shadow-2xl rounded-full py-2.5 px-6 md:px-8 flex items-center justify-between text-white transition-all duration-500 relative'
+    : 'w-full bg-black/40 backdrop-blur-md border-b border-zinc-900/80 py-5 px-6 md:px-12 flex items-center justify-between text-white transition-all duration-500 relative';
 
-  const linkClass = isScrolled
-    ? 'text-xs uppercase tracking-wider font-semibold text-white/70 hover:text-white hover:bg-white/5 px-3 py-1.5 rounded-full transition-all duration-300'
-    : isHome
-      ? 'text-xs uppercase tracking-wider font-semibold text-white/85 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-full transition-all duration-300'
-      : 'text-xs uppercase tracking-wider font-semibold text-ink-light hover:text-ink hover:bg-black/5 px-3 py-1.5 rounded-full transition-all duration-300';
+  const linkClass = 'text-xs uppercase tracking-wider font-semibold text-zinc-300 hover:text-white hover:bg-zinc-800/80 px-3 py-1.5 rounded-full transition-all duration-300';
 
-  const ctaClass = isScrolled
-    ? 'bg-white text-ink text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full shadow-sm hover:bg-accent hover:text-white hover:shadow-glow transition-all duration-300 flex items-center gap-1.5 group/cta'
-    : isHome
-      ? 'bg-white text-ink text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full shadow-sm hover:bg-accent hover:text-white hover:shadow-glow transition-all duration-300 flex items-center gap-1.5 group/cta'
-      : 'bg-ink text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full shadow-sm hover:bg-accent hover:text-white hover:shadow-glow transition-all duration-300 flex items-center gap-1.5 group/cta';
-
-  const logoTextClass = isScrolled
-    ? 'font-display font-extrabold text-lg tracking-tight text-white transition-colors duration-500'
-    : isHome
-      ? 'font-display font-extrabold text-xl tracking-tight text-white transition-colors duration-500'
-      : 'font-display font-extrabold text-xl tracking-tight text-ink transition-colors duration-500';
+  const ctaClass = 'bg-[#FF5500] text-black text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full shadow-us-pop hover:bg-[#FF6E26] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-1.5 group/cta cursor-pointer';
 
   return (
     <>
@@ -55,15 +38,16 @@ export function Navbar() {
             <img
               src="/aimlpartner_logo.png"
               alt="AIMLPartner Logo"
-              className={`h-9 md:h-11 w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
-                isScrolled || isHome ? 'brightness-0 invert' : 'brightness-0'
-              }`}
+              className="h-8 md:h-10 w-auto object-contain transition-all duration-300 group-hover:scale-105 brightness-0 invert"
               referrerPolicy="no-referrer"
             />
           </Link>
 
           {/* Links - Desktop */}
           <nav className="hidden lg:flex items-center gap-1.5">
+            <a href="#pillars" className={linkClass}>
+              Capabilities
+            </a>
             <Link to="/agent-studio" className={linkClass}>
               Studio
             </Link>
@@ -83,20 +67,14 @@ export function Navbar() {
 
           {/* CTA & Mobile Toggle */}
           <div className="flex items-center gap-3">
-            <Link to="/analyzer" className={ctaClass}>
-              <span>Run AI Scan</span>
-              <ArrowRight size={13} className="group-hover/cta:translate-x-0.5 transition-transform" />
-            </Link>
+            <a href="#intake" className={ctaClass}>
+              <span>Book Call</span>
+              <ArrowUpRight size={14} className="group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 transition-transform" />
+            </a>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`lg:hidden p-2 rounded-full transition-colors ${
-                isScrolled
-                  ? 'text-white hover:bg-white/10'
-                  : isHome
-                    ? 'text-white hover:bg-white/10'
-                    : 'text-ink hover:bg-black/5'
-              }`}
+              className="lg:hidden p-2 rounded-full transition-colors text-white hover:bg-zinc-800"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -113,16 +91,25 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="fixed inset-x-4 top-24 z-40 bg-surface-dark/95 backdrop-blur-2xl border border-white/10 rounded-3xl p-6 flex flex-col gap-3 shadow-glass lg:hidden"
+            className="fixed inset-x-4 top-24 z-40 bg-zinc-950/95 backdrop-blur-2xl border border-zinc-800 rounded-3xl p-6 flex flex-col gap-3 shadow-2xl lg:hidden text-white"
           >
-            <div className="flex items-center gap-2 pb-4 border-b border-white/10 mb-2">
-              <span className="font-mono text-[9px] uppercase tracking-widest text-accent font-bold">
-                Navigation Directory
+            <div className="pb-3 border-b border-zinc-800 mb-2">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF5500] font-bold">
+                Directory
               </span>
             </div>
+
+            <a
+              href="#pillars"
+              className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span>Capabilities & Pods</span>
+              <ArrowRight size={14} className="opacity-40" />
+            </a>
             <Link
               to="/agent-studio"
-              className="text-sm font-semibold text-white/80 hover:text-white py-2 transition-colors flex items-center justify-between"
+              className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>Agent Studio</span>
@@ -130,15 +117,15 @@ export function Navbar() {
             </Link>
             <Link
               to="/pricing"
-              className="text-sm font-semibold text-white/80 hover:text-white py-2 transition-colors flex items-center justify-between"
+              className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Pricing</span>
+              <span>Outcome Pricing</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
             <Link
               to="/low-code-pods"
-              className="text-sm font-semibold text-white/80 hover:text-white py-2 transition-colors flex items-center justify-between"
+              className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>Services</span>
@@ -146,7 +133,7 @@ export function Navbar() {
             </Link>
             <Link
               to="/team"
-              className="text-sm font-semibold text-white/80 hover:text-white py-2 transition-colors flex items-center justify-between"
+              className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>Team & Experts</span>
@@ -154,20 +141,20 @@ export function Navbar() {
             </Link>
             <Link
               to="/partner-waitlist"
-              className="text-sm font-semibold text-white/80 hover:text-white py-2 transition-colors flex items-center justify-between"
+              className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>Partner Program</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
-            <Link
-              to="/analyzer"
-              className="mt-4 bg-accent text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl text-center shadow-glow hover:bg-accent-hover transition-colors flex items-center justify-center gap-2"
+            <a
+              href="#intake"
+              className="mt-4 bg-[#FF5500] text-black text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl text-center shadow-us-pop hover:bg-[#FF6E26] transition-colors flex items-center justify-center gap-2"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Run AI Scan</span>
-              <ArrowRight size={14} />
-            </Link>
+              <span>Book Discovery Call</span>
+              <ArrowUpRight size={14} />
+            </a>
           </motion.div>
         )}
       </AnimatePresence>
