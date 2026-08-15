@@ -613,6 +613,8 @@ JSON SCHEMA STRUCTURE:
         reject(err);
       }
     });
+  }
+
   // Register email POST route
   app.post('/api/email-report', async (req, res) => {
     const { email, name, company, analysisResult, currencyCode = 'USD' } = req.body;
