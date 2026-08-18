@@ -24,20 +24,20 @@ function parseDateTime(dateStr, timeStr) {
   try {
     const parts = dateStr.split(',');
     if (parts.length < 3) return new Date();
-    
+
     const monthDay = parts[1].trim(); // e.g. "Jun 10"
     const year = parts[2].trim(); // e.g. "2026"
-    
+
     const timeParts = timeStr.match(/^(\d+):(\d+)\s*(AM|PM)$/i);
     if (!timeParts) return new Date();
-    
+
     let hour = parseInt(timeParts[1], 10);
     const minute = parseInt(timeParts[2], 10);
     const ampm = timeParts[3].toUpperCase();
-    
+
     if (ampm === 'PM' && hour < 12) hour += 12;
     if (ampm === 'AM' && hour === 12) hour = 0;
-    
+
     const months = {
       jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
       jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11
@@ -45,12 +45,12 @@ function parseDateTime(dateStr, timeStr) {
     months["january"] = 0; months["february"] = 1; months["march"] = 2; months["april"] = 3;
     months["may"] = 4; months["june"] = 5; months["july"] = 6; months["august"] = 7;
     months["september"] = 8; months["october"] = 9; months["november"] = 10; months["december"] = 11;
-    
+
     const monthParts = monthDay.split(' ');
     const monthName = monthParts[0].substring(0, 3).toLowerCase();
     const day = parseInt(monthParts[1], 10);
     const monthIndex = months[monthName] !== undefined ? months[monthName] : 5;
-    
+
     return new Date(parseInt(year, 10), monthIndex, day, hour, minute, 0);
   } catch (err) {
     console.error("Error parsing date/time:", err);
@@ -77,7 +77,7 @@ function generateIcsContent(name, email, selectedDate, selectedTime, isDemo, smt
   const dtEnd = formatIcsDateTime(endDate);
   const dtStamp = formatIcsDateTime(new Date()) + 'Z';
   const meetingTitle = isDemo ? 'Custom AI Agent Demo - AIMLpartner' : '1-on-1 AI Strategy Session - AIMLpartner';
-  const meetingDesc = isDemo 
+  const meetingDesc = isDemo
     ? `Your 90-minute Custom AI Agent Prototype Walkthrough with AIMLpartner.\\nJoin via Google Meet: ${meetLink}`
     : `Your 30-minute AI Strategy Consultation with AIMLpartner.\\nJoin via Google Meet: ${meetLink}`;
 
@@ -87,7 +87,7 @@ function generateIcsContent(name, email, selectedDate, selectedTime, isDemo, smt
     .filter(Boolean);
   const primaryOrganizer = 'info@aimlpartner.com';
 
-  const adminAttendees = rawAdminEmails.map((adminEmail) => 
+  const adminAttendees = rawAdminEmails.map((adminEmail) =>
     `ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=FALSE;CN="AIMLpartner Team":MAILTO:${adminEmail}`
   );
 

@@ -1,6 +1,7 @@
-import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 
 interface USHeroProps {
   onBookCallClick?: () => void;
@@ -8,91 +9,155 @@ interface USHeroProps {
 }
 
 export function USHero({ onBookCallClick }: USHeroProps) {
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+  const navigate = useNavigate();
+  const [inputMode, setInputMode] = useState<'url' | 'description'>('url');
+  const [inputValue, setInputValue] = useState('');
+
+  const handleAuditSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputValue.trim()) return;
+
+    if (inputMode === 'url') {
+      let cleaned = inputValue.trim().toLowerCase();
+      cleaned = cleaned.replace(/^https?:\/\//i, '');
+      cleaned = cleaned.replace(/^www\./i, '');
+      cleaned = cleaned.split('/')[0];
+      navigate(`/analyzer?url=${encodeURIComponent(cleaned)}`);
+    } else {
+      navigate(`/analyzer?description=${encodeURIComponent(inputValue.trim())}`);
     }
   };
 
   return (
-    <section className="relative h-screen min-h-[700px] max-h-[1080px] w-full flex flex-col justify-between pt-24 pb-12 px-6 md:px-16 bg-black text-white overflow-hidden select-none">
+    <section className="relative min-h-[850px] lg:min-h-screen w-full flex flex-col justify-center items-center pt-28 pb-16 px-6 md:px-16 bg-black text-white overflow-hidden select-none">
       
-      {/* Subtle Warm Amber Ambient Vignette */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#FF5500]/10 rounded-full blur-[180px] pointer-events-none -z-10" />
-
-      {/* 1. Center Stage: Towering Monolith Sculpture (Centered in Viewport) */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative h-[65vh] max-h-[580px] aspect-[3/4] flex items-center justify-center"
-        >
-          <img
-            src="/hero_monolith.png"
-            alt="Basalt Sovereign Monolith"
-            className="h-full w-auto object-contain object-center drop-shadow-[0_20px_60px_rgba(255,85,0,0.18)]"
-          />
-        </motion.div>
+      {/* ========================================================================= */}
+      {/* 1. CINEMATIC SATURN ROTATION (NATIVE HARDWARE 60FPS FORWARD + REVERSE PING-PONG) */}
+      {/* ========================================================================= */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <video
+          src="/saturn_loop.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover object-center opacity-95 brightness-100 contrast-105 will-change-transform"
+        />
+        
+        {/* Soft edge ambient vignettes */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/15 pointer-events-none" />
       </div>
 
-      {/* 2. Massive Editorial Headline (Spanning Across Center Stage) */}
-      <div className="relative w-full max-w-7xl mx-auto flex-1 flex flex-col items-center justify-center z-10 pointer-events-none">
+      {/* ========================================================================= */}
+      {/* 2. CENTER STAGE: MONUMENTAL EDITORIAL HEADLINE & CLEAN LUXURY ANALYZER */}
+      {/* ========================================================================= */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto flex-1 flex flex-col items-center justify-center text-center my-auto py-6">
+        
+        {/* Location & Sovereign Regional Kicker */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-[#FF5500] animate-pulse" />
+          <span className="font-mono text-[10px] sm:text-xs text-zinc-300 uppercase tracking-widest font-semibold">
+            NEW JERSEY & TRI-STATE CORRIDOR // SOVEREIGN AI PODS
+          </span>
+        </motion.div>
+
+        {/* Monumental Centered Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-[6.5rem] font-extrabold tracking-tight text-white text-center leading-[0.95] drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]"
+          className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-[6.5rem] font-black tracking-tight text-white leading-[0.96] drop-shadow-[0_15px_40px_rgba(0,0,0,0.95)]"
         >
-          Built for permanence.
+          Built for <span className="text-[#FF5500]">permanence.</span>
         </motion.h1>
-      </div>
 
-      {/* 3. Bottom Editorial Command Anchor (Split Left & Right like Tenex) */}
-      <div className="relative w-full max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-8 z-20 pt-4">
-        
-        {/* Bottom Left: Value Proposition with Blaze Orange Accent */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-md text-left"
+        {/* Narrative Statement with Local Trust Anchor */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="font-sans text-sm sm:text-base md:text-lg text-zinc-200 max-w-2xl mt-6 leading-relaxed drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)]"
         >
-          <h2 className="font-display text-xl sm:text-2xl font-bold text-white tracking-tight">
-            Your <span className="text-[#FF5500]">sovereign AI partner.</span>
-          </h2>
-          <p className="mt-1.5 font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed">
-            We set & execute your enterprise AI roadmap at startup speed. Dedicated autonomous engineering pods deployed in 14 days.
-          </p>
-        </motion.div>
+          We architect and deploy custom autonomous AI pods directly in your VPC for enterprise leaders across New Jersey and nationwide. Zero consultancy decks. Deployed in 14-day outcome sprints.
+        </motion.p>
 
-        {/* Bottom Right: Horizontal Lead Arrow + Solid Button */}
+        {/* ========================================================================= */}
+        {/* 3. LUXURY MINIMALIST AI AUDIT INPUT (NON-TECHY, HIGH-ELEGANCE) */}
+        {/* ========================================================================= */}
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end"
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full max-w-xl mt-10"
         >
-          {/* Long Horizontal Line Arrow */}
-          <div className="hidden lg:flex items-center gap-0 w-48 text-zinc-600">
-            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-zinc-700 to-zinc-400" />
-            <span className="text-zinc-400 -ml-1 text-sm">→</span>
+          {/* Elegant Mode Switcher */}
+          <div className="flex items-center justify-center gap-6 mb-3 font-sans text-xs text-zinc-400">
+            <button
+              type="button"
+              onClick={() => { setInputMode('url'); setInputValue(''); }}
+              className={`pb-1 transition-all cursor-pointer ${
+                inputMode === 'url'
+                  ? 'text-white font-bold border-b-2 border-[#FF5500]'
+                  : 'hover:text-white border-b-2 border-transparent'
+              }`}
+            >
+              Website Domain
+            </button>
+            <span className="text-zinc-600">•</span>
+            <button
+              type="button"
+              onClick={() => { setInputMode('description'); setInputValue(''); }}
+              className={`pb-1 transition-all cursor-pointer ${
+                inputMode === 'description'
+                  ? 'text-white font-bold border-b-2 border-[#FF5500]'
+                  : 'hover:text-white border-b-2 border-transparent'
+              }`}
+            >
+              Workflow Challenge
+            </button>
           </div>
 
-          {/* Primary Action Button */}
-          <a
-            href="#intake"
-            onClick={(e) => {
-              e.preventDefault();
-              if (onBookCallClick) onBookCallClick();
-              else scrollToSection('intake');
-            }}
-            className="px-8 py-3.5 rounded-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-us-pop hover:scale-105 active:scale-95 flex items-center gap-2 group cursor-pointer shrink-0"
-          >
-            <span>Schedule Briefing</span>
-            <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
+          {/* Clean Glass Input Pill */}
+          <div className="p-1.5 sm:p-2 rounded-full bg-black/70 border border-white/15 backdrop-blur-2xl shadow-[0_20px_70px_rgba(0,0,0,0.8)] hover:border-white/25 transition-all duration-300">
+            <form onSubmit={handleAuditSubmit} className="flex items-center gap-2">
+              <div className="relative flex-1 pl-4">
+                {inputMode === 'url' ? (
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="Enter company website (e.g. stripe.com)..."
+                    className="w-full bg-transparent text-white placeholder-zinc-400 font-sans text-xs sm:text-sm focus:outline-none py-2"
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="Describe your manual operational bottleneck..."
+                    className="w-full bg-transparent text-white placeholder-zinc-400 font-sans text-xs sm:text-sm focus:outline-none py-2"
+                  />
+                )}
+              </div>
+
+              {/* Action Button */}
+              <button
+                type="submit"
+                className="px-7 py-3.5 rounded-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-us-pop hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer shrink-0"
+              >
+                <span>Audit</span>
+                <ArrowRight size={14} />
+              </button>
+            </form>
+          </div>
+
         </motion.div>
 
       </div>

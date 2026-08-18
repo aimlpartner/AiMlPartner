@@ -15,15 +15,15 @@ export function USFooter() {
   return (
     <footer className="relative bg-black text-white pt-24 pb-12 px-6 md:px-16 font-sans overflow-hidden select-none">
       
-      {/* 1920x1080 Generated Architectural Background Image - Crisply Visible */}
+      {/* Cinematic Saturn Horizon Background Image */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <img
           src="/footer_bg.jpg"
-          alt="Architectural Horizon"
-          className="w-full h-full object-cover object-center opacity-90 brightness-110 contrast-105"
+          alt="Saturn Cosmic Horizon"
+          className="w-full h-full object-cover object-bottom opacity-85 brightness-105 contrast-110"
         />
         {/* Subtle top edge fade for seamless blend into previous section */}
-        <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-black to-transparent" />
+        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-black via-black/60 to-transparent" />
         {/* Subtle bottom edge fade */}
         <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-black/80 to-transparent" />
       </div>
@@ -95,6 +95,9 @@ export function USFooter() {
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 font-mono text-xs text-zinc-400 backdrop-blur-xs">
           
           <div className="flex flex-wrap items-center justify-center gap-2.5">
+            <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-[#FF5500]/40 text-[10px] text-[#FF5500] font-bold">
+              ✦ NEW JERSEY HQ
+            </span>
             <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] text-zinc-200">
               ✦ SOC2 TYPE II
             </span>
@@ -104,13 +107,13 @@ export function USFooter() {
             <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] text-zinc-200">
               ✦ ZERO RETENTION
             </span>
-            <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-[#FF5500]/50 text-[10px] text-[#FF5500] font-bold">
+            <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-[#FF5500]/50 text-[10px] text-zinc-200 font-bold">
               ✦ 100% PRIVATE VPC
             </span>
           </div>
 
           <div className="flex items-center gap-6 text-[11px]">
-            <p>© {new Date().getFullYear()} AIML PARTNER INC. ALL RIGHTS RESERVED.</p>
+            <p>© {new Date().getFullYear()} AIML PARTNER INC. NEW JERSEY, USA.</p>
             <span className="text-zinc-600">|</span>
             <span className="hover:text-white transition-colors cursor-pointer">Security Protocol</span>
             <span className="hover:text-white transition-colors cursor-pointer">Custody Terms</span>

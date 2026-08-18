@@ -1,283 +1,196 @@
 import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export function USPillars() {
+  const stages = [
+    {
+      number: '01',
+      stage: 'STAGE 01 // ARCHITECT',
+      tag: '14-DAY DIAGNOSTIC BLUEPRINT',
+      title: 'We draft the master CAD blueprint.',
+      subtitle: 'Every pipeline mapped mathematically before writing production code.',
+      desc: 'Before writing code, we dissect your operational drag, data schemas, security perimeters, and latency targets into an exact architectural drafting schematic with guaranteed ROI models and sprint milestones.',
+      specs: [
+        { label: 'DELIVERABLE', val: 'Full System Architecture Draft' },
+        { label: 'TIMELINE', val: '14 Business Days' },
+        { label: 'OUTCOME', val: 'Definitive Engineering Target' }
+      ],
+      image: '/scrolly_stage1.png',
+      alt: 'Stage 01: 2D CAD Blueprint Wireframe with dimension callipers'
+    },
+    {
+      number: '02',
+      stage: 'STAGE 02 // ASSEMBLE',
+      tag: '2-4 WEEK RAPID POD SPRINTS',
+      title: 'We assemble your AI engine pods.',
+      subtitle: 'Dedicated senior engineers building and fine-tuning in rapid cycles.',
+      desc: 'Senior AI architects embed directly with your team. We assemble fine-tuned reasoning models (DeepSeek, Claude, Llama), forge custom tool conduits to your ERP/CRM, and test autonomous multi-agent pipelines with zero synthetic fluff.',
+      specs: [
+        { label: 'ASSEMBLY', val: 'Custom Fine-Tuning & Multi-Agent RAG' },
+        { label: 'SPEED', val: 'Bi-Weekly Production Drops' },
+        { label: 'EFFICIENCY', val: '68% Manual Drag Cut' }
+      ],
+      image: '/scrolly_stage2.png',
+      alt: 'Stage 02: Cutaway Schematic showing Sovereign AI Core and Staging Mechanism'
+    },
+    {
+      number: '03',
+      stage: 'STAGE 03 // LAUNCH',
+      tag: 'PRODUCTION FLIGHT & SOVEREIGNTY',
+      title: 'We launch into your private cloud.',
+      subtitle: '100% Client IP ownership, weights custody, and permanent autonomy.',
+      desc: 'Your sovereign AI engine is deployed permanently inside your private cloud perimeter (AWS, GCP, Azure, or on-prem). Zero third-party telemetry leakage, complete weights and code ownership, with automated monitoring and failover.',
+      specs: [
+        { label: 'SOVEREIGNTY', val: 'Zero Telemetry Leakage' },
+        { label: 'CONNECTORS', val: 'Salesforce, ERP, Postgres & Custom APIs' },
+        { label: 'OWNERSHIP', val: '100% Client IP & Weights' }
+      ],
+      image: '/scrolly_stage3.png',
+      alt: 'Stage 03: Fully Built 3D Sovereign AI Engine Operational in Flight'
+    }
+  ];
+
   return (
     <section id="pillars" className="py-32 px-6 md:px-16 bg-black text-white border-b border-zinc-900 relative select-none overflow-hidden">
+      
+      {/* Background Atmosphere */}
+      <div className="absolute inset-0 bg-us-grid opacity-20 pointer-events-none -z-10" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-[#FF5500]/5 rounded-full blur-[240px] pointer-events-none -z-10" />
+
       <div className="max-w-7xl mx-auto">
         
-        {/* Section Manifesto Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-28 pb-12 border-b border-zinc-900 gap-10">
+        {/* ========================================================================= */}
+        {/* SECTION HEADER */}
+        {/* ========================================================================= */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-24 pb-10 border-b border-zinc-900 gap-8">
           <div className="max-w-2xl">
-            <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-medium mb-4">
-              Our Practice // Framework
+            <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-mono font-bold mb-4 flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#FF5500] animate-pulse" />
+              <span>THE 3-STAGE VISUAL LIFECYCLE</span>
             </p>
             <h2 className="font-display text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.04]">
-              How we engineer your <span className="text-[#FF5500]">AI capability.</span>
+              How we build your <span className="text-[#FF5500]">AI engine.</span>
             </h2>
           </div>
           <p className="font-sans text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
-            A three-phase progression from initial diagnostic clarity to sovereign production pods. No billable fluff, no 200-page slide decks.
+            Follow the exact 3-stage progression: from the initial 2D CAD blueprint, through internal assembly and conduit cutaways, to full sovereign launch in your private cloud.
           </p>
         </div>
 
         {/* ========================================================================= */}
-        {/* SPREAD 01: STRATEGY & AUDIT (Left-Aligned Visual) */}
+        {/* 3 VISUAL STAGES (ALL IMAGES ON LEFT SIDE, ZERO BOX CONTAINERS) */}
         {/* ========================================================================= */}
-        <div className="py-20 border-b border-zinc-900/80 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative">
-          
-          {/* Background Watermark Numeral */}
-          <span className="absolute -top-6 left-0 font-display text-[12rem] font-extrabold text-zinc-900/30 select-none pointer-events-none -z-10 leading-none">
-            01
-          </span>
-
-          {/* Left: Tactile Sculpture Showcase */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 flex items-center justify-center relative"
-          >
-            <div className="relative w-full max-w-[280px] sm:max-w-xs aspect-square flex items-center justify-center">
-              <img
-                src="/pillar_audit.png"
-                alt="Architectural Audit Prism"
-                className="w-full h-full object-contain drop-shadow-[0_25px_50px_rgba(255,85,0,0.12)]"
-              />
-            </div>
-          </motion.div>
-
-          {/* Right: Rich Editorial Content */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 flex flex-col justify-center"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-[#FF5500] font-mono text-xs uppercase tracking-widest font-bold">
-                Phase 01
+        <div className="flex flex-col gap-28">
+          {stages.map((stage) => (
+            <div
+              key={stage.number}
+              className="py-12 border-b border-zinc-900/60 last:border-b-0 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative"
+            >
+              {/* Background Watermark Numeral */}
+              <span className="absolute -top-10 left-0 font-display text-[12rem] font-black text-zinc-900/20 select-none pointer-events-none -z-10 leading-none">
+                {stage.number}
               </span>
-              <span className="text-zinc-600 text-xs">•</span>
-              <span className="text-zinc-400 font-mono text-xs uppercase tracking-widest">
-                14-Day Kickoff
-              </span>
+
+              {/* LEFT SIDE: FLOATING TRANSPARENT IMAGE (No Box, No Border) */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="lg:col-span-5 flex items-center justify-center relative"
+              >
+                <div className="relative w-full max-w-[320px] sm:max-w-md flex items-center justify-center">
+                  <img
+                    src={stage.image}
+                    alt={stage.alt}
+                    className="w-full h-auto max-h-[620px] object-contain filter drop-shadow-[0_20px_60px_rgba(255,85,0,0.15)] transition-transform duration-700 hover:scale-105"
+                  />
+                </div>
+              </motion.div>
+
+              {/* RIGHT SIDE: EDITORIAL CONTENT */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="lg:col-span-7 flex flex-col justify-center"
+              >
+                {/* Stage Tag */}
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-[#FF5500] font-mono text-xs uppercase tracking-widest font-bold">
+                    {stage.stage}
+                  </span>
+                  <span className="text-zinc-600 text-xs">•</span>
+                  <span className="text-zinc-400 font-mono text-xs uppercase tracking-widest">
+                    {stage.tag}
+                  </span>
+                </div>
+
+                {/* Main Headline */}
+                <h3 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight leading-[1.1] mb-3">
+                  {stage.title}
+                </h3>
+
+                {/* Subtitle */}
+                <p className="font-sans text-base sm:text-lg text-[#FF5500] font-medium mb-6 leading-snug">
+                  {stage.subtitle}
+                </p>
+
+                {/* Detailed Description */}
+                <p className="font-sans text-sm sm:text-base text-zinc-400 leading-relaxed max-w-xl mb-8">
+                  {stage.desc}
+                </p>
+
+                {/* Specs Ledger */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t border-zinc-900 text-left">
+                  {stage.specs.map((spec, sIdx) => (
+                    <div key={sIdx}>
+                      <p className="font-mono text-[11px] text-[#FF5500] font-bold uppercase tracking-wider mb-1">
+                        {spec.label}
+                      </p>
+                      <p className="font-sans text-xs text-zinc-300 font-medium">
+                        {spec.val}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
             </div>
-
-            <h3 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight leading-[1.1] mb-6">
-              We audit the operational drag.{' '}
-              <span className="text-zinc-400 font-normal">You get a mathematical roadmap.</span>
-            </h3>
-
-            <p className="font-sans text-sm sm:text-base text-zinc-400 leading-relaxed max-w-xl mb-8">
-              We embed directly into your data pipelines and workflows to pinpoint where your team loses hundreds of hours. We formulate high-conviction ROI models and calculate exact engineering sprint requirements before writing a single line of production code.
-            </p>
-
-            {/* Spec Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t border-zinc-900 text-left">
-              <div>
-                <p className="font-mono text-[11px] text-[#FF5500] font-bold uppercase tracking-wider mb-1">
-                  Deliverable
-                </p>
-                <p className="font-sans text-xs text-zinc-300">
-                  Full Data & Workflow Blueprint
-                </p>
-              </div>
-              <div>
-                <p className="font-mono text-[11px] text-[#FF5500] font-bold uppercase tracking-wider mb-1">
-                  Timeline
-                </p>
-                <p className="font-sans text-xs text-zinc-300">
-                  14 Business Days
-                </p>
-              </div>
-              <div>
-                <p className="font-mono text-[11px] text-[#FF5500] font-bold uppercase tracking-wider mb-1">
-                  Outcome
-                </p>
-                <p className="font-sans text-xs text-zinc-300">
-                  4-Week Clear ROI Target
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
+          ))}
         </div>
 
         {/* ========================================================================= */}
-        {/* SPREAD 02: DEDICATED ENGINEERING PODS (Inverted Offset Layout) */}
+        {/* SECTION BOTTOM CTA */}
         {/* ========================================================================= */}
-        <div className="py-24 border-b border-zinc-900/80 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative">
-          
-          {/* Background Watermark Numeral */}
-          <span className="absolute -top-6 right-0 font-display text-[12rem] font-extrabold text-zinc-900/30 select-none pointer-events-none -z-10 leading-none">
-            02
-          </span>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mt-24 pt-12 border-t border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-8"
+        >
+          <div>
+            <span className="font-mono text-xs text-[#FF5500] uppercase tracking-widest font-bold block mb-2">
+              ✦ SPRINT CADENCE: 14 DAYS TO PRODUCTION
+            </span>
+            <h4 className="font-display text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Ready to architect your sovereign AI system?
+            </h4>
+          </div>
 
-          {/* Left: Rich Editorial Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 order-2 lg:order-1 flex flex-col justify-center"
+          <a
+            href="#intake"
+            className="px-8 py-4 rounded-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-us-pop hover:scale-105 active:scale-95 flex items-center gap-2 shrink-0 cursor-pointer"
           >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-[#FF5500] font-mono text-xs uppercase tracking-widest font-bold">
-                Phase 02
-              </span>
-              <span className="text-zinc-600 text-xs">•</span>
-              <span className="text-zinc-400 font-mono text-xs uppercase tracking-widest">
-                2-4 Week Rapid Sprints
-              </span>
-            </div>
-
-            <h3 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight leading-[1.1] mb-6">
-              Dedicated AI pods.{' '}
-              <span className="text-zinc-400 font-normal">Embedded directly in your sprint cycles.</span>
-            </h3>
-
-            <p className="font-sans text-sm sm:text-base text-zinc-400 leading-relaxed max-w-xl mb-8">
-              No junior contractors. You get seasoned full-stack AI engineers crafting custom reasoning loops, private fine-tuned LLMs (DeepSeek, Claude, Llama), and multi-agent tool pipelines with automated regression benchmarks.
-            </p>
-
-            {/* Spec Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t border-zinc-900 text-left">
-              <div>
-                <p className="font-mono text-[11px] text-[#FF5500] font-bold uppercase tracking-wider mb-1">
-                  Architecture
-                </p>
-                <p className="font-sans text-xs text-zinc-300">
-                  Custom Fine-Tuning & RAG
-                </p>
-              </div>
-              <div>
-                <p className="font-mono text-[11px] text-[#FF5500] font-bold uppercase tracking-wider mb-1">
-                  Speed
-                </p>
-                <p className="font-sans text-xs text-zinc-300">
-                  Bi-weekly Production Drops
-                </p>
-              </div>
-              <div>
-                <p className="font-mono text-[11px] text-[#FF5500] font-bold uppercase tracking-wider mb-1">
-                  Efficiency
-                </p>
-                <p className="font-sans text-xs text-zinc-300">
-                  68% Manual Overhead Cut
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right: Tactile Sculpture Showcase */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 order-1 lg:order-2 flex items-center justify-center relative"
-          >
-            <div className="relative w-full max-w-[280px] sm:max-w-xs aspect-square flex items-center justify-center">
-              <img
-                src="/pillar_engineering.png"
-                alt="Engineering Pods Basalt Interlock"
-                className="w-full h-full object-contain drop-shadow-[0_25px_50px_rgba(255,85,0,0.14)]"
-              />
-            </div>
-          </motion.div>
-
-        </div>
-
-        {/* ========================================================================= */}
-        {/* SPREAD 03: PRODUCTION SCALE & SOVEREIGNTY (Panoramic Centerpiece) */}
-        {/* ========================================================================= */}
-        <div className="py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative">
-          
-          {/* Background Watermark Numeral */}
-          <span className="absolute -top-6 left-1/2 -translate-x-1/2 font-display text-[12rem] font-extrabold text-zinc-900/25 select-none pointer-events-none -z-10 leading-none">
-            03
-          </span>
-
-          {/* Left: Sculpture Showcase */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 flex items-center justify-center relative"
-          >
-            <div className="relative w-full max-w-[280px] sm:max-w-xs aspect-square flex items-center justify-center">
-              <img
-                src="/pillar_scale.png"
-                alt="Production Sovereignty Sphere"
-                className="w-full h-full object-contain drop-shadow-[0_25px_50px_rgba(255,85,0,0.16)]"
-              />
-            </div>
-          </motion.div>
-
-          {/* Right: Rich Editorial Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 flex flex-col justify-center"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-[#FF5500] font-mono text-xs uppercase tracking-widest font-bold">
-                Phase 03
-              </span>
-              <span className="text-zinc-600 text-xs">•</span>
-              <span className="text-zinc-400 font-mono text-xs uppercase tracking-widest">
-                Production Sovereignty
-              </span>
-            </div>
-
-            <h3 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight leading-[1.1] mb-6">
-              Permanent capability.{' '}
-              <span className="text-[#FF5500]">100% Client IP ownership.</span>
-            </h3>
-
-            <p className="font-sans text-sm sm:text-base text-zinc-400 leading-relaxed max-w-xl mb-8">
-              All models, agent graphs, pipelines, and training weights remain 100% your intellectual property. Deployed inside your private cloud (AWS, GCP, Azure, or on-prem) with zero data leakage and enterprise-grade telemetry.
-            </p>
-
-            {/* Spec Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t border-zinc-900 text-left">
-              <div>
-                <p className="font-mono text-[11px] text-[#FF5500] font-bold uppercase tracking-wider mb-1">
-                  Security
-                </p>
-                <p className="font-sans text-xs text-zinc-300">
-                  Zero Telemetry Leakage
-                </p>
-              </div>
-              <div>
-                <p className="font-mono text-[11px] text-[#FF5500] font-bold uppercase tracking-wider mb-1">
-                  Integration
-                </p>
-                <p className="font-sans text-xs text-zinc-300">
-                  Salesforce, ERP & Custom APIs
-                </p>
-              </div>
-              <div>
-                <p className="font-mono text-[11px] text-[#FF5500] font-bold uppercase tracking-wider mb-1">
-                  Ownership
-                </p>
-                <p className="font-sans text-xs text-zinc-300">
-                  100% Private Cloud IP
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-        </div>
+            <span>Deploy Sovereign Pod</span>
+            <span className="text-sm">↗</span>
+          </a>
+        </motion.div>
 
       </div>
     </section>
   );
 }
+
