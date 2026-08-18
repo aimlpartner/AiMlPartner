@@ -8,7 +8,7 @@ export function USFooter() {
     { label: 'Studio', to: '/agent-studio' },
     { label: 'Pricing', to: '/pricing' },
     { label: 'Services', to: '/low-code-pods' },
-    { label: 'Team', to: '/team' },
+    { label: 'About', to: '/about' },
     { label: 'Direct Desk', href: '#intake' }
   ];
 

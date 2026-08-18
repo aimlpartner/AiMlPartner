@@ -1,197 +1,212 @@
 import React, { useEffect } from 'react';
-import { Check, X, TrendingUp, PhoneCall, Shield, ArrowRight, Sparkles } from 'lucide-react';
-import { motion } from 'motion/react';
-import { BookCallWidget } from '../components/BookCallWidget';
+import { Link } from 'react-router-dom';
+import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { USIntakeCTA } from '../components/us/USIntakeCTA';
+
 export function Pricing() {
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.15
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    const revealElements = document.querySelectorAll('.reveal');
-    revealElements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
   }, []);
 
-  const handleScrollToBooking = (e: React.MouseEvent) => {
-    e.preventDefault();
-    document.getElementById('booking-section')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const tiers = [
+    {
+      kicker: "STEP 1 // 2-WEEK SPRINT",
+      title: "AI Roadmap & Prototype",
+      subtitle: "We find your biggest time-wasters, map out your systems, and build a working test prototype for your team.",
+      highlight: "2 Weeks Flat",
+      deliverables: [
+        "Full review of your daily business workflows and bottlenecks",
+        "Clear, step-by-step plan showing where AI will save you time and money",
+        "Data security check so your company data stays 100% private and safe",
+        "A working test prototype built specifically for your team to try out",
+        "Simple roadmap with exact timelines and expected cost savings"
+      ],
+      ctaText: "Book Your 2-Week Sprint",
+      isHero: false
+    },
+    {
+      kicker: "STEP 2 // FULL BUILD & LAUNCH",
+      title: "Custom AI Build & Launch",
+      subtitle: "Our senior engineers build, test, and launch custom AI systems directly inside your company's private tools.",
+      highlight: "Built in 2-Week Milestones",
+      deliverables: [
+        "Dedicated senior engineers working directly on your business (no juniors)",
+        "Custom AI agents plugged directly into your CRM, Slack, database, and email",
+        "Runs privately in your own cloud (AWS, Azure, GCP)—zero data leaks",
+        "You own 100% of the code, data, and models forever (zero lock-in)",
+        "24/7 monitoring, speed tuning, and automatic error fixes",
+        "Full hands-on training so your team knows how to use it on day one"
+      ],
+      ctaText: "Start Your Custom Build",
+      isHero: true
+    }
+  ];
+
+  const realities = [
+    {
+      title: "Hiring In-House",
+      cost: "$200,000+ / year per engineer",
+      timeline: "3 to 6 months to hire",
+      reality: "Expensive salaries, high recruiting fees, and long hiring delays before anyone writes a single line of code."
+    },
+    {
+      title: "Big Consulting Agencies",
+      cost: "$25,000+ / month retainers",
+      timeline: "4 to 6 months of meetings",
+      reality: "You pay junior analysts to make 200-page slide decks instead of actually building working software for you."
+    },
+    {
+      title: "Working With Us",
+      cost: "Clear 2-week sprints",
+      timeline: "Working software in 14 days",
+      reality: "Senior engineers build and launch real AI tools directly into your systems. You own all the code."
+    }
+  ];
 
   return (
-    <div className="min-h-screen bg-[#030014] text-white pt-40 pb-24 relative overflow-hidden">
-      {/* Background Ambience */}
-      <div className="absolute top-0 left-0 w-full h-[600px] bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-screen pointer-events-none" style={{ maskImage: 'linear-gradient(to bottom, black, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)' }}></div>
-      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <div className="min-h-screen bg-black text-white pt-36 sm:pt-44 pb-28 relative overflow-hidden font-sans selection:bg-[#FF5500] selection:text-black">
+      
+      {/* Background Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[550px] bg-[#FF5500]/5 rounded-full blur-[280px] pointer-events-none -z-10" />
+      <div className="absolute top-[800px] -right-40 w-[600px] h-[600px] bg-amber-600/4 rounded-full blur-[260px] pointer-events-none -z-10" />
+      <div className="absolute inset-0 bg-us-grid opacity-15 pointer-events-none -z-10" />
 
-      <div className="container-max relative z-10 w-full">
-        <div className="text-center max-w-3xl mx-auto mb-16 reveal">
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-400 mb-4 block font-bold drop-shadow-[0_0_8px_rgba(52,211,153,0.5)]">
-            Transparent ROI
-          </span>
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6">
-            Stop Paying for <br className="hidden md:block" /> Inefficiency.
+      <div className="max-w-7xl mx-auto px-6 md:px-16 relative z-10 w-full">
+        
+        {/* ======================================================================= */}
+        {/* 1. HERO: SIMPLE, PLAIN-ENGLISH PRICING */}
+        {/* ======================================================================= */}
+        <div className="max-w-4xl mb-24">
+          <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-semibold mb-6">
+            SIMPLE, TRANSPARENT PRICING
+          </p>
+
+          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.02] mb-8">
+            We build AI that <br />
+            <span className="text-[#FF5500]">actually works for you.</span>
           </h1>
-          <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto">
-            Hiring more people to do robotic work is a losing game. Compare our automated systems to the real cost of human labor.
+
+          <p className="text-zinc-400 text-base sm:text-lg font-sans leading-relaxed max-w-2xl">
+            No endless hourly billing. No 50-page PowerPoint decks. We build and launch custom AI tools for your business in 2-week sprints—and you own 100% of the code.
           </p>
         </div>
 
-        {/* PRICING COMPARISON TABLE (Like Blaze) */}
-        <div className="w-full max-w-[1100px] mx-auto overflow-x-auto pb-12 reveal px-4">
-          <div className="min-w-[800px]">
-            
-            {/* Table Header */}
-            <div className="grid grid-cols-5 items-end mb-4">
-              <div className="col-span-1"></div>
-              
-              <div className="col-span-1 text-center pb-4">
-                <span className="text-gray-400 font-medium text-lg">Human Hire</span>
-              </div>
-              
-              <div className="col-span-1 text-center pb-4">
-                <span className="text-gray-400 font-medium text-lg">Traditional Agency</span>
+        {/* ======================================================================= */}
+        {/* 2. THE 2 SIMPLE ENGAGEMENT OPTIONS */}
+        {/* ======================================================================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-32">
+          {tiers.map((tier, idx) => (
+            <div
+              key={idx}
+              className={`pt-10 border-t flex flex-col justify-between ${
+                tier.isHero
+                  ? 'border-[#FF5500]/80'
+                  : 'border-zinc-800'
+              }`}
+            >
+              <div>
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <span className={`font-mono text-xs uppercase tracking-widest font-bold ${
+                    tier.isHero ? 'text-[#FF5500]' : 'text-zinc-500'
+                  }`}>
+                    {tier.kicker}
+                  </span>
+                  <span className="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 font-mono text-[11px] text-zinc-300 font-semibold">
+                    {tier.highlight}
+                  </span>
+                </div>
+
+                <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
+                  {tier.title}
+                </h2>
+
+                <p className="font-sans text-sm sm:text-base text-zinc-400 leading-relaxed mb-8">
+                  {tier.subtitle}
+                </p>
+
+                {/* Deliverables */}
+                <div className="space-y-3.5 pt-6 border-t border-zinc-900/80 mb-10">
+                  <p className="font-mono text-[11px] text-zinc-500 uppercase tracking-wider font-semibold">
+                    WHAT YOU GET
+                  </p>
+                  {tier.deliverables.map((item, dIdx) => (
+                    <div key={dIdx} className="flex items-start gap-3 text-sm text-zinc-300">
+                      <span className={`mt-1.5 h-1.5 w-1.5 rounded-full shrink-0 ${
+                        tier.isHero ? 'bg-[#FF5500]' : 'bg-zinc-500'
+                      }`} />
+                      <span className="leading-relaxed">{item}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div className="col-span-2 bg-white/5 border border-white/10 border-b-0 rounded-t-2xl relative pt-6 pb-4">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-2xl"></div>
-                <div className="grid grid-cols-2">
-                  <div className="text-center border-r border-white/5">
-                    <h3 className="text-lg font-bold text-white">Discovery</h3>
-                  </div>
-                  <div className="text-center">
-                    <h3 className="text-lg font-bold text-white">Worker Pod</h3>
-                  </div>
-                </div>
+              {/* Action Button */}
+              <div className="pt-6 border-t border-zinc-900/80">
+                <a
+                  href="#intake"
+                  className={`w-full py-4 rounded-full font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+                    tier.isHero
+                      ? 'bg-[#FF5500] hover:bg-[#FF6E26] text-black shadow-us-pop hover:scale-[1.02] active:scale-98'
+                      : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-800 hover:border-zinc-700'
+                  }`}
+                >
+                  <span>{tier.ctaText}</span>
+                  <ArrowUpRight size={15} />
+                </a>
               </div>
             </div>
+          ))}
+        </div>
 
-            {/* Table Rows */}
-            <div className="flex flex-col">
-              {[
-                {
-                  title: "Monthly cost",
-                  human: "~$6,250/mo",
-                  agency: "~$4,000/mo",
-                  free: "$0",
-                  pod: "$1,500",
-                  isPrice: true
-                },
-                {
-                  title: "Working hours",
-                  human: "40 hrs/week",
-                  agency: "Varies",
-                  free: "—",
-                  pod: "24/7 (168 hrs)",
-                },
-                {
-                  title: "Time to value",
-                  human: "3-6 months",
-                  agency: "1-3 months",
-                  free: "Immediate",
-                  pod: "2-4 weeks",
-                },
-                {
-                  title: "Custom Workflow Mapping",
-                  human: "No",
-                  agency: "Sometimes",
-                  free: "check",
-                  pod: "check",
-                },
-                {
-                  title: "Hard ROI Projection",
-                  human: "Manual",
-                  agency: "Extra cost",
-                  free: "check",
-                  pod: "check",
-                },
-                {
-                  title: "SaaS / CRM Integration",
-                  human: "Slow",
-                  agency: "Extra cost",
-                  free: "—",
-                  pod: "check",
-                },
-                {
-                  title: "Contract required",
-                  human: "Full-time hire",
-                  agency: "6 months min",
-                  free: "None",
-                  pod: "None",
-                }
-              ].map((row, idx) => (
-                <div key={idx} className="grid grid-cols-5 items-center border-b border-white/10 group hover:bg-white/[0.02] transition-colors relative">
-                  <div className="col-span-1 py-5 pr-4 font-bold text-white text-base">{row.title}</div>
-                  <div className="col-span-1 py-5 text-center text-gray-400 text-sm">{row.human}</div>
-                  <div className="col-span-1 py-5 text-center text-gray-400 text-sm">{row.agency}</div>
-                  
-                  <div className="col-span-2 bg-white/5 border-x border-white/10 grid grid-cols-2 h-full">
-                    <div className="py-5 text-center flex items-center justify-center border-r border-white/5">
-                      {row.isPrice ? (
-                        <span className="text-3xl font-black text-white">{row.free}<span className="text-sm text-gray-400 font-normal">/mo</span></span>
-                      ) : row.free === 'check' ? (
-                        <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center"><Check size={14} className="text-emerald-400" /></div>
-                      ) : row.free === '—' ? (
-                        <span className="text-gray-500 font-normal">—</span>
-                      ) : (
-                        <span className="text-gray-200 font-medium text-sm">{row.free}</span>
-                      )}
-                    </div>
-                    <div className="py-5 text-center flex items-center justify-center">
-                      {row.isPrice ? (
-                        <span className="text-3xl font-black text-white">{row.pod}<span className="text-sm text-gray-400 font-normal">/mo</span></span>
-                      ) : row.pod === 'check' ? (
-                        <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center"><Check size={14} className="text-emerald-400" /></div>
-                      ) : row.pod === '—' ? (
-                        <span className="text-gray-500 font-normal">—</span>
-                      ) : (
-                        <span className="text-gray-200 font-medium text-sm">{row.pod}</span>
-                      )}
-                    </div>
+        {/* ======================================================================= */}
+        {/* 3. HOW WE COMPARE (SIMPLE & RELATABLE) */}
+        {/* ======================================================================= */}
+        <div className="pt-24 pb-24 border-t border-zinc-900">
+          <div className="max-w-3xl mb-16">
+            <p className="text-xs uppercase tracking-[0.2em] text-[#FF5500] font-semibold mb-3">
+              How We Compare
+            </p>
+            <h3 className="font-display text-3xl sm:text-5xl font-black text-white tracking-tight leading-[1.08]">
+              Why traditional ways to build AI don't work.
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {realities.map((item, rIdx) => (
+              <div key={rIdx} className="pt-6 border-t border-zinc-900 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="font-mono text-xs text-[#FF5500] font-bold">
+                      0{rIdx + 1}
+                    </span>
+                    <span className="font-mono text-xs text-zinc-400 font-semibold">
+                      {item.cost}
+                    </span>
                   </div>
-                </div>
-              ))}
 
-              {/* CTA Row */}
-              <div className="grid grid-cols-5 items-center">
-                <div className="col-span-3"></div>
-                <div className="col-span-2 bg-white/5 border-x border-b border-white/10 rounded-b-2xl grid grid-cols-2 p-6 gap-4">
-                  <button onClick={handleScrollToBooking} className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-sm font-bold py-3 rounded-xl transition-all text-center flex items-center justify-center gap-2">
-                    <PhoneCall size={16} /> Book Consult
-                  </button>
-                  <button onClick={handleScrollToBooking} className="w-full bg-white/10 hover:bg-white/20 text-white text-sm font-bold py-3 rounded-xl transition-all text-center">
-                    Request Quote
-                  </button>
+                  <h4 className="font-display text-xl font-bold text-white tracking-tight mb-2">
+                    {item.title}
+                  </h4>
+
+                  <p className="font-mono text-xs text-zinc-500 mb-4">
+                    Timeline: {item.timeline}
+                  </p>
+
+                  <p className="font-sans text-sm text-zinc-400 leading-relaxed">
+                    {item.reality}
+                  </p>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* BOTTOM BOOKING WIDGET */}
-        <div id="booking-section" className="max-w-[800px] mx-auto reveal">
-          <div className="text-center mb-10">
-            <h2 className="font-display text-3xl font-bold mb-4">Let's look at your workflows.</h2>
-            <p className="text-gray-400">Pick a time below for your free discovery call. No obligations.</p>
-          </div>
-          
-          <div className="bg-white rounded-3xl p-2 md:p-4 text-slate-900 shadow-2xl">
-            <BookCallWidget source="Pricing Page" />
-          </div>
+        {/* ======================================================================= */}
+        {/* 4. DIRECT INTAKE & SCHEDULING WIDGET */}
+        {/* ======================================================================= */}
+        <div id="intake" className="pt-24 border-t border-zinc-900">
+          <USIntakeCTA source="Pricing Page" />
         </div>
 
       </div>

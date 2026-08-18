@@ -19,7 +19,7 @@ import { Home as HomeIN } from './pages/Home';
 const AgentStudio = lazy(() => import('./pages/AgentStudio').then((module) => ({ default: module.AgentStudio })));
 const Pricing = lazy(() => import('./pages/Pricing').then((module) => ({ default: module.Pricing })));
 const LowCodePods = lazy(() => import('./pages/LowCodePods').then((module) => ({ default: module.LowCodePods })));
-const TeamPage = lazy(() => import('./pages/TeamPage').then((module) => ({ default: module.TeamPage })));
+const AboutUs = lazy(() => import('./pages/AboutUs').then((module) => ({ default: module.AboutUs })));
 const AdminDashboard = lazy(() =>
   import('./pages/AdminDashboard').then((module) => ({ default: module.AdminDashboard })),
 );
@@ -28,6 +28,9 @@ const Analyzer = lazy(() =>
 );
 const PartnerWaitlist = lazy(() =>
   import('./pages/PartnerWaitlist').then((module) => ({ default: module.PartnerWaitlist })),
+);
+const NotFound = lazy(() =>
+  import('./pages/NotFound').then((module) => ({ default: module.NotFound })),
 );
 
 export default function App() {
@@ -61,13 +64,18 @@ export default function App() {
             <Route path="/in" element={<HomeIN />} />
 
             {/* Deep Tools & Shared Enterprise Pages */}
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/team" element={<AboutUs />} />
             <Route path="/agent-studio" element={<AgentStudio />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/low-code-pods" element={<LowCodePods />} />
-            <Route path="/team" element={<TeamPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/analyzer" element={<Analyzer />} />
             <Route path="/partner-waitlist" element={<PartnerWaitlist />} />
+
+            {/* Catch-all 404 Route */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </main>

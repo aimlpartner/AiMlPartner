@@ -57,8 +57,8 @@ export function Navbar() {
             <Link to="/low-code-pods" className={linkClass}>
               Services
             </Link>
-            <Link to="/team" className={linkClass}>
-              Team
+            <Link to="/about" className={linkClass}>
+              About
             </Link>
             <Link to="/partner-waitlist" className={linkClass}>
               Partners
@@ -69,13 +69,13 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             <a href="#intake" className={ctaClass}>
               <span>Book Call</span>
-              <ArrowUpRight size={14} className="group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 transition-transform" />
+              <ArrowUpRight size={13} className="transition-transform group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
             </a>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-full transition-colors text-white hover:bg-zinc-800"
-              aria-label="Toggle menu"
+              className="lg:hidden p-2 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+              aria-label="Toggle Menu"
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -91,20 +91,14 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="fixed inset-x-4 top-24 z-40 bg-zinc-950/95 backdrop-blur-2xl border border-zinc-800 rounded-3xl p-6 flex flex-col gap-3 shadow-2xl lg:hidden text-white"
+            className="fixed top-20 left-4 right-4 z-40 bg-zinc-950/95 backdrop-blur-2xl border border-zinc-800 rounded-3xl p-6 flex flex-col gap-2 shadow-2xl lg:hidden text-white"
           >
-            <div className="pb-3 border-b border-zinc-800 mb-2">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF5500] font-bold">
-                Directory
-              </span>
-            </div>
-
             <a
               href="#pillars"
               className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Capabilities & Pods</span>
+              <span>Capabilities</span>
               <ArrowRight size={14} className="opacity-40" />
             </a>
             <Link
@@ -132,11 +126,11 @@ export function Navbar() {
               <ArrowRight size={14} className="opacity-40" />
             </Link>
             <Link
-              to="/team"
+              to="/about"
               className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Team & Experts</span>
+              <span>About & Team</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
             <Link
