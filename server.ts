@@ -2,7 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
-import { analyzeHandler, emailReportHandler, buildRequestHandler, bookCallHandler } from './src/api/analyze/route';
+import apiRouter from './server/routes/api.js';
 
 // Resolve and load .env using the absolute working directory path
 dotenv.config({ path: path.join(process.cwd(), '.env') });
@@ -18,20 +18,14 @@ async function startServer() {
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-  // Register AI Auditing Engine route
-  app.post('/api/analyze', analyzeHandler);
-  app.post('/api/email-report', emailReportHandler);
-  app.post('/api/build-request', buildRequestHandler);
-  app.post('/api/book-call', bookCallHandler);
+  // Mount unified API router
+  app.use('/api', apiRouter);
 
   // Health-check endpoint for hosting platforms
   app.get('/health', (_req, res) => {
     res.status(200).json({ status: 'ok' });
   });
 
-  // Always prefer serving the built output when available in production.
-  // Hostinger sometimes doesn't set NODE_ENV=production, which would otherwise
-  // cause Vite middleware to start and potentially crash.
   const isDev = process.env.NODE_ENV !== 'production';
   if (!isDev && fs.existsSync(distIndexPath)) {
     app.use(express.static(distPath));
@@ -40,8 +34,6 @@ async function startServer() {
     });
   } else {
     try {
-      // `vite` may not be installed in some production environments (it can be a devDependency).
-      // Dynamic import prevents the server from crashing at startup when we're only serving `dist`.
       const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
         server: { middlewareMode: true },
@@ -61,7 +53,7 @@ async function startServer() {
   }
 
   app.listen(PORT, HOST, () => {
-    console.log(`Server running on http://${HOST}:${PORT}`);
+    console.log(`Development server running on http://${HOST}:${PORT}`);
   });
 }
 

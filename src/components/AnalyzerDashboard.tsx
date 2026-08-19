@@ -106,44 +106,38 @@ export function AnalyzerDashboard({
 }: AnalyzerDashboardProps) {
   const [selectedDeptIndex, setSelectedDeptIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const activeDept = data.departments[selectedDeptIndex] || data.departments[0];
 
-  // Helper to format values as currency using selected currency
   const formatCurrency = (val: number) => {
     return formatCurrencyValue(val, selectedCurrency);
   };
 
-  // Readiness Tier Styling configuration
   const getTierStyles = (tier: string) => {
     switch (tier) {
       case 'Advanced':
         return {
-          bg: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600',
-          dot: 'bg-emerald-500',
-          stroke: 'stroke-emerald-500',
-          text: 'text-emerald-500'
+          stroke: 'stroke-[#FF5500]',
+          bg: 'bg-[#FF5500]/15 text-[#FF5500] border-[#FF5500]/30',
+          dot: 'bg-[#FF5500]'
         };
       case 'Operational':
         return {
-          bg: 'bg-sky-500/10 border-sky-500/20 text-sky-600',
-          dot: 'bg-sky-500',
-          stroke: 'stroke-sky-500',
-          text: 'text-sky-500'
+          stroke: 'stroke-emerald-500',
+          bg: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+          dot: 'bg-emerald-500'
         };
       case 'Exploring':
         return {
-          bg: 'bg-amber-500/10 border-amber-500/20 text-amber-600',
-          dot: 'bg-amber-500',
           stroke: 'stroke-amber-500',
-          text: 'text-amber-500'
+          bg: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
+          dot: 'bg-amber-500'
         };
-      case 'Novice':
       default:
         return {
-          bg: 'bg-rose-500/10 border-rose-500/20 text-rose-600',
-          dot: 'bg-rose-500',
-          stroke: 'stroke-rose-500',
-          text: 'text-rose-500'
+          stroke: 'stroke-zinc-500',
+          bg: 'bg-zinc-800 text-zinc-300 border-zinc-700',
+          dot: 'bg-zinc-500'
         };
     }
   };
@@ -158,27 +152,29 @@ export function AnalyzerDashboard({
   const strokeDashoffset = circumference - (data.readinessScore / 100) * circumference;
 
   return (
-    <div className="w-full space-y-12">
+    <div className="w-full space-y-10 text-white font-sans">
       {/* ----------------- SECTION 1: HEADER CONTROLS ----------------- */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/50 backdrop-blur-md border border-slate-100 p-6 rounded-3xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-zinc-950/90 border border-zinc-800 p-6 rounded-3xl shadow-xl">
         <div>
-          <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">Diagnostic Report</span>
-          <h2 className="text-2xl font-bold text-slate-900 mt-1">{data.businessName}</h2>
-          <span className="inline-flex items-center gap-1 mt-2 text-xs bg-slate-100 border border-slate-200 text-slate-600 px-3 py-1 rounded-full">
-            <Layers size={12} />
+          <span className="text-xs font-mono text-[#FF5500] uppercase tracking-widest block font-bold">
+            // LIVE AUDIT REPORT
+          </span>
+          <h2 className="text-2xl font-black text-white mt-1">{data.businessName}</h2>
+          <span className="inline-flex items-center gap-1 mt-2 text-xs bg-zinc-900 border border-zinc-800 text-zinc-300 px-3 py-1 rounded-lg">
+            <Layers size={12} className="text-[#FF5500]" />
             Sector: {data.sector}
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-          {/* Custom Styled Currency Dropdown */}
+          {/* Custom Currency Selector */}
           <div className="relative inline-flex items-center">
-            <span className="absolute left-3.5 text-slate-400 pointer-events-none">
+            <span className="absolute left-3.5 text-zinc-400 pointer-events-none">
               <Globe size={13} />
             </span>
             <select
               value={selectedCurrency}
               onChange={(e) => setSelectedCurrency(e.target.value)}
-              className="pl-9 pr-8 py-2.5 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 text-xs font-semibold rounded-full shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-sky-500/20 cursor-pointer appearance-none"
+              className="pl-9 pr-8 py-2.5 bg-black border border-zinc-800 hover:border-zinc-700 text-zinc-200 text-xs font-semibold rounded-xl shadow-sm transition-all focus:outline-none focus:border-[#FF5500] cursor-pointer appearance-none"
             >
               {Object.values(CURRENCIES).map((c) => (
                 <option key={c.code} value={c.code}>
@@ -186,101 +182,99 @@ export function AnalyzerDashboard({
                 </option>
               ))}
             </select>
-            <span className="absolute right-3.5 text-[9px] text-slate-400 pointer-events-none">▼</span>
+            <span className="absolute right-3.5 text-[9px] text-zinc-400 pointer-events-none">▼</span>
           </div>
 
           <button
             onClick={onReset}
-            className="bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold px-6 py-2.5 sm:py-3 rounded-full shadow-lg transition-colors cursor-pointer"
+            className="bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-700 text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all cursor-pointer"
           >
-            Run Another Analysis
+            New Audit
           </button>
         </div>
       </div>
 
       {/* ----------------- SECTION 2: EXECUTIVE SUMMARY & OVERVIEW GRID ----------------- */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-        {/* Executive summary and core qualitative diagnosis */}
-        <div className="lg:col-span-8 bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-sky-100/30 rounded-full filter blur-[60px] pointer-events-none" />
-          <div className="relative z-10 space-y-6">
-            <div className="inline-flex items-center gap-1.5 text-xs text-sky-600 bg-sky-50 px-3 py-1 border border-sky-100 rounded-full font-semibold">
+        {/* Executive diagnosis card */}
+        <div className="lg:col-span-8 bg-zinc-950 border border-zinc-800 rounded-3xl p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#FF5500]/5 rounded-full filter blur-[80px] pointer-events-none" />
+          
+          <div className="relative z-10 space-y-4">
+            <div className="inline-flex items-center gap-1.5 text-xs text-[#FF5500] font-mono font-bold uppercase tracking-wider">
               <Zap size={14} />
-              EXECUTIVE AUDIT SUMMARY
+              <span>// EXECUTIVE DIAGNOSTIC FINDINGS</span>
             </div>
-            <h3 className="text-2xl font-semibold text-slate-800 tracking-tight leading-snug">
-              Key Diagnostic Findings & Back-Office Friction points
+            <h3 className="text-2xl font-black text-white tracking-tight leading-snug">
+              Key Workflow Friction & Time Leak Assessment
             </h3>
-            <p className="text-slate-600 leading-relaxed text-base font-light">
+            <p className="text-zinc-300 leading-relaxed text-base font-normal">
               {data.executiveDiagnosis}
             </p>
           </div>
 
-          {/* Efficiency indicators comparing Drag vs Reclaimed hours */}
-          <div className="mt-8 pt-8 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
+          {/* Drag vs Reclaimed Hours */}
+          <div className="mt-8 pt-6 border-t border-zinc-800 grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
             <div>
-              <div className="flex justify-between items-center text-xs font-mono text-slate-500 mb-2">
-                <span>WEEKLY MANUAL INEFFICIENCY DRAG</span>
-                <span className="text-rose-500 font-semibold">{data.internalDragHours} Hours</span>
+              <div className="flex justify-between items-center text-xs font-mono text-zinc-400 mb-2">
+                <span>WEEKLY INEFFICIENCY DRAG</span>
+                <span className="text-rose-400 font-bold">{data.internalDragHours} Hours</span>
               </div>
-              <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: '100%' }}
                   transition={{ duration: 1, ease: 'easeOut' }}
-                  className="h-full bg-rose-400 rounded-full"
+                  className="h-full bg-rose-500 rounded-full"
                 />
               </div>
-              <p className="text-[11px] text-slate-400 mt-1.5">Hours lost per week in administrative copy-pasting & pipeline friction.</p>
+              <p className="text-[11px] text-zinc-500 mt-1.5">Hours lost per week in repetitive administrative tasks.</p>
             </div>
             <div>
-              <div className="flex justify-between items-center text-xs font-mono text-slate-500 mb-2">
-                <span>RECLAIMED TIME VIA AUTOMATION</span>
-                <span className="text-emerald-500 font-semibold">{data.reclaimedTimeHours} Hours</span>
+              <div className="flex justify-between items-center text-xs font-mono text-zinc-400 mb-2">
+                <span>RECLAIMED VIA AI AUTOMATION</span>
+                <span className="text-[#FF5500] font-bold">{data.reclaimedTimeHours} Hours</span>
               </div>
-              <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
-                  animate={{ width: `${(data.reclaimedTimeHours / data.internalDragHours) * 100}%` }}
+                  animate={{ width: `${Math.min(100, (data.reclaimedTimeHours / Math.max(1, data.internalDragHours)) * 100)}%` }}
                   transition={{ duration: 1.2, ease: 'easeOut' }}
-                  className="h-full bg-emerald-400 rounded-full"
+                  className="h-full bg-[#FF5500] rounded-full"
                 />
               </div>
-              <p className="text-[11px] text-slate-400 mt-1.5">Unlocked weekly productivity. Up to {Math.round((data.reclaimedTimeHours / data.internalDragHours) * 100)}% administrative streamlining.</p>
+              <p className="text-[11px] text-zinc-500 mt-1.5">Up to {Math.round((data.reclaimedTimeHours / Math.max(1, data.internalDragHours)) * 100)}% administrative streamlining.</p>
             </div>
           </div>
         </div>
 
-        {/* Readiness circular gauge & core ROI statistics */}
+        {/* Readiness Circular Score & ROI */}
         <div className="lg:col-span-4 flex flex-col gap-6">
-          {/* SVG Radial Progress circular tracker */}
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between text-white relative overflow-hidden shrink-0">
-            <div className="absolute -bottom-20 -right-20 w-48 h-48 bg-sky-500/10 rounded-full filter blur-[50px] pointer-events-none" />
-
+          {/* Readiness Ring */}
+          <div className="bg-zinc-950 border border-zinc-800 rounded-3xl p-6 shadow-xl flex items-center justify-between text-white relative overflow-hidden shrink-0">
             <div className="space-y-3">
-              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">AI READINESS TIER</span>
-              <span className={`inline-flex items-center gap-1.5 border px-2.5 py-0.5 rounded-full text-xs font-semibold ${tierStyles.bg}`}>
+              <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest block font-bold">
+                // AI READINESS TIER
+              </span>
+              <span className={`inline-flex items-center gap-1.5 border px-3 py-1 rounded-lg text-xs font-bold ${tierStyles.bg}`}>
                 <span className={`w-1.5 h-1.5 rounded-full ${tierStyles.dot}`} />
                 {data.readinessTier}
               </span>
-              <p className="text-xs text-slate-400 font-light mt-1 max-w-[160px]">
-                Calculated benchmark based on available data architecture readiness.
+              <p className="text-xs text-zinc-400 mt-1 max-w-[160px]">
+                Calculated operational index based on data architecture readiness.
               </p>
             </div>
 
             <div className="relative flex items-center justify-center">
               <svg height={radius * 2} width={radius * 2} className="transform -rotate-95">
-                {/* Background Ring */}
                 <circle
-                  stroke="#1e293b"
+                  stroke="#27272a"
                   fill="transparent"
                   strokeWidth={strokeWidth}
                   r={normalizedRadius}
                   cx={radius}
                   cy={radius}
                 />
-                {/* Active Ring */}
                 <motion.circle
                   className={tierStyles.stroke}
                   fill="transparent"
@@ -295,98 +289,90 @@ export function AnalyzerDashboard({
                   transition={{ duration: 1.5, ease: 'easeOut' }}
                 />
               </svg>
-              {/* Inner score label */}
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-2xl font-bold leading-none">{data.readinessScore}</span>
-                <span className="text-[8px] font-mono text-slate-500 uppercase tracking-wider mt-0.5">SCORE</span>
+                <span className="text-2xl font-black leading-none text-white">{data.readinessScore}</span>
+                <span className="text-[8px] font-mono text-zinc-500 uppercase tracking-wider mt-0.5">SCORE</span>
               </div>
             </div>
           </div>
 
           {/* Financial ROI Card */}
-          <div className="bg-gradient-to-br from-slate-900 to-indigo-950 border border-slate-800 rounded-3xl p-6 shadow-xl flex-1 flex flex-col justify-between text-white relative overflow-hidden">
-            <div className="absolute -top-12 -right-12 w-32 h-32 bg-sky-400/20 rounded-full filter blur-[30px] pointer-events-none" />
-            <TrendingUp size={24} className="text-sky-400 mb-6 shrink-0" />
+          <div className="bg-zinc-950 border border-[#FF5500]/40 rounded-3xl p-6 shadow-xl flex-1 flex flex-col justify-between text-white relative overflow-hidden">
+            <div className="absolute -top-12 -right-12 w-32 h-32 bg-[#FF5500]/15 rounded-full filter blur-[30px] pointer-events-none" />
+            <TrendingUp size={24} className="text-[#FF5500] mb-4 shrink-0" />
             <div className="space-y-1">
-              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">ANNUAL RECLAIMABLE ROI</span>
-              <h4 className="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-sky-300 to-indigo-200">
+              <span className="text-xs font-mono text-[#FF5500] uppercase tracking-widest block font-bold">
+                // PROJECTED ANNUAL RECLAIMED ROI
+              </span>
+              <h4 className="text-3xl md:text-4xl font-black text-white">
                 {formatCurrency(data.annualReclaimedROI)}
               </h4>
-              <p className="text-xs text-slate-400 font-light pt-2 leading-relaxed">
-                Operating capital directly lost to duplicate software layers and slow administrative response chains that AI automations can reclaim.
+              <p className="text-xs text-zinc-400 pt-2 leading-relaxed">
+                Direct bottom-line savings and reclaimed human hours unlocked through automated workflow engineering.
               </p>
             </div>
           </div>
         </div>
-
       </div>
 
-      {/* Financial Profitability & ROI breakdown card */}
-      <div className="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50/30 rounded-full filter blur-[60px] pointer-events-none animate-pulse-slow" />
+      {/* ----------------- SECTION 3: PROFITABILITY PROJECTIONS ----------------- */}
+      <div className="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 shadow-xl relative overflow-hidden">
         <div className="relative z-10 space-y-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div>
-              <span className="text-xs font-mono text-indigo-600 uppercase tracking-widest block font-bold">FINANCIAL ROI PROJECTION</span>
-              <h3 className="text-2xl font-bold text-slate-900 mt-1">Reclaimed Revenue Breakdown & Value Projections</h3>
+              <span className="text-xs font-mono text-[#FF5500] uppercase tracking-widest block font-bold">
+                // FINANCIAL IMPACT BREAKDOWN
+              </span>
+              <h3 className="text-2xl font-black text-white mt-1">Reclaimed Value & Compound Savings</h3>
             </div>
-            <span className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 text-xs px-3 py-1 border border-indigo-100 rounded-full font-medium">
-              Based on Analysis Audit
+            <span className="text-xs bg-zinc-900 border border-zinc-800 text-zinc-300 px-3 py-1 rounded-lg font-mono">
+              Live Audit Projection
             </span>
           </div>
 
-          <p className="text-slate-500 text-sm font-light leading-relaxed max-w-3xl">
-            This projection details how the reclaimed capital savings accumulate over time based strictly on the audited weekly leakage hours and operational inefficiencies identified in the departments.
-          </p>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-            {/* Weekly card */}
-            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 hover:bg-slate-100/50 transition-colors">
-              <span className="text-[10px] font-mono text-slate-400 block tracking-wider uppercase font-semibold">Weekly Profit / Savings</span>
-              <h4 className="text-2xl font-extrabold text-slate-800 mt-2">
+            {/* Weekly */}
+            <div className="bg-black border border-zinc-800 rounded-2xl p-5">
+              <span className="text-xs font-mono text-zinc-400 block tracking-wider uppercase font-semibold">Weekly Reclaimed Value</span>
+              <h4 className="text-2xl font-black text-white mt-2">
                 {formatCurrencyValue(data.annualReclaimedROI / 52, selectedCurrency)}
               </h4>
-              <p className="text-xs text-slate-400 mt-1 font-light">Based on {data.reclaimedTimeHours} hours saved per week.</p>
+              <p className="text-xs text-zinc-500 mt-1 font-mono">~{data.reclaimedTimeHours} hours saved per week.</p>
             </div>
 
-            {/* Monthly card */}
-            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 hover:bg-slate-100/50 transition-colors">
-              <span className="text-[10px] font-mono text-slate-400 block tracking-wider uppercase font-semibold">Monthly Profit / Savings</span>
-              <h4 className="text-2xl font-extrabold text-slate-800 mt-2">
+            {/* Monthly */}
+            <div className="bg-black border border-zinc-800 rounded-2xl p-5">
+              <span className="text-xs font-mono text-zinc-400 block tracking-wider uppercase font-semibold">Monthly Savings</span>
+              <h4 className="text-2xl font-black text-white mt-2">
                 {formatCurrencyValue(data.annualReclaimedROI / 12, selectedCurrency)}
               </h4>
-              <p className="text-xs text-slate-400 mt-1 font-light">Direct back-office overhead reductions.</p>
+              <p className="text-xs text-zinc-500 mt-1 font-mono">Direct operational cost reduction.</p>
             </div>
 
-            {/* 3-Year Projection card */}
-            <div className="bg-gradient-to-br from-indigo-50/50 to-sky-50/50 border border-indigo-100/50 rounded-2xl p-5 hover:from-indigo-50 hover:to-sky-50 transition-colors relative overflow-hidden">
-              <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-indigo-500/5 rounded-full blur-lg pointer-events-none" />
-              <span className="text-[10px] font-mono text-indigo-600 block tracking-wider uppercase font-semibold">3-Year Cumulative Value</span>
-              <h4 className="text-2xl font-extrabold text-indigo-700 mt-2">
+            {/* 3-Year */}
+            <div className="bg-black border border-[#FF5500]/30 rounded-2xl p-5 relative overflow-hidden">
+              <span className="text-xs font-mono text-[#FF5500] block tracking-wider uppercase font-bold">3-Year Cumulative ROI</span>
+              <h4 className="text-2xl font-black text-[#FF5500] mt-2">
                 {formatCurrencyValue(data.annualReclaimedROI * 3, selectedCurrency)}
               </h4>
-              <p className="text-xs text-indigo-500 mt-1 font-light font-medium">Long-term compound efficiency gains.</p>
+              <p className="text-xs text-zinc-400 mt-1 font-mono">Long-term compound efficiency return.</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ----------------- SECTION 3: INTERACTIVE DEPARTMENT DEEP DIVE ----------------- */}
+      {/* ----------------- SECTION 4: DEPARTMENT DEEP DIVE ----------------- */}
       <div className="space-y-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-3 pb-2">
-          <div>
-            <span className="text-xs font-mono text-sky-600 uppercase tracking-widest">DRILL DOWN ASSESSMENT</span>
-            <h3 className="text-2xl font-semibold text-slate-900 mt-1">Interactive Departmental Deep Dive</h3>
-          </div>
-          <p className="text-slate-500 text-sm max-w-md font-light leading-relaxed">
-            Select an audited operational center to review exact workflow bottlenecks, integration playbooks, complexity, timeline steps, and SaaS integrations.
-          </p>
+        <div>
+          <span className="text-xs font-mono text-[#FF5500] uppercase tracking-widest block font-bold">
+            // DEPARTMENTAL DEEP DIVE
+          </span>
+          <h3 className="text-2xl font-black text-white mt-1">Specialized Playbooks by Operational Unit</h3>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-          {/* Department side selector list */}
-          <div className="lg:col-span-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 gap-3 scrollbar-none">
+          {/* Department List */}
+          <div className="lg:col-span-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 gap-3">
             {data.departments.map((dept, index) => {
               const IconComponent = ICON_MAP[dept.icon] || FileText;
               const isSelected = selectedDeptIndex === index;
@@ -394,191 +380,185 @@ export function AnalyzerDashboard({
                 <button
                   key={dept.name}
                   onClick={() => setSelectedDeptIndex(index)}
-                  className={`w-full sm:w-auto lg:w-full shrink-0 flex items-center justify-between p-4 sm:p-5 rounded-2xl border text-left transition-all relative overflow-hidden cursor-pointer ${isSelected
-                      ? 'bg-slate-900 border-slate-950 text-white shadow-xl shadow-slate-900/10'
-                      : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50/50'
-                    }`}
+                  className={`w-full sm:w-auto lg:w-full shrink-0 flex items-center justify-between p-4 rounded-2xl border text-left transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#FF5500]/15 border-[#FF5500] text-white shadow-lg'
+                      : 'bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-white'
+                  }`}
                 >
-                  <div className="flex items-center gap-4 relative z-10 pr-4">
-                    <div className={`p-2.5 rounded-xl ${isSelected ? 'bg-sky-500/20 text-sky-400' : 'bg-slate-100 text-slate-500'}`}>
-                      <IconComponent size={20} />
+                  <div className="flex items-center gap-3 pr-2">
+                    <div className={`p-2.5 rounded-xl ${isSelected ? 'bg-[#FF5500] text-black' : 'bg-zinc-900 text-zinc-400'}`}>
+                      <IconComponent size={18} />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-sm leading-snug">{dept.name}</h4>
-                      <span className={`text-[10px] font-mono block mt-0.5 ${isSelected ? 'text-slate-400' : 'text-slate-400'}`}>
-                        WEEKLY LEAK: {dept.weeklyTimeLeak} HOURS
+                      <h4 className="font-bold text-sm leading-snug text-white">{dept.name}</h4>
+                      <span className="text-[10px] font-mono block mt-0.5 text-zinc-400">
+                        LEAK: {dept.weeklyTimeLeak} HRS / WK
                       </span>
                     </div>
                   </div>
-                  <ArrowRight size={16} className={`relative z-10 hidden lg:block ${isSelected ? 'text-sky-400' : 'text-slate-300'}`} />
+                  <ArrowRight size={16} className={`hidden lg:block ${isSelected ? 'text-[#FF5500]' : 'text-zinc-600'}`} />
                 </button>
               );
             })}
           </div>
 
-          {/* Dynamic Playbook Sheet Display */}
+          {/* Active Department Playbook */}
           <div className="lg:col-span-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedDeptIndex}
-                initial={{ opacity: 0, x: 15 }}
+                initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -15 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white border border-slate-200/80 rounded-3xl shadow-xl overflow-hidden"
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.25 }}
+                className="bg-zinc-950 border border-zinc-800 rounded-3xl shadow-xl overflow-hidden"
               >
-                {/* Active Department Tab Header */}
-                <div className="bg-slate-900/95 text-white p-6 md:p-8 flex justify-between items-center border-b border-slate-800">
+                {/* Header */}
+                <div className="bg-black p-6 flex justify-between items-center border-b border-zinc-800">
                   <div>
-                    <span className="text-[10px] font-mono text-sky-400 uppercase tracking-widest">TACTICAL INTEGRATION SPEC</span>
-                    <h4 className="text-xl font-bold mt-0.5">{activeDept.name} Playbook</h4>
+                    <span className="text-[10px] font-mono text-[#FF5500] uppercase tracking-widest font-bold">
+                      // TACTICAL INTEGRATION SPEC
+                    </span>
+                    <h4 className="text-xl font-black mt-0.5 text-white">{activeDept.name} Playbook</h4>
                   </div>
-                  <span className="inline-flex items-center gap-1 bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold">
+                  <span className="bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] px-3 py-1 rounded-lg text-xs font-bold">
                     Playbook ROI: {formatCurrency(activeDept.playbook.roi)}
                   </span>
                 </div>
 
-                {/* Card body comparing Friction and Resolution Pipeline */}
-                <div className="p-6 md:p-8 space-y-8">
+                {/* Body */}
+                <div className="p-6 md:p-8 space-y-6">
                   {/* Friction vs Resolution */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-rose-50/50 border border-rose-100/50 rounded-2xl p-5 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-rose-200/10 rounded-full filter blur-xl" />
-                      <span className="text-[10px] font-mono text-rose-600 uppercase tracking-widest block font-semibold mb-2">CURRENT FRICTION PROCESS</span>
-                      <p className="text-slate-600 text-sm font-light leading-relaxed">{activeDept.friction}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-black border border-red-900/30 rounded-2xl p-5">
+                      <span className="text-[10px] font-mono text-red-400 uppercase tracking-widest block font-bold mb-2">
+                        CURRENT BOTTLENECK
+                      </span>
+                      <p className="text-zinc-300 text-sm leading-relaxed">{activeDept.friction}</p>
                     </div>
-                    <div className="bg-emerald-50/50 border border-emerald-100/50 rounded-2xl p-5 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-200/10 rounded-full filter blur-xl" />
-                      <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-widest block font-semibold mb-2">TARGET RESOLUTION ARCHITECTURE</span>
-                      <p className="text-slate-600 text-sm font-light leading-relaxed">{activeDept.resolution}</p>
+                    <div className="bg-black border border-emerald-900/30 rounded-2xl p-5">
+                      <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest block font-bold mb-2">
+                        TARGET AI ARCHITECTURE
+                      </span>
+                      <p className="text-zinc-300 text-sm leading-relaxed">{activeDept.resolution}</p>
                     </div>
                   </div>
 
-                  {/* Playbook Documentation Spec Sheet */}
-                  <div className="border border-slate-100 rounded-2xl p-6 bg-slate-50/50 space-y-6">
-                    <span className="text-xs font-mono text-slate-500 uppercase tracking-widest block border-b border-slate-100 pb-3">PLAYBOOK DOCUMENTATION SHEET</span>
-
-                    {/* Workflow */}
-                    <div className="space-y-1.5">
-                      <span className="text-[10px] font-mono text-slate-400 block tracking-wider font-semibold">RECOMMENDED WORKFLOW PIPELINE</span>
-                      <p className="text-slate-700 text-sm leading-relaxed">{activeDept.playbook.workflow}</p>
+                  {/* Playbook Details */}
+                  <div className="border border-zinc-800 rounded-2xl p-6 bg-black space-y-4">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-mono text-zinc-400 block tracking-wider font-bold">
+                        RECOMMENDED WORKFLOW PIPELINE
+                      </span>
+                      <p className="text-white text-sm leading-relaxed">{activeDept.playbook.workflow}</p>
                     </div>
 
-                    {/* Integration Path */}
-                    <div className="space-y-1.5">
-                      <span className="text-[10px] font-mono text-slate-400 block tracking-wider font-semibold">LOW-DISRUPTION STAFF INTEGRATION PATH</span>
-                      <p className="text-slate-700 text-sm leading-relaxed font-light">{activeDept.playbook.integrationPath}</p>
+                    <div className="space-y-1 pt-2 border-t border-zinc-800">
+                      <span className="text-[10px] font-mono text-zinc-400 block tracking-wider font-bold">
+                        STAFF INTEGRATION & ROLLOUT
+                      </span>
+                      <p className="text-zinc-300 text-sm leading-relaxed">{activeDept.playbook.integrationPath}</p>
                     </div>
 
-                    {/* Tool Stack */}
-                    <div className="space-y-2">
-                      <span className="text-[10px] font-mono text-slate-400 block tracking-wider font-semibold">TARGET AUTOMATION SAAS TOOL STACK</span>
+                    <div className="space-y-2 pt-2 border-t border-zinc-800">
+                      <span className="text-[10px] font-mono text-zinc-400 block tracking-wider font-bold">
+                        RECOMMENDED SAAS & TOOL STACK
+                      </span>
                       <div className="flex flex-wrap gap-2 pt-1">
                         {activeDept.playbook.toolStack.map(tool => (
-                          <span key={tool} className="bg-white border border-slate-200 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">
+                          <span key={tool} className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs px-3 py-1 rounded-lg font-mono">
                             {tool}
                           </span>
                         ))}
                       </div>
                     </div>
 
-                    {/* AIMLpartner Service Suggestion callout */}
+                    {/* How AIMLpartner Deploys */}
                     {activeDept.playbook.aimlPartnerServiceSuggestion && (
-                      <div className="bg-gradient-to-r from-sky-50 to-indigo-50 border border-sky-100/80 rounded-2xl p-5 mt-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                      <div className="bg-zinc-900/80 border border-[#FF5500]/30 rounded-2xl p-5 mt-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div className="flex-1">
-                          <span className="text-[10px] font-mono text-sky-700 block tracking-wider font-semibold uppercase mb-1.5">HOW AIMLpartner HELPS DEPLOY THIS</span>
-                          <p className="text-slate-800 text-sm leading-relaxed font-medium">{activeDept.playbook.aimlPartnerServiceSuggestion}</p>
+                          <span className="text-[10px] font-mono text-[#FF5500] block font-bold uppercase mb-1">
+                            // HOW AIMLPARTNER DEPLOYS THIS
+                          </span>
+                          <p className="text-white text-sm leading-relaxed">{activeDept.playbook.aimlPartnerServiceSuggestion}</p>
                         </div>
                         <button
                           type="button"
                           onClick={() => setIsModalOpen(true)}
-                          className="bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 text-white font-semibold text-xs py-3 px-5 rounded-full shadow-md shadow-sky-500/10 shrink-0 cursor-pointer flex items-center gap-1.5 transition-all active:scale-95"
+                          className="bg-[#FF5500] hover:bg-[#FF6E26] text-black font-extrabold text-xs py-3 px-5 rounded-xl shadow-us-pop shrink-0 cursor-pointer flex items-center gap-1.5 transition-all uppercase tracking-wider"
                         >
-                          <span>Let's Build It</span>
+                          <span>Build Blueprint</span>
                           <ArrowRight size={12} />
                         </button>
                       </div>
                     )}
 
-                    {/* Timeline, Complexity, Metrics */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-100">
+                    {/* Meta Info */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-zinc-800 text-xs">
                       <div>
-                        <span className="text-[10px] font-mono text-slate-400 block">COMPLEXITY</span>
-                        <span className={`inline-block text-xs font-semibold mt-1 px-3 py-0.5 rounded-full ${activeDept.playbook.complexity === 'Low'
-                            ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
-                            : activeDept.playbook.complexity === 'Medium'
-                              ? 'bg-amber-50 text-amber-600 border border-amber-100'
-                              : 'bg-rose-50 text-rose-600 border border-rose-100'
-                          }`}>
-                          {activeDept.playbook.complexity}
-                        </span>
+                        <span className="text-[10px] font-mono text-zinc-400 block font-bold">COMPLEXITY</span>
+                        <span className="text-white font-bold mt-0.5 block">{activeDept.playbook.complexity}</span>
                       </div>
                       <div>
-                        <span className="text-[10px] font-mono text-slate-400 block">ESTIMATED TIMELINE</span>
-                        <span className="inline-block text-slate-800 text-sm font-semibold mt-1">
-                          {activeDept.playbook.timeline}
-                        </span>
+                        <span className="text-[10px] font-mono text-zinc-400 block font-bold">TIMELINE</span>
+                        <span className="text-white font-bold mt-0.5 block">{activeDept.playbook.timeline}</span>
                       </div>
                       <div>
-                        <span className="text-[10px] font-mono text-slate-400 block">SUCCESS GOAL METRIC</span>
-                        <span className="inline-block text-slate-800 text-sm font-semibold mt-1 leading-snug">
-                          {activeDept.playbook.successMetrics}
-                        </span>
+                        <span className="text-[10px] font-mono text-zinc-400 block font-bold">TARGET METRIC</span>
+                        <span className="text-white font-bold mt-0.5 block">{activeDept.playbook.successMetrics}</span>
                       </div>
                     </div>
-
                   </div>
                 </div>
-
               </motion.div>
             </AnimatePresence>
           </div>
-
         </div>
       </div>
 
-      {/* ----------------- SECTION 4: TACTICAL IMPLEMENTATION ROADMAP ----------------- */}
-      <div className="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl space-y-8">
+      {/* ----------------- SECTION 5: IMPLEMENTATION ROADMAP ----------------- */}
+      <div className="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 shadow-xl space-y-6">
         <div>
-          <span className="text-xs font-mono text-sky-600 uppercase tracking-widest">CHRONOLOGICAL LAUNCH SCHEDULE</span>
-          <h3 className="text-2xl font-bold text-slate-900 mt-1">Tactical Implementation Roadmap & Strategy</h3>
+          <span className="text-xs font-mono text-[#FF5500] uppercase tracking-widest block font-bold">
+            // ROLLOUT SCHEDULE
+          </span>
+          <h3 className="text-2xl font-black text-white mt-1">Milestone-Driven Implementation Strategy</h3>
         </div>
 
-        {/* Data Readiness Assessment Banner */}
-        <div className="bg-slate-900 text-slate-300 rounded-2xl p-5 border border-slate-800 flex items-start gap-4">
-          <div className="bg-sky-500/20 text-sky-400 p-2.5 rounded-xl shrink-0 mt-0.5">
+        <div className="bg-black text-zinc-300 rounded-2xl p-5 border border-zinc-800 flex items-start gap-4">
+          <div className="bg-[#FF5500]/10 text-[#FF5500] p-2.5 rounded-xl shrink-0 mt-0.5">
             <Activity size={20} />
           </div>
           <div>
-            <span className="text-[10px] font-mono text-slate-400 block font-semibold">CORPORATE DATA READINESS AUDIT</span>
-            <p className="text-sm font-light leading-relaxed mt-1">{data.roadmap.dataReadinessAssessment}</p>
+            <span className="text-[10px] font-mono text-[#FF5500] block font-bold uppercase">DATA READINESS ASSESSMENT</span>
+            <p className="text-sm leading-relaxed mt-1">{data.roadmap.dataReadinessAssessment}</p>
           </div>
         </div>
 
-        {/* Phase timeline steps blocks */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
-          {data.roadmap.phases.map((phase, idx) => (
-            <div key={phase.title} className="bg-slate-50 border border-slate-100 rounded-2xl p-6 relative flex flex-col justify-between">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {data.roadmap.phases.map((phase) => (
+            <div key={phase.title} className="bg-black border border-zinc-800 rounded-2xl p-6 flex flex-col justify-between">
               <div>
-                <div className="flex justify-between items-start gap-2 mb-4">
-                  <span className="bg-slate-900 text-white font-mono text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold">
+                <div className="flex justify-between items-start gap-2 mb-3">
+                  <span className="bg-[#FF5500] text-black font-mono text-xs w-6 h-6 rounded-lg flex items-center justify-center font-black">
                     {phase.phaseNumber}
                   </span>
-                  <span className="inline-flex items-center gap-1 bg-sky-50 border border-sky-100 text-sky-600 text-xs px-3 py-0.5 rounded-full font-semibold">
-                    <Clock size={12} />
+                  <span className="inline-flex items-center gap-1 bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs px-2.5 py-0.5 rounded-lg font-mono">
+                    <Clock size={11} className="text-[#FF5500]" />
                     {phase.duration}
                   </span>
                 </div>
-                <h4 className="font-bold text-slate-800 text-base mb-1">{phase.title}</h4>
-                <p className="text-xs text-slate-500 font-light mb-4 leading-relaxed">{phase.focus}</p>
+                <h4 className="font-bold text-white text-base mb-1">{phase.title}</h4>
+                <p className="text-xs text-zinc-400 mb-4 leading-relaxed">{phase.focus}</p>
               </div>
 
-              <div className="space-y-2 border-t border-slate-200/50 pt-4 mt-2">
-                <span className="text-[9px] font-mono text-slate-400 block uppercase font-bold tracking-wider">ENGINEERING MILESTONES</span>
+              <div className="space-y-2 border-t border-zinc-800 pt-3">
+                <span className="text-[10px] font-mono text-zinc-500 block uppercase font-bold tracking-wider">ENGINEERING DELIVERABLES</span>
                 <ul className="space-y-1.5">
                   {phase.milestones.map((milestone, mIdx) => (
-                    <li key={mIdx} className="flex items-start gap-2 text-slate-600 text-xs font-light">
-                      <span className="w-1.5 h-1.5 bg-sky-400 rounded-full mt-1.5 shrink-0" />
+                    <li key={mIdx} className="flex items-start gap-2 text-zinc-300 text-xs">
+                      <span className="w-1.5 h-1.5 bg-[#FF5500] rounded-full mt-1.5 shrink-0" />
                       <span>{milestone}</span>
                     </li>
                   ))}
@@ -589,7 +569,7 @@ export function AnalyzerDashboard({
         </div>
       </div>
 
-      {/* ----------------- INTERACTIVE LET'S BUILD IT MODAL ----------------- */}
+      {/* ----------------- BUILD MODAL ----------------- */}
       <AnimatePresence>
         {isModalOpen && (
           <BuildAgentModal
@@ -602,7 +582,6 @@ export function AnalyzerDashboard({
           />
         )}
       </AnimatePresence>
-
     </div>
   );
 }
@@ -661,20 +640,16 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
   const currentQuestionIdx = (step === 'success' || step === 4) ? 0 : (step - 1);
   const currentQuestion = questions[currentQuestionIdx];
 
-  // Helper to format date display values
   const formatDateValue = (date: Date) => {
     return date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
   };
 
-  // Generate next 30 weekday booking dates (skipping Sundays)
   const bookingDates = React.useMemo(() => {
     const dates = [];
     const current = new Date();
-    // Start booking from tomorrow
     current.setDate(current.getDate() + 1);
     
     while (dates.length < 30) {
-      // 0 = Sunday
       if (current.getDay() !== 0) {
         dates.push(new Date(current));
       }
@@ -794,7 +769,6 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
       setStep('success');
     } catch (err: any) {
       console.error('[Build Agent Error]:', err);
-      // Fallback: show success anyway so user experience is always unlocked, but log error
       setStep('success');
     } finally {
       setIsSubmitting(false);
@@ -803,38 +777,36 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
-      {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+        className="absolute inset-0 bg-black/80 backdrop-blur-md"
         onClick={onClose}
       />
 
-      {/* Modal Container */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="relative bg-white w-full max-w-lg rounded-3xl shadow-2xl z-55 border border-slate-100 max-h-[90vh] overflow-y-auto"
+        transition={{ duration: 0.3 }}
+        className="relative bg-zinc-950 border border-zinc-800 w-full max-w-lg rounded-3xl shadow-2xl z-55 max-h-[90vh] overflow-y-auto text-white"
       >
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors z-20 cursor-pointer"
+          className="absolute top-5 right-5 text-zinc-400 hover:text-white transition-colors z-20 cursor-pointer"
         >
           <X size={20} />
         </button>
 
-        {/* Top Progress bar */}
+        {/* Progress Line */}
         {step !== 'success' && (
-          <div className="h-1.5 w-full bg-slate-100 absolute top-0 left-0">
+          <div className="h-1 w-full bg-zinc-900 absolute top-0 left-0">
             <motion.div
-              className="h-full bg-gradient-to-r from-sky-400 to-indigo-500"
+              className="h-full bg-[#FF5500]"
               initial={{ width: 0 }}
               animate={{ width: `${(step / 4) * 100}%` }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.3 }}
             />
           </div>
         )}
@@ -847,58 +819,57 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                 initial={{ opacity: 0, x: 15 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -15 }}
-                transition={{ duration: 0.25 }}
+                transition={{ duration: 0.2 }}
                 className="flex-grow flex flex-col justify-between space-y-6"
               >
                 {step <= 3 ? (
                   <div>
-                    <span className="text-[10px] font-mono text-sky-600 tracking-widest uppercase font-semibold block mb-3">
-                      STEP {step} OF 4 • {activeDept.name.toUpperCase()} AGENT
+                    <span className="text-[10px] font-mono text-[#FF5500] tracking-widest uppercase font-bold block mb-3">
+                      // STEP {step} OF 4 • {activeDept.name.toUpperCase()} AGENT
                     </span>
-                    <h3 className="text-xl font-bold text-slate-900 leading-snug tracking-tight">
+                    <h3 className="text-xl font-bold text-white leading-snug tracking-tight">
                       {currentQuestion}
                     </h3>
 
                     {error && (
-                      <p className="text-rose-600 text-xs font-semibold mt-2">{error}</p>
+                      <p className="text-red-400 text-xs font-semibold mt-2">{error}</p>
                     )}
 
                     <form onSubmit={handleNext} className="mt-6">
                       <textarea
                         rows={4}
                         required
-                        placeholder="Type your requirements here..."
+                        placeholder="Type your requirements or software tools here..."
                         value={currentVal}
                         onChange={(e) => { setCurrentVal(e.target.value); setError(''); }}
-                        className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all text-sm resize-none"
+                        className="block w-full px-4 py-3 bg-black border border-zinc-800 rounded-xl text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#FF5500] text-sm resize-none"
                       />
                     </form>
                   </div>
                 ) : (
-                  // STEP 4: CALENDAR SCHEDULER
+                  // STEP 4: CALENDAR
                   <div>
-                    <span className="text-[10px] font-mono text-indigo-600 tracking-widest uppercase font-semibold block mb-3">
-                      STEP 4 OF 4 • DEMO SCHEDULER
+                    <span className="text-[10px] font-mono text-[#FF5500] tracking-widest uppercase font-bold block mb-3">
+                      // STEP 4 OF 4 • LIVE DEMO SCHEDULER
                     </span>
-                    <h3 className="text-xl font-bold text-slate-900 leading-snug tracking-tight mb-1">
-                      Schedule a Live Prototype Walk-Through
+                    <h3 className="text-xl font-bold text-white leading-snug tracking-tight mb-1">
+                      Schedule a Live Prototype Walkthrough
                     </h3>
-                    <p className="text-xs text-slate-500 leading-relaxed font-light mb-6">
-                      Our system is compiling your custom Google AI Studio prompt. Select a convenient date and time slot for a live GMeet demo where our engineers will show you the fully automated version.
+                    <p className="text-xs text-zinc-400 leading-relaxed mb-6">
+                      Select a date and time slot for a live 15-minute Google Meet walkthrough where our engineers will present this custom automated workflow.
                     </p>
 
                     {error && (
-                      <p className="text-rose-600 text-xs font-semibold mt-2 mb-4">{error}</p>
+                      <p className="text-red-400 text-xs font-semibold mt-2 mb-4">{error}</p>
                     )}
 
                     <div className="space-y-6">
-                      {/* Date list grid (30 days in one go) */}
                       <div className="space-y-2">
-                        <label className="text-[10px] font-mono text-slate-400 block tracking-wider font-semibold uppercase">
+                        <label className="text-[10px] font-mono text-zinc-400 block tracking-wider font-bold uppercase">
                           Select Date
                         </label>
-                        <div className="text-xs font-bold text-slate-800 flex items-center gap-1.5 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 w-fit mb-2">
-                          <Calendar size={14} className="text-indigo-600 animate-pulse" />
+                        <div className="text-xs font-bold text-white flex items-center gap-1.5 bg-black border border-zinc-800 rounded-xl px-3 py-2 w-fit mb-2">
+                          <Calendar size={14} className="text-[#FF5500]" />
                           <span>{monthHeader}</span>
                         </div>
                         <div className="grid grid-cols-5 sm:grid-cols-6 gap-2">
@@ -915,15 +886,15 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                                 }}
                                 className={`flex flex-col items-center justify-center p-2 rounded-xl border transition-all cursor-pointer ${
                                   isSelected
-                                    ? 'bg-slate-900 border-slate-950 text-white shadow-md'
-                                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300'
+                                    ? 'bg-[#FF5500] border-[#FF5500] text-black font-bold shadow-us-pop'
+                                    : 'bg-black border-zinc-800 text-zinc-300 hover:border-zinc-700'
                                 }`}
                               >
-                                <span className="text-[8px] font-mono uppercase tracking-wider opacity-65">
+                                <span className="text-[8px] font-mono uppercase tracking-wider opacity-75">
                                   {date.toLocaleDateString('en-US', { weekday: 'short' })}
                                 </span>
                                 <span className="text-base font-extrabold my-0.5">{date.getDate()}</span>
-                                <span className="text-[8px] font-mono uppercase tracking-wider opacity-65">
+                                <span className="text-[8px] font-mono uppercase tracking-wider opacity-75">
                                   {date.toLocaleDateString('en-US', { month: 'short' })}
                                 </span>
                               </button>
@@ -932,9 +903,8 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                         </div>
                       </div>
 
-                      {/* Time slot grid */}
                       <div className="space-y-2">
-                        <label className="text-[10px] font-mono text-slate-400 block tracking-wider font-semibold uppercase">
+                        <label className="text-[10px] font-mono text-zinc-400 block tracking-wider font-bold uppercase">
                           Select Time Slot
                         </label>
                         <div className="grid grid-cols-3 gap-2">
@@ -948,10 +918,10 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                                   setSelectedTime(time);
                                   setError('');
                                 }}
-                                className={`py-3 px-2 rounded-xl border text-center text-xs font-semibold transition-all cursor-pointer ${
+                                className={`py-3 px-2 rounded-xl border text-center text-xs font-bold transition-all cursor-pointer ${
                                   isSelected
-                                    ? 'bg-indigo-600 border-indigo-700 text-white shadow-md'
-                                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
+                                    ? 'bg-[#FF5500] border-[#FF5500] text-black shadow-us-pop'
+                                    : 'bg-black border-zinc-800 text-zinc-300 hover:border-zinc-700'
                                 }`}
                               >
                                 {time}
@@ -959,9 +929,6 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                             );
                           })}
                         </div>
-                        <p className="text-[10px] text-slate-400 font-mono text-center mt-3">
-                          🕒 Times are shown in your local timezone.
-                        </p>
                       </div>
                     </div>
                   </div>
@@ -971,7 +938,7 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                   {step > 1 ? (
                     <button
                       onClick={handleBack}
-                      className="text-xs font-mono text-slate-400 hover:text-slate-800 transition-colors uppercase tracking-widest cursor-pointer"
+                      className="text-xs font-mono text-zinc-400 hover:text-white transition-colors uppercase tracking-widest cursor-pointer"
                     >
                       ← Back
                     </button>
@@ -982,12 +949,12 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                   <button
                     onClick={handleNext}
                     disabled={isSubmitting}
-                    className="inline-flex items-center gap-1 bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-3 font-semibold text-xs transition-all shadow-md cursor-pointer disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 bg-[#FF5500] hover:bg-[#FF6E26] text-black font-extrabold rounded-xl px-6 py-3 text-xs uppercase tracking-wider transition-all shadow-us-pop cursor-pointer disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 size={12} className="animate-spin" />
-                        <span>Submitting...</span>
+                        <Loader2 size={12} className="animate-spin text-black" />
+                        <span>Reserving Demo...</span>
                       </>
                     ) : (
                       <>
@@ -995,7 +962,7 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                           {step === 3
                             ? 'Next: Schedule Demo'
                             : step === 4
-                            ? 'Book Demo & Build Agent'
+                            ? 'Confirm & Build Blueprint'
                             : 'Next Question'}
                         </span>
                         <ArrowRight size={12} />
@@ -1011,36 +978,31 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
                 animate={{ opacity: 1, scale: 1 }}
                 className="flex flex-col items-center justify-center text-center py-6 flex-grow space-y-6"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-indigo-50 to-sky-50 border border-indigo-100 rounded-2xl flex items-center justify-center text-indigo-500 shadow-md">
+                <div className="w-16 h-16 bg-[#FF5500]/10 border border-[#FF5500]/30 rounded-2xl flex items-center justify-center text-[#FF5500]">
                   <LockOpen size={28} className="animate-pulse" />
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-slate-950 tracking-tight">
+                  <h3 className="text-xl font-black text-white tracking-tight">
                     Custom Agent Blueprint & Demo Booked!
                   </h3>
-                  <p className="text-slate-500 text-xs md:text-sm font-light mt-3 leading-relaxed max-w-sm mx-auto">
-                    Your custom prompt instructions have been compiled and sent to your email. We have also reserved your live walk-through demo on:
+                  <p className="text-zinc-400 text-xs md:text-sm mt-3 leading-relaxed max-w-sm mx-auto">
+                    Your custom prompt instructions have been compiled and sent to your email. We have reserved your live walkthrough on:
                   </p>
                   
-                  {/* Demo Schedule Display */}
-                  <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 mt-4 text-left max-w-sm mx-auto">
-                    <span className="text-[10px] font-mono text-indigo-600 block tracking-wider uppercase font-semibold mb-2">🗓️ Booking Details</span>
-                    <p className="text-sm font-semibold text-slate-800">Date: <span className="font-normal text-slate-600">{selectedDate}</span></p>
-                    <p className="text-sm font-semibold text-slate-800 mt-1">Time: <span className="font-normal text-slate-600">{selectedTime}</span></p>
-                    <p className="text-sm font-semibold text-slate-800 mt-1">
-                      Meeting: <span className="font-normal text-slate-600 text-xs">Google Meet (Link automatically added to calendar invite)</span>
+                  <div className="bg-black border border-zinc-800 rounded-2xl p-4 mt-4 text-left max-w-sm mx-auto">
+                    <span className="text-[10px] font-mono text-[#FF5500] block tracking-wider uppercase font-bold mb-2">🗓️ Booking Details</span>
+                    <p className="text-sm font-bold text-white">Date: <span className="font-normal text-zinc-300">{selectedDate}</span></p>
+                    <p className="text-sm font-bold text-white mt-1">Time: <span className="font-normal text-zinc-300">{selectedTime}</span></p>
+                    <p className="text-sm font-bold text-white mt-1">
+                      Platform: <span className="font-normal text-zinc-400 text-xs">Google Meet (Calendar invite dispatched)</span>
                     </p>
                   </div>
-                  
-                  <p className="text-slate-400 text-[10px] mt-4 leading-relaxed max-w-xs mx-auto">
-                    A Google Meet calendar invitation has been sent to <span className="font-semibold text-slate-600">{leadEmail || 'your email'}</span>.
-                  </p>
                 </div>
 
                 <button
                   onClick={onClose}
-                  className="bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-full px-6 py-2.5 transition-colors cursor-pointer"
+                  className="bg-[#FF5500] hover:bg-[#FF6E26] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl px-6 py-3 transition-colors cursor-pointer shadow-us-pop"
                 >
                   Return to Dashboard
                 </button>

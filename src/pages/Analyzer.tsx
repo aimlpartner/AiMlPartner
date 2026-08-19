@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AnalyzerInput } from '../components/AnalyzerInput';
 import { AnalyzerDashboard } from '../components/AnalyzerDashboard';
 import { BookCallWidget } from '../components/BookCallWidget';
-import { Sparkles, Brain, Cpu, Lock, ArrowRight, Loader2, X } from 'lucide-react';
+import { Sparkles, Brain, Cpu, Lock, ArrowRight, Loader2, X, ShieldAlert } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
@@ -99,84 +99,66 @@ export function Analyzer() {
           auditPayload.url = payload.url;
         }
         if (payload.description) {
-          auditPayload.description = payload.description;
-        } else if (payload.fileContent) {
-          auditPayload.description = `Uploaded document: ${payload.fileContent.substring(0, 150)}...`;
+          auditPayload.description = payload.description.substring(0, 500);
         }
-        await addDoc(collection(db, 'audits'), auditPayload);
-        console.log('[Analyzer] Audit logged successfully in Firestore.');
-      } catch (dbErr) {
-        console.error('[Analyzer] Failed to write audit log to Firestore:', dbErr);
-      }
+        if (payload.fileContent) {
+          auditPayload.uploadedDocument = true;
+        }
 
-      // Increment successful diagnostic audit run count
-      localStorage.setItem('aiml_analyzer_run_count', String(auditCount + 1));
-    } catch (err: any) {
-      console.error('[Analyzer Client Error]:', err);
-      if (err.message?.includes('Failed to fetch') || err.message?.includes('NetworkError')) {
-        setError('Unable to connect. Please check your network connection and try again.');
-      } else {
-        setError('Something went wrong. Please try again.');
+        await addDoc(collection(db, 'analyzer_runs'), auditPayload);
+        
+        // Increment client counter
+        localStorage.setItem('aiml_analyzer_run_count', (auditCount + 1).toString());
+      } catch (logErr) {
+        console.warn('[Analyzer Firestore Log]: Non-blocking error logging audit run:', logErr);
       }
+    } catch (err: any) {
+      console.error('[Analyzer Exception]:', err);
+      setError(err.message || 'Failed to analyze business. Please check your connection and try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    // 1. Check navigation state
-    if (location.state && (location.state.url || location.state.description)) {
-      handleAnalyze({
-        url: location.state.url,
-        description: location.state.description
-      });
-      // Clear navigation state
-      navigate(location.pathname, { replace: true, state: null });
+  const handleUnlock = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setUnlockError('');
+
+    if (!leadForm.name.trim() || !leadForm.email.trim() || !leadForm.company.trim()) {
+      setUnlockError('Please fill out all fields to unlock your audit.');
       return;
     }
 
-    // 2. Check query parameters
-    const params = new URLSearchParams(location.search);
-    const urlParam = params.get('url');
-    const descParam = params.get('description');
-    if (urlParam || descParam) {
-      handleAnalyze({
-        url: urlParam || undefined,
-        description: descParam || undefined
-      });
-      // Clear query params from URL
-      navigate(location.pathname, { replace: true });
-    }
-  }, [location.state, location.search]);
-
-  const handleUnlock = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!leadForm.name.trim() || !leadForm.email.trim() || !leadForm.company.trim()) {
-      setUnlockError('Please fill out all fields.');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(leadForm.email.trim())) {
+      setUnlockError('Please enter a valid work email address.');
       return;
     }
 
     setIsUnlocking(true);
-    setUnlockError('');
 
     try {
-      // 1. Record lead details in Firestore (validated fields only)
-      await addDoc(collection(db, 'leads'), {
-        name: leadForm.name.substring(0, 100),
-        email: leadForm.email.trim(),
-        company: leadForm.company.substring(0, 100),
-        source: `AI Analyzer: ${result.businessName}`.substring(0, 100),
+      // 1. Record lead to Firestore
+      await addDoc(collection(db, 'analyzer_leads'), {
+        name: leadForm.name.trim(),
+        email: leadForm.email.trim().toLowerCase(),
+        company: leadForm.company.trim(),
+        businessName: result.businessName || 'Your Business',
+        sector: result.sector || 'Services',
+        readinessScore: result.readinessScore || 0,
+        readinessTier: result.readinessTier || 'Exploring',
+        annualReclaimedROI: result.annualReclaimedROI || 0,
+        internalDragHours: result.internalDragHours || 0,
+        currencyCode: selectedCurrency,
         createdAt: serverTimestamp()
       });
 
-      // 2. Dispatch API call to send a gorgeous PDF to the administrator
-      await fetch('/api/email-report', {
+      // 2. Dispatch automated PDF and email report via backend
+      fetch('/api/email-report', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: leadForm.email.trim(),
+          email: leadForm.email.trim().toLowerCase(),
           name: leadForm.name.trim(),
           company: leadForm.company.trim(),
           analysisResult: result,
@@ -203,124 +185,119 @@ export function Analyzer() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#030014] text-white font-sans">
-      {/* Texture Overlays */}
-      <div className="grain-overlay"></div>
+    <div className="relative min-h-screen bg-black text-white font-sans selection:bg-[#FF5500] selection:text-black">
+      {/* Cinematic Saturn Atmospheric Backdrop */}
+      <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
+        <video
+          src="/saturn_loop.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover object-center opacity-40 brightness-95 contrast-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/75 to-black pointer-events-none" />
+      </div>
+
+      {/* Ambient Cosmic Background Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-[#FF5500]/10 rounded-full blur-[160px] pointer-events-none" />
 
       {/* STATE 1: NO RESULT - Show Hero and Input Forms */}
       {!result ? (
         <>
-          {/* SECTION 1: IMMERSIVE SPACE HERO */}
-          <section className="relative pt-40 pb-24 text-white overflow-hidden">
-            {/* Deep Space Background Overlay */}
-            <div className="absolute inset-0 z-0">
-              <div className="absolute inset-0 animate-[float-slow_30s_ease-in-out_infinite]">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-90 transform scale-[1.15] origin-center"></div>
-              </div>
-              <div className="absolute inset-0 bg-space-gradient"></div>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-accent/20 rounded-full blur-[100px] pointer-events-none"></div>
-            </div>
+          {/* Hero Section */}
+          <section className="relative pt-40 pb-16 px-6 md:px-12 max-w-[1200px] mx-auto text-center flex flex-col items-center z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-6 max-w-4xl mx-auto flex flex-col items-center"
+            >
+              <span className="text-xs uppercase tracking-widest text-[#FF5500] font-mono font-bold block">
+                // RAPID ENTERPRISE OPERATIONAL AUDITOR
+              </span>
 
-            <div className="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight text-white leading-[1.12] max-w-5xl mx-auto">
+                Uncover hidden revenue leaks & <br className="hidden md:inline" />
+                <span className="text-[#FF5500]">automatable workflows in 60s.</span>
+              </h1>
 
-            <div className="max-w-[1400px] mx-auto px-6 relative z-10">
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-center max-w-3xl mx-auto space-y-6"
-              >
-                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-accent rounded-full text-xs font-mono font-bold tracking-wider uppercase mb-2 shadow-glow">
-                  <Brain size={14} className="animate-pulse" />
-                  <span>POWERED BY GEMINI PRO & GROUNDED SEARCH</span>
-                </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white leading-tight [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
-                  Enterprise AI <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-300">
-                    Operational Analyzer
-                  </span>
-                </h1>
-                <p className="text-white/70 font-medium text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-                  Scan your domain, submit briefs, or describe bottleneck processes. Receive instant high-fidelity administrative diagnostics, time leak calculations, and tactical playbooks.
-                </p>
-              </motion.div>
-            </div>
+              <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto font-normal leading-relaxed text-balance">
+                Scan your website domain or describe your team's biggest bottlenecks. Our engine crawls your workflows, audits manual friction, and compiles customized automation playbooks with projected ROI.
+              </p>
+            </motion.div>
           </section>
 
-          {/* SECTION 2: INPUT AREA */}
-          <section className="py-24 px-6 relative z-10 min-h-[500px] -mt-10">
-            <div className="absolute inset-0 bg-[#030014]/80 backdrop-blur-3xl border-t border-white/10 rounded-t-[3rem] z-0 shadow-[0_-20px_50px_rgba(3,0,20,0.8)]"></div>
-            <div className="max-w-4xl mx-auto relative z-10">
-              {limitExceeded ? (
-                <div className="max-w-2xl mx-auto bg-slate-900/90 border border-slate-800 rounded-3xl p-8 sm:p-12 text-center text-white shadow-2xl relative overflow-hidden backdrop-blur-md">
-                  <div className="absolute top-0 right-0 w-48 h-48 bg-sky-500/10 rounded-full blur-[80px] pointer-events-none" />
-                  
-                  <div className="relative z-10 space-y-6">
-                    <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto text-amber-400 shadow-lg mb-4">
-                      <Lock size={26} className="animate-pulse" />
-                    </div>
+          {/* Input Area */}
+          <section className="py-12 px-6 relative z-10 min-h-[500px] max-w-4xl mx-auto">
+            {limitExceeded ? (
+              <div className="max-w-2xl mx-auto bg-zinc-950 border border-zinc-800 rounded-3xl p-8 sm:p-12 text-center text-white shadow-2xl relative overflow-hidden">
+                <div className="space-y-6">
+                  <div className="w-16 h-16 bg-[#FF5500]/10 border border-[#FF5500]/30 rounded-2xl flex items-center justify-center mx-auto text-[#FF5500] mb-4">
+                    <Lock size={26} className="animate-pulse" />
+                  </div>
 
-                    <div className="space-y-3">
-                      <span className="text-[10px] font-mono text-amber-400 tracking-widest uppercase font-semibold block mb-2">
-                        FREE DIAGNOSTIC LIMIT REACHED
-                      </span>
-                      <h2 className="text-3xl font-display font-extrabold tracking-tight text-white leading-tight">
-                        You've Completed Your 5 Audits
-                      </h2>
-                      <p className="text-slate-300 font-medium text-sm leading-relaxed max-w-md mx-auto">
-                        To unlock deeper business automation opportunities, custom low-code tools, and structured ROI maps, schedule a free 1-on-1 strategy call with our expert systems engineers.
-                      </p>
-                    </div>
+                  <div className="space-y-3">
+                    <span className="text-xs font-mono text-[#FF5500] tracking-widest uppercase font-bold block mb-2">
+                      // FREE AUDIT LIMIT REACHED
+                    </span>
+                    <h2 className="text-3xl font-black tracking-tight text-white">
+                      You've Completed Your Free Audits
+                    </h2>
+                    <p className="text-zinc-400 text-sm leading-relaxed max-w-md mx-auto">
+                      To explore deeper business automation opportunities, custom low-code tools, and structured ROI maps, schedule a free 1-on-1 strategy call with our senior engineers.
+                    </p>
+                  </div>
 
-                    <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
-                      <button
-                        onClick={() => setIsBookingModalOpen(true)}
-                        className="bg-gradient-to-r from-sky-400 to-indigo-500 hover:from-sky-500 hover:to-indigo-600 text-white font-semibold px-8 py-3.5 rounded-full transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer text-sm"
-                      >
-                        <span>Book Free 1-on-1 Consultation</span>
-                        <ArrowRight size={16} />
-                      </button>
-                    </div>
+                  <div className="pt-4 flex justify-center">
+                    <button
+                      onClick={() => setIsBookingModalOpen(true)}
+                      className="bg-[#FF5500] hover:bg-[#FF6E26] text-black font-extrabold px-8 py-4 rounded-xl transition-all shadow-us-pop hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer text-xs uppercase tracking-wider"
+                    >
+                      <span>Book Free 1-on-1 Strategy Call</span>
+                      <ArrowRight size={16} />
+                    </button>
                   </div>
                 </div>
-              ) : (
-                <>
-                  {error && (
-                    <div className="max-w-4xl mx-auto mb-8 bg-alert/15 border border-alert/20 text-alert rounded-2xl p-5 flex items-center justify-between shadow-sm bg-white">
-                      <span className="text-sm font-semibold">{error}</span>
-                      <button
-                        onClick={() => setError('')}
-                        className="text-alert hover:text-ink text-xs font-bold px-3 py-1 rounded-full border border-alert/30 transition-colors cursor-pointer"
-                      >
-                        Dismiss
-                      </button>
-                    </div>
-                  )}
-                  <AnalyzerInput onAnalyze={handleAnalyze} isLoading={isLoading} />
-                </>
-              )}
-            </div>
+              </div>
+            ) : (
+              <>
+                {error && (
+                  <div className="max-w-4xl mx-auto mb-8 bg-red-950/60 border border-red-800/80 text-red-200 rounded-2xl p-5 flex items-center justify-between shadow-sm">
+                    <span className="text-sm font-semibold">{error}</span>
+                    <button
+                      onClick={() => setError('')}
+                      className="text-red-400 hover:text-white text-xs font-bold px-3 py-1 rounded-lg border border-red-800/60 transition-colors cursor-pointer"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                )}
+                <AnalyzerInput onAnalyze={handleAnalyze} isLoading={isLoading} />
+              </>
+            )}
           </section>
         </>
       ) : (
         <>
           {/* STATE 2: AUDIT COMPLETE - Show Dashboard Console */}
-          {/* SECTION 1: HEADER CONTROLS BANNER (Space theme) */}
-          <section className="relative pt-32 pb-16 text-white overflow-hidden bg-surface-dark">
-            <div className="absolute inset-0 z-0">
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-30"></div>
-              <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-slate-950"></div>
-            </div>
-            <div className="max-w-[1400px] mx-auto px-6 relative z-10 text-center">
-              <span className="text-xs font-mono text-accent uppercase tracking-widest block font-bold mb-2">AUDIT SYSTEM ACTIVE</span>
-              <h1 className="text-3xl md:text-4xl font-display font-extrabold text-white tracking-tight">Interactive Diagnostic Console</h1>
+          {/* Header Banner */}
+          <section className="relative pt-36 pb-12 text-white border-b border-zinc-900">
+            <div className="max-w-[1200px] mx-auto px-6 text-center">
+              <span className="text-xs font-mono text-[#FF5500] uppercase tracking-widest block font-bold mb-2">
+                // AUDIT SYSTEM ACTIVE
+              </span>
+              <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+                Operational Diagnostic Console
+              </h1>
             </div>
           </section>
 
-          {/* SECTION 2: THE DASHBOARD (Light Alabaster theme wrapper) */}
-          <section className="bg-surface rounded-t-[3rem] -mt-10 py-16 relative z-10 text-ink border-t border-black/5 px-6 min-h-screen">
+          {/* The Dashboard */}
+          <section className="py-12 relative z-10 text-white px-6 min-h-screen">
             <div className="max-w-7xl mx-auto relative">
-              {/* The dashboard is rendered behind, blurred and disabled until email is captured */}
+              {/* Blurred when email is not captured */}
               <div className={!emailCaptured ? "filter blur-md pointer-events-none select-none" : ""}>
                 <AnalyzerDashboard
                   data={result}
@@ -333,34 +310,34 @@ export function Analyzer() {
                 />
               </div>
 
-              {/* Immersive Lead Capture Lock Gate Overlay */}
+              {/* Lead Capture Lock Gate Overlay */}
               {!emailCaptured && (
-                <div className="fixed inset-0 z-40 overflow-y-auto flex items-center justify-center bg-black/60 backdrop-blur-[4px] p-4">
+                <div className="fixed inset-0 z-40 overflow-y-auto flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: 30 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="w-full max-w-2xl bg-slate-950/95 border border-white/10 shadow-glass rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden text-center my-auto backdrop-blur-2xl"
+                    transition={{ duration: 0.4 }}
+                    className="w-full max-w-xl bg-zinc-950 border border-zinc-800 shadow-2xl rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden text-center my-auto"
                   >
-                    <div className="absolute top-0 right-1/4 w-80 h-80 bg-accent/10 rounded-full filter blur-[80px] pointer-events-none animate-pulse-slow" />
-
-                    <div className="relative z-10 max-w-md mx-auto space-y-6">
-                      <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto text-accent shadow-lg shadow-accent/5 mb-4">
+                    <div className="space-y-6">
+                      <div className="w-16 h-16 bg-[#FF5500]/10 border border-[#FF5500]/30 rounded-2xl flex items-center justify-center mx-auto text-[#FF5500]">
                         <Lock size={26} className="animate-pulse" />
                       </div>
 
                       <div>
-                        <span className="text-[10px] font-mono text-accent uppercase tracking-widest block font-bold mb-1">ANALYSIS COMPLETE</span>
-                        <h3 className="text-2xl md:text-3xl font-display font-extrabold tracking-tight text-white leading-tight">
-                          Unlock Your Custom AI Audit Dashboard
+                        <span className="text-xs font-mono text-[#FF5500] uppercase tracking-widest block font-bold mb-1">
+                          // ANALYSIS COMPILED
+                        </span>
+                        <h3 className="text-2xl md:text-3xl font-black tracking-tight text-white leading-tight">
+                          Unlock Your Full Diagnostic Report
                         </h3>
-                        <p className="text-white/60 font-medium text-sm mt-3 leading-relaxed">
-                          Your customized diagnostic playbooks and ROI roadmaps are fully compiled in the background! Supply your details to unlock full access.
+                        <p className="text-zinc-400 text-sm mt-2 leading-relaxed">
+                          Your custom playbooks, time leak calculations, and ROI roadmaps are ready. Enter your work email to unlock instant access and receive a copy of the PDF.
                         </p>
                       </div>
 
                       {unlockError && (
-                        <div className="bg-alert/15 border border-alert/20 text-alert-soft text-xs py-2.5 px-4 rounded-xl font-medium text-left">
+                        <div className="bg-red-950/60 border border-red-800/80 text-red-200 text-xs py-2.5 px-4 rounded-xl font-medium text-left">
                           {unlockError}
                         </div>
                       )}
@@ -376,7 +353,7 @@ export function Analyzer() {
                               placeholder="Full Name"
                               value={leadForm.name}
                               onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
-                              className="block w-full px-4 py-3 bg-black/30 border border-white/20 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent shadow-inner text-sm"
+                              className="block w-full px-4 py-3.5 bg-black border border-zinc-800 rounded-xl text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#FF5500] text-sm"
                             />
                           </div>
                           <div>
@@ -388,7 +365,7 @@ export function Analyzer() {
                               placeholder="Work Email"
                               value={leadForm.email}
                               onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
-                              className="block w-full px-4 py-3 bg-black/30 border border-white/20 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent shadow-inner text-sm"
+                              className="block w-full px-4 py-3.5 bg-black border border-zinc-800 rounded-xl text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#FF5500] text-sm"
                             />
                           </div>
                           <div>
@@ -400,7 +377,7 @@ export function Analyzer() {
                               placeholder="Company Name"
                               value={leadForm.company}
                               onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })}
-                              className="block w-full px-4 py-3 bg-black/30 border border-white/20 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-accent shadow-inner text-sm"
+                              className="block w-full px-4 py-3.5 bg-black border border-zinc-800 rounded-xl text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#FF5500] text-sm"
                             />
                           </div>
                         </div>
@@ -408,24 +385,24 @@ export function Analyzer() {
                         <button
                           type="submit"
                           disabled={isUnlocking}
-                          className="w-full bg-white text-ink font-bold py-3.5 rounded-full hover:bg-surface-alt transition-all flex items-center justify-center gap-2 group/btn shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="w-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-extrabold py-4 rounded-xl shadow-us-pop hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 text-xs uppercase tracking-wider"
                         >
                           {isUnlocking ? (
                             <>
-                              <Loader2 size={16} className="animate-spin text-ink" />
-                              <span>Unlocking Analysis...</span>
+                              <Loader2 size={16} className="animate-spin text-black" />
+                              <span>Compiling PDF Report...</span>
                             </>
                           ) : (
                             <>
-                              <span>Unlock Audit Dashboard</span>
+                              <span>Unlock Live Dashboard & PDF</span>
                               <ArrowRight size={16} />
                             </>
                           )}
                         </button>
                       </form>
 
-                      <div className="pt-2 text-center text-[10px] text-white/40 font-mono">
-                        Secure SSL processing • Free for business owners • Instant unlock
+                      <div className="pt-1 text-center text-[10px] text-zinc-500 font-mono">
+                        100% Confidential • Instant Access • PDF Copy Emailed
                       </div>
                     </div>
                   </motion.div>
@@ -440,25 +417,23 @@ export function Analyzer() {
       <AnimatePresence>
         {isBookingModalOpen && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 sm:p-6">
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
               onClick={() => setIsBookingModalOpen(false)}
             />
-            {/* Modal Container */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.3 }}
               className="relative w-full max-w-lg z-10 max-h-[90vh] overflow-y-auto"
             >
               <button
                 onClick={() => setIsBookingModalOpen(false)}
-                className="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors z-20 cursor-pointer"
+                className="absolute top-5 right-5 text-zinc-400 hover:text-white transition-colors z-20 cursor-pointer"
               >
                 <X size={20} />
               </button>

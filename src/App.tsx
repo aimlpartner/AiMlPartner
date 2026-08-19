@@ -8,7 +8,6 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { USFooter } from './components/us/USFooter';
-import { StickyCTA } from './components/StickyCTA';
 import { useVisitorTracking } from './hooks/useVisitorTracking';
 
 // Core Landing Pages (Eagerly imported to eliminate CLS and prevent footer flash on load)
@@ -18,7 +17,6 @@ import { Home as HomeIN } from './pages/Home';
 // Secondary pages (Lazy loaded)
 const AgentStudio = lazy(() => import('./pages/AgentStudio').then((module) => ({ default: module.AgentStudio })));
 const Pricing = lazy(() => import('./pages/Pricing').then((module) => ({ default: module.Pricing })));
-const LowCodePods = lazy(() => import('./pages/LowCodePods').then((module) => ({ default: module.LowCodePods })));
 const AboutUs = lazy(() => import('./pages/AboutUs').then((module) => ({ default: module.AboutUs })));
 const AdminDashboard = lazy(() =>
   import('./pages/AdminDashboard').then((module) => ({ default: module.AdminDashboard })),
@@ -32,6 +30,13 @@ const PartnerWaitlist = lazy(() =>
 const NotFound = lazy(() =>
   import('./pages/NotFound').then((module) => ({ default: module.NotFound })),
 );
+
+// Services Hub & Specialized Subpages
+const Services = lazy(() => import('./pages/Services').then((module) => ({ default: module.Services })));
+const OperationsAutomation = lazy(() => import('./pages/services/OperationsAutomation').then((module) => ({ default: module.OperationsAutomation })));
+const SalesAI = lazy(() => import('./pages/services/SalesAI').then((module) => ({ default: module.SalesAI })));
+const CustomerAgents = lazy(() => import('./pages/services/CustomerAgents').then((module) => ({ default: module.CustomerAgents })));
+const CustomEngineering = lazy(() => import('./pages/services/CustomEngineering').then((module) => ({ default: module.CustomEngineering })));
 
 export default function App() {
   const { pathname } = useLocation();
@@ -63,13 +68,20 @@ export default function App() {
             {/* Preserved Indian-Market Landing Page (/in) */}
             <Route path="/in" element={<HomeIN />} />
 
+            {/* Services Hub & Persona Subpages */}
+            <Route path="/services" element={<Services />} />
+            <Route path="/services/operations-automation" element={<OperationsAutomation />} />
+            <Route path="/services/sales-ai" element={<SalesAI />} />
+            <Route path="/services/customer-agents" element={<CustomerAgents />} />
+            <Route path="/services/custom-engineering" element={<CustomEngineering />} />
+            <Route path="/low-code-pods" element={<Services />} />
+
             {/* Deep Tools & Shared Enterprise Pages */}
             <Route path="/about" element={<AboutUs />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/team" element={<AboutUs />} />
             <Route path="/agent-studio" element={<AgentStudio />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/low-code-pods" element={<LowCodePods />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/analyzer" element={<Analyzer />} />
             <Route path="/partner-waitlist" element={<PartnerWaitlist />} />

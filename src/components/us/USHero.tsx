@@ -60,10 +60,10 @@ export function USHero({ onBookCallClick }: USHeroProps) {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md"
+          className="mb-4 flex items-center justify-center gap-2"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-[#FF5500] animate-pulse" />
-          <span className="font-mono text-[10px] sm:text-xs text-zinc-300 uppercase tracking-widest font-semibold">
+          <span className="font-mono text-[10px] sm:text-xs text-zinc-400 uppercase tracking-widest font-semibold">
             NEW JERSEY & TRI-STATE CORRIDOR // SOVEREIGN AI PODS
           </span>
         </motion.div>

@@ -76,17 +76,17 @@ export function Pricing() {
         {/* ======================================================================= */}
         {/* 1. HERO: SIMPLE, PLAIN-ENGLISH PRICING */}
         {/* ======================================================================= */}
-        <div className="max-w-4xl mb-24">
-          <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-semibold mb-6">
-            SIMPLE, TRANSPARENT PRICING
+        <div className="max-w-4xl mx-auto text-center flex flex-col items-center mb-24">
+          <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#FF5500] font-bold mb-6">
+            // SIMPLE, TRANSPARENT PRICING
           </p>
 
-          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.02] mb-8">
-            We build AI that <br />
-            <span className="text-[#FF5500]">actually works for you.</span>
+          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.05] mb-8">
+            We build AI that <br className="hidden sm:inline" />
+            <span className="text-[#FF5500]">actually works for your business.</span>
           </h1>
 
-          <p className="text-zinc-400 text-base sm:text-lg font-sans leading-relaxed max-w-2xl">
+          <p className="text-zinc-400 text-base sm:text-lg font-sans leading-relaxed max-w-2xl mx-auto">
             No endless hourly billing. No 50-page PowerPoint decks. We build and launch custom AI tools for your business in 2-week sprints—and you own 100% of the code.
           </p>
         </div>
