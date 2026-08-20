@@ -4,12 +4,13 @@ import { ArrowUpRight } from 'lucide-react';
 
 export function USFooter() {
   const navLinks = [
-    { label: 'Capabilities', href: '#pillars' },
+    { label: 'Capabilities', to: '/#pillars' },
     { label: 'Studio', to: '/agent-studio' },
     { label: 'Pricing', to: '/pricing' },
     { label: 'Services', to: '/services' },
     { label: 'About', to: '/about' },
-    { label: 'Direct Desk', href: '#intake' }
+    { label: 'AI Auditor', to: '/analyzer' },
+    { label: 'Direct Desk', to: '/#intake' }
   ];
 
   return (

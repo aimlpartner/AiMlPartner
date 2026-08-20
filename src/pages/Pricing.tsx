@@ -143,8 +143,9 @@ export function Pricing() {
 
               {/* Action Button */}
               <div className="pt-6 border-t border-zinc-900/80">
-                <a
-                  href="#intake"
+                <button
+                  type="button"
+                  onClick={() => document.getElementById('intake')?.scrollIntoView({ behavior: 'smooth' })}
                   className={`w-full py-4 rounded-full font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
                     tier.isHero
                       ? 'bg-[#FF5500] hover:bg-[#FF6E26] text-black shadow-us-pop hover:scale-[1.02] active:scale-98'
@@ -153,20 +154,20 @@ export function Pricing() {
                 >
                   <span>{tier.ctaText}</span>
                   <ArrowUpRight size={15} />
-                </a>
+                </button>
               </div>
             </div>
           ))}
         </div>
 
         {/* ======================================================================= */}
-        {/* 3. HOW WE COMPARE (SIMPLE & RELATABLE) */}
+        {/* 3. COMPARISON: TRADITIONAL VS. AIML PARTNER */}
         {/* ======================================================================= */}
-        <div className="pt-24 pb-24 border-t border-zinc-900">
-          <div className="max-w-3xl mb-16">
-            <p className="text-xs uppercase tracking-[0.2em] text-[#FF5500] font-semibold mb-3">
-              How We Compare
-            </p>
+        <div className="mb-32">
+          <div className="max-w-3xl mb-12">
+            <span className="font-mono text-xs text-[#FF5500] uppercase tracking-widest font-bold block mb-3">
+              // HONEST COMPARISON
+            </span>
             <h3 className="font-display text-3xl sm:text-5xl font-black text-white tracking-tight leading-[1.08]">
               Why traditional ways to build AI don't work.
             </h3>

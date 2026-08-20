@@ -39,7 +39,7 @@ const CustomerAgents = lazy(() => import('./pages/services/CustomerAgents').then
 const CustomEngineering = lazy(() => import('./pages/services/CustomEngineering').then((module) => ({ default: module.CustomEngineering })));
 
 export default function App() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const isIN = pathname.startsWith('/in');
   const isUS = pathname === '/' || pathname.startsWith('/us');
 
@@ -47,8 +47,20 @@ export default function App() {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    
+    if (hash) {
+      // Delay slightly to let target component render on fresh route mount
+      const timer = setTimeout(() => {
+        const target = document.querySelector(hash);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
 
   useVisitorTracking();
 

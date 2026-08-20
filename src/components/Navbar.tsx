@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ArrowRight, ArrowUpRight, ChevronDown, Workflow, TrendingUp, Bot, Cpu } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 
 export function Navbar() {
@@ -9,13 +9,16 @@ export function Navbar() {
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(true);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const navRef = useRef<HTMLDivElement | null>(null);
+  
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -24,6 +27,17 @@ export function Navbar() {
     setMobileMenuOpen(false);
     setServicesDropdownOpen(false);
   }, [location.pathname]);
+
+  // Click outside to close desktop dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setServicesDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const subServices = [
     {
@@ -60,7 +74,21 @@ export function Navbar() {
   const handleMouseLeave = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setServicesDropdownOpen(false);
-    }, 200);
+    }, 250);
+  };
+
+  // Smart Book Call Action that works everywhere
+  const handleBookCall = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    setServicesDropdownOpen(false);
+
+    const el = document.getElementById('intake');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/#intake');
+    }
   };
 
   const headerWrapperClass = isScrolled
@@ -71,16 +99,19 @@ export function Navbar() {
     ? 'w-full max-w-[1200px] bg-black/85 backdrop-blur-xl border border-zinc-800 shadow-2xl rounded-full py-2.5 px-6 md:px-8 flex items-center justify-between text-white transition-all duration-500 relative'
     : 'w-full bg-black/40 backdrop-blur-md border-b border-zinc-900/80 py-5 px-6 md:px-12 flex items-center justify-between text-white transition-all duration-500 relative';
 
-  const linkClass = 'text-xs uppercase tracking-wider font-semibold text-zinc-300 hover:text-white hover:bg-zinc-800/80 px-3 py-1.5 rounded-full transition-all duration-300 flex items-center gap-1 cursor-pointer';
+  const linkClass = (isActive: boolean) => 
+    `text-xs uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full transition-all duration-300 flex items-center gap-1 cursor-pointer ${
+      isActive ? 'text-[#FF5500] bg-zinc-900/90' : 'text-zinc-300 hover:text-white hover:bg-zinc-800/80'
+    }`;
 
-  const ctaClass = 'bg-[#FF5500] text-black text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full shadow-us-pop hover:bg-[#FF6E26] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-1.5 group/cta cursor-pointer';
+  const ctaClass = 'bg-[#FF5500] text-black text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full shadow-us-pop hover:bg-[#FF6E26] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-1.5 group/cta cursor-pointer select-none';
 
   return (
     <>
       <header className={headerWrapperClass}>
-        <div className={containerClass}>
+        <div ref={navRef} className={containerClass}>
           {/* Logo */}
-          <Link to="/" className="flex items-center group cursor-pointer animate-fade-in" aria-label="AIMLPartner Home">
+          <Link to="/" className="flex items-center group cursor-pointer" aria-label="AIMLPartner Home">
             <img
               src="/aimlpartner_logo.png"
               alt="AIMLPartner Logo"
@@ -97,9 +128,10 @@ export function Navbar() {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <Link 
-                to="/services" 
-                className={`${linkClass} ${location.pathname.startsWith('/services') ? 'text-[#FF5500] bg-zinc-900/90' : ''}`}
+              <Link
+                to="/services"
+                onClick={() => setServicesDropdownOpen(false)}
+                className={linkClass(location.pathname.startsWith('/services'))}
               >
                 <span>Services</span>
                 <ChevronDown size={12} className={`transition-transform duration-200 ${servicesDropdownOpen ? 'rotate-180 text-[#FF5500]' : 'opacity-60'}`} />
@@ -124,7 +156,12 @@ export function Navbar() {
                         <Link
                           key={idx}
                           to={sub.link}
-                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-zinc-900/90 hover:border-zinc-700/60 border border-transparent transition-all group/item"
+                          onClick={() => setServicesDropdownOpen(false)}
+                          className={`flex items-start gap-3 p-2.5 rounded-xl transition-all group/item ${
+                            location.pathname === sub.link
+                              ? 'bg-zinc-900 border border-[#FF5500]/40'
+                              : 'hover:bg-zinc-900/90 hover:border-zinc-700/60 border border-transparent'
+                          }`}
                         >
                           <div className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 group-hover/item:border-[#FF5500]/50 group-hover/item:bg-[#FF5500]/10 transition-colors mt-0.5">
                             {sub.icon}
@@ -143,6 +180,7 @@ export function Navbar() {
                     <div className="mt-1.5 pt-2 border-t border-zinc-900 px-2 flex justify-between items-center text-[11px]">
                       <Link 
                         to="/services" 
+                        onClick={() => setServicesDropdownOpen(false)}
                         className="text-[#FF5500] hover:text-white font-bold transition-colors flex items-center gap-1 py-1"
                       >
                         <span>View All Services Hub</span>
@@ -154,31 +192,36 @@ export function Navbar() {
               </AnimatePresence>
             </div>
 
-            <Link to="/agent-studio" className={linkClass}>
+            <Link to="/agent-studio" className={linkClass(location.pathname === '/agent-studio')}>
               Studio
             </Link>
-            <Link to="/pricing" className={linkClass}>
+            <Link to="/pricing" className={linkClass(location.pathname === '/pricing')}>
               Pricing
             </Link>
-            <Link to="/about" className={linkClass}>
+            <Link to="/about" className={linkClass(location.pathname === '/about' || location.pathname === '/about-us' || location.pathname === '/team')}>
               About
             </Link>
-            <Link to="/analyzer" className={linkClass}>
+            <Link to="/analyzer" className={linkClass(location.pathname === '/analyzer')}>
               AI Auditor
             </Link>
-            <Link to="/partner-waitlist" className={linkClass}>
+            <Link to="/partner-waitlist" className={linkClass(location.pathname === '/partner-waitlist')}>
               Partners
             </Link>
           </nav>
 
           {/* CTA & Mobile Toggle */}
           <div className="flex items-center gap-3">
-            <a href="#intake" className={ctaClass}>
+            <button 
+              type="button" 
+              onClick={handleBookCall} 
+              className={ctaClass}
+            >
               <span>Book Call</span>
               <ArrowUpRight size={13} className="transition-transform group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
-            </a>
+            </button>
 
             <button
+              type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 text-zinc-400 hover:text-white transition-colors cursor-pointer"
               aria-label="Toggle Menu"
@@ -196,18 +239,24 @@ export function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="fixed top-20 left-4 right-4 z-40 bg-zinc-950/98 backdrop-blur-2xl border border-zinc-800 rounded-3xl p-6 flex flex-col gap-2 shadow-2xl lg:hidden text-white max-h-[85vh] overflow-y-auto"
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            className="fixed top-20 left-4 right-4 z-50 bg-zinc-950/98 backdrop-blur-2xl border border-zinc-800 rounded-3xl p-6 flex flex-col gap-2 shadow-[0_20px_60px_rgba(0,0,0,0.9)] lg:hidden text-white max-h-[85vh] overflow-y-auto"
           >
             {/* Services with Sub-Links */}
             <div className="border-b border-zinc-800/80 pb-3">
               <div className="flex items-center justify-between py-2 text-sm font-bold text-white">
-                <Link to="/services" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#FF5500]">
-                  Services
+                <Link 
+                  to="/services" 
+                  onClick={() => setMobileMenuOpen(false)} 
+                  className={`hover:text-[#FF5500] ${location.pathname === '/services' ? 'text-[#FF5500]' : ''}`}
+                >
+                  Services Hub
                 </Link>
                 <button
+                  type="button"
                   onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                  className="p-1 text-zinc-400 hover:text-white"
+                  className="p-1.5 text-zinc-400 hover:text-white"
+                  aria-label="Toggle Sub-Services"
                 >
                   <ChevronDown size={16} className={`transition-transform duration-200 ${mobileServicesOpen ? 'rotate-180 text-[#FF5500]' : ''}`} />
                 </button>
@@ -219,73 +268,82 @@ export function Navbar() {
                     <Link
                       key={idx}
                       to={sub.link}
-                      className="flex items-center gap-2.5 py-1.5 text-xs text-zinc-300 hover:text-[#FF5500] transition-colors"
+                      className={`flex items-center gap-2.5 py-1.5 text-xs transition-colors ${
+                        location.pathname === sub.link ? 'text-[#FF5500] font-bold' : 'text-zinc-300 hover:text-[#FF5500]'
+                      }`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {sub.icon}
-                      <span className="font-semibold">{sub.title}</span>
+                      <span>{sub.title}</span>
                     </Link>
                   ))}
-                  <Link
-                    to="/services"
-                    className="flex items-center gap-1.5 py-1 text-xs text-[#FF5500] font-bold"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <span>Overview Hub</span>
-                    <ArrowRight size={11} />
-                  </Link>
                 </div>
               )}
             </div>
 
             <Link
               to="/agent-studio"
-              className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
+              className={`text-sm font-semibold py-2 transition-colors flex items-center justify-between ${
+                location.pathname === '/agent-studio' ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
+              }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>Agent Studio</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
+
             <Link
               to="/pricing"
-              className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
+              className={`text-sm font-semibold py-2 transition-colors flex items-center justify-between ${
+                location.pathname === '/pricing' ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
+              }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>Outcome Pricing</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
+
             <Link
               to="/about"
-              className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
+              className={`text-sm font-semibold py-2 transition-colors flex items-center justify-between ${
+                location.pathname === '/about' || location.pathname === '/about-us' || location.pathname === '/team' ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
+              }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>About & Team</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
+
             <Link
               to="/analyzer"
-              className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
+              className={`text-sm font-semibold py-2 transition-colors flex items-center justify-between ${
+                location.pathname === '/analyzer' ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
+              }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>AI Business Auditor</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
+
             <Link
               to="/partner-waitlist"
-              className="text-sm font-semibold text-zinc-300 hover:text-white py-2 transition-colors flex items-center justify-between"
+              className={`text-sm font-semibold py-2 transition-colors flex items-center justify-between ${
+                location.pathname === '/partner-waitlist' ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
+              }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>Partner Program</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
-            <a
-              href="#intake"
-              className="mt-4 bg-[#FF5500] text-black text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl text-center shadow-us-pop hover:bg-[#FF6E26] transition-colors flex items-center justify-center gap-2 cursor-pointer"
-              onClick={() => setMobileMenuOpen(false)}
+
+            <button
+              type="button"
+              onClick={handleBookCall}
+              className="mt-4 bg-[#FF5500] text-black text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl text-center shadow-us-pop hover:bg-[#FF6E26] transition-colors flex items-center justify-center gap-2 cursor-pointer w-full"
             >
               <span>Book Discovery Call</span>
               <ArrowUpRight size={14} />
-            </a>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
