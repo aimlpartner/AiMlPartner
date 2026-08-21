@@ -66,10 +66,22 @@ export function Pricing() {
   return (
     <div className="min-h-screen bg-black text-white pt-36 sm:pt-44 pb-28 relative overflow-hidden font-sans selection:bg-[#FF5500] selection:text-black">
       
+      {/* Cinematic Saturn Atmospheric Backdrop */}
+      <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
+        <video
+          src="/saturn_loop.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover object-center opacity-40 brightness-95 contrast-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/75 to-black pointer-events-none" />
+      </div>
+
       {/* Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[550px] bg-[#FF5500]/5 rounded-full blur-[280px] pointer-events-none -z-10" />
-      <div className="absolute top-[800px] -right-40 w-[600px] h-[600px] bg-amber-600/4 rounded-full blur-[260px] pointer-events-none -z-10" />
-      <div className="absolute inset-0 bg-us-grid opacity-15 pointer-events-none -z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[550px] bg-[#FF5500]/10 rounded-full blur-[280px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-16 relative z-10 w-full">
         
@@ -77,17 +89,17 @@ export function Pricing() {
         {/* 1. HERO: SIMPLE, PLAIN-ENGLISH PRICING */}
         {/* ======================================================================= */}
         <div className="max-w-4xl mx-auto text-center flex flex-col items-center mb-24">
-          <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#FF5500] font-bold mb-6">
-            // SIMPLE, TRANSPARENT PRICING
+          <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#FF5500] font-bold mb-4">
+            // SIMPLE, FIXED PRICING
           </p>
 
-          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.05] mb-8">
-            We build AI that <br className="hidden sm:inline" />
-            <span className="text-[#FF5500]">actually works for your business.</span>
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight text-white leading-[1.12] max-w-5xl mx-auto mb-6">
+            Custom AI software built in 2-week sprints. <br className="hidden md:inline" />
+            <span className="text-[#FF5500]">You own 100% of the code.</span>
           </h1>
 
           <p className="text-zinc-400 text-base sm:text-lg font-sans leading-relaxed max-w-2xl mx-auto">
-            No endless hourly billing. No 50-page PowerPoint decks. We build and launch custom AI tools for your business in 2-week sprints—and you own 100% of the code.
+            No endless hourly billing. No 50-page slide decks. We build, test, and launch working AI tools that solve real bottlenecks for your business.
           </p>
         </div>
 

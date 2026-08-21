@@ -64,7 +64,7 @@ export function USHero({ onBookCallClick }: USHeroProps) {
         >
           <span className="h-1.5 w-1.5 rounded-full bg-[#FF5500] animate-pulse" />
           <span className="font-mono text-[10px] sm:text-xs text-zinc-400 uppercase tracking-widest font-semibold">
-            NEW JERSEY & TRI-STATE CORRIDOR // SOVEREIGN AI PODS
+            CUSTOM AI ENGINEERING // 2-WEEK SPRINT DELIVERY
           </span>
         </motion.div>
 
@@ -73,9 +73,10 @@ export function USHero({ onBookCallClick }: USHeroProps) {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-[6.5rem] font-black tracking-tight text-white leading-[0.96] drop-shadow-[0_15px_40px_rgba(0,0,0,0.95)]"
+          className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight text-white leading-[1.02] drop-shadow-[0_15px_40px_rgba(0,0,0,0.95)] max-w-4xl mx-auto"
         >
-          Built for <span className="text-[#FF5500]">permanence.</span>
+          Custom AI built for <br />
+          <span className="text-[#FF5500]">your business.</span>
         </motion.h1>
 
         {/* Narrative Statement with Local Trust Anchor */}
@@ -83,9 +84,9 @@ export function USHero({ onBookCallClick }: USHeroProps) {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="font-sans text-sm sm:text-base md:text-lg text-zinc-200 max-w-2xl mt-6 leading-relaxed drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)]"
+          className="font-sans text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mt-5 leading-relaxed drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)] mx-auto"
         >
-          We architect and deploy custom autonomous AI pods directly in your VPC for enterprise leaders across New Jersey and nationwide. Zero consultancy decks. Deployed in 14-day outcome sprints.
+          We build custom AI automations and private software that save your team dozens of hours every week. Delivered in 2-week milestones with 100% code ownership.
         </motion.p>
 
         {/* ========================================================================= */}

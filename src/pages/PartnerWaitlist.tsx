@@ -61,6 +61,20 @@ export function PartnerWaitlist() {
 
   return (
     <div className="relative min-h-screen bg-black text-white pt-40 pb-24 font-sans flex flex-col items-center justify-center selection:bg-[#FF5500] selection:text-black">
+      {/* Cinematic Saturn Atmospheric Backdrop */}
+      <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
+        <video
+          src="/saturn_loop.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover object-center opacity-40 brightness-95 contrast-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/75 to-black pointer-events-none" />
+      </div>
+
       {/* Ambient Cosmic Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-[#FF5500]/10 rounded-full filter blur-[180px] pointer-events-none" />
 
@@ -71,14 +85,14 @@ export function PartnerWaitlist() {
           <div className="lg:col-span-7 space-y-8 text-left">
             <div className="space-y-4">
               <span className="text-xs uppercase tracking-widest text-[#FF5500] font-mono font-bold block">
-                // PARTNER ECOSYSTEM
+                // PARTNER NETWORK
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
-                Become a Verified <br className="hidden sm:block" />
-                <span className="text-[#FF5500]">AI/ML Partner.</span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight text-white leading-tight">
+                Become a verified <br className="hidden sm:block" />
+                <span className="text-[#FF5500]">AIML partner.</span>
               </h1>
               <p className="text-zinc-400 text-base max-w-lg leading-relaxed">
-                Join our private network of verified AI consultants, automators, and machine learning engineers deploying sovereign AI pods for SMB and enterprise clients.
+                Join our network of verified AI consultants, automation specialists, and software engineers deploying paid client projects.
               </p>
             </div>
 

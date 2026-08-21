@@ -79,15 +79,11 @@ export function CustomEngineering() {
 
   return (
     <div className="relative min-h-screen bg-black text-white selection:bg-[#FF5500] selection:text-black">
-      {/* Cinematic Saturn Atmospheric Backdrop */}
+      {/* Cinematic AI Generated Atmospheric Backdrop */}
       <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
-        <video
-          src="/saturn_loop.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
+        <img
+          src="/custom_engineering_hero.jpg"
+          alt="Custom Engineering AI Infrastructure"
           className="w-full h-full object-cover object-center opacity-40 brightness-95 contrast-110"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/75 to-black pointer-events-none" />
@@ -172,15 +168,17 @@ export function CustomEngineering() {
 
         {/* Active Architecture Card */}
         <div className="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 md:p-12 text-left relative overflow-hidden">
-          <div className="flex flex-col md:flex-row justify-between gap-6 pb-8 border-b border-zinc-800">
-            <div>
-              <div className="text-xs font-semibold text-[#FF5500] uppercase tracking-wider mb-2">Use Case Context</div>
-              <div className="text-xl font-bold text-white flex items-center gap-2">
-                <Server size={18} className="text-[#FF5500]" />
-                {architectures[activeArch].scenario}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-zinc-800">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#FF5500] uppercase tracking-wider mb-3">
+                <Server size={14} />
+                <span>Use Case Scenario</span>
               </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug">
+                {architectures[activeArch].scenario}
+              </h3>
             </div>
-            <div className="bg-zinc-900/90 border border-zinc-800 px-5 py-3 rounded-2xl flex items-center gap-3">
+            <div className="bg-zinc-900/90 border border-zinc-800 px-5 py-3 rounded-2xl flex items-center gap-3 shrink-0 self-start md:self-auto">
               <Lock size={18} className="text-emerald-400" />
               <div>
                 <div className="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">Security Level</div>

@@ -49,11 +49,25 @@ export function AgentStudio() {
 
   return (
     <div className="relative min-h-screen bg-black text-white selection:bg-[#FF5500] selection:text-black font-sans">
+      {/* Cinematic Saturn Atmospheric Backdrop */}
+      <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
+        <video
+          src="/saturn_loop.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover object-center opacity-40 brightness-95 contrast-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/75 to-black pointer-events-none" />
+      </div>
+
       {/* Ambient Cosmic Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-[#FF5500]/10 rounded-full blur-[180px] pointer-events-none" />
 
       {/* Hero Section */}
-      <section className="relative pt-40 pb-20 px-6 md:px-12 max-w-[1200px] mx-auto text-center flex flex-col items-center">
+      <section className="relative pt-40 pb-20 px-6 md:px-12 max-w-[1200px] mx-auto text-center flex flex-col items-center z-10">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -64,13 +78,13 @@ export function AgentStudio() {
             // PRE-BUILT AGENT BLUEPRINTS
           </span>
 
-          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.05]">
-            Custom AI agents <br className="hidden sm:inline" />
-            <span className="text-[#FF5500]">engineered for real work.</span>
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight text-white leading-[1.12] max-w-5xl mx-auto">
+            Pre-built AI agent templates <br className="hidden md:inline" />
+            <span className="text-[#FF5500]">customized for your business.</span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto font-normal leading-relaxed">
-            Explore our library of production-tested AI worker blueprints. We customize, integrate, and deploy these systems directly into your existing software tools with 100% code ownership.
+          <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto font-normal leading-relaxed text-balance">
+            Explore ready-to-run AI worker blueprints. We connect them into your existing CRM, database, and software tools in 2 weeks.
           </p>
         </motion.div>
       </section>

@@ -5,48 +5,48 @@ export function USPillars() {
   const stages = [
     {
       number: '01',
-      stage: 'STAGE 01 // ARCHITECT',
-      tag: '14-DAY DIAGNOSTIC BLUEPRINT',
-      title: 'We draft the master CAD blueprint.',
-      subtitle: 'Every pipeline mapped mathematically before writing production code.',
-      desc: 'Before writing code, we dissect your operational drag, data schemas, security perimeters, and latency targets into an exact architectural drafting schematic with guaranteed ROI models and sprint milestones.',
+      stage: 'STAGE 01 // AUDIT & PLAN',
+      tag: '2-WEEK DIAGNOSTIC SPRINT',
+      title: 'We audit your workflows & create a clear plan.',
+      subtitle: 'We map out your biggest time-wasters before writing code.',
+      desc: 'We review your daily business processes, identify where your team loses the most hours, and deliver an exact implementation plan with expected ROI and fixed pricing.',
       specs: [
-        { label: 'DELIVERABLE', val: 'Full System Architecture Draft' },
-        { label: 'TIMELINE', val: '14 Business Days' },
-        { label: 'OUTCOME', val: 'Definitive Engineering Target' }
+        { label: 'DELIVERABLE', val: 'Step-by-Step AI Roadmap' },
+        { label: 'TIMELINE', val: '2 Weeks Flat' },
+        { label: 'OUTCOME', val: 'Clear Scope & Guaranteed Fixed Price' }
       ],
       image: '/scrolly_stage1.png',
-      alt: 'Stage 01: 2D CAD Blueprint Wireframe with dimension callipers'
+      alt: 'Stage 01: Clear System Architecture Blueprint'
     },
     {
       number: '02',
-      stage: 'STAGE 02 // ASSEMBLE',
-      tag: '2-4 WEEK RAPID POD SPRINTS',
-      title: 'We assemble your AI engine pods.',
-      subtitle: 'Dedicated senior engineers building and fine-tuning in rapid cycles.',
-      desc: 'Senior AI architects embed directly with your team. We assemble fine-tuned reasoning models (DeepSeek, Claude, Llama), forge custom tool conduits to your ERP/CRM, and test autonomous multi-agent pipelines with zero synthetic fluff.',
+      stage: 'STAGE 02 // BUILD & TEST',
+      tag: '2-4 WEEK SPRINT DELIVERIES',
+      title: 'We build your custom AI workflows.',
+      subtitle: 'Senior engineers building working software directly for your systems.',
+      desc: 'Our engineers connect smart AI workflows directly into your CRM, database, and inboxes. We test each tool thoroughly with your real data so it works reliably with zero wrong answers.',
       specs: [
-        { label: 'ASSEMBLY', val: 'Custom Fine-Tuning & Multi-Agent RAG' },
-        { label: 'SPEED', val: 'Bi-Weekly Production Drops' },
-        { label: 'EFFICIENCY', val: '68% Manual Drag Cut' }
+        { label: 'SYSTEMS', val: 'Custom AI Models & Workflow Automations' },
+        { label: 'SPEED', val: 'Bi-Weekly Working Demos' },
+        { label: 'EFFICIENCY', val: '15-30+ Hours Saved Weekly' }
       ],
       image: '/scrolly_stage2.png',
-      alt: 'Stage 02: Cutaway Schematic showing Sovereign AI Core and Staging Mechanism'
+      alt: 'Stage 02: Custom AI Engine Architecture'
     },
     {
       number: '03',
-      stage: 'STAGE 03 // LAUNCH',
-      tag: 'PRODUCTION FLIGHT & SOVEREIGNTY',
-      title: 'We launch into your private cloud.',
-      subtitle: '100% Client IP ownership, weights custody, and permanent autonomy.',
-      desc: 'Your sovereign AI engine is deployed permanently inside your private cloud perimeter (AWS, GCP, Azure, or on-prem). Zero third-party telemetry leakage, complete weights and code ownership, with automated monitoring and failover.',
+      stage: 'STAGE 03 // LAUNCH & OWN',
+      tag: 'PRIVATE CLOUD DEPLOYMENT',
+      title: 'We launch into your cloud. You own all code.',
+      subtitle: '100% intellectual property ownership with zero vendor lock-in.',
+      desc: 'We deploy everything directly into your secure cloud (AWS, Azure, GCP, or private server). Your company data stays 100% private, and you own all the source code.',
       specs: [
-        { label: 'SOVEREIGNTY', val: 'Zero Telemetry Leakage' },
-        { label: 'CONNECTORS', val: 'Salesforce, ERP, Postgres & Custom APIs' },
-        { label: 'OWNERSHIP', val: '100% Client IP & Weights' }
+        { label: 'PRIVACY', val: '100% Private Cloud (Zero Data Leakage)' },
+        { label: 'INTEGRATIONS', val: 'HubSpot, Salesforce, Databases & Custom APIs' },
+        { label: 'OWNERSHIP', val: '100% Client Code & IP Ownership' }
       ],
       image: '/scrolly_stage3.png',
-      alt: 'Stage 03: Fully Built 3D Sovereign AI Engine Operational in Flight'
+      alt: 'Stage 03: Fully Launched Production AI Engine'
     }
   ];
 

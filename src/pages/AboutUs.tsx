@@ -7,110 +7,122 @@ export function AboutUs() {
   const team = [
     {
       name: "Robert Molnar",
-      role: "Business Operations & Revenue Architecture",
-      seed: "RobertMolnarBoy",
-      bio: "Architects operational systems, revenue modeling, and go-to-market scaling. Focuses on turning complex operational friction into streamlined, high-yield revenue infrastructure.",
-      specialties: ["Revenue Modeling", "GTM Scaling", "Unit Economics"]
+      initials: "RM",
+      role: "Business Operations & Revenue",
+      bio: "Builds the business engine behind every AI system we deploy. Figures out where you're bleeding money, then designs the revenue model that actually scales.",
+      specialties: ["Revenue Strategy", "Go-to-Market", "Unit Economics"]
     },
     {
       name: "Rich Miró",
-      role: "Brand & Product Media Architecture",
-      seed: "RichMiro",
-      bio: "Directs brand identity, high-fidelity product media, and architectural storytelling. Transforms complex autonomous engineering systems into clear, compelling executive narratives.",
-      specialties: ["Product Media", "Brand Architecture", "Executive Comms"]
+      initials: "RI",
+      role: "Brand & Product Media",
+      bio: "Makes complex AI systems look simple and compelling. Turns technical capabilities into stories that executives, investors, and customers actually understand.",
+      specialties: ["Product Media", "Brand Strategy", "Executive Comms"]
     },
     {
       name: "Deepak Porwal",
-      role: "Studio & GTM Architecture",
-      seed: "DeepakPorwal",
-      bio: "Owns ICP discovery, narrative strategy, offer design, and rapid sprint experiments. Bridges client operational bottlenecks into tangible multi-agent workflows.",
-      specialties: ["ICP Discovery", "Sprint Roadmapping", "Offer Design"]
+      initials: "DP",
+      role: "Strategy & Go-to-Market",
+      bio: "Finds your ideal customer, designs the offer, and runs fast experiments to prove it works. Connects your real business problems to the AI solutions that solve them.",
+      specialties: ["Customer Research", "Offer Design", "Sprint Planning"]
     },
     {
       name: "Anand M",
-      role: "Enterprise CRM & AI Architecture",
-      seed: "AnandM",
-      bio: "Architects enterprise data model touchpoints and deep integrations across Salesforce, HubSpot, and proprietary CRM platforms with zero data leakage.",
-      specialties: ["CRM Data Models", "Salesforce / HubSpot", "SOC2 Pipelines"]
+      initials: "AM",
+      role: "CRM & Enterprise AI",
+      bio: "Connects AI directly into your Salesforce, HubSpot, or custom CRM — without breaking your existing setup or exposing customer data.",
+      specialties: ["CRM Integration", "Salesforce / HubSpot", "Data Security"]
     },
     {
       name: "Manu Singh",
-      role: "AI & Automation Architecture / Fullstack",
-      seed: "ManuSingh",
-      bio: "Designs autonomous multi-agent orchestration graphs, deterministic RAG pipelines, and private VPC infrastructure with strict error boundaries.",
-      specialties: ["Multi-Agent Graphs", "Private VPC RAG", "Deterministic Pipelines"]
+      initials: "MS",
+      role: "AI Engineering & Infrastructure",
+      bio: "Builds the AI brains — the agents, the knowledge bases, the infrastructure that runs on your own servers. Everything stays private, everything works reliably.",
+      specialties: ["AI Agents", "Private Infrastructure", "Knowledge Systems"]
     },
     {
       name: "Garvit Bansal",
-      role: "Low-Code & Product Fullstack AI Architecture",
-      seed: "GarvitBansal",
-      bio: "Builds low-code workflow pods, internal tooling bridges, and real-time database connectors, accelerating deployment cycles without sacrificing enterprise rigor.",
-      specialties: ["n8n Workflow Pods", "Database Connectors", "Rapid Prototyping"]
+      initials: "GB",
+      role: "Product Engineering & Automation",
+      bio: "Builds the tools your team actually uses every day. Connects your databases, automates your workflows, and ships fast without cutting corners.",
+      specialties: ["Workflow Automation", "Internal Tools", "Rapid Deployment"]
     }
   ];
 
   const principles = [
     {
-      title: "Permanence Over Hype",
-      desc: "We don't build transient demos or marketing novelties. We engineer resilient autonomous infrastructure designed to execute predictably in high-stakes production for years."
+      title: "Built to Last",
+      desc: "We don't build demos. We build AI systems that run reliably in production for years — not things that break the moment a consultant leaves."
     },
     {
-      title: "Absolute IP Sovereignty",
-      desc: "Every fine-tuned model weight, vector pipeline, and line of code is deployed directly inside your private VPC. You own 100% of the intellectual property with zero third-party data retention."
+      title: "You Own Everything",
+      desc: "Every AI model, every piece of code, every dataset — it all lives on your servers. You own 100% of it. No vendor lock-in, no third-party data risks."
     },
     {
-      title: "Speed as a Discipline",
-      desc: "We reject open-ended 6-month consulting engagements. Our work is delivered in focused 14-day outcome sprints with measurable production benchmarks from day one."
+      title: "Fast, Not Rushed",
+      desc: "No 6-month consulting projects that go nowhere. We work in focused 14-day sprints. You see real, measurable results from the first cycle."
     },
     {
-      title: "Direct Engineer Access",
-      desc: "You will never be managed through junior analysts or account managers. You collaborate directly with the senior architects who design, code, and secure your systems."
+      title: "Talk to the Builders",
+      desc: "You work directly with the engineers who design and build your systems. No account managers, no junior analysts, no middlemen."
     }
   ];
 
   return (
     <div className="bg-black text-white min-h-screen font-sans selection:bg-[#FF5500] selection:text-black relative overflow-hidden">
       
+      {/* Cinematic Saturn Atmospheric Backdrop */}
+      <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[700px] overflow-hidden pointer-events-none z-0">
+        <video
+          src="/saturn_loop.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover object-center opacity-40 brightness-95 contrast-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/75 to-black pointer-events-none" />
+      </div>
+
       {/* Deep Space Background Atmosphere */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-[#FF5500]/5 rounded-full blur-[280px] pointer-events-none -z-10" />
-      <div className="absolute top-[1200px] right-0 w-[600px] h-[600px] bg-amber-600/4 rounded-full blur-[260px] pointer-events-none -z-10" />
-      <div className="absolute top-[2400px] left-0 w-[500px] h-[500px] bg-[#FF5500]/4 rounded-full blur-[240px] pointer-events-none -z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-[#FF5500]/10 rounded-full blur-[280px] pointer-events-none -z-10" />
 
       {/* ========================================================================= */}
-      {/* SECTION 1: THE FOUNDING ESSAY (NATURAL & HUMAN EDITORIAL) */}
+      {/* SECTION 1: WHY WE EXIST */}
       {/* ========================================================================= */}
-      <section className="pt-36 sm:pt-48 pb-32 px-6 md:px-16 max-w-7xl mx-auto border-b border-zinc-900/80">
+      <section className="pt-36 sm:pt-48 pb-32 px-6 md:px-16 max-w-7xl mx-auto border-b border-zinc-900/80 relative z-10">
         
         {/* Subtle Category */}
-        <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-semibold mb-6">
-          THE FOUNDING ESSAY
+        <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-semibold mb-4">
+          // WHY WE EXIST
         </p>
 
         {/* Monumental Headline */}
-        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-[0.98] mb-24 max-w-5xl">
-          We got tired of watching AI get sold as <span className="text-[#FF5500]">theater.</span>
+        <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-[4rem] font-black tracking-tight text-white leading-[1.08] mb-16 max-w-5xl text-balance">
+          Most companies pay for AI <span className="text-[#FF5500]">and get nothing back.</span>
         </h1>
 
-        {/* 3-Column Pure Editorial Comparison */}
+        {/* 3-Column Comparison */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 mb-28">
           
           {/* Column 1 */}
           <div className="flex flex-col justify-between pt-8 border-t border-zinc-900">
             <div>
               <p className="text-xs text-zinc-500 uppercase tracking-wider font-semibold mb-3">
-                The Consultancy Model
+                The Consulting Trap
               </p>
               <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-zinc-300 tracking-tight mb-4">
-                The Slide Deck Mirage
+                Expensive Slide Decks
               </h2>
               <p className="font-sans text-sm sm:text-base text-zinc-400 leading-relaxed mb-6">
-                Enterprise leaders are billed hundreds of thousands for multi-month roadmaps produced by junior analysts who have never shipped production software.
+                Big firms charge six figures for a roadmap that sits in a drawer. Months of meetings, zero working software, and a bill that keeps growing.
               </p>
             </div>
             <div className="pt-4 border-t border-zinc-900/80 text-xs text-zinc-500 space-y-1.5">
               <p><span className="text-zinc-600">Timeline:</span> 4 to 6 Months</p>
-              <p><span className="text-zinc-600">Delivery:</span> Static PDF (Zero Code)</p>
-              <p><span className="text-zinc-600">Outcome:</span> $0 Realized ROI</p>
+              <p><span className="text-zinc-600">What You Get:</span> A PDF Report</p>
+              <p><span className="text-zinc-600">Real ROI:</span> $0</p>
             </div>
           </div>
 
@@ -118,19 +130,19 @@ export function AboutUs() {
           <div className="flex flex-col justify-between pt-8 border-t border-zinc-900">
             <div>
               <p className="text-xs text-amber-500/80 uppercase tracking-wider font-semibold mb-3">
-                The SaaS Wrapper
+                The SaaS Trap
               </p>
               <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-zinc-300 tracking-tight mb-4">
-                Leaky Third-Party Clouds
+                Generic AI Tools
               </h2>
               <p className="font-sans text-sm sm:text-base text-zinc-400 leading-relaxed mb-6">
-                Generic API wrappers and closed clouds that collapse under real customer volume—exposing sensitive company data to third-party servers with zero IP custody.
+                Off-the-shelf AI tools that look good in a demo but crumble under real workload. Your data goes to their servers. You never truly own anything.
               </p>
             </div>
             <div className="pt-4 border-t border-zinc-900/80 text-xs text-zinc-500 space-y-1.5">
-              <p><span className="text-zinc-600">Data Privacy:</span> External Cloud Risk</p>
-              <p><span className="text-zinc-600">Architecture:</span> Fragile Generic APIs</p>
-              <p><span className="text-zinc-600">IP Custody:</span> 0% (Vendor Locked)</p>
+              <p><span className="text-zinc-600">Your Data:</span> On Someone Else's Server</p>
+              <p><span className="text-zinc-600">Customization:</span> Very Limited</p>
+              <p><span className="text-zinc-600">Ownership:</span> 0% (Vendor Controls It)</p>
             </div>
           </div>
 
@@ -139,32 +151,32 @@ export function AboutUs() {
             <div>
               <p className="text-xs text-[#FF5500] uppercase tracking-wider font-bold mb-3 flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF5500] animate-pulse" />
-                The Sovereign Pod
+                The AIML Partner Way
               </p>
               <h2 className="font-display text-2xl sm:text-3xl font-black text-white tracking-tight mb-4">
-                Private Cloud Engineering
+                Custom AI, Built for You
               </h2>
               <p className="font-sans text-sm sm:text-base text-zinc-300 leading-relaxed mb-6">
-                Senior applied architects embedded directly in your organization. We engineer deterministic multi-agent graphs and fine-tuned models live in your private VPC.
+                Senior engineers build AI systems directly inside your business. Custom-fit to how you actually work. Runs on your own servers. You own everything.
               </p>
             </div>
             <div className="pt-4 border-t border-[#FF5500]/20 text-xs text-zinc-300 space-y-1.5 font-medium">
-              <p><span className="text-zinc-500">Sprint Cadence:</span> <span className="text-[#FF5500]">14-Day Delivery</span></p>
-              <p><span className="text-zinc-500">Security Perimeter:</span> 100% Private VPC</p>
-              <p><span className="text-zinc-500">IP & Weights:</span> <span className="text-[#FF5500]">100% Client Ownership</span></p>
+              <p><span className="text-zinc-500">Timeline:</span> <span className="text-[#FF5500]">14-Day Sprints</span></p>
+              <p><span className="text-zinc-500">Your Data:</span> Stays on Your Servers</p>
+              <p><span className="text-zinc-500">Ownership:</span> <span className="text-[#FF5500]">100% Yours</span></p>
             </div>
           </div>
 
         </div>
 
-        {/* Section 1 Directive & Action */}
+        {/* Section 1 CTA */}
         <div className="pt-16 border-t border-zinc-900 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
           <div className="max-w-2xl space-y-2">
             <p className="text-xs uppercase tracking-[0.2em] text-[#FF5500] font-semibold">
-              New Jersey & Tri-State Corridor
+              New Jersey & Nationwide
             </p>
             <p className="font-display text-xl sm:text-2xl font-bold text-white leading-snug">
-              "If an AI system cannot prove measurable ROI in production within 30 days, it has no place in your enterprise."
+              "If your AI can't prove ROI in 30 days, something is wrong."
             </p>
           </div>
 
@@ -173,7 +185,7 @@ export function AboutUs() {
               to="/#intake"
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-us-pop hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Scope Your AI Pod</span>
+              <span>Talk to Our Team</span>
               <ArrowUpRight size={15} />
             </Link>
           </div>
@@ -182,7 +194,7 @@ export function AboutUs() {
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION 2: THE OPERATORS & ARCHITECTS (WITH NATURAL AVATARS) */}
+      {/* SECTION 2: THE TEAM */}
       {/* ========================================================================= */}
       <section id="crew" className="py-32 px-6 md:px-16 max-w-7xl mx-auto border-b border-zinc-900/80">
         
@@ -190,20 +202,20 @@ export function AboutUs() {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-24 gap-8">
           <div>
             <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-semibold mb-3">
-              The Engineering Team
+              The Team
             </p>
             <h2 className="font-display text-4xl sm:text-6xl font-black text-white tracking-tight leading-[1.05]">
-              Senior architects. <br />
-              <span className="text-[#FF5500]">Zero junior bloat.</span>
+              Senior builders only. <br />
+              <span className="text-[#FF5500]">No filler.</span>
             </h2>
           </div>
 
           <p className="font-sans text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
-            You collaborate directly with the engineers who write the algorithms, orchestrate the multi-agent graphs, and secure the VPC perimeter. No account managers. No middle layers.
+            You work directly with the people who actually build your AI systems. No account managers passing messages. No junior staff learning on your dime.
           </p>
         </div>
 
-        {/* 2-Column Clean Editorial Roster with Real Avatars */}
+        {/* 2-Column Team Roster */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-16">
           {team.map((member, idx) => (
             <div
@@ -211,14 +223,12 @@ export function AboutUs() {
               className="pt-8 border-t border-zinc-900 group flex flex-col justify-between"
             >
               <div>
-                {/* Header: Avatar, Name & Role */}
+                {/* Header: Initials Avatar, Name & Role */}
                 <div className="flex items-center gap-5 mb-6">
-                  <div className="w-16 h-16 rounded-full overflow-hidden bg-zinc-900/80 border border-zinc-800 shrink-0 p-1 group-hover:border-[#FF5500]/50 transition-colors">
-                    <img
-                      src={`https://api.dicebear.com/8.x/notionists/svg?seed=${member.seed}&backgroundColor=transparent`}
-                      alt={member.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
+                  <div className="w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-[#FF5500] to-[#CC4400] border-2 border-[#FF5500]/30 shrink-0 flex items-center justify-center group-hover:border-[#FF5500]/70 transition-colors shadow-lg shadow-[#FF5500]/10">
+                    <span className="text-black font-display font-black text-lg tracking-tight select-none">
+                      {member.initials}
+                    </span>
                   </div>
                   <div>
                     <h3 className="font-display text-2xl font-bold text-white tracking-tight group-hover:text-[#FF5500] transition-colors">
@@ -230,13 +240,13 @@ export function AboutUs() {
                   </div>
                 </div>
 
-                {/* Bio Narrative */}
+                {/* Bio */}
                 <p className="font-sans text-sm text-zinc-400 leading-relaxed mb-6">
                   {member.bio}
                 </p>
               </div>
 
-              {/* Specialties List */}
+              {/* Specialties */}
               <div className="pt-4 border-t border-zinc-900/60 flex flex-wrap items-center gap-2">
                 {member.specialties.map((spec, sIdx) => (
                   <span
@@ -251,14 +261,14 @@ export function AboutUs() {
           ))}
         </div>
 
-        {/* Section 2 Direct Whiteboard CTA */}
+        {/* Section 2 CTA */}
         <div className="mt-24 pt-16 border-t border-zinc-900 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-[#FF5500] font-semibold mb-2">
-              On-Site & Virtual Discovery
+              In-Person or Remote
             </p>
             <h4 className="font-display text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Ready to whiteboard your private architecture?
+              Want to meet the team and talk specifics?
             </h4>
           </div>
 
@@ -266,7 +276,7 @@ export function AboutUs() {
             to="/#intake"
             className="px-8 py-4 rounded-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-us-pop hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer shrink-0"
           >
-            <span>Book Technical Briefing</span>
+            <span>Book a Call</span>
             <ArrowUpRight size={15} />
           </Link>
         </div>
@@ -274,7 +284,7 @@ export function AboutUs() {
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION 3: OPERATING PRINCIPLES & LOCAL PRESENCE (100% CARDLESS) */}
+      {/* SECTION 3: OPERATING PRINCIPLES */}
       {/* ========================================================================= */}
       <section className="py-32 px-6 md:px-16 max-w-7xl mx-auto">
         
@@ -282,20 +292,20 @@ export function AboutUs() {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-24 gap-8">
           <div>
             <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-semibold mb-3">
-              Operating Principles
+              How We Work
             </p>
             <h2 className="font-display text-4xl sm:text-6xl font-black text-white tracking-tight leading-[1.05]">
-              The standards we refuse <br />
-              <span className="text-[#FF5500]">to compromise.</span>
+              Rules we never <br />
+              <span className="text-[#FF5500]">break.</span>
             </h2>
           </div>
 
           <p className="font-sans text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
-            We founded AIML Partner with non-negotiable architectural convictions. These govern every line of code we write and every private VPC we secure.
+            These aren't marketing promises. They're the non-negotiable standards behind every project we take on.
           </p>
         </div>
 
-        {/* 4-Column Editorial Principles */}
+        {/* 4-Column Principles */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-28">
           {principles.map((p, idx) => (
             <div key={idx} className="pt-8 border-t border-zinc-900 flex flex-col justify-between">
@@ -314,17 +324,17 @@ export function AboutUs() {
           ))}
         </div>
 
-        {/* Localized Presence & Executive Booking Banner */}
+        {/* Bottom CTA */}
         <div className="pt-16 border-t border-zinc-900 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
           <div className="max-w-2xl space-y-3">
             <p className="text-xs uppercase tracking-[0.2em] text-[#FF5500] font-semibold">
-              New Jersey Headquarters & Nationwide Deployments
+              New Jersey HQ · Serving Clients Nationwide
             </p>
             <h4 className="font-display text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-snug">
-              Direct architectural collaboration. In person or virtual.
+              Let's talk about what AI can actually do for your business.
             </h4>
             <p className="font-sans text-sm text-zinc-400 leading-relaxed">
-              We conduct on-site whiteboarding sessions across Princeton, Jersey City, Newark, and the broader Tri-State corridor, while deploying sovereign AI pods for enterprises nationwide.
+              We meet in person across the Tri-State area and work remotely with teams anywhere in the US.
             </p>
           </div>
 
@@ -333,14 +343,14 @@ export function AboutUs() {
               to="/#intake"
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-us-pop hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Schedule Technical Briefing</span>
+              <span>Schedule a Call</span>
               <ArrowUpRight size={15} />
             </Link>
             <a
               href="mailto:info@aimlpartner.com"
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 font-display font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Email Founders</span>
+              <span>Email Us</span>
             </a>
           </div>
         </div>
