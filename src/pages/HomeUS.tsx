@@ -3,7 +3,6 @@ import { SEO } from '../components/SEO';
 import { USHero } from '../components/us/USHero';
 import { USTicker } from '../components/us/USTicker';
 import { USPillars } from '../components/us/USPillars';
-import { USSimulatorSection } from '../components/us/USSimulatorSection';
 import { USCaseMetrics } from '../components/us/USCaseMetrics';
 import { USFAQ } from '../components/us/USFAQ';
 import { USIntakeCTA } from '../components/us/USIntakeCTA';
@@ -51,11 +50,6 @@ export function HomeUS() {
       {/* 3. 3-Phase Transformation Architecture */}
       <div className="reveal">
         <USPillars />
-      </div>
-
-      {/* 4. Live Interactive Simulator & Opportunity Scan */}
-      <div className="reveal">
-        <USSimulatorSection />
       </div>
 
       {/* 5. Hard ROI Stat Counters & Case Studies */}

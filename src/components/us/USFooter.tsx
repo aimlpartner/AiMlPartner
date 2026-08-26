@@ -31,8 +31,8 @@ export function USFooter() {
         />
         {/* Subtle top edge fade for seamless blend into previous section */}
         <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-black via-black/60 to-transparent" />
-        {/* Subtle bottom edge fade */}
-        <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-black/80 to-transparent" />
+        {/* Stronger bottom edge fade to ensure text readability */}
+        <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-black via-black/80 to-transparent" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto flex flex-col justify-between min-h-[520px]">
@@ -99,7 +99,7 @@ export function USFooter() {
         {/* ========================================================================= */}
         {/* BOTTOM ROW: SECURITY PROTOCOLS & COPYRIGHT */}
         {/* ========================================================================= */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 font-mono text-xs text-zinc-400 backdrop-blur-xs">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 font-mono text-xs text-zinc-300 drop-shadow-md backdrop-blur-xs">
           
           <div className="flex flex-wrap items-center justify-center gap-2.5">
             <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-[#FF5500]/40 text-[10px] text-[#FF5500] font-bold">
@@ -119,11 +119,11 @@ export function USFooter() {
             </span>
           </div>
 
-          <div className="flex items-center gap-6 text-[11px]">
-            <p>© {new Date().getFullYear()} AIML PARTNER INC. BEDMINSTER, NEW JERSEY, USA.</p>
+          <div className="flex items-center gap-4 text-[11px] bg-black/40 px-4 py-2 rounded-lg border border-white/5 backdrop-blur-sm">
+            <p className="text-zinc-200">© {new Date().getFullYear()} AIML PARTNER INC. BEDMINSTER, NEW JERSEY, USA.</p>
             <span className="text-zinc-600">|</span>
-            <span className="hover:text-white transition-colors cursor-pointer">Security Protocol</span>
-            <span className="hover:text-white transition-colors cursor-pointer">Custody Terms</span>
+            <span className="hover:text-white transition-colors cursor-pointer text-zinc-300">Security Protocol</span>
+            <span className="hover:text-white transition-colors cursor-pointer text-zinc-300">Custody Terms</span>
           </div>
 
         </div>
