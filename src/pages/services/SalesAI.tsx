@@ -15,70 +15,76 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { USIntakeCTA } from '../../components/us/USIntakeCTA';
+import { SEO } from '../../components/SEO';
 
 export function SalesAI() {
   const [activePlay, setActivePlay] = useState(0);
 
   const plays = [
     {
-      title: "60-Second Inbound Lead Text-Back & Triage",
-      trigger: "Prospect submits form on your website or sends a DM",
+      title: "60-Second Inbound Lead Follow-Up",
+      trigger: "A prospect submits a form on your website or sends a DM",
       steps: [
-        "Instant SMS & email dispatched within 45 seconds",
-        "AI asks 2-3 key qualifying questions (budget, timeline, project scope)",
-        "Scores lead quality and verifies contact information",
-        "Provides direct link to book a meeting on your sales calendar"
+        "Sends a friendly text and email within 45 seconds of them reaching out",
+        "AI asks a few simple questions to see if they are a good fit for your business",
+        "Checks their info and filters out bad leads or tire-kickers",
+        "Sends the good leads a direct link to book a meeting on your calendar"
       ],
       result: "Boosts lead-to-meeting conversion by 30–50%",
-      techStack: ["Twilio / SMS Gateway", "Gemini / OpenAI", "HubSpot / Salesforce", "Google Calendar"]
+      techStack: ["Twilio / SMS Gateway", "OpenAI", "HubSpot / Salesforce", "Google Calendar"]
     },
     {
-      title: "Automated Lead Scoring & VIP Escalation",
-      trigger: "High-value enterprise contact enters your pipeline",
+      title: "VIP Lead Spotter & Alert System",
+      trigger: "A big company or high-value lead enters your system",
       steps: [
-        "AI scans company website, headcount, and LinkedIn profile live",
-        "Enriches CRM with verified company size, tech stack, and industry",
-        "Flags high-priority leads with custom badges in your CRM",
-        "Directly alerts senior account executives via SMS / Slack"
+        "AI instantly looks up their company size, industry, and LinkedIn profile",
+        "Fills in all their details in your CRM automatically",
+        "Tags them as a VIP lead so you know they are high-value",
+        "Pings your best sales rep on Slack or text to jump on it immediately"
       ],
       result: "Zero delay on six-figure opportunities",
-      techStack: ["Clearbit / Clay", "OpenAI / Claude", "Slack Webhooks", "Salesforce"]
+      techStack: ["Clearbit", "OpenAI", "Slack", "Salesforce"]
     },
     {
-      title: "1-Click Custom Proposal & Pitch Deck Drafter",
-      trigger: "Discovery call concludes with prospective client",
+      title: "Instant Custom Proposals",
+      trigger: "You finish a great sales call with a new client",
       steps: [
-        "Takes bullet-point notes or meeting transcript",
-        "Drafts customized scope of work and 3-tier pricing table",
-        "Generates branded PDF proposal ready for founder sign-off",
-        "Pre-populates follow-up email and calendar check-in"
+        "AI takes your rough notes or the call transcript",
+        "Instantly writes a custom proposal and pricing plan for that specific client",
+        "Creates a beautiful, branded PDF ready for you to review and sign",
+        "Drafts the email to send the proposal, saving you another 20 minutes"
       ],
       result: "Cuts proposal turnaround from 48 hours to 10 minutes",
-      techStack: ["PandaDoc / DocuSign", "Gemini 2.5 Flash", "Google Docs / PDF Engine"]
+      techStack: ["PandaDoc / DocuSign", "OpenAI", "Google Docs / PDF Engine"]
     }
   ];
 
   const features = [
     {
-      title: "Instant Response Engine",
-      desc: "Never let an inbound prospect wait hours or days. We deploy conversational responders that qualify and book calls 24/7."
+      title: "Respond to Every Lead in Seconds",
+      desc: "Stop losing deals because you took too long to reply. We build AI that replies instantly, qualifies the lead, and books the call for you 24/7."
     },
     {
-      title: "Natural, Human Tone Matching",
-      desc: "No robotic buzzwords. We train the AI to write in the exact, professional, friendly voice of your best sales rep."
+      title: "Sounds Exactly Like You",
+      desc: "No weird robotic language. We train the AI to text and email using the exact friendly, professional voice of your best sales rep."
     },
     {
-      title: "Direct CRM & Calendar Sync",
-      desc: "Every answer, qualification score, and booked slot syncs straight into your HubSpot, Salesforce, Pipedrive, or Cal.com."
+      title: "Connects Directly to Your Calendar",
+      desc: "When a lead books a call, it shows up on your calendar. All their answers sync perfectly into your CRM (like HubSpot or Salesforce)."
     },
     {
-      title: "Zero Lead Leakage Safeguards",
-      desc: "If a lead doesn't reply or drops off mid-conversation, automated gentle follow-ups keep the pipeline warm."
+      title: "Never Forget to Follow Up",
+      desc: "If a lead goes quiet, the AI sends gentle, natural follow-up messages automatically so no deal slips through the cracks."
     }
   ];
 
   return (
     <div className="relative min-h-screen bg-black text-white selection:bg-[#FF5500] selection:text-black">
+      <SEO 
+        title="Sales AI & Lead Routing" 
+        description="Turn website visitors into booked sales calls in 60 seconds. We build smart AI pipelines that engage prospects instantly."
+        url="https://aimlpartner.com/services/sales-ai"
+      />
       {/* Cinematic AI Generated Atmospheric Backdrop */}
       <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
         <img
@@ -235,7 +241,7 @@ export function SalesAI() {
         <div className="text-center max-w-2xl mx-auto mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Never miss another qualified sales lead.</h2>
           <p className="text-zinc-400 text-sm md:text-base">
-            Book a 30-minute discovery call. We'll audit your current lead response time and demonstrate a live qualification prototype.
+            Book a 30-minute discovery call. We'll show you exactly how much money you're losing on slow follow-ups, and how to fix it in 14 days.
           </p>
         </div>
         <USIntakeCTA />

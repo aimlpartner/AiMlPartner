@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { USIntakeCTA } from '../components/us/USIntakeCTA';
+import { SEO } from '../components/SEO';
 
 export function Pricing() {
   useEffect(() => {
@@ -10,32 +11,32 @@ export function Pricing() {
 
   const tiers = [
     {
-      kicker: "STEP 1 // 2-WEEK SPRINT",
-      title: "AI Roadmap & Prototype",
-      subtitle: "We find your biggest time-wasters, map out your systems, and build a working test prototype for your team.",
-      highlight: "2 Weeks Flat",
+      kicker: "PHASE 1 // DISCOVERY SPRINT",
+      title: "Audit & Proof of Concept",
+      price: "Fixed Flat Fee",
+      subtitle: "Before you commit to a massive project, we find the exact bottlenecks costing you money and build a small working test version so you can see the AI work with your own eyes.",
+      highlight: "Delivered in 14 Days",
       deliverables: [
-        "Full review of your daily business workflows and bottlenecks",
-        "Clear, step-by-step plan showing where AI will save you time and money",
-        "Data security check so your company data stays 100% private and safe",
-        "A working test prototype built specifically for your team to try out",
-        "Simple roadmap with exact timelines and expected cost savings"
+        "Deep-dive audit into your manual tasks to find exactly where you are bleeding time and money",
+        "A fully functional mini-version of the AI tool built just for your team to test out",
+        "A crystal clear blueprint showing exactly how much the full build will cost and how much it will save you",
+        "Data privacy check to ensure your sensitive business info never leaks to the public"
       ],
-      ctaText: "Book Your 2-Week Sprint",
+      ctaText: "Book Your Discovery Sprint",
       isHero: false
     },
     {
-      kicker: "STEP 2 // FULL BUILD & LAUNCH",
-      title: "Custom AI Build & Launch",
-      subtitle: "Our senior engineers build, test, and launch custom AI systems directly inside your company's private tools.",
-      highlight: "Built in 2-Week Milestones",
+      kicker: "PHASE 2 // PRODUCTION BUILD",
+      title: "Full System Build & Launch",
+      price: "Billed per 2-Week Sprint",
+      subtitle: "Once you approve the prototype, we build the full automation system and hardwire it directly into your company's existing tools (like your email, CRM, or spreadsheets).",
+      highlight: "Pay As You Go",
       deliverables: [
-        "Dedicated senior engineers working directly on your business (no juniors)",
-        "Custom AI agents plugged directly into your CRM, Slack, database, and email",
-        "Runs privately in your own cloud (AWS, Azure, GCP)—zero data leaks",
-        "You own 100% of the code, data, and models forever (zero lock-in)",
-        "24/7 monitoring, speed tuning, and automatic error fixes",
-        "Full hands-on training so your team knows how to use it on day one"
+        "Fully automated AI agents that do your manual data entry, customer follow-ups, or reporting",
+        "Connects seamlessly into the tools you already use (Salesforce, HubSpot, Slack, Excel, etc.)",
+        "Your data stays 100% private and secure on your own cloud servers (no 3rd-party snooping)",
+        "You own all the code forever. No ongoing software licenses, no vendor lock-in.",
+        "We train your team on how to use it, and we monitor it 24/7 to ensure it runs smoothly."
       ],
       ctaText: "Start Your Custom Build",
       isHero: true
@@ -57,15 +58,19 @@ export function Pricing() {
     },
     {
       title: "Working With Us",
-      cost: "Clear 2-week sprints",
+      cost: "Flat fee per 2-week sprint",
       timeline: "Working software in 14 days",
-      reality: "Senior engineers build and launch real AI tools directly into your systems. You own all the code."
+      reality: "You pay a predictable flat fee per sprint. Senior engineers build and launch real AI tools directly into your systems. You own all the code forever."
     }
   ];
 
   return (
     <div className="min-h-screen bg-black text-white pt-36 sm:pt-44 pb-28 relative overflow-hidden font-sans selection:bg-[#FF5500] selection:text-black">
-      
+      <SEO 
+        title="Pricing & Sprints" 
+        description="Clear, predictable pricing. No hourly billing surprises. We charge a flat fee per 2-week sprint to build your custom AI automation systems."
+        url="https://aimlpartner.com/pricing"
+      />
       {/* Cinematic Saturn Atmospheric Backdrop */}
       <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
         <video
@@ -94,12 +99,12 @@ export function Pricing() {
           </p>
 
           <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight text-white leading-[1.12] max-w-5xl mx-auto mb-6">
-            Custom AI software built in 2-week sprints. <br className="hidden md:inline" />
-            <span className="text-[#FF5500]">You own 100% of the code.</span>
+            Clear, predictable pricing. <br className="hidden md:inline" />
+            <span className="text-[#FF5500]">No hourly billing surprises.</span>
           </h1>
 
           <p className="text-zinc-400 text-base sm:text-lg font-sans leading-relaxed max-w-2xl mx-auto">
-            No endless hourly billing. No 50-page slide decks. We build, test, and launch working AI tools that solve real bottlenecks for your business.
+            We charge a flat fee per 2-week sprint. You know exactly what you're paying and exactly what you're getting. No 50-page slide decks—just working AI tools that save you time and money.
           </p>
         </div>
 
@@ -129,9 +134,15 @@ export function Pricing() {
                   </span>
                 </div>
 
-                <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
+                <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-2">
                   {tier.title}
                 </h2>
+                
+                <div className="mb-4">
+                  <span className="text-xl sm:text-2xl font-bold text-white">
+                    {tier.price}
+                  </span>
+                </div>
 
                 <p className="font-sans text-sm sm:text-base text-zinc-400 leading-relaxed mb-8">
                   {tier.subtitle}

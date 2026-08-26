@@ -15,70 +15,76 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { USIntakeCTA } from '../../components/us/USIntakeCTA';
+import { SEO } from '../../components/SEO';
 
 export function CustomEngineering() {
   const [activeArch, setActiveArch] = useState(0);
 
   const architectures = [
     {
-      title: "Self-Hosted Private Cloud LLM Deployment",
-      scenario: "Enterprises with strict data privacy / compliance rules (HIPAA, SOC2, FINRA)",
+      title: "Private Enterprise AI Models",
+      scenario: "You handle sensitive data (like healthcare or finance) and can't use public AI tools.",
       steps: [
-        "Deploy open weights models (Llama 3.3, Mistral, DeepSeek) inside your private AWS/GCP VPC",
-        "Configure vLLM / Ollama high-throughput inference engines with auto-scaling GPU nodes",
-        "Zero data transmission to third-party public AI APIs",
-        "Enterprise role-based authentication and immutable query audit logs"
+        "We install top-tier AI models directly onto your own private cloud servers",
+        "We tune the servers so the AI runs lightning-fast, even when your whole team is using it",
+        "Your company data never leaves your servers. We block all outside connections",
+        "We set up strict security so you can see exactly who asked the AI what"
       ],
-      impact: "100% data sovereignty & predictable fixed compute costs",
+      impact: "Total data privacy and zero per-message API fees",
       techStack: ["AWS Bedrock / ECS", "vLLM / Kubernetes", "Terraform", "Private VPC"]
     },
     {
-      title: "Custom Enterprise RAG & Vector Knowledge Base",
-      scenario: "Search and query millions of technical documents, legal records, or engineering specs",
+      title: "Company-Wide AI Search Engine",
+      scenario: "You have thousands of PDFs, legal docs, or old files that are impossible to search.",
       steps: [
-        "Ingest, chunk, and embed massive unstructured document repositories",
-        "Store in private pgvector / Qdrant instance with hybrid semantic + keyword search",
-        "Implement re-ranking pipelines to guarantee accurate context extraction",
-        "Connect to internal tools via private REST / GraphQL APIs"
+        "We connect the AI to all your scattered company files and databases",
+        "We build a secure, lightning-fast search engine that actually understands what you mean",
+        "We tune the search so the most relevant answers always pop up first",
+        "We connect this search engine directly into the tools your team already uses"
       ],
-      impact: "Instant semantic retrieval across enterprise silos",
-      techStack: ["PostgreSQL (pgvector)", "FastAPI / Python", "Cohere Re-rank", "Docker"]
+      impact: "Find any answer hidden in your company files instantly",
+      techStack: ["PostgreSQL", "FastAPI / Python", "Cohere", "Docker"]
     },
     {
-      title: "Dedicated Full-Stack AI Engineering Pod",
-      scenario: "Companies needing senior AI engineers to accelerate an existing product roadmap",
+      title: "Rent a Senior AI Engineering Team",
+      scenario: "You need senior engineers to build a custom AI feature, but hiring takes too long.",
       steps: [
-        "2 dedicated senior AI engineers embedded directly into your sprint cycle",
-        "Weekly production deployments into your private GitHub repository",
-        "Complete ownership of code, Dockerfiles, and architectural documentation",
-        "Bi-weekly milestone check-ins with senior principal architects"
+        "We drop two senior engineers directly into your company to start building immediately",
+        "They push fresh, working code to your servers every single week",
+        "When the project is done, you keep all the code and technical documentation",
+        "We check in every two weeks to make sure the project is moving at breakneck speed"
       ],
-      impact: "Ship complex custom AI features in 4-6 weeks flat",
-      techStack: ["React / TypeScript", "Python / LangGraph", "PostgreSQL", "GitHub Actions"]
+      impact: "Launch custom AI software in weeks, not months",
+      techStack: ["React / TypeScript", "Python", "PostgreSQL", "GitHub"]
     }
   ];
 
   const standards = [
     {
-      title: "100% Code & IP Ownership",
-      desc: "All source code, Docker images, Terraform scripts, and custom model weights belong entirely to your company. Zero proprietary runtime lock-in."
+      title: "You Own the Code",
+      desc: "We don't hold your software hostage. When we finish building, you own the entire codebase, forever. No monthly software traps."
     },
     {
-      title: "Air-Gapped & VPC Isolation",
-      desc: "We build directly inside your cloud infrastructure (AWS, Azure, GCP, or bare metal). Your customer data never leaves your security perimeter."
+      title: "Total Data Lockdown",
+      desc: "We build the AI directly inside your company's own cloud. Your sensitive data never gets sent out to public servers."
     },
     {
-      title: "Production Infrastructure as Code",
-      desc: "Repeatable, automated CI/CD pipelines and infrastructure scripts that your in-house DevOps team can manage and scale with ease."
+      title: "Built to Last",
+      desc: "We don't build messy prototypes. We write clean, automated code that your internal IT team can easily manage once we leave."
     },
     {
-      title: "Direct Senior Engineer Access",
-      desc: "No non-technical account managers or junior contractors. You communicate directly with the senior engineers building your codebase."
+      title: "Talk Directly to the Builders",
+      desc: "No annoying account managers passing messages back and forth. You talk directly with the senior developers writing your code."
     }
   ];
 
   return (
     <div className="relative min-h-screen bg-black text-white selection:bg-[#FF5500] selection:text-black">
+      <SEO 
+        title="Custom AI Engineering" 
+        description="Private AI software built entirely on your own servers. We build secure, custom AI tools for your business with zero data leaks."
+        url="https://aimlpartner.com/services/custom-engineering"
+      />
       {/* Cinematic AI Generated Atmospheric Backdrop */}
       <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
         <img
@@ -111,12 +117,12 @@ export function CustomEngineering() {
           </span>
 
           <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-[3.6rem] font-black tracking-tight text-white leading-[1.1] max-w-5xl mx-auto">
-            Private Cloud AI & <br className="hidden md:inline" />
-            <span className="text-[#FF5500]">Custom Software Engineering.</span>
+            Private AI software built <br className="hidden md:inline" />
+            <span className="text-[#FF5500]">entirely on your own servers.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto font-normal leading-relaxed text-balance">
-            For technical leaders and enterprises that need private LLMs, custom vector search, and dedicated engineering pods built directly inside their secure cloud with 100% code ownership.
+            We build secure, custom AI tools for your business. No data leaks, no third-party APIs snooping on your data, and you own 100% of the code forever.
           </p>
 
           {/* Quick Metrics Bar */}
@@ -233,9 +239,9 @@ export function CustomEngineering() {
       {/* Bottom CTA / Booking Form */}
       <section id="intake" className="py-16 px-6 md:px-12 max-w-[1200px] mx-auto border-t border-zinc-900">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Speak directly with a Senior AI Engineer.</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Talk to a Senior Engineer.</h2>
           <p className="text-zinc-400 text-sm md:text-base">
-            Book an architecture consultation. We'll review your current data infrastructure and provide a clean, fixed-price sprint blueprint.
+            Book a 30-minute call. We'll look at what you want to build and give you a fixed-price roadmap to get it done.
           </p>
         </div>
         <USIntakeCTA />

@@ -64,7 +64,7 @@ export function USHero({ onBookCallClick }: USHeroProps) {
         >
           <span className="h-1.5 w-1.5 rounded-full bg-[#FF5500] animate-pulse" />
           <span className="font-mono text-[10px] sm:text-xs text-zinc-400 uppercase tracking-widest font-semibold">
-            CUSTOM AI ENGINEERING // 2-WEEK SPRINT DELIVERY
+            CUSTOM AUTOMATION FOR SMBs
           </span>
         </motion.div>
 
@@ -75,8 +75,7 @@ export function USHero({ onBookCallClick }: USHeroProps) {
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight text-white leading-[1.02] drop-shadow-[0_15px_40px_rgba(0,0,0,0.95)] max-w-4xl mx-auto"
         >
-          Custom AI built for <br />
-          <span className="text-[#FF5500]">your business.</span>
+          Stop doing <span className="text-[#FF5500]">manual work.</span>
         </motion.h1>
 
         {/* Narrative Statement with Local Trust Anchor */}
@@ -86,7 +85,7 @@ export function USHero({ onBookCallClick }: USHeroProps) {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="font-sans text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mt-5 leading-relaxed drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)] mx-auto"
         >
-          We build custom AI automations and private software that save your team dozens of hours every week. Delivered in 2-week milestones with 100% code ownership.
+          We build custom software and automations that handle your team's most time-consuming tasks. Save dozens of hours every week, cut operational costs, and boost your bottom line with 100% code ownership.
         </motion.p>
 
         {/* ========================================================================= */}
@@ -109,7 +108,7 @@ export function USHero({ onBookCallClick }: USHeroProps) {
                   : 'hover:text-white border-b-2 border-transparent'
               }`}
             >
-              Website Domain
+              Company Website
             </button>
             <span className="text-zinc-600">•</span>
             <button
@@ -121,7 +120,7 @@ export function USHero({ onBookCallClick }: USHeroProps) {
                   : 'hover:text-white border-b-2 border-transparent'
               }`}
             >
-              Workflow Challenge
+              Manual Task
             </button>
           </div>
 
@@ -134,7 +133,7 @@ export function USHero({ onBookCallClick }: USHeroProps) {
                     type="text"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Enter company website (e.g. stripe.com)..."
+                    placeholder="Enter your company website..."
                     className="w-full bg-transparent text-white placeholder-zinc-400 font-sans text-xs sm:text-sm focus:outline-none py-2"
                   />
                 ) : (
@@ -142,7 +141,7 @@ export function USHero({ onBookCallClick }: USHeroProps) {
                     type="text"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Describe your manual operational bottleneck..."
+                    placeholder="Describe a manual task costing you time and money..."
                     className="w-full bg-transparent text-white placeholder-zinc-400 font-sans text-xs sm:text-sm focus:outline-none py-2"
                   />
                 )}
@@ -151,9 +150,9 @@ export function USHero({ onBookCallClick }: USHeroProps) {
               {/* Action Button */}
               <button
                 type="submit"
-                className="px-7 py-3.5 rounded-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-us-pop hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                className="px-6 py-3 rounded-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-us-pop hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer shrink-0"
               >
-                <span>Audit</span>
+                <span>Automate It</span>
                 <ArrowRight size={14} />
               </button>
             </form>

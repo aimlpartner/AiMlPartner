@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SEO } from '../components/SEO';
 import { WorkflowSimulator } from '../components/WorkflowSimulator';
 import { BookCallWidget } from '../components/BookCallWidget';
 import { motion, AnimatePresence } from 'motion/react';
@@ -86,6 +87,10 @@ export function Home() {
 
   return (
     <div className="relative min-h-screen">
+      <SEO 
+        title="Enterprise Automation & AI Consulting" 
+        description="We build digital systems that handle your busywork so you can get back to running your business. Based in Bedminster, NJ."
+      />
       {/* Texture Overlays */}
       <div className="grain-overlay"></div>
       <div className="absolute inset-0 bg-architectural-grid opacity-50 pointer-events-none -z-10 h-full"></div>
@@ -337,7 +342,7 @@ export function Home() {
               </h2>
             </div>
             <p className="text-ink-light max-w-md font-medium leading-relaxed pb-2">
-              You don't need another consultant handing you a 50-page report. You need solutions that work. We help businesses automate repetitive tasks, save time, and increase profits—without needing an IT degree.
+              You don't need another consultant handing you a 50-page report. You need solutions that work. Based locally in Bedminster, New Jersey, we help businesses automate repetitive tasks, save time, and increase profits—without needing an IT degree.
             </p>
           </div>
 
@@ -576,7 +581,7 @@ export function Home() {
               AI Where You Need It. <br className="hidden md:block"/> Human Where It Counts.
             </h2>
             <p className="text-ink-light max-w-2xl mx-auto font-medium text-lg">
-              We don't just blindly throw AI at every problem. We use our proprietary scanner to find your bottlenecks, then sit down with you to build what actually helps.
+              We don't just blindly throw AI at every problem. We use our proprietary scanner to find your bottlenecks, then sit down with you—right here in Bedminster, New Jersey, or virtually—to build what actually helps.
             </p>
           </div>
 

@@ -74,6 +74,7 @@ export function Footer() {
                 <MapPin size={12} className="text-white/60" />
               </span>
               <div className="flex flex-col gap-1 leading-normal pt-1.5">
+                <div>Bedminster, NJ</div>
                 <div>San Francisco, CA</div>
                 <div>New York</div>
                 <div>Boulder, Colorado</div>

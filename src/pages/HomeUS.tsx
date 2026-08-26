@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { SEO } from '../components/SEO';
 import { USHero } from '../components/us/USHero';
 import { USTicker } from '../components/us/USTicker';
 import { USPillars } from '../components/us/USPillars';
@@ -35,6 +36,12 @@ export function HomeUS() {
 
   return (
     <div className="bg-black text-white min-h-screen font-sans selection:bg-[#FF5500] selection:text-black">
+      <SEO 
+        title="Custom Enterprise AI & Automation Agents" 
+        description="Stop paying humans for robot work. AIMLPartner builds custom AI agents that automate your sales, support, and operations based in Bedminster, NJ."
+        url="https://aimlpartner.com/"
+      />
+      
       {/* 1. Hero Section */}
       <USHero />
 

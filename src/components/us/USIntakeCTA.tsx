@@ -179,7 +179,7 @@ export function USIntakeCTA({ source = 'US Flagship Landing Page', onSuccess }: 
             </h2>
           </div>
           <p className="font-sans text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
-            Select a date and 30-minute window for a confidential architecture discovery call directly with our founding engineering leads.
+            Select a date and 30-minute window for a confidential architecture discovery call. It's 100% free with zero obligation. You have nothing to lose and a clear understanding of your automation potential to gain.
           </p>
         </div>
 
@@ -198,7 +198,7 @@ export function USIntakeCTA({ source = 'US Flagship Landing Page', onSuccess }: 
                 Engineered for permanence. Deployed in your VPC.
               </h3>
               <p className="font-sans text-sm text-zinc-400 leading-relaxed">
-                We work directly with founders, CTOs, and technical leaders who value speed, sovereign data custody, and measurable return over endless consultancy decks.
+                We work directly with founders and technical leaders. This 30-minute call is at absolutely no cost. You will learn exactly how sovereign AI can eliminate your bottlenecks, even if you never hire us.
               </p>
             </div>
 

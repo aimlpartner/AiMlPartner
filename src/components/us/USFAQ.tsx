@@ -12,45 +12,39 @@ interface FAQItem {
 const FAQS: FAQItem[] = [
   {
     number: '01',
-    category: 'IP & CUSTODY',
-    question: 'Who owns the IP, fine-tuned weights, and deployed agent code?',
-    answer: 'You do. 100%. All custom weights, prompt pipelines, RAG architectures, and integration connectors are deployed directly inside your private cloud perimeter (AWS, Azure, GCP). You retain absolute custody with zero third-party vendor lock-in.'
+    category: 'OWNERSHIP',
+    question: 'Who owns the software and the code?',
+    answer: 'You do. 100%. We build the automation for you, and once it is launched, you own all the intellectual property and code. No vendor lock-in, and absolutely no monthly per-user licenses.'
   },
   {
     number: '02',
-    category: 'POD STRUCTURE',
-    question: 'How does AIML Partner differ from traditional software consultancies?',
-    answer: 'Traditional consultancies deploy generalist teams who produce multi-month slide decks and bill open-ended hourly fees. We are applied AI engineers. We operate in fixed 2-week outcome-based sprints, shipping production-grade sovereign pods directly to your VPC.'
+    category: 'TECHNICAL SKILLS',
+    question: 'Do I need a tech team to use this?',
+    answer: 'Not at all. We handle all the technical setup, coding, and integrations. We build the automations to run quietly in the background so your team can just focus on their actual jobs.'
   },
   {
     number: '03',
     category: 'DATA PRIVACY',
-    question: 'What data isolation and compliance standards do you enforce?',
-    answer: 'We design SOC2, HIPAA, and GDPR-compliant architectures. Your proprietary data never leaves your VPC. We enforce zero-data-retention agreements with foundational model providers and support fully on-premise open-source LLM deployments (DeepSeek, Llama).'
+    question: 'Is our company data secure?',
+    answer: 'Yes. We launch the software directly into your own private and secure accounts. Your private business data never leaves your control, and we sign strict confidentiality agreements.'
   },
   {
     number: '04',
     category: 'TIMELINE',
-    question: 'How quickly is our first production agent live in our environment?',
-    answer: 'Following our initial 14-day architecture audit and opportunity mapping sprint, our first production-grade agent is typically live and handling real workflow traffic in your staging/production VPC within 3 to 4 weeks.'
+    question: 'How long does it take to build?',
+    answer: 'It depends on the complexity of your workflow, but we specialize in moving fast. Most of our custom automations are built, tested, and running in your business within a matter of weeks, not months.'
   },
   {
     number: '05',
     category: 'INTEGRATIONS',
-    question: 'Can you connect to our proprietary internal tools and databases?',
-    answer: 'Yes. Our agents live where your organization operates—Salesforce, HubSpot, Slack, Microsoft Teams, Jira, Snowflake, Postgres, and custom internal REST or GraphQL APIs with deterministic error handling.'
+    question: 'Will this work with the software we already use?',
+    answer: 'Yes. We connect directly to the tools you already rely on—whether that is QuickBooks, Salesforce, HubSpot, Outlook, or industry-specific tools. You do not have to change how you work; we just automate the manual steps.'
   },
   {
     number: '06',
-    category: 'COLLABORATION',
-    question: 'How does our internal team collaborate with your AI pod?',
-    answer: 'We operate as an embedded extension of your engineering leadership. We conduct weekly syncs, provide full architectural documentation, and run joint pair-programming sprints to ensure complete internal operational mastery.'
-  },
-  {
-    number: '07',
-    category: 'LOCAL PRESENCE',
-    question: 'Where is your engineering team based, and can we meet in person?',
-    answer: 'Our core engineering leadership is based in New Jersey. We conduct on-site architectural audits and executive whiteboarding workshops across Jersey City, Princeton, Newark, and the broader Tri-State corridor, while deploying pods for enterprises nationwide.'
+    category: 'PRICING',
+    question: 'How much does it cost?',
+    answer: 'We charge a flat, one-time fee for the build based on the scope of the project. There are no surprise hourly bills and no ongoing monthly seat taxes. You pay for the result, and then you own it.'
   }
 ];
 
@@ -78,24 +72,24 @@ export function USFAQ() {
           <div className="lg:col-span-5 lg:sticky lg:top-32 flex flex-col justify-between">
             <div>
               <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-mono font-bold mb-4">
-                COMMON INQUIRIES
+                QUESTIONS
               </p>
 
               <h2 className="font-display text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.04] mb-6">
                 Clear answers.{' '}
-                <span className="text-[#FF5500]">Zero ambiguity.</span>
+                <span className="text-[#FF5500]">No tech jargon.</span>
               </h2>
 
               <p className="font-sans text-sm sm:text-base text-zinc-400 leading-relaxed mb-10">
-                Everything you need to know about our sovereign engineering pods, IP custody, security isolation, and production delivery timelines.
+                Everything you need to know about how we build, deliver, and price our custom automations for your business.
               </p>
 
               <div className="pt-6 border-t border-zinc-900">
                 <p className="font-mono text-xs text-zinc-500 uppercase tracking-wider mb-2 font-bold">
-                  HAVE A BESPOKE CONSTRAINT?
+                  STILL HAVE QUESTIONS?
                 </p>
                 <p className="font-sans text-xs text-zinc-400 mb-6 leading-relaxed">
-                  Speak directly with our founding engineering team in a confidential 30-minute technical briefing.
+                  Book a quick 15-minute chat with us to see if custom automation makes sense for your business.
                 </p>
                 <a
                   href="#intake"

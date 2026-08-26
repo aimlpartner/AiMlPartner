@@ -5,30 +5,30 @@ export function USCaseMetrics() {
   const cases = [
     {
       id: '01',
-      name: 'Titan',
+      name: 'Lending & Finance',
       moonImg: '/moon_titan.jpg',
-      stat: '84%',
-      label: 'Faster Underwriting',
-      industry: 'Jersey City Capital Markets',
-      story: 'A fast-growing Jersey City lending platform eliminated 420 analyst hours weekly by automating tax return and KYC verification directly in their private cloud.'
+      stat: '420',
+      label: 'Hours Saved Weekly',
+      industry: 'Financial Services',
+      story: 'A local lending firm eliminated 420 hours of manual paperwork every week by automating their document verification processes.'
     },
     {
       id: '02',
-      name: 'Enceladus',
+      name: 'Healthcare Clinic',
       moonImg: '/moon_enceladus.jpg',
-      stat: '12x',
-      label: 'Patient Chart Speed',
-      industry: 'Central NJ Healthcare Network',
-      story: 'A Central New Jersey specialty clinical network turned 45-minute patient consultations into structured medical records in under 20 seconds with zero physician burnout.'
+      stat: '20s',
+      label: 'Patient Charting',
+      industry: 'Medical Practice',
+      story: 'A specialty clinic turned 45-minute patient charting sessions into 20-second automated records, completely eliminating physician burnout.'
     },
     {
       id: '03',
-      name: 'Mimas',
+      name: 'Logistics Carrier',
       moonImg: '/moon_mimas.jpg',
       stat: '$3.2M',
-      label: 'Annual Waste Cut',
-      industry: 'Port Newark & I-95 Logistics',
-      story: 'A Port Newark freight carrier cut deadhead mileage by 38% and automated rate negotiation across 1,400 active fleet routes in real time.'
+      label: 'Annual Cost Cut',
+      industry: 'Freight & Logistics',
+      story: 'A freight carrier saved $3.2M in wasted fuel and time by automating route dispatching and rate negotiation across 1,400 active fleet routes.'
     }
   ];
 
@@ -49,12 +49,12 @@ export function USCaseMetrics() {
               PROVEN RESULTS
             </p>
             <h2 className="font-display text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.04]">
-              Quantified return.{' '}
-              <span className="text-[#FF5500]">Engineered in production.</span>
+              Real businesses.{' '}
+              <span className="text-[#FF5500]">Real time saved.</span>
             </h2>
           </div>
           <p className="font-sans text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
-            Real outcomes from real deployments. We measure success in human hours saved, latency eliminated, and proprietary capability gained.
+            We measure success in hours saved and costs cut, not vanity metrics. Here are three examples of how we've helped businesses streamline their operations.
           </p>
         </div>
 

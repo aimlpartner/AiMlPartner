@@ -2,8 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 
+interface FooterNavLink {
+  label: string;
+  to?: string;
+  href?: string;
+}
+
 export function USFooter() {
-  const navLinks = [
+  const navLinks: FooterNavLink[] = [
     { label: 'Capabilities', to: '/#pillars' },
     { label: 'Studio', to: '/agent-studio' },
     { label: 'Pricing', to: '/pricing' },
@@ -97,7 +103,7 @@ export function USFooter() {
           
           <div className="flex flex-wrap items-center justify-center gap-2.5">
             <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-[#FF5500]/40 text-[10px] text-[#FF5500] font-bold">
-              ✦ NEW JERSEY HQ
+              ✦ BEDMINSTER, NJ HQ
             </span>
             <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] text-zinc-200">
               ✦ SOC2 TYPE II
@@ -114,7 +120,7 @@ export function USFooter() {
           </div>
 
           <div className="flex items-center gap-6 text-[11px]">
-            <p>© {new Date().getFullYear()} AIML PARTNER INC. NEW JERSEY, USA.</p>
+            <p>© {new Date().getFullYear()} AIML PARTNER INC. BEDMINSTER, NEW JERSEY, USA.</p>
             <span className="text-zinc-600">|</span>
             <span className="hover:text-white transition-colors cursor-pointer">Security Protocol</span>
             <span className="hover:text-white transition-colors cursor-pointer">Custody Terms</span>

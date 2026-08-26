@@ -8,7 +8,7 @@ export function USSimulatorSection() {
   // Interactive Velocity Multiplier (1x to 10x)
   const [speedMultiplier, setSpeedMultiplier] = useState<number>(3);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
-  const [waveMode, setWaveMode] = useState<'laminar' | 'quantum' | 'harmonic'>('laminar');
+  const [waveMode, setWaveMode] = useState<'low' | 'medium' | 'high'>('low');
   
   // Mouse position tracker for canvas gravitational ripples
   const mouseRef = useRef<{ x: number; y: number; isHovered: boolean }>({
@@ -59,9 +59,9 @@ export function USSimulatorSection() {
           const baseY = r * spacingY;
 
           let wave = 0;
-          if (waveMode === 'laminar') {
+          if (waveMode === 'low') {
             wave = Math.sin(c * 0.2 + time * 2) * Math.cos(r * 0.25 + time * 1.5) * 24;
-          } else if (waveMode === 'quantum') {
+          } else if (waveMode === 'medium') {
             wave = Math.sin(c * 0.3 + r * 0.3 + time * 2.5) * 26;
           } else {
             const dx = baseX - width / 2;
@@ -189,10 +189,10 @@ export function USSimulatorSection() {
       <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-end justify-between gap-8 z-10">
         <div>
           <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-medium mb-3">
-            Sovereign Neural Physics
+            INTERACTIVE ROI CALCULATOR
           </p>
           <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.02]">
-            Momentum without <span className="text-[#FF5500]">friction.</span>
+            Calculate your <span className="text-[#FF5500]">time saved.</span>
           </h2>
         </div>
 
@@ -200,12 +200,12 @@ export function USSimulatorSection() {
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-[#FF5500] animate-ping" />
             <span className="font-mono text-xs text-zinc-300 font-bold uppercase tracking-wider">
-              Interactive Mesh
+              Live Simulator
             </span>
           </div>
           <span className="text-zinc-600 hidden sm:inline">|</span>
           <span className="font-sans text-xs text-zinc-400">
-            Hover to warp gravitational vectors in real time
+            See the real impact on your bottom line.
           </span>
         </div>
       </div>
@@ -218,39 +218,39 @@ export function USSimulatorSection() {
           {/* Metric 1: Sprint Velocity */}
           <div className="text-left">
             <span className="font-mono text-[10px] text-[#FF5500] uppercase font-bold tracking-widest block mb-1">
-              01 // EXECUTION VELOCITY
+              01 // AUTOMATION SPEED
             </span>
             <div className="font-display text-3xl sm:text-4xl font-extrabold text-white">
               {speedMultiplier * 2.5}x Faster
             </div>
             <p className="font-sans text-xs text-zinc-400 mt-1">
-              Compared to legacy consulting cycles
+              Than doing it manually
             </p>
           </div>
 
           {/* Metric 2: Deployment Horizon */}
           <div className="text-left">
             <span className="font-mono text-[10px] text-[#FF5500] uppercase font-bold tracking-widest block mb-1">
-              02 // DEPLOYMENT HORIZON
+              02 // AVERAGE COST CUT
             </span>
             <div className="font-display text-3xl sm:text-4xl font-extrabold text-white">
-              14 Days
+              ${speedMultiplier * 1500}
             </div>
             <p className="font-sans text-xs text-zinc-400 mt-1">
-              From audit to production pod in your VPC
+              Saved per week in labor costs
             </p>
           </div>
 
           {/* Metric 3: IP Sovereignty */}
           <div className="text-left">
             <span className="font-mono text-[10px] text-[#FF5500] uppercase font-bold tracking-widest block mb-1">
-              03 // CUSTODY
+              03 // OWNERSHIP
             </span>
             <div className="font-display text-3xl sm:text-4xl font-extrabold text-[#FF5500]">
               100% Yours
             </div>
             <p className="font-sans text-xs text-zinc-400 mt-1">
-              Zero telemetry leakage or lock-in
+              Zero vendor lock-in. Full code ownership.
             </p>
           </div>
 
@@ -262,8 +262,8 @@ export function USSimulatorSection() {
           {/* Slider Control */}
           <div className="w-full md:w-1/2 flex flex-col gap-2.5">
             <div className="flex items-center justify-between font-mono text-xs">
-              <span className="text-zinc-400 uppercase tracking-wider">Pod Velocity Throttle:</span>
-              <span className="text-[#FF5500] font-bold">{speedMultiplier}x Speed</span>
+              <span className="text-zinc-400 uppercase tracking-wider">Automation Scale:</span>
+              <span className="text-[#FF5500] font-bold">{speedMultiplier}x Volume</span>
             </div>
             <input
               type="range"
@@ -278,7 +278,7 @@ export function USSimulatorSection() {
 
           {/* Wave Mode Selector Pills */}
           <div className="flex items-center gap-2 w-full md:w-auto justify-center">
-            {(['laminar', 'quantum', 'harmonic'] as const).map((mode) => (
+            {(['low', 'medium', 'high'] as const).map((mode) => (
               <button
                 key={mode}
                 onClick={() => setWaveMode(mode)}
@@ -308,16 +308,16 @@ export function USSimulatorSection() {
       {/* 4. Bottom Anchor */}
       <div className="w-full max-w-7xl mx-auto pt-8 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-6 z-10">
         <div className="flex items-center gap-6 font-mono text-xs text-zinc-500">
-          <span>// REAL-TIME MATHEMATICAL HARMONICS</span>
+          <span>// YOUR ROI CALCULATOR</span>
           <span className="hidden sm:inline text-zinc-700">•</span>
-          <span className="hidden sm:inline text-zinc-400">Zero Third-Party Model Lock-in</span>
+          <span className="hidden sm:inline text-zinc-400">Automate manual tasks and boost profits</span>
         </div>
 
         <a
           href="#intake"
           className="px-8 py-3.5 rounded-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-us-pop hover:scale-105 active:scale-95 flex items-center gap-2 group cursor-pointer"
         >
-          <span>Accelerate Your Architecture</span>
+          <span>See How Much You Can Save</span>
           <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </a>
       </div>

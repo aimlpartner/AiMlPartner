@@ -23,29 +23,29 @@ export function Services() {
 
   const personas = [
     {
-      role: "Founders & Operations",
-      problem: "Drowning in daily manual data entry, invoices, and messy spreadsheets.",
+      role: "Operations & Admin",
+      problem: "We are drowning in manual data entry, PDF parsing, and copying data between different software.",
       recommendedTrack: "Operations & Workflow Automation",
       link: "/services/operations-automation",
       trackIndex: 0
     },
     {
-      role: "Sales & Growth Leaders",
-      problem: "Inbound leads take hours to get a response, resulting in lost deals.",
+      role: "Sales & Revenue",
+      problem: "Inbound leads get cold because our team takes hours to respond and manually log them in the CRM.",
       recommendedTrack: "AI Lead Routing & Sales Acceleration",
       link: "/services/sales-ai",
       trackIndex: 1
     },
     {
-      role: "Support & Customer Success",
-      problem: "Team overwhelmed answering the same repetitive questions all day.",
+      role: "Customer Support",
+      problem: "Our support agents are overwhelmed answering the exact same repetitive questions all day.",
       recommendedTrack: "24/7 Custom Support Agents",
       link: "/services/customer-agents",
       trackIndex: 2
     },
     {
-      role: "CTOs & Tech Teams",
-      problem: "Need custom AI pipelines in private cloud without leaking company data.",
+      role: "CTOs & Engineering",
+      problem: "We need custom AI pipelines built in our own private cloud without leaking company data to OpenAI.",
       recommendedTrack: "Private Cloud & Custom Engineering",
       link: "/services/custom-engineering",
       trackIndex: 3
@@ -58,8 +58,8 @@ export function Services() {
       icon: <Workflow className="text-[#FF5500]" size={28} />,
       badge: "Track 01 // Operations & Admin",
       title: "Operations & Workflow Automation",
-      headline: "Eliminate repetitive manual tasks and connect your apps seamlessly.",
-      desc: "We connect your inboxes, spreadsheets, and databases with smart automations that handle billing, document ingestion, and client handoffs 24/7 with zero human errors.",
+      headline: "Replace manual data entry with custom middleware.",
+      desc: "We build Python scripts and custom APIs that sit between your CRM, your inbox, and your accounting software. They read PDFs, extract the data, and sync it across your business without a human ever touching it.",
       link: "/services/operations-automation",
       timeline: "2–4 Weeks Delivery",
       benefits: [
@@ -75,8 +75,8 @@ export function Services() {
       icon: <TrendingUp className="text-[#FF5500]" size={28} />,
       badge: "Track 02 // Sales & Revenue",
       title: "AI Lead Routing & Sales Acceleration",
-      headline: "Engage inbound leads in under 60 seconds and book qualified calls 24/7.",
-      desc: "Stop losing half your leads to slow follow-ups. We build conversational response pipelines that qualify prospects instantly and sync straight to your calendar.",
+      headline: "Autonomous Lead Qualification & CRM Syncing.",
+      desc: "We deploy AI voice and text agents that respond to inbound inquiries in seconds, qualify the lead based on your strict criteria, and write the notes directly into Salesforce or HubSpot.",
       link: "/services/sales-ai",
       timeline: "2–3 Weeks Delivery",
       benefits: [
@@ -92,8 +92,8 @@ export function Services() {
       icon: <Bot className="text-[#FF5500]" size={28} />,
       badge: "Track 03 // Customer Experience",
       title: "24/7 Custom AI Support Agents",
-      headline: "Resolve 70% of customer support tickets instantly with zero hallucinations.",
-      desc: "Custom-trained AI agents that answer questions, look up order statuses, and resolve tickets using strictly your verified company knowledge base and private docs.",
+      headline: "Private RAG agents that resolve Tier-1 tickets instantly.",
+      desc: "We build customer support agents that actually work. They are strictly confined to your internal knowledge base and PDFs, completely eliminating hallucinations. If they don't know the answer, they escalate to a human with a complete summary.",
       link: "/services/customer-agents",
       timeline: "3–4 Weeks Delivery",
       benefits: [
@@ -109,8 +109,8 @@ export function Services() {
       icon: <Cpu className="text-[#FF5500]" size={28} />,
       badge: "Track 04 // Enterprise & Technical",
       title: "Private Cloud & Custom AI Engineering",
-      headline: "Bespoke AI models and dedicated engineering pods in your secure VPC.",
-      desc: "For technical leaders who need private LLMs, custom vector search, and dedicated senior engineers building directly inside their AWS/GCP infrastructure with 100% IP ownership.",
+      headline: "Dedicated AI Engineering Pods in your Private Cloud.",
+      desc: "For technical leaders who need custom models but can't risk data leakage. We deploy open-source models (Llama 3, Mistral) directly inside your AWS/GCP Virtual Private Cloud. 100% of the code and IP is transferred to you.",
       link: "/services/custom-engineering",
       timeline: "4–8 Weeks Sprints",
       benefits: [
@@ -173,12 +173,12 @@ export function Services() {
           </span>
 
           <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight text-white leading-[1.12] max-w-5xl mx-auto">
-            Simple, practical AI services <br className="hidden md:inline" />
-            <span className="text-[#FF5500]">built for your exact situation.</span>
+            We build custom software that <br className="hidden md:inline" />
+            <span className="text-[#FF5500]">replaces manual human work.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto font-normal leading-relaxed text-balance">
-            We don't sell bloated consulting decks or generic SaaS subscriptions. We build, deploy, and manage custom AI workflows that solve your most painful bottlenecks.
+            No consulting fluff. No generic SaaS subscriptions. We engineer bespoke AI pipelines that plug directly into your business to eliminate your most expensive operational bottlenecks.
           </p>
         </motion.div>
 
@@ -186,7 +186,7 @@ export function Services() {
         <div className="w-full mt-14 pt-10 border-t border-zinc-800/80">
           <div className="flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#FF5500] mb-6">
             <Compass size={14} />
-            <span>Select what best describes your primary goal:</span>
+            <span>Select where your business is currently bleeding the most money:</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

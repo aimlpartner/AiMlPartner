@@ -15,70 +15,76 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { USIntakeCTA } from '../../components/us/USIntakeCTA';
+import { SEO } from '../../components/SEO';
 
 export function CustomerAgents() {
   const [activeAgent, setActiveAgent] = useState(0);
 
   const agents = [
     {
-      title: "Private Knowledge Base Support Agent",
-      trigger: "Customer asks complex policy, technical, or onboarding question",
+      title: "Private Customer Support Bot",
+      trigger: "A customer asks a tricky question about your policies, tech, or onboarding.",
       steps: [
-        "Searches your private PDF guides, SOPs, Notion, and Zendesk tickets via vector search",
-        "Formulates a crystal-clear, accurate answer grounded ONLY in verified facts",
-        "Includes direct reference links to your help center articles",
-        "If unsure, cleanly escalates to human agent with complete customer context"
+        "Instantly reads your private PDF guides, company Notion, and past support tickets",
+        "Writes a crystal-clear answer based ONLY on your approved documents",
+        "Links the customer directly to the right help center article",
+        "If it doesn't know the answer, it hands the chat over to a human with a quick summary"
       ],
-      impact: "Resolves 60–75% of tier-1 support tickets instantly",
-      techStack: ["Private Vector Database (Pinecone / pgvector)", "Gemini 2.5 Flash", "Zendesk / Intercom", "Slack"]
+      impact: "Resolves up to 75% of basic support tickets instantly",
+      techStack: ["Private Vector Database", "OpenAI", "Zendesk / Intercom", "Slack"]
     },
     {
-      title: "Live Account & Order Status Lookup Agent",
-      trigger: "Customer asks: 'Where is my shipment?' or 'Update my billing plan'",
+      title: "Live Order & Account Checker",
+      trigger: "A customer asks 'Where is my order?' or 'Can I update my billing?'",
       steps: [
-        "Securely verifies customer identity and account number",
-        "Queries live database / Shopify / Stripe API via authenticated endpoints",
-        "Returns live carrier tracking status or invoice download link",
-        "Updates ticket status to 'Resolved' automatically"
+        "Securely checks who the customer is so no data is leaked",
+        "Checks your live database, Shopify store, or Stripe account",
+        "Gives them their live tracking link or downloads their invoice instantly",
+        "Closes the support ticket automatically so your team doesn't have to"
       ],
-      impact: "Zero wait time for repetitive transactional inquiries",
+      impact: "Zero wait time for repetitive customer questions",
       techStack: ["Shopify / Stripe API", "PostgreSQL", "Custom Function Calling", "Twilio / Web Widget"]
     },
     {
-      title: "Smart After-Hours & Weekend Responder",
-      trigger: "Inbound ticket received outside of normal business hours",
+      title: "24/7 After-Hours Support Guard",
+      trigger: "A customer emails in on a Sunday night.",
       steps: [
-        "Acknowledges customer inquiry immediately with accurate resolution",
-        "Collects necessary screenshots, account details, and diagnostic info",
-        "Categorizes urgency: normal vs. critical escalation",
-        "Prepares a ready-to-review draft for the morning human support team"
+        "Replies immediately and tries to fix the problem using your company docs",
+        "Collects screenshots and account details if a human needs to look at it",
+        "Decides if it's a normal issue or a 5-alarm emergency",
+        "Writes a draft reply so your human team can just click 'Send' on Monday morning"
       ],
-      impact: "Guarantees 24/7/365 coverage without overnight shift costs",
-      techStack: ["Email Webhooks", "OpenAI / Anthropic", "Freshdesk / HubSpot", "SMS Alerts"]
+      impact: "Full weekend coverage without paying for overnight shifts",
+      techStack: ["Email Webhooks", "OpenAI", "Freshdesk / HubSpot", "SMS Alerts"]
     }
   ];
 
   const safeguards = [
     {
-      title: "Strict Zero-Hallucination Guardrails",
-      desc: "Our agents only answer using information explicitly provided in your company documentation. If the answer isn't in your docs, the agent politely routes to a human."
+      title: "It Won't Make Things Up",
+      desc: "We lock the AI down so it only answers using your company docs. If the answer isn't there, it politely hands the chat to a human. No weird AI hallucinations."
     },
     {
-      title: "Omnichannel Deployment",
-      desc: "Deploy the same intelligent agent across your website chat widget, WhatsApp, SMS, Zendesk, Intercom, or internal team Slack channels."
+      title: "Works Wherever Your Customers Are",
+      desc: "Put the AI on your website chat, WhatsApp, text messages, or Zendesk. It works exactly the same everywhere."
     },
     {
-      title: "Seamless Human Escalation",
-      desc: "When a customer requests a person or the issue is high-touch, the agent transfers the chat with a concise 3-bullet summary so the customer never repeats themselves."
+      title: "Smooth Handoffs to Humans",
+      desc: "If a customer just wants to talk to a person, the AI transfers them instantly. It gives your staff a quick summary so the customer doesn't have to repeat themselves."
     },
     {
-      title: "Continuous Accuracy Analytics",
-      desc: "Access a live dashboard showing customer satisfaction scores, resolution percentages, and areas where documentation can be improved."
+      title: "You Can See What It's Doing",
+      desc: "You get a dashboard showing exactly how many tickets the AI resolved, customer happiness scores, and which help docs need updating."
     }
   ];
 
   return (
     <div className="relative min-h-screen bg-black text-white selection:bg-[#FF5500] selection:text-black">
+      <SEO 
+        title="Custom AI Support Agents" 
+        description="Answer 70% of customer questions instantly, 24 hours a day with our custom AI support reps."
+        url="https://aimlpartner.com/services/customer-agents"
+      />
       {/* Cinematic AI Generated Atmospheric Backdrop */}
       <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
         <img
@@ -111,12 +117,12 @@ export function CustomerAgents() {
           </span>
 
           <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-[3.6rem] font-black tracking-tight text-white leading-[1.1] max-w-5xl mx-auto">
-            Resolve 70% of support tickets <br className="hidden md:inline" />
-            <span className="text-[#FF5500]">in seconds, 24 hours a day.</span>
+            Answer 70% of customer questions <br className="hidden md:inline" />
+            <span className="text-[#FF5500]">instantly, 24 hours a day.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto font-normal leading-relaxed text-balance">
-            Custom AI support agents trained strictly on your private documents, FAQs, and databases. Fast, polite, and completely accurate — with zero hallucinations.
+            We build custom AI support reps trained strictly on your private company docs. They are fast, polite, and completely accurate—with zero AI hallucinations.
           </p>
 
           {/* Quick Metrics Bar */}
@@ -233,9 +239,9 @@ export function CustomerAgents() {
       {/* Bottom CTA / Booking Form */}
       <section id="intake" className="py-16 px-6 md:px-12 max-w-[1200px] mx-auto border-t border-zinc-900">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Upgrade your support team with 24/7 AI.</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Give your customers 24/7 support without hiring more staff.</h2>
           <p className="text-zinc-400 text-sm md:text-base">
-            Book a 30-minute discovery call. We'll test an AI agent live on your own FAQ documents in real time.
+            Book a 30-minute discovery call. Bring a PDF of your company FAQs, and we'll show you an AI answering questions from it live.
           </p>
         </div>
         <USIntakeCTA />

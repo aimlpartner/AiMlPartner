@@ -5,48 +5,48 @@ export function USPillars() {
   const stages = [
     {
       number: '01',
-      stage: 'STAGE 01 // AUDIT & PLAN',
-      tag: '2-WEEK DIAGNOSTIC SPRINT',
-      title: 'We audit your workflows & create a clear plan.',
+      stage: 'STEP 1 // AUDIT & PLAN',
+      tag: 'LEARNING YOUR BUSINESS',
+      title: 'We learn your business & create a clear plan.',
       subtitle: 'We map out your biggest time-wasters before writing code.',
-      desc: 'We review your daily business processes, identify where your team loses the most hours, and deliver an exact implementation plan with expected ROI and fixed pricing.',
+      desc: 'We review your daily operations, identify where your team loses the most time and money, and deliver an exact implementation plan with a fixed price.',
       specs: [
-        { label: 'DELIVERABLE', val: 'Step-by-Step AI Roadmap' },
-        { label: 'TIMELINE', val: '2 Weeks Flat' },
-        { label: 'OUTCOME', val: 'Clear Scope & Guaranteed Fixed Price' }
+        { label: 'DELIVERABLE', val: 'Clear Automation Roadmap' },
+        { label: 'OUTCOME', val: 'Exact Scope & Fixed Price' },
+        { label: 'GOAL', val: 'Find Your Biggest Bottlenecks' }
       ],
       image: '/scrolly_stage1.png',
-      alt: 'Stage 01: Clear System Architecture Blueprint'
+      alt: 'Step 1: Audit & Plan'
     },
     {
       number: '02',
-      stage: 'STAGE 02 // BUILD & TEST',
-      tag: '2-4 WEEK SPRINT DELIVERIES',
-      title: 'We build your custom AI workflows.',
-      subtitle: 'Senior engineers building working software directly for your systems.',
-      desc: 'Our engineers connect smart AI workflows directly into your CRM, database, and inboxes. We test each tool thoroughly with your real data so it works reliably with zero wrong answers.',
+      stage: 'STEP 2 // BUILD & INTEGRATE',
+      tag: 'CUSTOM DEVELOPMENT',
+      title: 'We build your custom automations.',
+      subtitle: 'We connect smart workflows directly to your existing tools.',
+      desc: 'Our team builds automations that plug right into your current CRM, databases, and inboxes. We test everything with your real data so it works perfectly from day one.',
       specs: [
-        { label: 'SYSTEMS', val: 'Custom AI Models & Workflow Automations' },
-        { label: 'SPEED', val: 'Bi-Weekly Working Demos' },
-        { label: 'EFFICIENCY', val: '15-30+ Hours Saved Weekly' }
+        { label: 'SYSTEMS', val: 'Custom Software & Automations' },
+        { label: 'INTEGRATION', val: 'Connects to your current tools' },
+        { label: 'EFFICIENCY', val: 'Dozens of hours saved weekly' }
       ],
       image: '/scrolly_stage2.png',
-      alt: 'Stage 02: Custom AI Engine Architecture'
+      alt: 'Step 2: Build & Integrate'
     },
     {
       number: '03',
-      stage: 'STAGE 03 // LAUNCH & OWN',
-      tag: 'PRIVATE CLOUD DEPLOYMENT',
-      title: 'We launch into your cloud. You own all code.',
-      subtitle: '100% intellectual property ownership with zero vendor lock-in.',
-      desc: 'We deploy everything directly into your secure cloud (AWS, Azure, GCP, or private server). Your company data stays 100% private, and you own all the source code.',
+      stage: 'STEP 3 // LAUNCH & OWN',
+      tag: 'HANDOVER',
+      title: 'We launch it. You own it forever.',
+      subtitle: '100% intellectual property ownership. No monthly seat licenses.',
+      desc: 'We launch the automation into your secure account. You own 100% of the code and intellectual property. No vendor lock-in, and no per-user fees ever.',
       specs: [
-        { label: 'PRIVACY', val: '100% Private Cloud (Zero Data Leakage)' },
-        { label: 'INTEGRATIONS', val: 'HubSpot, Salesforce, Databases & Custom APIs' },
-        { label: 'OWNERSHIP', val: '100% Client Code & IP Ownership' }
+        { label: 'PRIVACY', val: '100% Secure & Private' },
+        { label: 'OWNERSHIP', val: 'You own all the code' },
+        { label: 'FEES', val: 'Zero monthly seat licenses' }
       ],
       image: '/scrolly_stage3.png',
-      alt: 'Stage 03: Fully Launched Production AI Engine'
+      alt: 'Step 3: Launch & Own'
     }
   ];
 
@@ -66,14 +66,14 @@ export function USPillars() {
           <div className="max-w-2xl">
             <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-mono font-bold mb-4 flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-[#FF5500] animate-pulse" />
-              <span>THE 3-STAGE VISUAL LIFECYCLE</span>
+              <span>THE 3-STEP PROCESS</span>
             </p>
             <h2 className="font-display text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.04]">
-              How we build your <span className="text-[#FF5500]">AI engine.</span>
+              How it <span className="text-[#FF5500]">works.</span>
             </h2>
           </div>
           <p className="font-sans text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
-            Follow the exact 3-stage progression: from the initial 2D CAD blueprint, through internal assembly and conduit cutaways, to full sovereign launch in your private cloud.
+            A simple, three-step process to automate your business. We handle the technical heavy lifting so you can focus on growing your company.
           </p>
         </div>
 

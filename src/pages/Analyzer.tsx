@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AnalyzerInput } from '../components/AnalyzerInput';
 import { AnalyzerDashboard } from '../components/AnalyzerDashboard';
 import { BookCallWidget } from '../components/BookCallWidget';
+import { SEO } from '../components/SEO';
 import { Sparkles, Brain, Cpu, Lock, ArrowRight, Loader2, X, ShieldAlert } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -186,6 +187,11 @@ export function Analyzer() {
 
   return (
     <div className="relative min-h-screen bg-black text-white font-sans selection:bg-[#FF5500] selection:text-black">
+      <SEO 
+        title="Free AI Business Audit" 
+        description="Find out exactly how much money you can save with AI in 60 seconds. Our AI will analyze your business and tell you what to automate."
+        url="https://aimlpartner.com/analyzer"
+      />
       {/* Cinematic Saturn Atmospheric Backdrop */}
       <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
         <video
@@ -215,16 +221,16 @@ export function Analyzer() {
               className="space-y-6 max-w-4xl mx-auto flex flex-col items-center"
             >
               <span className="text-xs uppercase tracking-widest text-[#FF5500] font-mono font-bold block">
-                // RAPID ENTERPRISE OPERATIONAL AUDITOR
+                // FREE AI BUSINESS AUDIT
               </span>
 
               <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight text-white leading-[1.12] max-w-5xl mx-auto">
-                Uncover hidden revenue leaks & <br className="hidden md:inline" />
-                <span className="text-[#FF5500]">automatable workflows in 60s.</span>
+                Find out exactly how much money <br className="hidden md:inline" />
+                <span className="text-[#FF5500]">you can save with AI in 60 seconds.</span>
               </h1>
 
               <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto font-normal leading-relaxed text-balance">
-                Scan your website domain or describe your team's biggest bottlenecks. Our engine crawls your workflows, audits manual friction, and compiles customized automation playbooks with projected ROI.
+                Enter your website or describe the annoying manual tasks your team hates doing. Our AI will instantly analyze your business and tell you exactly what to automate to save time and money.
               </p>
             </motion.div>
           </section>
@@ -240,13 +246,13 @@ export function Analyzer() {
 
                   <div className="space-y-3">
                     <span className="text-xs font-mono text-[#FF5500] tracking-widest uppercase font-bold block mb-2">
-                      // FREE AUDIT LIMIT REACHED
+                      // FREE AUDITS COMPLETED
                     </span>
                     <h2 className="text-3xl font-black tracking-tight text-white">
-                      You've Completed Your Free Audits
+                      You've hit the limit for free scans.
                     </h2>
                     <p className="text-zinc-400 text-sm leading-relaxed max-w-md mx-auto">
-                      To explore deeper business automation opportunities, custom low-code tools, and structured ROI maps, schedule a free 1-on-1 strategy call with our senior engineers.
+                      To get a deeper look at how AI can save your business money, schedule a free 1-on-1 call with us. We'll build a custom automation roadmap for you.
                     </p>
                   </div>
 
@@ -255,7 +261,7 @@ export function Analyzer() {
                       onClick={() => setIsBookingModalOpen(true)}
                       className="bg-[#FF5500] hover:bg-[#FF6E26] text-black font-extrabold px-8 py-4 rounded-xl transition-all shadow-us-pop hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer text-xs uppercase tracking-wider"
                     >
-                      <span>Book Free 1-on-1 Strategy Call</span>
+                      <span>Book Your Free AI Strategy Call</span>
                       <ArrowRight size={16} />
                     </button>
                   </div>
@@ -286,10 +292,10 @@ export function Analyzer() {
           <section className="relative pt-36 pb-12 text-white border-b border-zinc-900">
             <div className="max-w-[1200px] mx-auto px-6 text-center">
               <span className="text-xs font-mono text-[#FF5500] uppercase tracking-widest block font-bold mb-2">
-                // AUDIT SYSTEM ACTIVE
+                // AUDIT COMPLETE
               </span>
               <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                Operational Diagnostic Console
+                Your AI Automation Blueprint
               </h1>
             </div>
           </section>
@@ -326,13 +332,13 @@ export function Analyzer() {
 
                       <div>
                         <span className="text-xs font-mono text-[#FF5500] uppercase tracking-widest block font-bold mb-1">
-                          // ANALYSIS COMPILED
+                          // YOUR REPORT IS READY
                         </span>
                         <h3 className="text-2xl md:text-3xl font-black tracking-tight text-white leading-tight">
-                          Unlock Your Full Diagnostic Report
+                          Unlock your custom AI blueprint.
                         </h3>
                         <p className="text-zinc-400 text-sm mt-2 leading-relaxed">
-                          Your custom playbooks, time leak calculations, and ROI roadmaps are ready. Enter your work email to unlock instant access and receive a copy of the PDF.
+                          We found the biggest bottlenecks costing you money. Enter your email to unlock the dashboard instantly and get a PDF copy sent to your inbox.
                         </p>
                       </div>
 
@@ -390,11 +396,11 @@ export function Analyzer() {
                           {isUnlocking ? (
                             <>
                               <Loader2 size={16} className="animate-spin text-black" />
-                              <span>Compiling PDF Report...</span>
+                              <span>Building your report...</span>
                             </>
                           ) : (
                             <>
-                              <span>Unlock Live Dashboard & PDF</span>
+                              <span>Show Me My Report</span>
                               <ArrowRight size={16} />
                             </>
                           )}

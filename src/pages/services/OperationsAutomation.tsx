@@ -16,43 +16,44 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { USIntakeCTA } from '../../components/us/USIntakeCTA';
+import { SEO } from '../../components/SEO';
 
 export function OperationsAutomation() {
   const [activeWorkflow, setActiveWorkflow] = useState(0);
 
   const workflows = [
     {
-      title: "Invoice & Receipt Auto-Ingestion",
-      trigger: "Vendor emails invoice PDF to billing inbox",
+      title: "Automated Invoicing & Billing",
+      trigger: "A vendor emails a PDF invoice to your billing inbox.",
       steps: [
-        "AI OCR extracts invoice number, line items, tax, and total",
-        "Cross-references against purchase order in database",
-        "Creates draft bill in QuickBooks / Xero automatically",
-        "Sends 1-click approval notification to manager on Slack"
+        "AI reads the PDF and instantly extracts the invoice number, line items, and total amount",
+        "It checks your database to make sure the purchase order matches",
+        "It automatically drafts the bill in QuickBooks or Xero",
+        "It pings the manager on Slack for a simple 1-click approval"
       ],
       timeSaved: "15-20 hours / week per accounting clerk",
-      techStack: ["Make.com / n8n", "OpenAI Vision / Gemini", "QuickBooks / Xero", "Slack"]
+      techStack: ["Make.com", "OpenAI Vision", "QuickBooks / Xero", "Slack"]
     },
     {
-      title: "Client Onboarding & Document Pipeline",
-      trigger: "New client signs agreement in CRM",
+      title: "Zero-Touch Client Onboarding",
+      trigger: "A new client signs a contract in your CRM.",
       steps: [
-        "Generates customized onboarding checklist and secure upload portal",
-        "Automatically validates client ID and required compliance docs",
-        "Creates dedicated folders in Google Drive / OneDrive",
-        "Sends welcoming intro package and schedules kickoff meeting"
+        "Automatically creates a custom onboarding checklist and secure upload folder",
+        "Scans and verifies client IDs and compliance documents instantly",
+        "Creates dedicated Google Drive or OneDrive folders for the client",
+        "Sends a warm welcome email and schedules the kickoff meeting on your calendar"
       ],
       timeSaved: "4-6 hours per new client onboarded",
-      techStack: ["HubSpot / Salesforce", "DocuSign / PandaDoc", "Google Workspace", "Stripe"]
+      techStack: ["HubSpot / Salesforce", "DocuSign", "Google Workspace", "Stripe"]
     },
     {
-      title: "Multi-System Database & Inventory Sync",
-      trigger: "Stock change, booking, or customer update in one app",
+      title: "Messy Database Cleanup & Sync",
+      trigger: "A customer updates their info, or inventory changes in one app.",
       steps: [
-        "Catches live webhook trigger with zero polling latency",
-        "Validates and standardizes data format across systems",
-        "Updates CRM, ERP, warehouse database, and billing in parallel",
-        "Logs audit record and flags any sync discrepancy to admin"
+        "Instantly catches the update the second it happens",
+        "Cleans up the formatting (e.g., standardizing phone numbers or addresses)",
+        "Updates your CRM, billing software, and warehouse database all at exactly the same time",
+        "Logs a record of the change and alerts an admin if something looks wrong"
       ],
       timeSaved: "100% elimination of manual double-data entry",
       techStack: ["PostgreSQL / Airtable", "Shopify / ERP", "Webhooks", "Make.com"]
@@ -61,25 +62,30 @@ export function OperationsAutomation() {
 
   const deliverables = [
     {
-      title: "Custom End-to-End Workflow Architecture",
-      desc: "We map every step of your manual data flow and build custom, unbreakable automations that run silently in the background."
+      title: "100% Custom Automation Built for You",
+      desc: "We look at exactly how you run your business today, and we build custom automations that do the busywork for you in the background."
     },
     {
-      title: "Bulletproof Error Handling & Alerts",
-      desc: "If an unexpected document format or edge case occurs, the system gently notifies your team instead of silently failing."
+      title: "Smart Error Handling (No Silent Fails)",
+      desc: "If the AI sees a weird document format it doesn't understand, it won't just crash. It gently notifies your team on Slack to take a look."
     },
     {
-      title: "Staff Video Walkthroughs & SOP Guides",
-      desc: "Clear, plain-English video tutorials and written standard operating procedures so your existing team feels fully supported."
+      title: "Step-by-Step Team Training",
+      desc: "Clear, plain-English video tutorials and written guides so your existing team feels fully supported and knows exactly how to use the new tools."
     },
     {
-      title: "30-Day Post-Launch Warranty",
-      desc: "We stay in your corner for 30 days after launch to fine-tune prompts, adjust field mappings, and guarantee zero downtime."
+      title: "30 Days of Free Tweaks & Support",
+      desc: "We stay in your corner for a full month after launch to fine-tune the AI, fix any bugs, and guarantee it works exactly the way you want."
     }
   ];
 
   return (
     <div className="relative min-h-screen bg-black text-white selection:bg-[#FF5500] selection:text-black">
+      <SEO 
+        title="Operations Automation & Workflows" 
+        description="Stop paying humans to do robot work. We build custom AI automations that connect your inboxes, spreadsheets, and CRMs."
+        url="https://aimlpartner.com/services/operations-automation"
+      />
       {/* Cinematic AI Generated Atmospheric Backdrop */}
       <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
         <img
@@ -112,12 +118,12 @@ export function OperationsAutomation() {
           </span>
 
           <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-[3.6rem] font-black tracking-tight text-white leading-[1.1] max-w-5xl mx-auto">
-            Stop wasting hours on <br className="hidden md:inline" />
-            <span className="text-[#FF5500]">manual copy-pasting.</span>
+            Stop paying humans to do <br className="hidden md:inline" />
+            <span className="text-[#FF5500]">robot work.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto font-normal leading-relaxed text-balance">
-            We connect your inboxes, spreadsheets, and databases with smart automations that handle billing, document ingestion, and client handoffs 24/7 with zero human errors.
+            We build custom AI automations that connect your inboxes, spreadsheets, and CRMs. We make them talk to each other so your team never has to copy-paste data again.
           </p>
 
           {/* Quick Metrics Bar */}
