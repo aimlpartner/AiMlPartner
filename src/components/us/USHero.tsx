@@ -55,18 +55,7 @@ export function USHero({ onBookCallClick }: USHeroProps) {
       {/* ========================================================================= */}
       <div className="relative z-10 w-full max-w-4xl mx-auto flex-1 flex flex-col items-center justify-center text-center my-auto py-6">
         
-        {/* Location & Sovereign Regional Kicker */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-4 flex items-center justify-center gap-2"
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-[#FF5500] animate-pulse" />
-          <span className="font-mono text-[10px] sm:text-xs text-zinc-400 uppercase tracking-widest font-semibold">
-            CUSTOM AUTOMATION FOR SMBs
-          </span>
-        </motion.div>
+
 
         {/* Monumental Centered Headline */}
         <motion.h1
@@ -85,7 +74,7 @@ export function USHero({ onBookCallClick }: USHeroProps) {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="font-sans text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mt-5 leading-relaxed drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)] mx-auto"
         >
-          We build custom software and automations that handle your team's most time-consuming tasks. Save dozens of hours every week, cut operational costs, and boost your bottom line with 100% code ownership.
+          We build custom software that automates your team's busywork. Save hours every week, cut costs, and boost your bottom line.
         </motion.p>
 
         {/* ========================================================================= */}
