@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { USIntakeCTA } from '../components/us/USIntakeCTA';
+import { SEO } from '../components/SEO';
 
 export function Services() {
   const [selectedPersona, setSelectedPersona] = useState<number | null>(null);
@@ -24,28 +25,28 @@ export function Services() {
   const personas = [
     {
       role: "Operations & Admin",
-      problem: "We are drowning in manual data entry, PDF parsing, and copying data between different software.",
+      problem: "We waste hours every day doing manual data entry and copying info from one app to another.",
       recommendedTrack: "Operations & Workflow Automation",
       link: "/services/operations-automation",
       trackIndex: 0
     },
     {
       role: "Sales & Revenue",
-      problem: "Inbound leads get cold because our team takes hours to respond and manually log them in the CRM.",
+      problem: "We lose deals because it takes us too long to reply to new leads and follow up.",
       recommendedTrack: "AI Lead Routing & Sales Acceleration",
       link: "/services/sales-ai",
       trackIndex: 1
     },
     {
       role: "Customer Support",
-      problem: "Our support agents are overwhelmed answering the exact same repetitive questions all day.",
+      problem: "Our team spends all day answering the exact same basic customer questions over and over.",
       recommendedTrack: "24/7 Custom Support Agents",
       link: "/services/customer-agents",
       trackIndex: 2
     },
     {
-      role: "CTOs & Engineering",
-      problem: "We need custom AI pipelines built in our own private cloud without leaking company data to OpenAI.",
+      role: "Engineering & IT",
+      problem: "We need custom AI software, but we can't risk our sensitive company data leaking to public AI tools.",
       recommendedTrack: "Private Cloud & Custom Engineering",
       link: "/services/custom-engineering",
       trackIndex: 3
@@ -57,33 +58,33 @@ export function Services() {
       id: "operations",
       icon: <Workflow className="text-[#FF5500]" size={28} />,
       badge: "Track 01 // Operations & Admin",
-      title: "Operations & Workflow Automation",
-      headline: "Replace manual data entry with custom middleware.",
-      desc: "We build Python scripts and custom APIs that sit between your CRM, your inbox, and your accounting software. They read PDFs, extract the data, and sync it across your business without a human ever touching it.",
+      title: "Operations Automation",
+      headline: "Stop typing the same things twice.",
+      desc: "We build background automations that connect your inbox, CRM, and accounting software. They automatically read documents, extract data, and sync everything perfectly without a human ever touching it.",
       link: "/services/operations-automation",
       timeline: "2–4 Weeks Delivery",
       benefits: [
-        "Automated invoice and receipt OCR ingestion",
-        "Client onboarding and compliance document parsing",
-        "Cross-database synchronization between CRM and ERP",
-        "Instant Slack / Email alerts for key business milestones"
+        "Automatic invoice and receipt processing",
+        "Instant client onboarding setups",
+        "Keep all your databases and apps perfectly synced",
+        "Get instant alerts on Slack or Email when things happen"
       ],
-      popularFor: "Law firms, accounting, real estate, logistics, and agency back offices."
+      popularFor: "Law firms, accounting, real estate, logistics, and agencies."
     },
     {
       id: "sales",
       icon: <TrendingUp className="text-[#FF5500]" size={28} />,
       badge: "Track 02 // Sales & Revenue",
-      title: "AI Lead Routing & Sales Acceleration",
-      headline: "Autonomous Lead Qualification & CRM Syncing.",
-      desc: "We deploy AI voice and text agents that respond to inbound inquiries in seconds, qualify the lead based on your strict criteria, and write the notes directly into Salesforce or HubSpot.",
+      title: "Sales AI & Lead Routing",
+      headline: "Turn website visitors into booked calls instantly.",
+      desc: "We build AI agents that text and email your leads the second they reach out. The AI asks qualifying questions and books them directly on your calendar, so you never miss a deal.",
       link: "/services/sales-ai",
       timeline: "2–3 Weeks Delivery",
       benefits: [
-        "Sub-60 second SMS & email instant text-back",
-        "Autonomous lead qualification and CRM enrichment",
-        "1-click customized proposal & quote generator",
-        "Direct integration with HubSpot, Salesforce, and Cal.com"
+        "Respond to new leads in under 60 seconds",
+        "Automatically filter out bad leads and tire-kickers",
+        "Instantly generate custom proposals and quotes",
+        "Syncs directly with your CRM and calendar"
       ],
       popularFor: "B2B sales teams, high-ticket consultants, clinics, and service businesses."
     },
@@ -91,16 +92,16 @@ export function Services() {
       id: "support",
       icon: <Bot className="text-[#FF5500]" size={28} />,
       badge: "Track 03 // Customer Experience",
-      title: "24/7 Custom AI Support Agents",
-      headline: "Private RAG agents that resolve Tier-1 tickets instantly.",
-      desc: "We build customer support agents that actually work. They are strictly confined to your internal knowledge base and PDFs, completely eliminating hallucinations. If they don't know the answer, they escalate to a human with a complete summary.",
+      title: "Custom AI Support Agents",
+      headline: "Answer repetitive customer questions instantly, 24/7.",
+      desc: "We build customer support AI that is trained ONLY on your private company documents. It doesn't guess or make things up. If it doesn't know the exact answer, it politely hands the chat to a human.",
       link: "/services/customer-agents",
       timeline: "3–4 Weeks Delivery",
       benefits: [
-        "Trained strictly on your PDFs, FAQs, and SOPs (zero hallucinations)",
-        "Live authenticated order and account status lookups",
-        "Seamless transfer to human staff with 3-bullet context summary",
-        "Deploy on web chat, WhatsApp, Slack, Zendesk, or Intercom"
+        "Trained strictly on your PDFs and FAQs (zero made-up answers)",
+        "Can check live order statuses and account details",
+        "Smoothly transfers to human staff with a quick summary",
+        "Works on your website chat, WhatsApp, SMS, or Zendesk"
       ],
       popularFor: "E-commerce brands, SaaS companies, property management, and clinics."
     },
@@ -108,41 +109,46 @@ export function Services() {
       id: "engineering",
       icon: <Cpu className="text-[#FF5500]" size={28} />,
       badge: "Track 04 // Enterprise & Technical",
-      title: "Private Cloud & Custom AI Engineering",
-      headline: "Dedicated AI Engineering Pods in your Private Cloud.",
-      desc: "For technical leaders who need custom models but can't risk data leakage. We deploy open-source models (Llama 3, Mistral) directly inside your AWS/GCP Virtual Private Cloud. 100% of the code and IP is transferred to you.",
+      title: "Custom AI Engineering",
+      headline: "Private AI software built entirely on your own servers.",
+      desc: "For companies that handle sensitive data and can't use public AI tools. We build custom AI software directly on your own private servers so your data never leaves your company.",
       link: "/services/custom-engineering",
-      timeline: "4–8 Weeks Sprints",
+      timeline: "4–8 Weeks Delivery",
       benefits: [
-        "100% code, Dockerfile, and IP ownership transferred to you",
-        "Self-hosted private LLMs (Llama 3.3, Mistral) in your private VPC",
-        "Enterprise RAG semantic search across millions of internal docs",
-        "Direct communication with senior full-stack AI engineers"
+        "You own 100% of the code and the software forever",
+        "Total data privacy with zero leaks to outside servers",
+        "Search instantly through millions of internal company documents",
+        "Work directly with our senior software engineers"
       ],
-      popularFor: "CTOs, FinTech, Healthcare, and enterprise AI engineering teams."
+      popularFor: "Healthcare, Finance, IT departments, and large enterprises."
     }
   ];
 
   const deliverySteps = [
     {
       step: "01",
-      title: "14-Day Roadmap & Prototype",
-      desc: "We audit your biggest time-wasters, map data pipelines, and build a test prototype you can test live before writing a single line of production code."
+      title: "14-Day Roadmap & Demo",
+      desc: "We look at what's wasting the most time in your business, and we build a live test version of the AI for you to try before we do a full launch."
     },
     {
       step: "02",
       title: "Custom Build & Launch",
-      desc: "Senior engineers build and deploy the complete automation directly into your tools (HubSpot, QuickBooks, AWS, etc.) with staff training included."
+      desc: "Our engineers build the complete automation directly into the tools you already use (like HubSpot or QuickBooks) and train your staff on how to use it."
     },
     {
       step: "03",
-      title: "Continuous Upkeep & Growth",
-      desc: "As your business scales and AI models improve, we continuously maintain, monitor, and build new workflows without hiring new full-time staff."
+      title: "30 Days Free Support",
+      desc: "We stay with you for a full month after launch to fix any bugs, tweak the AI, and make sure it works exactly the way you want."
     }
   ];
 
   return (
     <div className="relative min-h-screen bg-black text-white selection:bg-[#FF5500] selection:text-black">
+      <SEO 
+        title="AI Services & Solutions" 
+        description="We build custom software that replaces manual human work. From operations automation to AI sales agents, see how we can help your business."
+        url="https://aimlpartner.com/services"
+      />
       {/* Cinematic Saturn Atmospheric Backdrop */}
       <div className="absolute top-0 left-0 right-0 h-[620px] sm:h-[700px] overflow-hidden pointer-events-none z-0">
         <video
@@ -173,12 +179,12 @@ export function Services() {
           </span>
 
           <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight text-white leading-[1.12] max-w-5xl mx-auto">
-            We build custom software that <br className="hidden md:inline" />
-            <span className="text-[#FF5500]">replaces manual human work.</span>
+            We build custom AI tools that <br className="hidden md:inline" />
+            <span className="text-[#FF5500]">do the busywork for you.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto font-normal leading-relaxed text-balance">
-            No consulting fluff. No generic SaaS subscriptions. We engineer bespoke AI pipelines that plug directly into your business to eliminate your most expensive operational bottlenecks.
+            No confusing tech jargon. No monthly software traps. We build custom automations that plug directly into your business to save you time and make you more money.
           </p>
         </motion.div>
 
