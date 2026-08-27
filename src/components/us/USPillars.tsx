@@ -176,7 +176,7 @@ export function USPillars() {
               ✦ SPRINT CADENCE: 14 DAYS TO PRODUCTION
             </span>
             <h4 className="font-display text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Ready to architect your sovereign AI system?
+              Ready to automate your operations?
             </h4>
           </div>
 
@@ -184,7 +184,7 @@ export function USPillars() {
             href="#intake"
             className="px-8 py-4 rounded-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-us-pop hover:scale-105 active:scale-95 flex items-center gap-2 shrink-0 cursor-pointer"
           >
-            <span>Deploy Sovereign Pod</span>
+            <span>Work With Us</span>
             <span className="text-sm">↗</span>
           </a>
         </motion.div>

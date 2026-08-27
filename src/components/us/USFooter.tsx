@@ -117,7 +117,7 @@ export function USFooter() {
               AIML PARTNER
             </h1>
             <p className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] text-[#FF5500] font-extrabold mt-4 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
-              // SOVEREIGN AI ARCHITECTURE • APPLIED ENTERPRISE ENGINEERING
+              // CUSTOM AI AUTOMATION • APPLIED ENTERPRISE ENGINEERING
             </p>
           </div>
         </div>
@@ -135,7 +135,7 @@ export function USFooter() {
               ✦ SOC2 TYPE II
             </span>
             <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] text-zinc-200">
-              ✦ HIPAA SOVEREIGN
+              ✦ HIPAA COMPLIANT
             </span>
             <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] text-zinc-200">
               ✦ ZERO RETENTION

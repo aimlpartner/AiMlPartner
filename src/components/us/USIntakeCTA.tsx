@@ -175,16 +175,16 @@ export function USIntakeCTA({ source = 'US Flagship Landing Page', onSuccess }: 
               Direct Technical Partner Access
             </p>
             <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.02]">
-              The sovereign horizon <span className="text-[#FF5500]">awaits.</span>
+              Let's build your <span className="text-[#FF5500]">automation.</span>
             </h2>
           </div>
           <p className="font-sans text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
-            Select a date and 30-minute window for a confidential architecture discovery call. It's 100% free with zero obligation. You have nothing to lose and a clear understanding of your automation potential to gain.
+            Select a date and 30-minute window for a free discovery call. We'll map your bottlenecks and show you exactly what we can automate.
           </p>
         </div>
 
         {/* ========================================================================= */}
-        {/* THE SOVEREIGN TIME-BOOKING SALON */}
+        {/* DIRECT TIME-BOOKING */}
         {/* ========================================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
@@ -195,10 +195,10 @@ export function USIntakeCTA({ source = 'US Flagship Landing Page', onSuccess }: 
                 // PARTNER COMMITMENT
               </span>
               <h3 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug mb-4">
-                Engineered for permanence. Deployed in your VPC.
+                Engineered for your business. Deployed in 14 days.
               </h3>
               <p className="font-sans text-sm text-zinc-400 leading-relaxed">
-                We work directly with founders and technical leaders. This 30-minute call is at absolutely no cost. You will learn exactly how sovereign AI can eliminate your bottlenecks, even if you never hire us.
+                We work directly with founders and business owners. This 30-minute discovery call is 100% free with zero obligation.
               </p>
             </div>
 
