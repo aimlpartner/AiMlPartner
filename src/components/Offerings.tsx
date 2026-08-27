@@ -9,8 +9,8 @@ export function Offerings() {
       title: "AI Strategy & Operational Audit",
       icon: <Network size={20} className="text-slate-900" />,
       description: "Map your bottlenecks directly. Work with our business architects to analyze your team structure, SaaS overhead, and pipeline friction. Get a detailed implementation roadmap with realistic ROI projections.",
-      cta: "Explore Studio Services",
-      link: "/agent-studio",
+      cta: "Explore Use Cases",
+      link: "/use-cases",
       i: 0
     },
     {

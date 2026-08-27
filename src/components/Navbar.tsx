@@ -192,8 +192,8 @@ export function Navbar() {
               </AnimatePresence>
             </div>
 
-            <Link to="/agent-studio" className={linkClass(location.pathname === '/agent-studio')}>
-              Studio
+            <Link to="/use-cases" className={linkClass(location.pathname === '/use-cases')}>
+              Use Cases
             </Link>
             <Link to="/pricing" className={linkClass(location.pathname === '/pricing')}>
               Pricing
@@ -282,13 +282,13 @@ export function Navbar() {
             </div>
 
             <Link
-              to="/agent-studio"
+              to="/use-cases"
               className={`text-sm font-semibold py-2 transition-colors flex items-center justify-between ${
-                location.pathname === '/agent-studio' ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
+                location.pathname === '/use-cases' ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Agent Studio</span>
+              <span>Use Cases</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
 

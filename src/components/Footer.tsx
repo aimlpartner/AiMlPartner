@@ -83,21 +83,39 @@ export function Footer() {
           </div>
         </motion.div>
 
-        {/* Center Column (Navigation Links) - spans 4 cols */}
+        {/* Navigation Column - spans 2 cols */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="md:col-span-4 flex flex-col gap-4 text-left md:items-center"
+          className="md:col-span-2 flex flex-col gap-4 text-left"
         >
           <div className="flex flex-col gap-3">
             <h4 className="font-mono text-[10px] uppercase tracking-widest text-emerald-400 mb-2 font-bold">Navigation</h4>
-            <Link to="/agent-studio" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Agent Studio</Link>
+            <Link to="/" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Home</Link>
+            <Link to="/about" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">About</Link>
             <Link to="/pricing" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Pricing</Link>
-            <Link to="/low-code-pods" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Services</Link>
-            <Link to="/team" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Team</Link>
-            <Link to="/partner-waitlist" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Partners</Link>
+            <Link to="/use-cases" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Use Cases</Link>
+            <Link to="/analyzer" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">AI Auditor</Link>
+          </div>
+        </motion.div>
+
+        {/* Services Column - spans 2 cols */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="md:col-span-2 flex flex-col gap-4 text-left"
+        >
+          <div className="flex flex-col gap-3">
+            <h4 className="font-mono text-[10px] uppercase tracking-widest text-emerald-400 mb-2 font-bold">Services</h4>
+            <Link to="/services" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">All Services</Link>
+            <Link to="/services/operations-automation" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Operations</Link>
+            <Link to="/services/sales-ai" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Sales AI</Link>
+            <Link to="/services/customer-agents" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Support Agents</Link>
+            <Link to="/services/custom-engineering" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Custom Engineering</Link>
           </div>
         </motion.div>
 

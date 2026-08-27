@@ -3,6 +3,16 @@ import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 
+const COMPANY_LOGOS = [
+  { name: "MINIM", src: "/MINIM-logo-primary.png" },
+  { name: "LOHIA TRADERS", src: "/lohiatraderslogo.png" },
+  { name: "EQUESTRIAN", src: "/equestrianlogo.png" },
+  { name: "GVRG INDUSTRIES", src: "/gvrgindustrieslogo.png" },
+  { name: "SUPERHERO GYM", src: "/superherogym_logo.png" },
+  { name: "WEAREKNWN", src: "/weareknwn_logo.png" },
+  { name: "AVENOIR", src: "/avenoirlogo.png" },
+];
+
 interface USHeroProps {
   onBookCallClick?: () => void;
   onExploreClick?: () => void;
@@ -55,8 +65,6 @@ export function USHero({ onBookCallClick }: USHeroProps) {
       {/* ========================================================================= */}
       <div className="relative z-10 w-full max-w-4xl mx-auto flex-1 flex flex-col items-center justify-center text-center my-auto py-6">
         
-
-
         {/* Monumental Centered Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 25 }}
@@ -147,6 +155,34 @@ export function USHero({ onBookCallClick }: USHeroProps) {
             </form>
           </div>
 
+        </motion.div>
+
+        {/* ========================================================================= */}
+        {/* 4. TRUSTED COMPANY LOGOS CAROUSEL STRIP (From updated_b2p_prod) */}
+        {/* ========================================================================= */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full max-w-5xl mt-12 pt-8 border-t border-white/10 flex flex-col items-center select-none"
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500 font-semibold mb-5">
+            COMPANIES WE HAVE AUTOMATED WORKFLOWS FOR
+          </span>
+          
+          <div className="w-full relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div className="flex animate-marquee-fast items-center gap-12 sm:gap-16 lg:gap-20 shrink-0 py-2">
+              {[...COMPANY_LOGOS, ...COMPANY_LOGOS].map((logo, idx) => (
+                <div key={idx} className="flex-shrink-0 min-w-[120px] sm:min-w-[150px] h-8 sm:h-10 flex items-center justify-center px-3">
+                  <img 
+                    src={logo.src} 
+                    alt={logo.name} 
+                    className="h-6 sm:h-7 md:h-8 max-w-[130px] sm:max-w-[150px] w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition-all duration-300" 
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </motion.div>
 
       </div>

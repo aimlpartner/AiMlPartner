@@ -15,7 +15,7 @@ import { HomeUS } from './pages/HomeUS';
 import { Home as HomeIN } from './pages/Home';
 
 // Secondary pages (Lazy loaded)
-const AgentStudio = lazy(() => import('./pages/AgentStudio').then((module) => ({ default: module.AgentStudio })));
+const UseCases = lazy(() => import('./pages/UseCases').then((module) => ({ default: module.UseCases })));
 const Pricing = lazy(() => import('./pages/Pricing').then((module) => ({ default: module.Pricing })));
 const AboutUs = lazy(() => import('./pages/AboutUs').then((module) => ({ default: module.AboutUs })));
 const AdminDashboard = lazy(() =>
@@ -37,6 +37,8 @@ const OperationsAutomation = lazy(() => import('./pages/services/OperationsAutom
 const SalesAI = lazy(() => import('./pages/services/SalesAI').then((module) => ({ default: module.SalesAI })));
 const CustomerAgents = lazy(() => import('./pages/services/CustomerAgents').then((module) => ({ default: module.CustomerAgents })));
 const CustomEngineering = lazy(() => import('./pages/services/CustomEngineering').then((module) => ({ default: module.CustomEngineering })));
+const WhatWeAutomate = lazy(() => import('./pages/WhatWeAutomate').then((module) => ({ default: module.WhatWeAutomate })));
+const SMBSolutionDetail = lazy(() => import('./pages/SMBSolutionDetail').then((module) => ({ default: module.SMBSolutionDetail })));
 
 export default function App() {
   const { pathname, hash } = useLocation();
@@ -92,11 +94,14 @@ export default function App() {
             <Route path="/about" element={<AboutUs />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/team" element={<AboutUs />} />
-            <Route path="/agent-studio" element={<AgentStudio />} />
+            <Route path="/use-cases" element={<UseCases />} />
+            <Route path="/agent-studio" element={<UseCases />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/analyzer" element={<Analyzer />} />
             <Route path="/partner-waitlist" element={<PartnerWaitlist />} />
+            <Route path="/what-we-automate" element={<WhatWeAutomate />} />
+            <Route path="/what-we-automate/:industryId" element={<SMBSolutionDetail />} />
 
             {/* Catch-all 404 Route */}
             <Route path="*" element={<NotFound />} />

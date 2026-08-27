@@ -20,27 +20,28 @@ import {
 } from 'lucide-react';
 
 interface SMBItem {
+  id: string;
   name: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
 export function USTicker() {
   const smbs: SMBItem[] = [
-    { name: 'Medical Clinics', icon: Stethoscope },
-    { name: 'Law Practices', icon: Scale },
-    { name: 'Accounting & CPAs', icon: Calculator },
-    { name: 'HVAC & Field Services', icon: Wrench },
-    { name: 'Real Estate Brokerages', icon: Building2 },
-    { name: 'Logistics & Freight', icon: Truck },
-    { name: 'Auto Dealerships', icon: Car },
-    { name: 'Dental Practices', icon: HeartPulse },
-    { name: 'Construction & GCs', icon: HardHat },
-    { name: 'Machine Shops & Mfg', icon: Factory },
-    { name: 'Restaurants & Hospitality', icon: UtensilsCrossed },
-    { name: 'Insurance Agencies', icon: ShieldCheck },
-    { name: 'Fitness & Gym Studios', icon: Dumbbell },
-    { name: 'Wealth & Advisory', icon: Landmark },
-    { name: 'Retail & E-Commerce', icon: ShoppingBag }
+    { id: 'medical-clinics', name: 'Medical Clinics', icon: Stethoscope },
+    { id: 'law-practices', name: 'Law Practices', icon: Scale },
+    { id: 'accounting-cpas', name: 'Accounting & CPAs', icon: Calculator },
+    { id: 'hvac-field-services', name: 'HVAC & Field Services', icon: Wrench },
+    { id: 'real-estate-brokerages', name: 'Real Estate Brokerages', icon: Building2 },
+    { id: 'logistics-freight', name: 'Logistics & Freight', icon: Truck },
+    { id: 'auto-dealerships', name: 'Auto Dealerships', icon: Car },
+    { id: 'dental-practices', name: 'Dental Practices', icon: HeartPulse },
+    { id: 'construction-gcs', name: 'Construction & GCs', icon: HardHat },
+    { id: 'machine-shops-mfg', name: 'Machine Shops & Mfg', icon: Factory },
+    { id: 'restaurants-hospitality', name: 'Restaurants & Hospitality', icon: UtensilsCrossed },
+    { id: 'insurance-agencies', name: 'Insurance Agencies', icon: ShieldCheck },
+    { id: 'fitness-gym-studios', name: 'Fitness & Gym Studios', icon: Dumbbell },
+    { id: 'wealth-advisory', name: 'Wealth & Advisory', icon: Landmark },
+    { id: 'retail-ecommerce', name: 'Retail & E-Commerce', icon: ShoppingBag }
   ];
 
   return (
@@ -59,7 +60,7 @@ export function USTicker() {
           const Icon = smb.icon;
           return (
             <a
-              href="#intake"
+              href={`/what-we-automate/${smb.id}`}
               key={`smb-1-${index}`}
               className="group relative flex items-center gap-3 px-4 py-2.5 rounded-xl bg-zinc-950/80 backdrop-blur-xl border border-white/[0.08] hover:border-[#FF5500]/50 hover:bg-zinc-900/90 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.5)] hover:shadow-[0_0_24px_-4px_rgba(255,85,0,0.25)] hover:-translate-y-0.5 cursor-pointer shrink-0"
             >
@@ -87,7 +88,7 @@ export function USTicker() {
           const Icon = smb.icon;
           return (
             <a
-              href="#intake"
+              href={`/what-we-automate/${smb.id}`}
               key={`smb-2-${index}`}
               className="group relative flex items-center gap-3 px-4 py-2.5 rounded-xl bg-zinc-950/80 backdrop-blur-xl border border-white/[0.08] hover:border-[#FF5500]/50 hover:bg-zinc-900/90 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.5)] hover:shadow-[0_0_24px_-4px_rgba(255,85,0,0.25)] hover:-translate-y-0.5 cursor-pointer shrink-0"
               aria-hidden="true"

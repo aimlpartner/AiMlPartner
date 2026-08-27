@@ -9,14 +9,21 @@ interface FooterNavLink {
 }
 
 export function USFooter() {
-  const navLinks: FooterNavLink[] = [
+  const mainNavLinks: FooterNavLink[] = [
     { label: 'Capabilities', to: '/#pillars' },
-    { label: 'Studio', to: '/agent-studio' },
+    { label: 'Use Cases', to: '/use-cases' },
     { label: 'Pricing', to: '/pricing' },
     { label: 'Services', to: '/services' },
     { label: 'About', to: '/about' },
     { label: 'AI Auditor', to: '/analyzer' },
     { label: 'Direct Desk', to: '/#intake' }
+  ];
+
+  const serviceLinks: FooterNavLink[] = [
+    { label: 'Operations', to: '/services/operations-automation' },
+    { label: 'Sales AI', to: '/services/sales-ai' },
+    { label: 'Support AI', to: '/services/customer-agents' },
+    { label: 'Engineering', to: '/services/custom-engineering' },
   ];
 
   return (
@@ -50,35 +57,54 @@ export function USFooter() {
             />
           </Link>
 
-          {/* Clean Nav Links */}
-          <nav className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-xs font-mono uppercase tracking-widest text-zinc-300">
-            {navLinks.map((link, idx) => (
-              link.to ? (
+          {/* Nav Links Container */}
+          <div className="flex flex-col items-center sm:items-end gap-5">
+            
+            {/* Primary Nav Links */}
+            <nav className="flex flex-wrap items-center justify-center sm:justify-end gap-6 sm:gap-8 text-xs font-mono uppercase tracking-widest text-zinc-300">
+              {mainNavLinks.map((link, idx) => (
+                link.to ? (
+                  <Link
+                    key={idx}
+                    to={link.to}
+                    className="hover:text-[#FF5500] transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={idx}
+                    href={link.href}
+                    className="hover:text-[#FF5500] transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                )
+              ))}
+            </nav>
+
+            {/* Secondary Highlighted Services Sub-Nav */}
+            <nav className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-4 text-[10px] font-mono uppercase tracking-widest">
+              <span className="text-zinc-500 font-bold hidden md:inline-block">SERVICES //</span>
+              {serviceLinks.map((link, idx) => (
                 <Link
                   key={idx}
-                  to={link.to}
-                  className="hover:text-[#FF5500] transition-colors"
+                  to={link.to!}
+                  className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all shadow-sm"
                 >
                   {link.label}
                 </Link>
-              ) : (
-                <a
-                  key={idx}
-                  href={link.href}
-                  className="hover:text-[#FF5500] transition-colors"
-                >
-                  {link.label}
-                </a>
-              )
-            ))}
-            <a
-              href="mailto:info@aimlpartner.com"
-              className="text-[#FF5500] hover:text-white transition-colors flex items-center gap-1 font-bold"
-            >
-              <span>info@aimlpartner.com</span>
-              <ArrowUpRight size={12} />
-            </a>
-          </nav>
+              ))}
+              <div className="hidden sm:block w-px h-4 bg-white/20 mx-2" />
+              <a
+                href="mailto:info@aimlpartner.com"
+                className="text-[#FF5500] hover:text-[#FF6E26] transition-colors flex items-center gap-1 font-bold"
+              >
+                <span>info@aimlpartner.com</span>
+                <ArrowUpRight size={12} />
+              </a>
+            </nav>
+          </div>
 
         </div>
 

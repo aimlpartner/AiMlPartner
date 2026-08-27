@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { SEO } from '../components/SEO';
 import { USHero } from '../components/us/USHero';
 import { USTicker } from '../components/us/USTicker';
+import { USWhatWeAutomatePreview } from '../components/us/USWhatWeAutomatePreview';
 import { USPillars } from '../components/us/USPillars';
 import { USCaseMetrics } from '../components/us/USCaseMetrics';
 import { USFAQ } from '../components/us/USFAQ';
@@ -41,13 +42,18 @@ export function HomeUS() {
         url="https://aimlpartner.com/"
       />
       
-      {/* 1. Hero Section */}
+      {/* 1. Hero Section (With Automated Companies Strip) */}
       <USHero />
 
       {/* 2. Enterprise Trust Ticker */}
       <USTicker />
 
-      {/* 3. 3-Phase Transformation Architecture */}
+      {/* 3. What We Automate - Popular SMB Automations */}
+      <div className="reveal">
+        <USWhatWeAutomatePreview />
+      </div>
+
+      {/* 4. 3-Phase Transformation Architecture */}
       <div className="reveal">
         <USPillars />
       </div>
