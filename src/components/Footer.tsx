@@ -95,7 +95,7 @@ export function Footer() {
             <h4 className="font-mono text-[10px] uppercase tracking-widest text-emerald-400 mb-2 font-bold">Navigation</h4>
             <Link to="/" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Home</Link>
             <Link to="/about" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">About</Link>
-            <Link to="/pricing" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Pricing</Link>
+            <Link to="/what-we-automate" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">What We Automate</Link>
             <Link to="/use-cases" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Use Cases</Link>
             <Link to="/analyzer" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">AI Auditor</Link>
           </div>

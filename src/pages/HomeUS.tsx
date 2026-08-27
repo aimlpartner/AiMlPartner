@@ -4,6 +4,7 @@ import { USHero } from '../components/us/USHero';
 import { USTicker } from '../components/us/USTicker';
 import { USWhatWeAutomatePreview } from '../components/us/USWhatWeAutomatePreview';
 import { USPillars } from '../components/us/USPillars';
+import { USUseCasesSection } from '../components/us/USUseCasesSection';
 import { USCaseMetrics } from '../components/us/USCaseMetrics';
 import { USFAQ } from '../components/us/USFAQ';
 import { USIntakeCTA } from '../components/us/USIntakeCTA';
@@ -48,7 +49,7 @@ export function HomeUS() {
       {/* 2. Enterprise Trust Ticker */}
       <USTicker />
 
-      {/* 3. What We Automate - Popular SMB Automations */}
+      {/* 3. What We Automate - Popular SMB Automations Grid */}
       <div className="reveal">
         <USWhatWeAutomatePreview />
       </div>
@@ -58,7 +59,12 @@ export function HomeUS() {
         <USPillars />
       </div>
 
-      {/* 5. Hard ROI Stat Counters & Case Studies */}
+      {/* 5. Proven AI Use Cases Showcase (Editorial Deep-Dive) */}
+      <div className="reveal">
+        <USUseCasesSection />
+      </div>
+
+      {/* 6. Hard ROI Stat Counters & Case Studies ("Real businesses. Real time saved.") */}
       <div className="reveal">
         <USCaseMetrics />
       </div>

@@ -204,8 +204,8 @@ export function Navbar() {
             <Link to="/analyzer" className={linkClass(location.pathname === '/analyzer')}>
               AI Auditor
             </Link>
-            <Link to="/partner-waitlist" className={linkClass(location.pathname === '/partner-waitlist')}>
-              Partners
+            <Link to="/what-we-automate" className={linkClass(location.pathname.startsWith('/what-we-automate'))}>
+              What We Automate
             </Link>
           </nav>
 
@@ -326,13 +326,13 @@ export function Navbar() {
             </Link>
 
             <Link
-              to="/partner-waitlist"
+              to="/what-we-automate"
               className={`text-sm font-semibold py-2 transition-colors flex items-center justify-between ${
-                location.pathname === '/partner-waitlist' ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
+                location.pathname.startsWith('/what-we-automate') ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Partner Program</span>
+              <span>What We Automate</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
 

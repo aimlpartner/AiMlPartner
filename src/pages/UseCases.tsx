@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Stethoscope,
   Scale,
@@ -18,7 +18,7 @@ import {
   Building2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { USIntakeCTA } from '../components/us/USIntakeCTA';
 import { SEO } from '../components/SEO';
 
@@ -57,7 +57,17 @@ interface CaseStudy {
 }
 
 export function UseCases() {
-  const [activeTab, setActiveTab] = useState<string>('healthcare');
+  const [searchParams] = useSearchParams();
+  const initialStudy = searchParams.get('study') || 'healthcare';
+  const [activeTab, setActiveTab] = useState<string>(initialStudy);
+
+  useEffect(() => {
+    const study = searchParams.get('study');
+    if (study) {
+      setActiveTab(study);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [searchParams]);
 
   const caseStudies: CaseStudy[] = [
     {

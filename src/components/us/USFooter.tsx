@@ -10,7 +10,7 @@ interface FooterNavLink {
 
 export function USFooter() {
   const mainNavLinks: FooterNavLink[] = [
-    { label: 'Capabilities', to: '/#pillars' },
+    { label: 'What We Automate', to: '/what-we-automate' },
     { label: 'Use Cases', to: '/use-cases' },
     { label: 'Pricing', to: '/pricing' },
     { label: 'Services', to: '/services' },
