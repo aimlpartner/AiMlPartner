@@ -153,30 +153,30 @@ export function AdminDashboard() {
 
   if (!user) {
     return (
-      <div className="relative min-h-screen bg-surface text-ink flex items-center justify-center font-sans">
-        {/* Texture Overlays */}
-        <div className="grain-overlay"></div>
-
-        {/* SECTION 1: IMMERSIVE SPACE BACKGROUND */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <div className="absolute inset-0 animate-[float-slow_30s_ease-in-out_infinite]">
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-90 transform scale-[1.15] origin-center"></div>
-          </div>
-          <div className="absolute inset-0 bg-space-gradient"></div>
+      <div className="relative min-h-screen bg-black text-white flex items-center justify-center font-sans overflow-hidden">
+        
+        {/* Background */}
+        <div className="absolute inset-0 z-0">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80"
+            style={{ backgroundImage: 'url("/hero_saturn.png")' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black z-10" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#FF5500]/10 rounded-full blur-[150px] pointer-events-none z-10" />
         </div>
 
         {/* LOGIN CARD */}
-        <div className="bg-white border border-black/10 p-10 rounded-3xl max-w-md w-full text-center shadow-editorial relative overflow-hidden z-10 mx-4">
-          <div className="w-16 h-16 bg-surface-alt border border-black/5 rounded-2xl flex items-center justify-center mx-auto mb-6 text-accent shadow-sm">
+        <div className="bg-black/60 border border-white/10 backdrop-blur-xl p-10 rounded-3xl max-w-md w-full text-center shadow-[0_0_40px_rgba(255,85,0,0.1)] relative z-10 mx-4">
+          <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-[#FF5500]">
             <Users size={24} />
           </div>
-          <h1 className="text-2xl font-display font-extrabold text-ink mb-2">Admin Login</h1>
-          <p className="text-ink-light font-medium text-sm mb-8 leading-relaxed">
-            Sign in with your authorized Google account to access the dashboard.
+          <h1 className="text-3xl font-display font-extrabold text-white mb-3 tracking-tight">Admin Login</h1>
+          <p className="text-zinc-400 font-medium text-sm mb-8 leading-relaxed">
+            Sign in with your authorized Google account to access the control panel.
           </p>
           <button
             onClick={signInWithGoogle}
-            className="w-full bg-ink text-white font-bold hover:bg-accent px-6 py-3 rounded-full transition-all cursor-pointer shadow-md"
+            className="w-full bg-[#FF5500] text-black font-bold hover:bg-orange-600 px-6 py-4 rounded-full transition-all cursor-pointer shadow-[0_0_20px_rgba(255,85,0,0.4)]"
           >
             Sign in with Google
           </button>
@@ -186,465 +186,463 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="relative min-h-screen bg-surface text-ink font-sans">
-      <div className="grain-overlay"></div>
+    <div className="relative min-h-screen bg-black text-white font-sans selection:bg-[#FF5500] selection:text-black overflow-hidden">
+      
+      {/* Background (Fixed for entire dashboard) */}
+      <div className="fixed inset-0 z-0">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80"
+          style={{ backgroundImage: 'url("/hero_saturn.png")' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#FF5500]/5 rounded-full blur-[150px] pointer-events-none z-10" />
+      </div>
 
-      <section className="relative pt-40 pb-24 text-white overflow-hidden bg-surface-dark">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 animate-[float-slow_30s_ease-in-out_infinite]">
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-90 transform scale-[1.15] origin-center"></div>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-24">
+        
+        {/* HEADER */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-display font-extrabold text-white tracking-tight mb-2 drop-shadow-2xl">
+              Control <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FF5500] to-[#FF8844]">Panel</span>
+            </h1>
+            <p className="text-zinc-400 font-medium text-sm flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              Logged in as <span className="font-semibold text-white">{user.email}</span>
+            </p>
           </div>
-          <div className="absolute inset-0 bg-space-gradient"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-accent/20 rounded-full blur-[100px] pointer-events-none"></div>
+          <button
+            onClick={logOut}
+            className="flex items-center gap-2 text-sm font-semibold text-zinc-300 hover:text-white bg-white/5 border border-white/10 px-5 py-2.5 rounded-full transition-all cursor-pointer shadow-sm hover:bg-white/10"
+          >
+            <LogOut size={16} />
+            Sign Out
+          </button>
         </div>
-        <div className="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>
 
-        <div className="max-w-[1400px] mx-auto px-6 relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-display font-extrabold text-white tracking-tight mb-2 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
-                Admin Dashboard
-              </h1>
-              <p className="text-white/70 font-medium text-sm leading-relaxed">
-                Logged in as <span className="font-semibold text-accent">{user.email}</span>
-              </p>
-            </div>
-            <button
-              onClick={logOut}
-              className="flex items-center gap-2 text-sm font-semibold text-white/75 hover:text-white bg-white/10 border border-white/20 px-5 py-2.5 rounded-xl transition-all cursor-pointer shadow-sm hover:bg-white/20"
-            >
-              <LogOut size={16} />
-              Sign Out
-            </button>
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl mb-8 text-sm font-medium">
+            {error}
           </div>
+        )}
+
+        {/* Navigation Tabs */}
+        <div className="flex flex-wrap items-center gap-3 mb-12 border-b border-white/10 pb-6">
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold transition-all cursor-pointer ${
+              activeTab === 'overview' ? 'bg-[#FF5500] text-black shadow-[0_0_20px_rgba(255,85,0,0.4)]' : 'bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white border border-white/5'
+            }`}
+          >
+            <LayoutDashboard size={16} />
+            Overview & Leads
+          </button>
+          <button
+            onClick={() => setActiveTab('jobs')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold transition-all cursor-pointer ${
+              activeTab === 'jobs' ? 'bg-[#FF5500] text-black shadow-[0_0_20px_rgba(255,85,0,0.4)]' : 'bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white border border-white/5'
+            }`}
+          >
+            <Briefcase size={16} />
+            Job Postings
+          </button>
+          <button
+            onClick={() => setActiveTab('applications')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold transition-all cursor-pointer ${
+              activeTab === 'applications' ? 'bg-[#FF5500] text-black shadow-[0_0_20px_rgba(255,85,0,0.4)]' : 'bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white border border-white/5'
+            }`}
+          >
+            <FileText size={16} />
+            Applications
+            {applications.length > 0 && (
+              <span className={`ml-1 px-2 py-0.5 rounded-full text-[10px] ${activeTab === 'applications' ? 'bg-black/20 text-black' : 'bg-[#FF5500]/20 text-[#FF5500]'}`}>
+                {applications.length}
+              </span>
+            )}
+          </button>
         </div>
-      </section>
 
-      <section className="bg-surface rounded-t-[3rem] -mt-10 py-12 relative z-10 text-ink border-t border-black/5 px-6 min-h-[500px]">
-        <div className="max-w-[1400px] mx-auto">
-          {error && (
-            <div className="bg-alert-soft border border-alert-border text-alert p-4 rounded-xl mb-8 text-sm font-medium">
-              {error}
-            </div>
-          )}
-
-          {/* Navigation Tabs */}
-          <div className="flex flex-wrap items-center gap-2 mb-12 border-b border-black/5 pb-4">
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all cursor-pointer ${
-                activeTab === 'overview' ? 'bg-ink text-white' : 'bg-surface-alt hover:bg-black/5 text-ink-light hover:text-ink'
-              }`}
-            >
-              <LayoutDashboard size={16} />
-              Overview & Leads
-            </button>
-            <button
-              onClick={() => setActiveTab('jobs')}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all cursor-pointer ${
-                activeTab === 'jobs' ? 'bg-ink text-white' : 'bg-surface-alt hover:bg-black/5 text-ink-light hover:text-ink'
-              }`}
-            >
-              <Briefcase size={16} />
-              Job Postings
-            </button>
-            <button
-              onClick={() => setActiveTab('applications')}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all cursor-pointer ${
-                activeTab === 'applications' ? 'bg-ink text-white' : 'bg-surface-alt hover:bg-black/5 text-ink-light hover:text-ink'
-              }`}
-            >
-              <FileText size={16} />
-              Applications
-              {applications.length > 0 && (
-                <span className={`ml-1 px-2 py-0.5 rounded-full text-[10px] ${activeTab === 'applications' ? 'bg-accent text-white' : 'bg-accent/20 text-accent'}`}>
-                  {applications.length}
-                </span>
-              )}
-            </button>
-          </div>
-
-          {/* TAB CONTENT: OVERVIEW */}
-          {activeTab === 'overview' && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                <div className="bg-white border border-black/5 p-6 rounded-2xl flex items-center gap-6 shadow-editorial hover:shadow-editorial-hover transition-all duration-300 relative overflow-hidden">
-                  <div className="w-12 h-12 bg-surface-alt border border-black/5 rounded-xl flex items-center justify-center text-accent">
-                    <FileText size={20} />
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-mono text-ink-light uppercase tracking-widest mb-1">Total Leads</div>
-                    <div className="text-3xl font-display font-extrabold text-ink">{leads.length}</div>
-                  </div>
+        {/* TAB CONTENT: OVERVIEW */}
+        {activeTab === 'overview' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+              <div className="bg-black/40 border border-white/10 backdrop-blur-xl p-6 rounded-3xl flex items-center gap-6 hover:border-[#FF5500]/40 transition-all duration-300">
+                <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-[#FF5500]">
+                  <FileText size={20} />
                 </div>
-
-                <div className="bg-white border border-black/5 p-6 rounded-2xl flex items-center gap-6 shadow-editorial hover:shadow-editorial-hover transition-all duration-300 relative overflow-hidden">
-                  <div className="w-12 h-12 bg-surface-alt border border-black/5 rounded-xl flex items-center justify-center text-accent">
-                    <Activity size={20} />
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-mono text-ink-light uppercase tracking-widest mb-1">Unique Visitors</div>
-                    <div className="text-3xl font-display font-extrabold text-ink">{visitorCount}</div>
-                  </div>
-                </div>
-
-                <div className="bg-white border border-black/5 p-6 rounded-2xl flex items-center gap-6 shadow-editorial hover:shadow-editorial-hover transition-all duration-300 relative overflow-hidden">
-                  <div className="w-12 h-12 bg-surface-alt border border-black/5 rounded-xl flex items-center justify-center text-accent">
-                    <DollarSign size={20} />
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-mono text-ink-light uppercase tracking-widest mb-1">Total API Spend</div>
-                    <div className="text-3xl font-display font-extrabold text-ink">
-                      ${totalSpend.toFixed(5)}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white border border-black/5 p-6 rounded-2xl flex items-center gap-6 shadow-editorial hover:shadow-editorial-hover transition-all duration-300 relative overflow-hidden">
-                  <div className="w-12 h-12 bg-surface-alt border border-black/5 rounded-xl flex items-center justify-center text-accent">
-                    <DollarSign size={20} />
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-mono text-ink-light uppercase tracking-widest mb-1">Avg. Audit Cost</div>
-                    <div className="text-3xl font-display font-extrabold text-ink">
-                      ${avgCostPerAudit.toFixed(5)}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Recent Leads Table Card */}
-              <div className="bg-white border border-black/5 rounded-2xl overflow-hidden shadow-editorial">
-                <div className="px-6 py-5 border-b border-black/5 bg-surface-alt/30">
-                  <h2 className="font-display font-bold text-ink text-lg">Recent Leads</h2>
-                </div>
-
-                {loading ? (
-                  <div className="p-8 text-center text-ink-light font-medium text-sm">Loading leads...</div>
-                ) : leads.length === 0 ? (
-                  <div className="p-8 text-center text-ink-light font-medium text-sm">No leads captured yet.</div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="border-b border-black/5 text-[10px] font-mono text-ink-light uppercase tracking-widest bg-surface-alt/10">
-                          <th className="px-6 py-4 font-bold">Date</th>
-                          <th className="px-6 py-4 font-bold">Name</th>
-                          <th className="px-6 py-4 font-bold">Email</th>
-                          <th className="px-6 py-4 font-bold">Company</th>
-                          <th className="px-6 py-4 font-bold">Source</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {leads.map((lead) => (
-                          <tr key={lead.id} className="border-b border-black/5 last:border-0 hover:bg-surface-alt/30 transition-colors">
-                            <td className="px-6 py-4 text-xs text-ink-light whitespace-nowrap font-mono">
-                              {lead.createdAt ? new Intl.DateTimeFormat('en-US', {
-                                month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
-                              }).format(lead.createdAt) : 'N/A'}
-                            </td>
-                            <td className="px-6 py-4 text-sm font-semibold text-ink whitespace-nowrap font-display">
-                              {lead.name || '-'}
-                            </td>
-                            <td className="px-6 py-4 text-sm text-ink-light whitespace-nowrap">
-                              {lead.email}
-                            </td>
-                            <td className="px-6 py-4 text-sm text-ink-light whitespace-nowrap">
-                              {lead.company || '-'}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded bg-surface-alt border border-black/5 text-[10px] font-semibold text-ink-light uppercase font-mono tracking-wider">
-                                {lead.source}
-                              </span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-
-              {/* Recent API Audits Table Card */}
-              <div className="bg-white border border-black/5 rounded-2xl overflow-hidden shadow-editorial mt-12">
-                <div className="px-6 py-5 border-b border-black/5 bg-surface-alt/30">
-                  <h2 className="font-display font-bold text-ink text-lg">AI Analysis Cost Logs</h2>
-                </div>
-
-                {loading ? (
-                  <div className="p-8 text-center text-ink-light font-medium text-sm">Loading audits...</div>
-                ) : audits.length === 0 ? (
-                  <div className="p-8 text-center text-ink-light font-medium text-sm">No analysis runs recorded yet.</div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="border-b border-black/5 text-[10px] font-mono text-ink-light uppercase tracking-widest bg-surface-alt/10">
-                          <th className="px-6 py-4 font-bold">Date</th>
-                          <th className="px-6 py-4 font-bold">Business Name</th>
-                          <th className="px-6 py-4 font-bold">Details / Source</th>
-                          <th className="px-6 py-4 font-bold">Cost (USD)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {audits.map((audit) => (
-                          <tr key={audit.id} className="border-b border-black/5 last:border-0 hover:bg-surface-alt/30 transition-colors">
-                            <td className="px-6 py-4 text-xs text-ink-light whitespace-nowrap font-mono">
-                              {audit.createdAt ? new Intl.DateTimeFormat('en-US', {
-                                month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
-                              }).format(audit.createdAt) : 'N/A'}
-                            </td>
-                            <td className="px-6 py-4 text-sm font-semibold text-ink whitespace-nowrap font-display">
-                              {audit.businessName || '-'}
-                            </td>
-                            <td className="px-6 py-4 text-sm text-ink-light max-w-xs truncate">
-                              {audit.url ? (
-                                <span className="text-accent underline break-all">{audit.url}</span>
-                              ) : (
-                                audit.description || '-'
-                              )}
-                            </td>
-                            <td className="px-6 py-4 text-sm font-bold text-ink whitespace-nowrap font-mono">
-                              ${(audit.costUsd || 0).toFixed(5)}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* TAB CONTENT: JOBS */}
-          {activeTab === 'jobs' && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h2 className="font-display font-bold text-2xl text-ink">Job Postings</h2>
-                  <p className="text-ink-light text-sm mt-1">Manage active career opportunities.</p>
+                  <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-1">Total Leads</div>
+                  <div className="text-3xl font-display font-black text-white">{leads.length}</div>
                 </div>
-                <button
-                  onClick={() => setShowJobForm(!showJobForm)}
-                  className="flex items-center gap-2 bg-ink text-white px-5 py-2.5 rounded-full font-bold text-sm hover:bg-accent transition-colors"
-                >
-                  <Plus size={16} />
-                  {showJobForm ? 'Cancel' : 'Post New Job'}
-                </button>
               </div>
 
-              {showJobForm && (
-                <form onSubmit={handleCreateJob} className="bg-white border border-black/5 p-8 rounded-2xl shadow-editorial mb-8 animate-in fade-in slide-in-from-top-4">
-                  <h3 className="font-display font-bold text-lg mb-6">Create Job Posting</h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <label className="block text-xs font-mono font-bold text-ink-light uppercase tracking-widest mb-2">Job Title</label>
-                      <input
-                        type="text"
-                        required
-                        value={jobForm.title}
-                        onChange={e => setJobForm({...jobForm, title: e.target.value})}
-                        className="w-full bg-surface border border-black/10 px-4 py-3 rounded-xl focus:outline-none focus:border-accent transition-colors"
-                        placeholder="e.g. Senior AI Engineer"
-                      />
-                    </div>
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <label className="block text-xs font-mono font-bold text-ink-light uppercase tracking-widest">Location</label>
-                        <label className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-accent uppercase cursor-pointer bg-accent/10 px-2 py-0.5 rounded transition-colors hover:bg-accent/20">
-                          <input
-                            type="checkbox"
-                            checked={jobForm.isRemote}
-                            onChange={e => {
-                              const checked = e.target.checked;
-                              setJobForm(prev => ({
-                                ...prev,
-                                isRemote: checked,
-                                location: checked ? 'Remote' : ''
-                              }));
-                            }}
-                            className="accent-accent cursor-pointer"
-                          />
-                          Remote Position
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        required={!jobForm.isRemote}
-                        disabled={jobForm.isRemote}
-                        value={jobForm.isRemote ? 'Remote' : jobForm.location}
-                        onChange={e => setJobForm({...jobForm, location: e.target.value})}
-                        className={`w-full bg-surface border border-black/10 px-4 py-3 rounded-xl focus:outline-none focus:border-accent transition-colors ${jobForm.isRemote ? 'opacity-60 cursor-not-allowed bg-black/5 text-ink-light' : ''}`}
-                        placeholder="e.g. New York, NY"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-mono font-bold text-ink-light uppercase tracking-widest mb-2">Employment Type</label>
-                      <select
-                        value={jobForm.type}
-                        onChange={e => setJobForm({...jobForm, type: e.target.value})}
-                        className="w-full bg-surface border border-black/10 px-4 py-3 rounded-xl focus:outline-none focus:border-accent transition-colors appearance-none"
-                      >
-                        <option value="Full-time">Full-time</option>
-                        <option value="Contract-to-Hire">Contract-to-Hire</option>
-                        <option value="Contract">Contract</option>
-                        <option value="Part-time">Part-time</option>
-                        <option value="Internship">Internship</option>
-                      </select>
-                    </div>
-                  </div>
+              <div className="bg-black/40 border border-white/10 backdrop-blur-xl p-6 rounded-3xl flex items-center gap-6 hover:border-[#FF5500]/40 transition-all duration-300">
+                <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-[#FF5500]">
+                  <Activity size={20} />
+                </div>
+                <div>
+                  <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-1">Unique Visitors</div>
+                  <div className="text-3xl font-display font-black text-white">{visitorCount}</div>
+                </div>
+              </div>
 
-                  <div className="mb-8">
-                    <label className="block text-xs font-mono font-bold text-ink-light uppercase tracking-widest mb-2">Description</label>
-                    <textarea
+              <div className="bg-black/40 border border-white/10 backdrop-blur-xl p-6 rounded-3xl flex items-center gap-6 hover:border-[#FF5500]/40 transition-all duration-300">
+                <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-[#FF5500]">
+                  <DollarSign size={20} />
+                </div>
+                <div>
+                  <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-1">Total API Spend</div>
+                  <div className="text-3xl font-display font-black text-white">
+                    ${totalSpend.toFixed(5)}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-black/40 border border-white/10 backdrop-blur-xl p-6 rounded-3xl flex items-center gap-6 hover:border-[#FF5500]/40 transition-all duration-300">
+                <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-[#FF5500]">
+                  <DollarSign size={20} />
+                </div>
+                <div>
+                  <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-1">Avg. Audit Cost</div>
+                  <div className="text-3xl font-display font-black text-white">
+                    ${avgCostPerAudit.toFixed(5)}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Leads Table Card */}
+            <div className="bg-black/40 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden mb-12">
+              <div className="px-8 py-6 border-b border-white/10 bg-white/5">
+                <h2 className="font-display font-bold text-white text-xl">Recent Leads</h2>
+              </div>
+
+              {loading ? (
+                <div className="p-12 text-center text-zinc-500 font-mono text-sm">Loading leads...</div>
+              ) : leads.length === 0 ? (
+                <div className="p-12 text-center text-zinc-500 font-mono text-sm">No leads captured yet.</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/10 text-[10px] font-mono text-zinc-500 uppercase tracking-widest bg-black/20">
+                        <th className="px-8 py-5 font-bold">Date</th>
+                        <th className="px-8 py-5 font-bold">Name</th>
+                        <th className="px-8 py-5 font-bold">Email</th>
+                        <th className="px-8 py-5 font-bold">Company</th>
+                        <th className="px-8 py-5 font-bold">Source</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {leads.map((lead) => (
+                        <tr key={lead.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
+                          <td className="px-8 py-5 text-xs text-zinc-400 whitespace-nowrap font-mono">
+                            {lead.createdAt ? new Intl.DateTimeFormat('en-US', {
+                              month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
+                            }).format(lead.createdAt) : 'N/A'}
+                          </td>
+                          <td className="px-8 py-5 text-sm font-bold text-white whitespace-nowrap font-display">
+                            {lead.name || '-'}
+                          </td>
+                          <td className="px-8 py-5 text-sm text-zinc-300 whitespace-nowrap">
+                            {lead.email}
+                          </td>
+                          <td className="px-8 py-5 text-sm text-zinc-300 whitespace-nowrap">
+                            {lead.company || '-'}
+                          </td>
+                          <td className="px-8 py-5 whitespace-nowrap">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-zinc-400 uppercase font-mono tracking-wider">
+                              {lead.source}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* Recent API Audits Table Card */}
+            <div className="bg-black/40 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden">
+              <div className="px-8 py-6 border-b border-white/10 bg-white/5">
+                <h2 className="font-display font-bold text-white text-xl">AI Analysis Cost Logs</h2>
+              </div>
+
+              {loading ? (
+                <div className="p-12 text-center text-zinc-500 font-mono text-sm">Loading audits...</div>
+              ) : audits.length === 0 ? (
+                <div className="p-12 text-center text-zinc-500 font-mono text-sm">No analysis runs recorded yet.</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/10 text-[10px] font-mono text-zinc-500 uppercase tracking-widest bg-black/20">
+                        <th className="px-8 py-5 font-bold">Date</th>
+                        <th className="px-8 py-5 font-bold">Business Name</th>
+                        <th className="px-8 py-5 font-bold">Details / Source</th>
+                        <th className="px-8 py-5 font-bold">Cost (USD)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {audits.map((audit) => (
+                        <tr key={audit.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
+                          <td className="px-8 py-5 text-xs text-zinc-400 whitespace-nowrap font-mono">
+                            {audit.createdAt ? new Intl.DateTimeFormat('en-US', {
+                              month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
+                            }).format(audit.createdAt) : 'N/A'}
+                          </td>
+                          <td className="px-8 py-5 text-sm font-bold text-white whitespace-nowrap font-display">
+                            {audit.businessName || '-'}
+                          </td>
+                          <td className="px-8 py-5 text-sm text-zinc-300 max-w-xs truncate">
+                            {audit.url ? (
+                              <span className="text-[#FF5500] hover:underline break-all cursor-pointer">{audit.url}</span>
+                            ) : (
+                              audit.description || '-'
+                            )}
+                          </td>
+                          <td className="px-8 py-5 text-sm font-bold text-white whitespace-nowrap font-mono">
+                            ${(audit.costUsd || 0).toFixed(5)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* TAB CONTENT: JOBS */}
+        {activeTab === 'jobs' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="font-display font-bold text-2xl text-white">Job Postings</h2>
+                <p className="text-zinc-400 text-sm mt-1">Manage active career opportunities.</p>
+              </div>
+              <button
+                onClick={() => setShowJobForm(!showJobForm)}
+                className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-bold text-sm hover:bg-[#FF5500] hover:text-white transition-all cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:shadow-none"
+              >
+                <Plus size={16} />
+                {showJobForm ? 'Cancel' : 'Post New Job'}
+              </button>
+            </div>
+
+            {showJobForm && (
+              <form onSubmit={handleCreateJob} className="bg-black/60 border border-[#FF5500]/50 backdrop-blur-xl p-10 rounded-3xl mb-12 animate-in fade-in slide-in-from-top-4 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#FF5500]/10 to-transparent pointer-events-none"></div>
+                <h3 className="font-display font-bold text-xl mb-8 relative z-10">Create Job Posting</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 relative z-10">
+                  <div>
+                    <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-3">Job Title</label>
+                    <input
+                      type="text"
                       required
-                      rows={4}
-                      value={jobForm.desc}
-                      onChange={e => setJobForm({...jobForm, desc: e.target.value})}
-                      className="w-full bg-surface border border-black/10 px-4 py-3 rounded-xl focus:outline-none focus:border-accent transition-colors resize-none"
-                      placeholder="Briefly describe the role..."
+                      value={jobForm.title}
+                      onChange={e => setJobForm({...jobForm, title: e.target.value})}
+                      className="w-full bg-black/50 border border-white/20 text-white px-5 py-4 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors"
+                      placeholder="e.g. Senior AI Engineer"
                     />
                   </div>
-
-                  <div className="flex justify-end gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setShowJobForm(false)}
-                      className="px-6 py-2.5 rounded-full font-bold text-sm text-ink-light hover:bg-surface-alt transition-colors"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={isSubmittingJob}
-                      className="flex items-center gap-2 px-6 py-2.5 bg-accent hover:bg-accent/90 text-white rounded-full font-bold text-sm transition-colors disabled:opacity-50"
-                    >
-                      {isSubmittingJob ? 'Saving...' : 'Publish Job'}
-                    </button>
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest">Location</label>
+                      <label className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#FF5500] uppercase cursor-pointer bg-[#FF5500]/10 px-3 py-1 rounded-md transition-colors hover:bg-[#FF5500]/20 border border-[#FF5500]/30">
+                        <input
+                          type="checkbox"
+                          checked={jobForm.isRemote}
+                          onChange={e => {
+                            const checked = e.target.checked;
+                            setJobForm(prev => ({
+                              ...prev,
+                              isRemote: checked,
+                              location: checked ? 'Remote' : ''
+                            }));
+                          }}
+                          className="accent-[#FF5500] cursor-pointer"
+                        />
+                        Remote Position
+                      </label>
+                    </div>
+                    <input
+                      type="text"
+                      required={!jobForm.isRemote}
+                      disabled={jobForm.isRemote}
+                      value={jobForm.isRemote ? 'Remote' : jobForm.location}
+                      onChange={e => setJobForm({...jobForm, location: e.target.value})}
+                      className={`w-full bg-black/50 border border-white/20 text-white px-5 py-4 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors ${jobForm.isRemote ? 'opacity-50 cursor-not-allowed text-zinc-500' : ''}`}
+                      placeholder="e.g. New York, NY"
+                    />
                   </div>
-                </form>
+                  <div>
+                    <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-3">Employment Type</label>
+                    <select
+                      value={jobForm.type}
+                      onChange={e => setJobForm({...jobForm, type: e.target.value})}
+                      className="w-full bg-black/50 border border-white/20 text-white px-5 py-4 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors appearance-none cursor-pointer"
+                    >
+                      <option value="Full-time">Full-time</option>
+                      <option value="Contract-to-Hire">Contract-to-Hire</option>
+                      <option value="Contract">Contract</option>
+                      <option value="Part-time">Part-time</option>
+                      <option value="Internship">Internship</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mb-10 relative z-10">
+                  <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-3">Description</label>
+                  <textarea
+                    required
+                    rows={5}
+                    value={jobForm.desc}
+                    onChange={e => setJobForm({...jobForm, desc: e.target.value})}
+                    className="w-full bg-black/50 border border-white/20 text-white px-5 py-4 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors resize-none"
+                    placeholder="Briefly describe the role, responsibilities, and requirements..."
+                  />
+                </div>
+
+                <div className="flex justify-end gap-4 relative z-10">
+                  <button
+                    type="button"
+                    onClick={() => setShowJobForm(false)}
+                    className="px-8 py-3 rounded-full font-bold text-sm text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmittingJob}
+                    className="flex items-center gap-2 px-8 py-3 bg-[#FF5500] hover:bg-[#FF8844] text-black rounded-full font-bold text-sm transition-colors cursor-pointer shadow-[0_0_15px_rgba(255,85,0,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmittingJob ? 'Saving...' : 'Publish Job'}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <div className="bg-black/40 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden">
+              {jobs.length === 0 ? (
+                <div className="p-16 text-center text-zinc-500 font-mono text-sm border border-dashed border-white/10 rounded-2xl m-6">No active job postings.</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/10 text-[10px] font-mono text-zinc-500 uppercase tracking-widest bg-black/20">
+                        <th className="px-8 py-5 font-bold">Title</th>
+                        <th className="px-8 py-5 font-bold">Location</th>
+                        <th className="px-8 py-5 font-bold">Type</th>
+                        <th className="px-8 py-5 font-bold">Date Posted</th>
+                        <th className="px-8 py-5 font-bold text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {jobs.map((job) => (
+                        <tr key={job.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors group">
+                          <td className="px-8 py-5 text-base font-bold text-white font-display">
+                            {job.title}
+                          </td>
+                          <td className="px-8 py-5 text-sm text-zinc-300">
+                            {job.location}
+                          </td>
+                          <td className="px-8 py-5">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-zinc-400 uppercase font-mono tracking-wider">
+                              {job.type}
+                            </span>
+                          </td>
+                          <td className="px-8 py-5 text-xs text-zinc-400 font-mono">
+                            {job.createdAt ? new Intl.DateTimeFormat('en-US', {
+                              month: 'short', day: 'numeric', year: 'numeric'
+                            }).format(job.createdAt) : 'Just now'}
+                          </td>
+                          <td className="px-8 py-5 text-right">
+                            <button
+                              onClick={() => handleDeleteJob(job.id)}
+                              className="text-zinc-500 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-500/10 opacity-0 group-hover:opacity-100 cursor-pointer"
+                              title="Delete Posting"
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
-
-              <div className="bg-white border border-black/5 rounded-2xl overflow-hidden shadow-editorial">
-                {jobs.length === 0 ? (
-                  <div className="p-8 text-center text-ink-light font-medium text-sm">No active job postings.</div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="border-b border-black/5 text-[10px] font-mono text-ink-light uppercase tracking-widest bg-surface-alt/10">
-                          <th className="px-6 py-4 font-bold">Title</th>
-                          <th className="px-6 py-4 font-bold">Location</th>
-                          <th className="px-6 py-4 font-bold">Type</th>
-                          <th className="px-6 py-4 font-bold">Date Posted</th>
-                          <th className="px-6 py-4 font-bold text-right">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {jobs.map((job) => (
-                          <tr key={job.id} className="border-b border-black/5 last:border-0 hover:bg-surface-alt/30 transition-colors group">
-                            <td className="px-6 py-4 text-sm font-bold text-ink font-display">
-                              {job.title}
-                            </td>
-                            <td className="px-6 py-4 text-sm text-ink-light">
-                              {job.location}
-                            </td>
-                            <td className="px-6 py-4">
-                              <span className="inline-flex items-center px-2 py-1 rounded bg-surface-alt border border-black/5 text-[10px] font-semibold text-ink-light uppercase font-mono tracking-wider">
-                                {job.type}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4 text-xs text-ink-light font-mono">
-                              {job.createdAt ? new Intl.DateTimeFormat('en-US', {
-                                month: 'short', day: 'numeric', year: 'numeric'
-                              }).format(job.createdAt) : 'Just now'}
-                            </td>
-                            <td className="px-6 py-4 text-right">
-                              <button
-                                onClick={() => handleDeleteJob(job.id)}
-                                className="text-ink-light hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50 opacity-0 group-hover:opacity-100"
-                                title="Delete Posting"
-                              >
-                                <Trash2 size={16} />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* TAB CONTENT: APPLICATIONS */}
-          {activeTab === 'applications' && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="mb-8">
-                <h2 className="font-display font-bold text-2xl text-ink">Job Applications</h2>
-                <p className="text-ink-light text-sm mt-1">Review candidates who applied via the Careers page.</p>
-              </div>
-
-              <div className="bg-white border border-black/5 rounded-2xl overflow-hidden shadow-editorial">
-                {applications.length === 0 ? (
-                  <div className="p-8 text-center text-ink-light font-medium text-sm">No applications received yet.</div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="border-b border-black/5 text-[10px] font-mono text-ink-light uppercase tracking-widest bg-surface-alt/10">
-                          <th className="px-6 py-4 font-bold">Date</th>
-                          <th className="px-6 py-4 font-bold">Candidate</th>
-                          <th className="px-6 py-4 font-bold">Role Applied For</th>
-                          <th className="px-6 py-4 font-bold">Links</th>
-                          <th className="px-6 py-4 font-bold">Cover Letter</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {applications.map((app) => (
-                          <tr key={app.id} className="border-b border-black/5 last:border-0 hover:bg-surface-alt/30 transition-colors align-top">
-                            <td className="px-6 py-4 text-xs text-ink-light font-mono whitespace-nowrap">
-                              {app.createdAt ? new Intl.DateTimeFormat('en-US', {
-                                month: 'short', day: 'numeric'
-                              }).format(app.createdAt) : 'N/A'}
-                            </td>
-                            <td className="px-6 py-4">
-                              <div className="text-sm font-bold text-ink font-display">{app.name}</div>
-                              <a href={`mailto:${app.email}`} className="text-xs text-accent hover:underline">{app.email}</a>
-                            </td>
-                            <td className="px-6 py-4 text-sm font-bold text-ink-light">
-                              {app.jobTitle || 'Unknown Role'}
-                            </td>
-                            <td className="px-6 py-4">
-                              {app.linkedinUrl ? (
-                                <a href={app.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-accent hover:underline flex items-center gap-1">
-                                  Profile / Resume <Send size={10} />
-                                </a>
-                              ) : (
-                                <span className="text-xs text-ink-light">No link provided</span>
-                              )}
-                            </td>
-                            <td className="px-6 py-4">
-                              <div className="text-sm text-ink-light max-w-sm whitespace-pre-wrap">
-                                {app.coverLetter || <span className="italic opacity-50">No cover letter</span>}
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
+        {/* TAB CONTENT: APPLICATIONS */}
+        {activeTab === 'applications' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="mb-8">
+              <h2 className="font-display font-bold text-2xl text-white">Job Applications</h2>
+              <p className="text-zinc-400 text-sm mt-1">Review candidates who applied via the Careers page.</p>
             </div>
-          )}
 
-        </div>
-      </section>
+            <div className="bg-black/40 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden">
+              {applications.length === 0 ? (
+                <div className="p-16 text-center text-zinc-500 font-mono text-sm border border-dashed border-white/10 rounded-2xl m-6">No applications received yet.</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/10 text-[10px] font-mono text-zinc-500 uppercase tracking-widest bg-black/20">
+                        <th className="px-8 py-5 font-bold">Date</th>
+                        <th className="px-8 py-5 font-bold">Candidate</th>
+                        <th className="px-8 py-5 font-bold">Role Applied For</th>
+                        <th className="px-8 py-5 font-bold">Links</th>
+                        <th className="px-8 py-5 font-bold">Cover Letter</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {applications.map((app) => (
+                        <tr key={app.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors align-top">
+                          <td className="px-8 py-6 text-xs text-zinc-400 font-mono whitespace-nowrap">
+                            {app.createdAt ? new Intl.DateTimeFormat('en-US', {
+                              month: 'short', day: 'numeric'
+                            }).format(app.createdAt) : 'N/A'}
+                          </td>
+                          <td className="px-8 py-6">
+                            <div className="text-sm font-bold text-white font-display mb-1">{app.name}</div>
+                            <a href={`mailto:${app.email}`} className="text-xs text-[#FF5500] hover:underline cursor-pointer">{app.email}</a>
+                          </td>
+                          <td className="px-8 py-6 text-sm font-bold text-zinc-300">
+                            {app.jobTitle || 'Unknown Role'}
+                          </td>
+                          <td className="px-8 py-6">
+                            {app.linkedinUrl ? (
+                              <a href={app.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-mono font-bold text-[#FF5500] hover:underline flex items-center gap-1.5 cursor-pointer bg-[#FF5500]/10 px-3 py-1.5 rounded w-fit border border-[#FF5500]/20">
+                                Profile / Resume <Send size={12} />
+                              </a>
+                            ) : (
+                              <span className="text-xs text-zinc-500 font-mono">No link provided</span>
+                            )}
+                          </td>
+                          <td className="px-8 py-6">
+                            <div className="text-sm text-zinc-400 max-w-sm whitespace-pre-wrap leading-relaxed">
+                              {app.coverLetter || <span className="italic opacity-50">No cover letter</span>}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }
