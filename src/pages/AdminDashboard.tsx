@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, onSnapshot, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth, signInWithGoogle, logOut } from '../lib/firebase';
-import { LogOut, Users, FileText, Activity, DollarSign, Briefcase, Plus, Trash2, LayoutDashboard, Send } from 'lucide-react';
+import { LogOut, Users, FileText, Activity, DollarSign, Briefcase, Plus, Trash2, LayoutDashboard, Send, ShieldAlert, ArrowLeft } from 'lucide-react';
 
 type Tab = 'overview' | 'jobs' | 'applications';
 
@@ -180,6 +180,56 @@ export function AdminDashboard() {
           >
             Sign in with Google
           </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Access Restricted / Permission Denied Screen
+  if (error) {
+    return (
+      <div className="relative min-h-screen bg-black text-white flex items-center justify-center font-sans overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 z-0">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80"
+            style={{ backgroundImage: 'url("/hero_saturn.png")' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black z-10" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-500/10 rounded-full blur-[150px] pointer-events-none z-10" />
+        </div>
+
+        {/* ACCESS RESTRICTED CARD */}
+        <div className="bg-black/70 border border-red-500/30 backdrop-blur-2xl p-10 rounded-3xl max-w-md w-full text-center shadow-[0_0_60px_rgba(239,68,68,0.18)] relative z-10 mx-4">
+          <div className="w-16 h-16 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 text-red-500 shadow-inner">
+            <ShieldAlert size={28} />
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-display font-black text-white mb-2 tracking-tight">Access Restricted</h1>
+          <p className="text-zinc-400 font-medium text-sm mb-6 leading-relaxed">
+            You do not have administrator permissions to access this control panel.
+          </p>
+          
+          <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 mb-8 text-left">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1">Authenticated Account</span>
+            <span className="text-sm font-mono text-red-400 font-semibold break-all">{user.email}</span>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={logOut}
+              className="w-full flex items-center justify-center gap-2 bg-[#FF5500] hover:bg-orange-600 text-black font-bold px-6 py-3.5 rounded-full transition-all cursor-pointer shadow-[0_0_20px_rgba(255,85,0,0.3)]"
+            >
+              <LogOut size={16} />
+              Sign Out & Switch Account
+            </button>
+            <a
+              href="/"
+              className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white font-medium text-sm px-6 py-3 rounded-full transition-all border border-white/5"
+            >
+              <ArrowLeft size={14} />
+              Return to Website
+            </a>
+          </div>
         </div>
       </div>
     );

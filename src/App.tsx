@@ -32,6 +32,7 @@ const NotFound = lazy(() =>
 );
 const Blog = lazy(() => import('./pages/Blog').then((module) => ({ default: module.Blog })));
 const Careers = lazy(() => import('./pages/Careers').then((module) => ({ default: module.Careers })));
+const JobDetails = lazy(() => import('./pages/JobDetails').then((module) => ({ default: module.JobDetails })));
 
 // Services Hub & Specialized Subpages
 const Services = lazy(() => import('./pages/Services').then((module) => ({ default: module.Services })));
@@ -106,6 +107,7 @@ export default function App() {
             <Route path="/what-we-automate/:industryId" element={<SMBSolutionDetail />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/careers/:id" element={<JobDetails />} />
 
             {/* Catch-all 404 Route */}
             <Route path="*" element={<NotFound />} />

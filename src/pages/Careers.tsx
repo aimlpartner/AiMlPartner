@@ -4,14 +4,12 @@ import { db } from '../lib/firebase';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Briefcase, GraduationCap, Users } from 'lucide-react';
 import { SEO } from '../components/SEO';
-import { JobApplicationModal } from '../components/JobApplicationModal';
 
 type FilterType = 'All' | 'Full-time' | 'Internship' | 'Contract';
 
 export function Careers() {
   const [roles, setRoles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedJob, setSelectedJob] = useState<{ id: string, title: string } | null>(null);
   const [activeFilter, setActiveFilter] = useState<FilterType>('All');
 
   useEffect(() => {
@@ -127,44 +125,65 @@ export function Careers() {
             filteredRoles.map((role, idx) => (
               <div 
                 key={idx} 
-                className="group relative overflow-hidden p-8 border border-white/10 bg-black/40 backdrop-blur-xl rounded-3xl hover:border-[#FF5500]/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(255,85,0,0.15)] flex flex-col md:flex-row md:items-center justify-between gap-8"
+                className="group relative overflow-hidden p-8 sm:p-10 bg-black border border-white/10 rounded-[2rem] hover:border-white/20 transition-all duration-700 hover:-translate-y-1 hover:shadow-[0_20px_40px_-20px_rgba(255,85,0,0.5)] flex flex-col md:flex-row md:items-center justify-between gap-8"
               >
-                {/* Glow effect on hover */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#FF5500]/0 via-[#FF5500]/5 to-[#FF5500]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                {/* Saturn Theme Background */}
+                <div 
+                  className="absolute inset-0 bg-cover bg-center opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 pointer-events-none"
+                  style={{ backgroundImage: 'url("/job_card_bg_saturn.jpg")' }}
+                />
+                {/* Minimal dark overlay to let the image shine */}
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-1000 pointer-events-none" />
                 
-                <div className="max-w-2xl relative z-10">
-                  <div className="flex flex-wrap items-center gap-3 mb-4">
-                    <span className={`flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-widest uppercase px-3 py-1.5 rounded-full ${
-                      role.type === 'Internship' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
-                      role.type.includes('Contract') ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
-                      'bg-[#FF5500]/20 text-[#FF5500] border border-[#FF5500]/30'
+                {/* Permanent Subtle Glows */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[#FF5500]/20 to-transparent rounded-full blur-[60px] pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-blue-500/10 to-transparent rounded-full blur-[60px] pointer-events-none"></div>
+
+                {/* Dynamic corner gradient on hover */}
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#FF5500]/30 rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-500/20 rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+                
+                {/* Left accent line */}
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-gradient-to-b from-[#FF5500] to-[#FF8844] group-hover:h-1/2 transition-all duration-500 rounded-r-full"></div>
+                
+                <div className="max-w-2xl relative z-10 flex flex-col gap-5 pl-2 md:pl-4">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className={`flex items-center gap-1.5 text-[11px] font-mono font-bold tracking-widest uppercase px-3 py-1.5 rounded-md ${
+                      role.type === 'Internship' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
+                      role.type.includes('Contract') ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' :
+                      'bg-[#FF5500]/10 text-[#FF5500] border border-[#FF5500]/20'
                     }`}>
                       {getIconForType(role.type)}
                       {role.type}
                     </span>
-                    <span className="text-[10px] font-mono text-zinc-300 bg-white/10 px-3 py-1.5 rounded-full font-bold tracking-widest uppercase flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                    <span className="text-[11px] font-mono text-zinc-400 bg-white/5 px-3 py-1.5 rounded-md font-bold tracking-widest uppercase flex items-center gap-2 border border-white/5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)] animate-pulse"></span>
                       {role.location}
                     </span>
                   </div>
                   
-                  <h3 className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight mb-3 group-hover:text-[#FF5500] transition-colors">
-                    {role.title}
-                  </h3>
-                  
-                  <p className="font-sans text-sm md:text-base text-zinc-400 leading-relaxed line-clamp-3">
-                    {role.desc}
-                  </p>
+                  <div className="space-y-3">
+                    <h3 className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-zinc-400 transition-all duration-300">
+                      {role.title}
+                    </h3>
+                    
+                    <p className="font-sans text-sm md:text-base text-zinc-400 leading-relaxed line-clamp-3 group-hover:text-zinc-300 transition-colors">
+                      {role.desc}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="relative z-10 shrink-0 mt-2 md:mt-0">
-                  <button 
-                    onClick={() => setSelectedJob({ id: role.id, title: role.title })}
-                    className="flex items-center justify-center gap-2 w-full md:w-auto bg-white text-black font-bold uppercase tracking-wider text-xs px-8 py-4 rounded-full cursor-pointer hover:bg-[#FF5500] hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.2)] group-hover/btn:shadow-none"
+                <div className="relative z-10 shrink-0 mt-4 md:mt-0 pr-2 md:pr-4">
+                  <Link 
+                    to={`/careers/${role.id}`}
+                    className="relative overflow-hidden group/btn flex items-center justify-center gap-3 w-full md:w-auto bg-white text-black font-bold uppercase tracking-widest text-xs px-8 py-4 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.05)] border border-transparent hover:border-[#FF5500]/30"
                   >
-                    <span>Apply Now</span>
-                    <ArrowUpRight size={16} />
-                  </button>
+                    <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#FF5500] to-[#FF8844] opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
+                    <span className="relative z-10 group-hover/btn:text-white transition-colors duration-300">Apply Now</span>
+                    <div className="relative z-10 w-6 h-6 rounded-full bg-black/10 group-hover/btn:bg-white/20 flex items-center justify-center transition-colors duration-300">
+                      <ArrowRight size={14} className="group-hover/btn:text-white transition-transform duration-300 group-hover/btn:translate-x-0.5" />
+                    </div>
+                  </Link>
                 </div>
               </div>
             ))
@@ -172,13 +191,6 @@ export function Careers() {
         </div>
       </section>
 
-      {/* Application Modal */}
-      <JobApplicationModal 
-        isOpen={!!selectedJob}
-        onClose={() => setSelectedJob(null)}
-        jobId={selectedJob?.id || ''}
-        jobTitle={selectedJob?.title || ''}
-      />
     </div>
   );
 }

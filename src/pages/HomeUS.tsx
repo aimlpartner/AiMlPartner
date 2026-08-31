@@ -8,6 +8,7 @@ import { USUseCasesSection } from '../components/us/USUseCasesSection';
 import { USCaseMetrics } from '../components/us/USCaseMetrics';
 import { USFAQ } from '../components/us/USFAQ';
 import { USIntakeCTA } from '../components/us/USIntakeCTA';
+import { USToolsWeUse } from '../components/us/USToolsWeUse';
 
 export function HomeUS() {
   // Intersection Observer for subtle scroll reveals
@@ -62,6 +63,11 @@ export function HomeUS() {
       {/* 5. Proven AI Use Cases Showcase (Editorial Deep-Dive) */}
       <div className="reveal">
         <USUseCasesSection />
+      </div>
+
+      {/* Tools We Use Marquee */}
+      <div className="reveal">
+        <USToolsWeUse />
       </div>
 
       {/* 6. Hard ROI Stat Counters & Case Studies ("Real businesses. Real time saved.") */}
