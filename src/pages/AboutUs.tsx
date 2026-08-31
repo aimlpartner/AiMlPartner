@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, ArrowRight } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, ShieldCheck, Sparkles, Terminal, Cpu, Radio, CheckCircle2 } from 'lucide-react';
 import { SEO } from '../components/SEO';
 
 export function AboutUs() {
@@ -13,7 +13,7 @@ export function AboutUs() {
     {
       name: "Robert Molnar",
       initials: "RM",
-      image: "/team_robert_anon.jpg",
+      image: "/team_robert.jpg",
       role: "Business Operations & Revenue",
       bio: "Builds the business engine behind every AI system we deploy. Figures out where you're bleeding money, then designs the revenue model that actually scales.",
       specialties: ["Revenue Strategy", "Go-to-Market", "Unit Economics"]
@@ -21,7 +21,7 @@ export function AboutUs() {
     {
       name: "Rich Miró",
       initials: "RI",
-      image: "/team_rich_anon.jpg",
+      image: "/team_rich.jpg",
       role: "Brand & Product Media",
       bio: "Makes complex AI systems look simple and compelling. Turns technical capabilities into stories that executives, investors, and customers actually understand.",
       specialties: ["Product Media", "Brand Strategy", "Executive Comms"]
@@ -29,7 +29,7 @@ export function AboutUs() {
     {
       name: "Deepak Porwal",
       initials: "DP",
-      image: "/team_deepak_anon.jpg",
+      image: "/team_deepak.jpg",
       role: "Strategy & Go-to-Market",
       bio: "Finds your ideal customer, designs the offer, and runs fast experiments to prove it works. Connects your real business problems to the AI solutions that solve them.",
       specialties: ["Customer Research", "Offer Design", "Sprint Planning"]
@@ -37,7 +37,7 @@ export function AboutUs() {
     {
       name: "Anand M",
       initials: "AM",
-      image: "/team_anand_anon.jpg",
+      image: "/team_anand.jpg",
       role: "CRM & Enterprise AI",
       bio: "Connects AI directly into your Salesforce, HubSpot, or custom CRM — without breaking your existing setup or exposing customer data.",
       specialties: ["CRM Integration", "Salesforce / HubSpot", "Data Security"]
@@ -45,7 +45,7 @@ export function AboutUs() {
     {
       name: "Manu Singh",
       initials: "MS",
-      image: "/team_manu_anon.jpg",
+      image: "/team_manu.jpg",
       role: "AI Engineering & Infrastructure",
       bio: "Builds the AI brains — the agents, the knowledge bases, the infrastructure that runs on your own servers. Everything stays private, everything works reliably.",
       specialties: ["AI Agents", "Private Infrastructure", "Knowledge Systems"]
@@ -53,7 +53,7 @@ export function AboutUs() {
     {
       name: "Garvit Bansal",
       initials: "GB",
-      image: "/team_garvit_anon.jpg",
+      image: "/team_garvit.jpg",
       role: "Product Engineering & Automation",
       bio: "Builds the tools your team actually uses every day. Connects your databases, automates your workflows, and ships fast without cutting corners.",
       specialties: ["Workflow Automation", "Internal Tools", "Rapid Deployment"]
@@ -221,60 +221,115 @@ export function AboutUs() {
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION 3: THE TEAM */}
+      {/* SECTION 3: THE TEAM (THE BUILDERS - FUTURISTIC COCKPIT LIST CARDS) */}
       {/* ========================================================================= */}
       <section id="crew" className="py-24 px-6 md:px-16 max-w-7xl mx-auto border-t border-zinc-900/80">
         
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-20 gap-8">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
           <div>
-            <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-mono font-bold mb-4">
-              THE BUILDERS
-            </p>
-            <h2 className="font-display text-4xl sm:text-5xl font-black text-white tracking-tight leading-[1.05]">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-2 h-2 rounded-full bg-[#FF5500] animate-ping" />
+              <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-mono font-bold">
+                SYSTEM ROSTER // 06 SENIOR ARCHITECTS
+              </p>
+            </div>
+            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.05]">
               Senior builders only. <br />
-              <span className="text-zinc-500">No filler.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 via-zinc-600 to-zinc-700">No filler.</span>
             </h2>
           </div>
 
-          <p className="font-sans text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
-            You work directly with the engineers who actually build your AI systems. No account managers passing messages. No junior staff learning on your dime.
-          </p>
+          <div className="max-w-md space-y-3">
+            <p className="font-sans text-sm sm:text-base text-zinc-400 leading-relaxed">
+              You work directly with the engineers who actually design, build, and deploy your custom AI infrastructure. No account reps. No middlemen.
+            </p>
+            <div className="flex items-center gap-4 text-xs font-mono text-zinc-500 pt-2 border-t border-zinc-900">
+              <span className="flex items-center gap-1.5 text-zinc-400">
+                <ShieldCheck size={14} className="text-[#FF5500]" /> 100% In-House Engineers
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5 text-zinc-400">
+                <Radio size={14} className="text-[#FF5500]" /> Bedminster, NJ HQ
+              </span>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
+        {/* The Sleek Minimal List Cards */}
+        <div className="flex flex-col gap-4">
           {team.map((member, idx) => (
             <div
               key={idx}
-              className="pt-8 border-t border-zinc-900 group flex flex-col justify-between"
+              className="group relative rounded-2xl bg-zinc-950/70 border border-white/[0.08] hover:border-[#FF5500]/40 backdrop-blur-2xl transition-all duration-500 overflow-hidden hover:shadow-[0_0_35px_rgba(255,85,0,0.12)] p-6 sm:p-7"
             >
-              <div>
-                <div className="w-full aspect-square bg-zinc-950 mb-6 overflow-hidden">
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-all duration-700 ease-out" />
-                </div>
-                <h3 className="font-display text-2xl font-bold text-white tracking-tight group-hover:text-[#FF5500] transition-colors mb-1">
-                  {member.name}
-                </h3>
-                <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest font-bold mb-4">
-                  {member.role}
-                </p>
-                <p className="font-sans text-sm text-zinc-400 leading-relaxed mb-6">
-                  {member.bio}
-                </p>
-              </div>
+              {/* Background Layer 1: Subtle Tech Dot Grid Matrix */}
+              <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none opacity-40 group-hover:opacity-90 transition-opacity duration-500" />
+              
+              {/* Background Layer 2: Saturn Ambient Glow Orb */}
+              <div className="absolute -top-20 -left-20 w-64 h-64 bg-[#FF5500]/[0.06] rounded-full blur-3xl pointer-events-none group-hover:bg-[#FF5500]/[0.15] transition-all duration-700" />
+              
+              {/* Background Layer 3: Glass Sheen Sweep */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FF5500]/[0.05] via-transparent to-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              
+              {/* Left Active Accent Line */}
+              <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-transparent group-hover:bg-[#FF5500] transition-colors duration-300" />
 
-              <div className="pt-4 border-t border-zinc-900/60 flex flex-wrap items-center gap-2">
-                {member.specialties.map((spec, sIdx) => (
-                  <span
-                    key={sIdx}
-                    className="text-xs font-mono text-zinc-600 font-bold uppercase tracking-wider"
-                  >
-                    {spec} {sIdx < member.specialties.length - 1 && <span className="mx-1 text-zinc-800">/</span>}
+              {/* Robust CSS Grid for Clean Alignment (No Overlaps) */}
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+                
+                {/* Column 1: Index + Portrait + Name + Role (5 cols) */}
+                <div className="lg:col-span-5 flex items-center gap-5">
+                  {/* Subtle Minimal Index */}
+                  <span className="font-mono text-xs font-bold text-zinc-600 group-hover:text-[#FF5500] transition-colors shrink-0 w-7">
+                    0{idx + 1}
                   </span>
-                ))}
+
+                  {/* Clean Framed Avatar */}
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-zinc-900/90 overflow-hidden border border-white/10 group-hover:border-[#FF5500]/40 transition-all duration-500 shrink-0 shadow-lg relative">
+                    <img 
+                      src={member.image} 
+                      alt={member.name} 
+                      className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 ease-out" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 group-hover:opacity-10 transition-opacity" />
+                  </div>
+
+                  {/* Name & Role (Stacked neatly, never overflowing) */}
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-display text-xl sm:text-2xl font-bold text-white tracking-tight group-hover:text-[#FF5500] transition-colors duration-300 truncate">
+                      {member.name}
+                    </h3>
+                    <p className="text-xs font-mono uppercase tracking-wider text-zinc-400 group-hover:text-zinc-300 transition-colors mt-1 truncate">
+                      {member.role}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Column 2: Bio (4 cols) */}
+                <div className="lg:col-span-4">
+                  <p className="font-sans text-sm text-zinc-400 group-hover:text-zinc-200 leading-relaxed transition-colors duration-300">
+                    {member.bio}
+                  </p>
+                </div>
+
+                {/* Column 3: Capabilities (3 cols) */}
+                <div className="lg:col-span-3 flex flex-wrap lg:justify-end gap-2">
+                  {member.specialties.map((spec, sIdx) => (
+                    <span
+                      key={sIdx}
+                      className="text-[10px] font-mono text-zinc-400 group-hover:text-zinc-200 font-semibold uppercase tracking-wider bg-white/[0.03] px-2.5 py-1 rounded-md border border-white/[0.06] group-hover:border-[#FF5500]/30 transition-all duration-300"
+                    >
+                      {spec}
+                    </span>
+                  ))}
+                </div>
+
               </div>
             </div>
           ))}
         </div>
+
+
 
       </section>
 
