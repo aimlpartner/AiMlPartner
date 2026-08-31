@@ -30,6 +30,8 @@ const PartnerWaitlist = lazy(() =>
 const NotFound = lazy(() =>
   import('./pages/NotFound').then((module) => ({ default: module.NotFound })),
 );
+const Blog = lazy(() => import('./pages/Blog').then((module) => ({ default: module.Blog })));
+const Careers = lazy(() => import('./pages/Careers').then((module) => ({ default: module.Careers })));
 
 // Services Hub & Specialized Subpages
 const Services = lazy(() => import('./pages/Services').then((module) => ({ default: module.Services })));
@@ -102,6 +104,8 @@ export default function App() {
             <Route path="/partner-waitlist" element={<PartnerWaitlist />} />
             <Route path="/what-we-automate" element={<WhatWeAutomate />} />
             <Route path="/what-we-automate/:industryId" element={<SMBSolutionDetail />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/careers" element={<Careers />} />
 
             {/* Catch-all 404 Route */}
             <Route path="*" element={<NotFound />} />

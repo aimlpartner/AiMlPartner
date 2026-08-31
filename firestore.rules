@@ -139,5 +139,18 @@ service cloud.firestore {
       allow list: if isAdmin();
       allow delete: if isAdmin();
     }
+
+    match /job_postings/{jobId} {
+      // Anyone can read job postings, only admins can create/update/delete
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /job_applications/{appId} {
+      // Anyone can submit a job application
+      allow create: if true;
+      // Only admins can read, update, or delete applications
+      allow read, update, delete: if isAdmin();
+    }
   }
 }

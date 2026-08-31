@@ -34,13 +34,13 @@ export function USWhatWeAutomatePreview() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="max-w-2xl">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#FF5500] block mb-2">
-              Industry Automation Hub
+              Pick Your Industry
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
               What We <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5500] via-orange-400 to-amber-300">Automate</span>
             </h2>
             <p className="text-sm sm:text-base text-zinc-400 font-normal mt-3 leading-relaxed">
-              Explore dedicated AI solutions built for the biggest operational bottlenecks in popular Small and Mid-Sized Businesses.
+              Find your industry below and see exactly what we can take off your plate. Simple solutions for real business problems.
             </p>
           </div>
 
@@ -48,7 +48,7 @@ export function USWhatWeAutomatePreview() {
             to="/what-we-automate"
             className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 text-xs font-bold text-white transition-all shrink-0 hover:border-[#FF5500]/50 group"
           >
-            <span>View All 15 SMB Verticals</span>
+            <span>See All 15 Industries</span>
             <ArrowRight className="w-4 h-4 text-[#FF5500] group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
@@ -67,15 +67,11 @@ export function USWhatWeAutomatePreview() {
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 group-hover:via-[#FF5500]/70 to-transparent rounded-t-2xl transition-colors duration-300" />
 
                 <div>
-                  {/* Top Row: Icon + Number Badge */}
+                  {/* Top Row: Icon */}
                   <div className="flex items-start justify-between gap-4 mb-5">
                     <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.08] group-hover:border-[#FF5500]/40 group-hover:bg-[#FF5500]/10 transition-all duration-300 shrink-0">
                       <Icon className="w-6 h-6 text-[#FF5500] group-hover:scale-110 transition-transform duration-300" />
                     </div>
-
-                    <span className="text-[11px] font-mono text-zinc-500 bg-white/[0.02] px-2.5 py-1 rounded-md border border-white/[0.04]">
-                      #{String(index + 1).padStart(2, '0')}
-                    </span>
                   </div>
 
                   {/* Category & Title */}
@@ -93,7 +89,7 @@ export function USWhatWeAutomatePreview() {
                     {item.tagline}
                   </p>
 
-                  {/* Bottleneck preview */}
+                  {/* Problem preview */}
                   <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed mb-6">
                     {item.bottleneck}
                   </p>
@@ -102,7 +98,7 @@ export function USWhatWeAutomatePreview() {
                 {/* Footer: Action Link */}
                 <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between mt-auto">
                   <span className="text-xs font-semibold text-zinc-300 group-hover:text-white transition-colors">
-                    View 3 Solutions
+                    See How We Help →
                   </span>
                   <div className="w-7 h-7 rounded-full bg-white/[0.04] group-hover:bg-[#FF5500] group-hover:text-black border border-white/[0.08] group-hover:border-[#FF5500] flex items-center justify-center transition-all duration-200">
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -113,13 +109,13 @@ export function USWhatWeAutomatePreview() {
           })}
         </div>
 
-        {/* Bottom Banner to Browse Full 15 Directory */}
+        {/* Bottom Banner */}
         <div className="text-center pt-2">
           <Link
             to="/what-we-automate"
             className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white text-black hover:bg-zinc-200 text-xs font-bold uppercase tracking-wider transition-colors shadow-lg"
           >
-            <span>Explore All 15 Industry Solutions</span>
+            <span>See All 15 Industries We Work With</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

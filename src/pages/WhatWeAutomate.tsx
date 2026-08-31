@@ -1,13 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Bot,
   Search,
   X,
-  ArrowRight,
-  ArrowUpRight,
-  Zap,
-  Sparkles
+  ArrowRight
 } from 'lucide-react';
 import { smbSolutions } from '../data/smbSolutions';
 import { USIntakeCTA } from '../components/us/USIntakeCTA';
@@ -35,14 +31,20 @@ export function WhatWeAutomate() {
   return (
     <div className="min-h-screen bg-black text-white selection:bg-[#FF5500] selection:text-black pt-28 pb-20 relative overflow-hidden">
       <SEO
-        title="What We Automate - 15 SMB Industry Solutions"
-        description="Select your industry to explore 3 tailored AI automation solutions built specifically for your SMB."
+        title="What We Automate — 15 Industries We Work With"
+        description="Find your industry and see exactly how we can help. Simple AI solutions for real business problems."
         url="https://aimlpartner.com/what-we-automate"
       />
 
-      {/* Background Ambient Glows */}
-      <div className="absolute top-[-10%] left-[-15%] w-[60%] h-[60%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,85,0,0.12),transparent_70%)] blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-15%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,85,0,0.08),transparent_70%)] blur-[140px] pointer-events-none" />
+      {/* Fixed Background Image */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-screen"
+          style={{ backgroundImage: 'url("/automation_saturn_bg.jpg")' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/80 to-black z-10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#FF5500]/10 rounded-full blur-[150px] z-10" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -52,7 +54,7 @@ export function WhatWeAutomate() {
             What We <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5500] via-orange-400 to-amber-300">Automate</span>
           </h1>
           <p className="text-base sm:text-lg text-zinc-400 max-w-xl mx-auto">
-            Choose your industry below to explore dedicated, step-by-step AI solutions built for your exact workflows.
+            Find your industry below and see exactly what we can take off your plate. Click any card to learn more.
           </p>
         </div>
 
@@ -65,7 +67,7 @@ export function WhatWeAutomate() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by industry, software, or bottleneck (e.g. 'Epic', 'Takeoff', 'COI', 'Dentrix')..."
+              placeholder="Search by industry or software you use (e.g. 'QuickBooks', 'dental', 'HVAC')..."
               className="w-full pl-11 pr-10 py-3 bg-zinc-950/90 border border-white/10 rounded-xl text-sm text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-[#FF5500] transition-all shadow-inner"
             />
             {searchQuery && (
@@ -96,9 +98,9 @@ export function WhatWeAutomate() {
           </div>
         </div>
 
-        {/* Clean, Simple Industry Card Grid Linking to Dedicated Page */}
+        {/* Industry Card Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredSolutions.map((item, index) => {
+          {filteredSolutions.map((item) => {
             const Icon = item.icon;
             return (
               <Link
@@ -110,15 +112,11 @@ export function WhatWeAutomate() {
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 group-hover:via-[#FF5500]/70 to-transparent rounded-t-2xl transition-colors duration-300" />
 
                 <div>
-                  {/* Top Row: Icon + Number */}
+                  {/* Top Row: Icon */}
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.08] group-hover:border-[#FF5500]/40 group-hover:bg-[#FF5500]/10 transition-all duration-300 shrink-0">
                       <Icon className="w-6 h-6 text-[#FF5500] group-hover:scale-110 transition-transform duration-300" />
                     </div>
-
-                    <span className="text-[11px] font-mono text-zinc-500 bg-white/[0.02] px-2.5 py-1 rounded-md border border-white/[0.04]">
-                      #{String(index + 1).padStart(2, '0')}
-                    </span>
                   </div>
 
                   {/* Name & Category */}
@@ -136,7 +134,7 @@ export function WhatWeAutomate() {
                     {item.tagline}
                   </p>
 
-                  {/* Bottleneck preview */}
+                  {/* Problem preview */}
                   <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed mb-4">
                     {item.bottleneck}
                   </p>
@@ -145,7 +143,7 @@ export function WhatWeAutomate() {
                 {/* Footer: Action Link */}
                 <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between mt-auto">
                   <span className="text-xs font-semibold text-zinc-300 group-hover:text-white transition-colors flex items-center gap-1">
-                    View 3 Solutions
+                    See How We Help
                   </span>
                   <div className="w-7 h-7 rounded-full bg-white/[0.04] group-hover:bg-[#FF5500] group-hover:text-black border border-white/[0.08] group-hover:border-[#FF5500] flex items-center justify-center transition-all duration-200">
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />

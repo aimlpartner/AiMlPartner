@@ -115,7 +115,7 @@ export function Navbar() {
             <img
               src="/aimlpartner_logo.png"
               alt="AIMLPartner Logo"
-              className="h-8 md:h-10 w-auto object-contain transition-all duration-300 group-hover:scale-105 brightness-0 invert"
+              className="h-5 md:h-6 w-auto object-contain transition-all duration-300 group-hover:scale-105 brightness-0 invert"
               referrerPolicy="no-referrer"
             />
           </Link>
@@ -206,6 +206,12 @@ export function Navbar() {
             </Link>
             <Link to="/what-we-automate" className={linkClass(location.pathname.startsWith('/what-we-automate'))}>
               What We Automate
+            </Link>
+            <Link to="/blog" className={linkClass(location.pathname.startsWith('/blog'))}>
+              Blog
+            </Link>
+            <Link to="/careers" className={linkClass(location.pathname === '/careers')}>
+              Careers
             </Link>
           </nav>
 
@@ -333,6 +339,28 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>What We Automate</span>
+              <ArrowRight size={14} className="opacity-40" />
+            </Link>
+
+            <Link
+              to="/blog"
+              className={`text-sm font-semibold py-2 transition-colors flex items-center justify-between ${
+                location.pathname.startsWith('/blog') ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
+              }`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span>Blog</span>
+              <ArrowRight size={14} className="opacity-40" />
+            </Link>
+
+            <Link
+              to="/careers"
+              className={`text-sm font-semibold py-2 transition-colors flex items-center justify-between ${
+                location.pathname === '/careers' ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
+              }`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span>Careers</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
 

@@ -5,11 +5,8 @@ import {
   ArrowRight,
   ArrowUpRight,
   Zap,
-  Sparkles,
   CheckCircle2,
-  Bot,
   Layers,
-  ChevronRight,
   ShieldCheck
 } from 'lucide-react';
 import { smbSolutions, SMBSolution } from '../data/smbSolutions';
@@ -33,7 +30,7 @@ export function SMBSolutionDetail() {
           <Layers className="w-12 h-12 text-[#FF5500] mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-white mb-2">Industry Not Found</h1>
           <p className="text-sm text-zinc-400 mb-6">
-            The industry blueprint you requested does not exist or has been relocated.
+            We couldn't find the industry you're looking for. It may have been moved.
           </p>
           <Link
             to="/what-we-automate"
@@ -55,8 +52,8 @@ export function SMBSolutionDetail() {
   return (
     <div className="min-h-screen bg-black text-white selection:bg-[#FF5500] selection:text-black pt-28 pb-20 relative overflow-hidden">
       <SEO
-        title={`${currentSMB.name} AI Automation Solutions`}
-        description={`Discover 3 dedicated AI solutions engineered for ${currentSMB.name}. ${currentSMB.bottleneck}`}
+        title={`${currentSMB.name} — What We Automate`}
+        description={`See 3 simple ways we automate everyday headaches for ${currentSMB.name}. ${currentSMB.tagline}`}
         url={`https://aimlpartner.com/what-we-automate/${currentSMB.id}`}
       />
 
@@ -73,7 +70,7 @@ export function SMBSolutionDetail() {
             className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-400 hover:text-[#FF5500] transition-colors py-1.5 px-3 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06]"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>All 15 Industries</span>
+            <span>All Industries</span>
           </Link>
 
           <div className="flex items-center gap-2">
@@ -105,11 +102,7 @@ export function SMBSolutionDetail() {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xs font-bold uppercase tracking-wider text-[#FF5500]">
-                    {currentSMB.category} Sector
-                  </span>
-                  <span className="text-zinc-600">/</span>
-                  <span className="text-xs font-mono text-zinc-500">
-                    Blueprint #{String(currentIndex + 1).padStart(2, '0')}
+                    {currentSMB.category}
                   </span>
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -122,7 +115,7 @@ export function SMBSolutionDetail() {
               href="#intake"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#FF5500] hover:bg-orange-500 text-black text-sm font-bold transition-all shadow-[0_0_30px_-5px_rgba(255,85,0,0.5)] shrink-0"
             >
-              Deploy These Automations
+              Let's Talk About This
               <ArrowUpRight className="w-4 h-4" />
             </a>
           </div>
@@ -131,22 +124,22 @@ export function SMBSolutionDetail() {
             {currentSMB.tagline}
           </p>
 
-          {/* Bottleneck Card */}
+          {/* The Problem */}
           <div className="p-4 sm:p-5 rounded-2xl bg-red-950/25 border border-red-900/30 text-sm text-zinc-300">
             <span className="text-red-400 font-bold uppercase text-[11px] tracking-wider block mb-1.5">
-              The Core Industry Bottleneck
+              The Problem We Solve
             </span>
             <p className="leading-relaxed text-zinc-300">
               {currentSMB.bottleneck}
             </p>
           </div>
 
-          {/* Quick Metrics Bar */}
+          {/* Quick Info */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-white/[0.06]">
             <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
               <Zap className="w-5 h-5 text-[#FF5500] shrink-0" />
               <div>
-                <span className="text-[11px] text-zinc-400 block font-medium">Expected Business ROI</span>
+                <span className="text-[11px] text-zinc-400 block font-medium">What You Can Expect</span>
                 <span className="text-sm font-bold text-white">{currentSMB.impact}</span>
               </div>
             </div>
@@ -154,7 +147,7 @@ export function SMBSolutionDetail() {
             <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
               <ShieldCheck className="w-5 h-5 text-[#FF5500] shrink-0" />
               <div>
-                <span className="text-[11px] text-zinc-400 block font-medium">Supported Software & Systems</span>
+                <span className="text-[11px] text-zinc-400 block font-medium">Works With Software You Already Use</span>
                 <div className="flex flex-wrap gap-1.5 mt-0.5">
                   {currentSMB.tools.map((tool, i) => (
                     <span key={i} className="text-xs font-mono text-zinc-300">
@@ -167,12 +160,11 @@ export function SMBSolutionDetail() {
           </div>
         </div>
 
-        {/* 3 Dedicated Detailed Solutions */}
+        {/* 3 Solutions */}
         <div className="mb-14 space-y-6">
           <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="w-5 h-5 text-[#FF5500]" />
             <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-              3 Dedicated Automated Solutions
+              Here's What We Set Up for You
             </h2>
           </div>
 
@@ -194,16 +186,16 @@ export function SMBSolutionDetail() {
                   </div>
                 </div>
 
-                {/* Brief, Concrete Explanation */}
+                {/* Description */}
                 <p className="text-sm sm:text-base text-zinc-300 leading-relaxed pl-0 sm:pl-13 mb-5">
                   {sol.description}
                 </p>
 
-                {/* Deliverables / Features */}
+                {/* What's Included */}
                 {sol.deliverables && sol.deliverables.length > 0 && (
                   <div className="pl-0 sm:pl-13 pt-4 border-t border-white/[0.05] flex flex-wrap items-center gap-2">
                     <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mr-1">
-                      Includes:
+                      What's included:
                     </span>
                     {sol.deliverables.map((item, i) => (
                       <span
@@ -225,7 +217,7 @@ export function SMBSolutionDetail() {
         <div className="mb-16 p-6 sm:p-8 rounded-3xl bg-zinc-950/50 border border-white/[0.08]">
           <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-400 mb-4 flex items-center gap-2">
             <Layers className="w-4 h-4 text-[#FF5500]" />
-            <span>Explore Other Industry Blueprints</span>
+            <span>See What We Do for Other Industries</span>
           </h3>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
