@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Calendar as CalendarIcon, Clock, User, Mail, Building, CheckCircle, Loader2, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 interface BookCallWidgetProps {
   source?: string;
@@ -116,6 +118,25 @@ export function BookCallWidget({ source = 'Website', onSuccess }: BookCallWidget
     setIsSubmitting(true);
 
     try {
+      // 1. Record booking lead in Firestore 'leads' collection
+      try {
+        await addDoc(collection(db, 'leads'), {
+          name: formData.name.trim().substring(0, 100),
+          email: formData.email.trim().toLowerCase(),
+          company: formData.company.trim().substring(0, 100),
+          source: `Call Booking - ${source}`.substring(0, 100),
+          createdAt: serverTimestamp(),
+          quizAnswers: {
+            date: selectedDate,
+            time: selectedTime,
+            bookingSource: source
+          }
+        });
+      } catch (firestoreErr) {
+        console.warn('[BookCallWidget] Non-blocking notice saving lead to Firestore:', firestoreErr);
+      }
+
+      // 2. Dispatch email confirmation and calendar invite
       const response = await fetch('/api/book-call', {
         method: 'POST',
         headers: {

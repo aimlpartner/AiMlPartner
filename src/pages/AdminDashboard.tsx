@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, onSnapshot, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth, signInWithGoogle, logOut } from '../lib/firebase';
-import { LogOut, Users, FileText, Activity, DollarSign, Briefcase, Plus, Trash2, LayoutDashboard, Send, ShieldAlert, ArrowLeft } from 'lucide-react';
+import { LogOut, Users, FileText, Activity, DollarSign, Briefcase, Plus, Trash2, LayoutDashboard, Send, ShieldAlert, ArrowLeft, Eye, X, Calendar, Sparkles, TrendingUp, Clock, ExternalLink } from 'lucide-react';
 
 type Tab = 'overview' | 'jobs' | 'applications';
 
@@ -11,6 +11,7 @@ export function AdminDashboard() {
   const [leads, setLeads] = useState<any[]>([]);
   const [visitorCount, setVisitorCount] = useState(0);
   const [audits, setAudits] = useState<any[]>([]);
+  const [selectedLead, setSelectedLead] = useState<any | null>(null);
   
   // New States
   const [activeTab, setActiveTab] = useState<Tab>('overview');
@@ -364,8 +365,14 @@ export function AdminDashboard() {
 
             {/* Recent Leads Table Card */}
             <div className="bg-black/40 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden mb-12">
-              <div className="px-8 py-6 border-b border-white/10 bg-white/5">
-                <h2 className="font-display font-bold text-white text-xl">Recent Leads</h2>
+              <div className="px-8 py-6 border-b border-white/10 bg-white/5 flex items-center justify-between">
+                <div>
+                  <h2 className="font-display font-bold text-white text-xl">Recent Leads</h2>
+                  <p className="text-zinc-400 text-xs mt-0.5">All prospective clients captured across audits, booking calls, waitlists, and newsletters.</p>
+                </div>
+                <span className="text-xs font-mono text-[#FF5500] font-bold px-3 py-1 bg-[#FF5500]/10 border border-[#FF5500]/20 rounded-full">
+                  {leads.length} Captured
+                </span>
               </div>
 
               {loading ? (
@@ -382,6 +389,7 @@ export function AdminDashboard() {
                         <th className="px-8 py-5 font-bold">Email</th>
                         <th className="px-8 py-5 font-bold">Company</th>
                         <th className="px-8 py-5 font-bold">Source</th>
+                        <th className="px-8 py-5 font-bold text-right">Details</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -396,7 +404,9 @@ export function AdminDashboard() {
                             {lead.name || '-'}
                           </td>
                           <td className="px-8 py-5 text-sm text-zinc-300 whitespace-nowrap">
-                            {lead.email}
+                            <a href={`mailto:${lead.email}`} className="hover:text-[#FF5500] transition-colors underline-offset-2 hover:underline">
+                              {lead.email}
+                            </a>
                           </td>
                           <td className="px-8 py-5 text-sm text-zinc-300 whitespace-nowrap">
                             {lead.company || '-'}
@@ -405,6 +415,25 @@ export function AdminDashboard() {
                             <span className="inline-flex items-center px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-zinc-400 uppercase font-mono tracking-wider">
                               {lead.source}
                             </span>
+                          </td>
+                          <td className="px-8 py-5 whitespace-nowrap text-right">
+                            {lead.quizAnswers ? (
+                              <button
+                                onClick={() => setSelectedLead(lead)}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FF5500]/10 hover:bg-[#FF5500]/20 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold transition-all cursor-pointer shadow-sm"
+                              >
+                                <Sparkles size={12} />
+                                <span>View Data</span>
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => setSelectedLead(lead)}
+                                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-400 hover:text-white text-xs font-mono transition-all cursor-pointer"
+                              >
+                                <Eye size={12} />
+                                <span>Details</span>
+                              </button>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -416,8 +445,14 @@ export function AdminDashboard() {
 
             {/* Recent API Audits Table Card */}
             <div className="bg-black/40 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden">
-              <div className="px-8 py-6 border-b border-white/10 bg-white/5">
-                <h2 className="font-display font-bold text-white text-xl">AI Analysis Cost Logs</h2>
+              <div className="px-8 py-6 border-b border-white/10 bg-white/5 flex items-center justify-between">
+                <div>
+                  <h2 className="font-display font-bold text-white text-xl">AI Analysis Cost Logs</h2>
+                  <p className="text-zinc-400 text-xs mt-0.5">Real-time Gemini token expenditure and web grounding queries for each audit.</p>
+                </div>
+                <span className="text-xs font-mono text-[#FF5500] font-bold px-3 py-1 bg-[#FF5500]/10 border border-[#FF5500]/20 rounded-full">
+                  {audits.length} Audits Run
+                </span>
               </div>
 
               {loading ? (
@@ -432,6 +467,7 @@ export function AdminDashboard() {
                         <th className="px-8 py-5 font-bold">Date</th>
                         <th className="px-8 py-5 font-bold">Business Name</th>
                         <th className="px-8 py-5 font-bold">Details / Source</th>
+                        <th className="px-8 py-5 font-bold">Token Breakdown</th>
                         <th className="px-8 py-5 font-bold">Cost (USD)</th>
                       </tr>
                     </thead>
@@ -453,6 +489,12 @@ export function AdminDashboard() {
                               audit.description || '-'
                             )}
                           </td>
+                          <td className="px-8 py-5 text-xs text-zinc-400 whitespace-nowrap font-mono">
+                            {((audit.promptTokens || 0) + (audit.completionTokens || 0)).toLocaleString()} tokens
+                            {audit.groundingQueries > 0 && (
+                              <span className="ml-2 text-blue-400 font-semibold">• Search Grounded</span>
+                            )}
+                          </td>
                           <td className="px-8 py-5 text-sm font-bold text-white whitespace-nowrap font-mono">
                             ${(audit.costUsd || 0).toFixed(5)}
                           </td>
@@ -463,6 +505,177 @@ export function AdminDashboard() {
                 </div>
               )}
             </div>
+
+            {/* Selected Lead Details Modal */}
+            {selectedLead && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+                <div className="bg-zinc-950 border border-zinc-800 rounded-3xl max-w-2xl w-full p-8 shadow-2xl relative overflow-hidden text-white max-h-[90vh] overflow-y-auto">
+                  {/* Close button */}
+                  <button
+                    onClick={() => setSelectedLead(null)}
+                    className="absolute top-6 right-6 text-zinc-400 hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors cursor-pointer"
+                  >
+                    <X size={20} />
+                  </button>
+
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 rounded-2xl bg-[#FF5500]/10 border border-[#FF5500]/20 flex items-center justify-center text-[#FF5500]">
+                      <Sparkles size={20} />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-mono text-[#FF5500] uppercase tracking-widest block font-bold">
+                        // LEAD PROFILE & AUDIT REPORT
+                      </span>
+                      <h3 className="text-2xl font-bold font-display text-white">
+                        {selectedLead.name || 'Anonymous Visitor'}
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* Core Info Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    <div className="bg-white/5 border border-white/5 rounded-2xl p-4">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1">Email Address</span>
+                      <a href={`mailto:${selectedLead.email}`} className="text-sm font-semibold text-white hover:text-[#FF5500] transition-colors break-all flex items-center gap-1.5">
+                        {selectedLead.email}
+                        <ExternalLink size={12} className="opacity-60" />
+                      </a>
+                    </div>
+
+                    <div className="bg-white/5 border border-white/5 rounded-2xl p-4">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1">Company / Organization</span>
+                      <span className="text-sm font-semibold text-white">{selectedLead.company || 'Not Specified'}</span>
+                    </div>
+
+                    <div className="bg-white/5 border border-white/5 rounded-2xl p-4">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1">Lead Source</span>
+                      <span className="text-sm font-semibold text-[#FF5500] font-mono">{selectedLead.source}</span>
+                    </div>
+
+                    <div className="bg-white/5 border border-white/5 rounded-2xl p-4">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1">Captured At</span>
+                      <span className="text-sm font-semibold text-zinc-300 font-mono">
+                        {selectedLead.createdAt ? new Intl.DateTimeFormat('en-US', {
+                          dateStyle: 'medium', timeStyle: 'short'
+                        }).format(selectedLead.createdAt) : 'N/A'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Audit Diagnostic Metrics (if available) */}
+                  {selectedLead.quizAnswers && (
+                    <div className="space-y-4">
+                      <div className="border-t border-white/10 pt-6">
+                        <h4 className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                          <Activity size={14} className="text-[#FF5500]" />
+                          Diagnostic Payload & Custom Answers
+                        </h4>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {selectedLead.quizAnswers.businessName && (
+                            <div className="bg-black/50 border border-white/10 rounded-2xl p-4">
+                              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mb-1">Business Analyzed</span>
+                              <span className="text-base font-bold text-white">{selectedLead.quizAnswers.businessName}</span>
+                            </div>
+                          )}
+
+                          {selectedLead.quizAnswers.sector && (
+                            <div className="bg-black/50 border border-white/10 rounded-2xl p-4">
+                              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mb-1">Sector / Industry</span>
+                              <span className="text-base font-bold text-white">{selectedLead.quizAnswers.sector}</span>
+                            </div>
+                          )}
+
+                          {selectedLead.quizAnswers.readinessScore !== undefined && (
+                            <div className="bg-black/50 border border-white/10 rounded-2xl p-4">
+                              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mb-1">AI Readiness Score</span>
+                              <div className="flex items-baseline gap-2">
+                                <span className="text-2xl font-black text-[#FF5500] font-mono">{selectedLead.quizAnswers.readinessScore}/100</span>
+                                {selectedLead.quizAnswers.readinessTier && (
+                                  <span className="text-xs text-zinc-400">({selectedLead.quizAnswers.readinessTier})</span>
+                                )}
+                              </div>
+                            </div>
+                          )}
+
+                          {selectedLead.quizAnswers.annualReclaimedROI !== undefined && (
+                            <div className="bg-black/50 border border-white/10 rounded-2xl p-4">
+                              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mb-1">Est. Reclaimed Annual ROI</span>
+                              <span className="text-2xl font-black text-green-400 font-mono">
+                                ${Number(selectedLead.quizAnswers.annualReclaimedROI).toLocaleString()}
+                              </span>
+                            </div>
+                          )}
+
+                          {selectedLead.quizAnswers.internalDragHours !== undefined && (
+                            <div className="bg-black/50 border border-white/10 rounded-2xl p-4">
+                              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mb-1">Internal Drag Hours</span>
+                              <span className="text-lg font-bold text-white font-mono">
+                                {Number(selectedLead.quizAnswers.internalDragHours).toLocaleString()} hrs/year
+                              </span>
+                            </div>
+                          )}
+
+                          {/* Meeting Schedule details */}
+                          {selectedLead.quizAnswers.date && (
+                            <div className="bg-black/50 border border-blue-500/30 rounded-2xl p-4 sm:col-span-2">
+                              <span className="text-[10px] font-mono text-blue-400 uppercase tracking-widest block mb-1">Scheduled Call Slot</span>
+                              <div className="flex items-center gap-2 text-base font-bold text-white mt-1">
+                                <Calendar size={16} className="text-blue-400" />
+                                <span>{selectedLead.quizAnswers.date} at {selectedLead.quizAnswers.time}</span>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Department Demo details */}
+                          {selectedLead.quizAnswers.department && (
+                            <div className="bg-black/50 border border-white/10 rounded-2xl p-4 sm:col-span-2">
+                              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mb-1">Target Department & Workflow</span>
+                              <span className="text-sm font-bold text-white block">{selectedLead.quizAnswers.department}</span>
+                              {selectedLead.quizAnswers.workflow && (
+                                <p className="text-xs text-zinc-400 mt-1">{selectedLead.quizAnswers.workflow}</p>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Waitlist details */}
+                          {selectedLead.quizAnswers.linkedin && (
+                            <div className="bg-black/50 border border-white/10 rounded-2xl p-4 sm:col-span-2">
+                              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mb-1">LinkedIn Profile</span>
+                              <a
+                                href={selectedLead.quizAnswers.linkedin.startsWith('http') ? selectedLead.quizAnswers.linkedin : `https://${selectedLead.quizAnswers.linkedin}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-sm font-semibold text-[#FF5500] hover:underline break-all inline-flex items-center gap-1.5"
+                              >
+                                {selectedLead.quizAnswers.linkedin}
+                                <ExternalLink size={12} />
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mt-8 pt-6 border-t border-white/10 flex justify-end gap-3">
+                    <button
+                      onClick={() => setSelectedLead(null)}
+                      className="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-zinc-300 text-xs font-semibold transition-colors cursor-pointer"
+                    >
+                      Close
+                    </button>
+                    <a
+                      href={`mailto:${selectedLead.email}?subject=Regarding Your AI Automation Audit - AIMLpartner`}
+                      className="px-6 py-2.5 rounded-full bg-[#FF5500] hover:bg-orange-600 text-black text-xs font-bold transition-all shadow-[0_0_20px_rgba(255,85,0,0.3)] flex items-center gap-2 cursor-pointer"
+                    >
+                      <Send size={14} />
+                      Email Lead Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 

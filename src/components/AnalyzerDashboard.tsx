@@ -23,6 +23,8 @@ import {
   Loader2,
   Globe
 } from 'lucide-react';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 import { motion, AnimatePresence } from 'motion/react';
 import { CURRENCIES, formatCurrencyValue } from '../lib/currencies';
 
@@ -730,6 +732,26 @@ function BuildAgentModal({ activeDept, leadEmail, leadName, leadCompany, analysi
     setError('');
 
     try {
+      // 1. Record demo lead in Firestore 'leads' collection
+      try {
+        await addDoc(collection(db, 'leads'), {
+          name: (leadName || 'Anonymous Visitor').trim().substring(0, 100),
+          email: (leadEmail || 'unknown@client.com').trim().toLowerCase(),
+          company: (leadCompany || analysisResult?.businessName || 'N/A').trim().substring(0, 100),
+          source: `Agent Demo - ${activeDept.name}`.substring(0, 100),
+          createdAt: serverTimestamp(),
+          quizAnswers: {
+            department: activeDept.name,
+            selectedDate: date,
+            selectedTime: time,
+            workflow: activeDept.playbook?.workflow || ''
+          }
+        });
+      } catch (firestoreErr) {
+        console.warn('[AnalyzerDashboard] Non-blocking notice saving demo lead:', firestoreErr);
+      }
+
+      // 2. Dispatch custom agent system prompt build request and email
       const response = await fetch('/api/build-request', {
         method: 'POST',
         headers: {

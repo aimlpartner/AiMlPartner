@@ -37,6 +37,18 @@ export function Analyzer() {
     }
   }, []);
 
+  // Handle incoming audit requests passed via router state from homepage search bar
+  useEffect(() => {
+    const navState = location.state as { url?: string; description?: string } | null;
+    if (navState && (navState.url || navState.description) && !result && !isLoading) {
+      navigate('/analyzer', { replace: true, state: null });
+      handleAnalyze({
+        url: navState.url,
+        description: navState.description
+      });
+    }
+  }, [location.state]);
+
   const handleAnalyze = async (payload: { url?: string; description?: string; fileContent?: string }) => {
     // Strict client rate-limiting to maximum 5 diagnostic runs to prevent server/API abuse
     const auditCountStr = localStorage.getItem('aiml_analyzer_run_count');
@@ -85,15 +97,15 @@ export function Analyzer() {
       console.log('[Analyzer] Received analysis for:', data.businessName);
       setResult(data);
 
-      // Log audit details to Firestore
+      // Log audit details to Firestore 'audits' collection
       try {
         const auditPayload: any = {
           businessName: data.businessName || "Your Business",
-          promptTokens: data.tokenUsage?.promptTokens || 0,
-          completionTokens: data.tokenUsage?.completionTokens || 0,
-          totalTokens: data.tokenUsage?.totalTokens || 0,
-          groundingQueries: data.tokenUsage?.groundingQueries || 0,
-          costUsd: data.tokenUsage?.costUsd || 0.0,
+          promptTokens: Number(data.tokenUsage?.promptTokens) || 0,
+          completionTokens: Number(data.tokenUsage?.completionTokens) || 0,
+          totalTokens: Number(data.tokenUsage?.totalTokens) || 0,
+          groundingQueries: Number(data.tokenUsage?.groundingQueries) || 0,
+          costUsd: Number(data.tokenUsage?.costUsd) || 0.0,
           createdAt: serverTimestamp()
         };
         if (payload.url) {
@@ -101,12 +113,11 @@ export function Analyzer() {
         }
         if (payload.description) {
           auditPayload.description = payload.description.substring(0, 500);
-        }
-        if (payload.fileContent) {
-          auditPayload.uploadedDocument = true;
+        } else if (payload.fileContent) {
+          auditPayload.description = 'Uploaded operational brief document';
         }
 
-        await addDoc(collection(db, 'analyzer_runs'), auditPayload);
+        await addDoc(collection(db, 'audits'), auditPayload);
         
         // Increment client counter
         localStorage.setItem('aiml_analyzer_run_count', (auditCount + 1).toString());
@@ -139,20 +150,25 @@ export function Analyzer() {
     setIsUnlocking(true);
 
     try {
-      // 1. Record lead to Firestore
-      await addDoc(collection(db, 'analyzer_leads'), {
-        name: leadForm.name.trim(),
+      // 1. Record lead to Firestore 'leads' collection
+      const leadPayload: any = {
+        name: leadForm.name.trim().substring(0, 100),
         email: leadForm.email.trim().toLowerCase(),
-        company: leadForm.company.trim(),
-        businessName: result.businessName || 'Your Business',
-        sector: result.sector || 'Services',
-        readinessScore: result.readinessScore || 0,
-        readinessTier: result.readinessTier || 'Exploring',
-        annualReclaimedROI: result.annualReclaimedROI || 0,
-        internalDragHours: result.internalDragHours || 0,
-        currencyCode: selectedCurrency,
-        createdAt: serverTimestamp()
-      });
+        company: (leadForm.company.trim() || result.businessName || 'N/A').substring(0, 100),
+        source: 'AI Business Audit',
+        createdAt: serverTimestamp(),
+        quizAnswers: {
+          businessName: result.businessName || 'Your Business',
+          sector: result.sector || 'Services',
+          readinessScore: result.readinessScore || 0,
+          readinessTier: result.readinessTier || 'Exploring',
+          annualReclaimedROI: result.annualReclaimedROI || 0,
+          internalDragHours: result.internalDragHours || 0,
+          currencyCode: selectedCurrency || 'USD'
+        }
+      };
+
+      await addDoc(collection(db, 'leads'), leadPayload);
 
       // 2. Dispatch automated PDF and email report via backend
       fetch('/api/email-report', {
@@ -165,7 +181,7 @@ export function Analyzer() {
           analysisResult: result,
           currencyCode: selectedCurrency
         })
-      });
+      }).catch(mailErr => console.warn('[Email Report Dispatch Notice]:', mailErr));
 
       // 3. Mark capture completed and unlock the live interactive console!
       setEmailCaptured(true);
