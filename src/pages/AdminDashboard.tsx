@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, onSnapshot, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, onSnapshot, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth, signInWithGoogle, logOut } from '../lib/firebase';
-import { LogOut, Users, FileText, Activity, DollarSign, Briefcase, Plus, Trash2, LayoutDashboard, Send, ShieldAlert, ArrowLeft, Eye, X, Calendar, Sparkles, TrendingUp, Clock, ExternalLink } from 'lucide-react';
+import { LogOut, Users, FileText, Activity, DollarSign, Briefcase, Plus, Trash2, Pencil, LayoutDashboard, Send, ShieldAlert, ArrowLeft, Eye, X, Calendar, Sparkles, TrendingUp, Clock, ExternalLink } from 'lucide-react';
 
 type Tab = 'overview' | 'jobs' | 'applications';
 
@@ -20,6 +20,7 @@ export function AdminDashboard() {
   
   // Job Form State
   const [showJobForm, setShowJobForm] = useState(false);
+  const [editingJobId, setEditingJobId] = useState<string | null>(null);
   const [jobForm, setJobForm] = useState({ title: '', location: '', type: 'Full-time', desc: '', isRemote: false });
   const [isSubmittingJob, setIsSubmittingJob] = useState(false);
 
@@ -120,28 +121,71 @@ export function AdminDashboard() {
     };
   }, [user]);
 
-  const handleCreateJob = async (e: React.FormEvent) => {
+  const handleSaveJob = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmittingJob(true);
     try {
-      await addDoc(collection(db, 'job_postings'), {
-        ...jobForm,
-        createdAt: serverTimestamp()
-      });
+      const payload = {
+        title: jobForm.title.trim(),
+        location: jobForm.isRemote ? 'Remote' : jobForm.location.trim(),
+        type: jobForm.type,
+        desc: jobForm.desc.trim(),
+        isRemote: jobForm.isRemote,
+      };
+
+      if (editingJobId) {
+        await updateDoc(doc(db, 'job_postings', editingJobId), {
+          ...payload,
+          updatedAt: serverTimestamp()
+        });
+      } else {
+        await addDoc(collection(db, 'job_postings'), {
+          ...payload,
+          createdAt: serverTimestamp()
+        });
+      }
       setShowJobForm(false);
+      setEditingJobId(null);
       setJobForm({ title: '', location: '', type: 'Full-time', desc: '', isRemote: false });
     } catch (err) {
-      console.error("Error adding job:", err);
-      alert("Failed to create job posting.");
+      console.error("Error saving job:", err);
+      alert(editingJobId ? "Failed to update job posting." : "Failed to create job posting.");
     } finally {
       setIsSubmittingJob(false);
     }
+  };
+
+  const handleStartEditJob = (job: any) => {
+    setEditingJobId(job.id);
+    setJobForm({
+      title: job.title || '',
+      location: job.location || '',
+      type: job.type || 'Full-time',
+      desc: job.desc || '',
+      isRemote: job.isRemote ?? (job.location?.toLowerCase() === 'remote')
+    });
+    setShowJobForm(true);
+    setTimeout(() => {
+      const formEl = document.getElementById('job-form-section');
+      if (formEl) {
+        formEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 50);
+  };
+
+  const handleCancelJobForm = () => {
+    setShowJobForm(false);
+    setEditingJobId(null);
+    setJobForm({ title: '', location: '', type: 'Full-time', desc: '', isRemote: false });
   };
 
   const handleDeleteJob = async (id: string) => {
     if (confirm("Are you sure you want to delete this job posting?")) {
       try {
         await deleteDoc(doc(db, 'job_postings', id));
+        if (editingJobId === id) {
+          handleCancelJobForm();
+        }
       } catch (err) {
         console.error("Error deleting job:", err);
         alert("Failed to delete job posting.");
@@ -688,18 +732,44 @@ export function AdminDashboard() {
                 <p className="text-zinc-400 text-sm mt-1">Manage active career opportunities.</p>
               </div>
               <button
-                onClick={() => setShowJobForm(!showJobForm)}
+                onClick={() => {
+                  if (showJobForm) {
+                    handleCancelJobForm();
+                  } else {
+                    setEditingJobId(null);
+                    setJobForm({ title: '', location: '', type: 'Full-time', desc: '', isRemote: false });
+                    setShowJobForm(true);
+                  }
+                }}
                 className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-bold text-sm hover:bg-[#FF5500] hover:text-white transition-all cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:shadow-none"
               >
                 <Plus size={16} />
-                {showJobForm ? 'Cancel' : 'Post New Job'}
+                {showJobForm ? (editingJobId ? 'Cancel Edit' : 'Cancel') : 'Post New Job'}
               </button>
             </div>
 
             {showJobForm && (
-              <form onSubmit={handleCreateJob} className="bg-black/60 border border-[#FF5500]/50 backdrop-blur-xl p-10 rounded-3xl mb-12 animate-in fade-in slide-in-from-top-4 relative overflow-hidden">
+              <form id="job-form-section" onSubmit={handleSaveJob} className="bg-black/60 border border-[#FF5500]/50 backdrop-blur-xl p-8 sm:p-10 rounded-3xl mb-12 animate-in fade-in slide-in-from-top-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#FF5500]/10 to-transparent pointer-events-none"></div>
-                <h3 className="font-display font-bold text-xl mb-8 relative z-10">Create Job Posting</h3>
+                <div className="flex items-center justify-between mb-8 relative z-10">
+                  <div className="flex items-center gap-3">
+                    <h3 className="font-display font-bold text-xl text-white">
+                      {editingJobId ? 'Edit Job Posting' : 'Create Job Posting'}
+                    </h3>
+                    {editingJobId && (
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#FF5500] bg-[#FF5500]/10 border border-[#FF5500]/30 px-3 py-1 rounded-full">
+                        Editing Active Role
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleCancelJobForm}
+                    className="text-zinc-400 hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors cursor-pointer"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 relative z-10">
                   <div>
@@ -774,7 +844,7 @@ export function AdminDashboard() {
                 <div className="flex justify-end gap-4 relative z-10">
                   <button
                     type="button"
-                    onClick={() => setShowJobForm(false)}
+                    onClick={handleCancelJobForm}
                     className="px-8 py-3 rounded-full font-bold text-sm text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
                   >
                     Cancel
@@ -784,7 +854,7 @@ export function AdminDashboard() {
                     disabled={isSubmittingJob}
                     className="flex items-center gap-2 px-8 py-3 bg-[#FF5500] hover:bg-[#FF8844] text-black rounded-full font-bold text-sm transition-colors cursor-pointer shadow-[0_0_15px_rgba(255,85,0,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isSubmittingJob ? 'Saving...' : 'Publish Job'}
+                    {isSubmittingJob ? 'Saving...' : editingJobId ? 'Save Changes' : 'Publish Job'}
                   </button>
                 </div>
               </form>
@@ -825,13 +895,24 @@ export function AdminDashboard() {
                             }).format(job.createdAt) : 'Just now'}
                           </td>
                           <td className="px-8 py-5 text-right">
-                            <button
-                              onClick={() => handleDeleteJob(job.id)}
-                              className="text-zinc-500 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-500/10 opacity-0 group-hover:opacity-100 cursor-pointer"
-                              title="Delete Posting"
-                            >
-                              <Trash2 size={18} />
-                            </button>
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => handleStartEditJob(job)}
+                                className="text-zinc-300 hover:text-[#FF5500] bg-white/5 hover:bg-[#FF5500]/10 border border-white/10 hover:border-[#FF5500]/30 px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 text-xs font-mono font-semibold"
+                                title="Edit Posting"
+                              >
+                                <Pencil size={14} />
+                                <span>Edit</span>
+                              </button>
+                              <button
+                                onClick={() => handleDeleteJob(job.id)}
+                                className="text-zinc-400 hover:text-red-400 bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/30 px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 text-xs font-mono font-semibold"
+                                title="Delete Posting"
+                              >
+                                <Trash2 size={14} />
+                                <span>Delete</span>
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}

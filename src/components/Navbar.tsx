@@ -210,6 +210,9 @@ export function Navbar() {
             <Link to="/blog" className={linkClass(location.pathname.startsWith('/blog'))}>
               Blog
             </Link>
+            <Link to="/resources" className={linkClass(location.pathname === '/resources')}>
+              Resources
+            </Link>
             <Link to="/careers" className={linkClass(location.pathname === '/careers')}>
               Careers
             </Link>
@@ -350,6 +353,17 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>Blog</span>
+              <ArrowRight size={14} className="opacity-40" />
+            </Link>
+
+            <Link
+              to="/resources"
+              className={`text-sm font-semibold py-2 transition-colors flex items-center justify-between ${
+                location.pathname === '/resources' ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
+              }`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span>Resources & Downloads</span>
               <ArrowRight size={14} className="opacity-40" />
             </Link>
 

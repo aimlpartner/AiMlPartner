@@ -14,6 +14,7 @@ export function USFooter() {
     { label: 'Use Cases', to: '/use-cases' },
     { label: 'Pricing', to: '/pricing' },
     { label: 'Services', to: '/services' },
+    { label: 'Resources', to: '/resources' },
     { label: 'About', to: '/about' },
     { label: 'AI Auditor', to: '/analyzer' },
     { label: 'Direct Desk', to: '/#intake' }

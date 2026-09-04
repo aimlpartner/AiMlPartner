@@ -97,6 +97,7 @@ export function Footer() {
             <Link to="/about" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">About</Link>
             <Link to="/what-we-automate" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">What We Automate</Link>
             <Link to="/use-cases" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Use Cases</Link>
+            <Link to="/resources" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">Resources</Link>
             <Link to="/analyzer" className="text-sm font-semibold text-white/70 hover:text-white transition-colors w-fit">AI Auditor</Link>
           </div>
         </motion.div>
