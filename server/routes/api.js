@@ -6,6 +6,7 @@ import { analyzeHandler } from '../controllers/analyzeController.js';
 import { emailReportHandler } from '../controllers/emailController.js';
 import { buildRequestHandler } from '../controllers/buildController.js';
 import { bookCallHandler } from '../controllers/bookCallController.js';
+import { parseJobDescriptionHandler } from '../controllers/jobParserController.js';
 import { GEMINI_API_KEY } from '../config/env.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,6 +19,7 @@ router.post('/analyze', analyzeHandler);
 router.post('/email-report', emailReportHandler);
 router.post('/build-request', buildRequestHandler);
 router.post('/book-call', bookCallHandler);
+router.post('/parse-job-description', parseJobDescriptionHandler);
 
 // Debug & Health status
 router.get('/debug-status', (_req, res) => {

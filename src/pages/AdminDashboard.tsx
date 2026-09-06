@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, onSnapshot, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth, signInWithGoogle, logOut } from '../lib/firebase';
-import { LogOut, Users, FileText, Activity, DollarSign, Briefcase, Plus, Trash2, Pencil, LayoutDashboard, Send, ShieldAlert, ArrowLeft, Eye, X, Calendar, Sparkles, TrendingUp, Clock, ExternalLink } from 'lucide-react';
+import { LogOut, Users, FileText, Activity, DollarSign, Briefcase, Plus, Trash2, Pencil, LayoutDashboard, Send, ShieldAlert, ArrowLeft, Eye, X, Calendar, Sparkles, TrendingUp, Clock, ExternalLink, Check, Wand2 } from 'lucide-react';
+import { smartAutoFillJobDescription } from '../utils/jobDescriptionParser';
 
 type Tab = 'overview' | 'jobs' | 'applications';
 
@@ -21,8 +22,19 @@ export function AdminDashboard() {
   // Job Form State
   const [showJobForm, setShowJobForm] = useState(false);
   const [editingJobId, setEditingJobId] = useState<string | null>(null);
-  const [jobForm, setJobForm] = useState({ title: '', location: '', type: 'Full-time', desc: '', isRemote: false });
+  const [jobForm, setJobForm] = useState({ 
+    title: '', 
+    location: '', 
+    type: 'Full-time', 
+    desc: '', 
+    isRemote: false,
+    stipend: '',
+    duration: '',
+    skills: ''
+  });
   const [isSubmittingJob, setIsSubmittingJob] = useState(false);
+  const [isAutofilling, setIsAutofilling] = useState(false);
+  const [autofillSuccess, setAutofillSuccess] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -131,6 +143,9 @@ export function AdminDashboard() {
         type: jobForm.type,
         desc: jobForm.desc.trim(),
         isRemote: jobForm.isRemote,
+        stipend: jobForm.stipend ? jobForm.stipend.trim() : '',
+        duration: jobForm.duration ? jobForm.duration.trim() : '',
+        skills: jobForm.skills ? jobForm.skills.trim() : '',
       };
 
       if (editingJobId) {
@@ -146,12 +161,55 @@ export function AdminDashboard() {
       }
       setShowJobForm(false);
       setEditingJobId(null);
-      setJobForm({ title: '', location: '', type: 'Full-time', desc: '', isRemote: false });
+      setJobForm({ 
+        title: '', 
+        location: '', 
+        type: 'Full-time', 
+        desc: '', 
+        isRemote: false,
+        stipend: '',
+        duration: '',
+        skills: ''
+      });
     } catch (err) {
       console.error("Error saving job:", err);
       alert(editingJobId ? "Failed to update job posting." : "Failed to create job posting.");
     } finally {
       setIsSubmittingJob(false);
+    }
+  };
+
+  const handleSmartAutofill = async (customDesc?: string) => {
+    const textToParse = (typeof customDesc === 'string' ? customDesc : jobForm.desc).trim();
+    if (!textToParse) {
+      alert("Please paste or type a job description first.");
+      return;
+    }
+
+    setIsAutofilling(true);
+    setAutofillSuccess(false);
+
+    try {
+      const parsed = await smartAutoFillJobDescription(textToParse);
+
+      setJobForm(prev => ({
+        ...prev,
+        desc: textToParse,
+        title: parsed.title || prev.title,
+        type: parsed.type || prev.type,
+        location: parsed.location || prev.location,
+        isRemote: typeof parsed.isRemote === 'boolean' ? parsed.isRemote : prev.isRemote,
+        duration: parsed.duration || prev.duration,
+        stipend: parsed.stipend !== undefined ? parsed.stipend : prev.stipend,
+        skills: parsed.skills || prev.skills,
+      }));
+
+      setAutofillSuccess(true);
+      setTimeout(() => setAutofillSuccess(false), 4500);
+    } catch (err) {
+      console.error("Autofill error:", err);
+    } finally {
+      setIsAutofilling(false);
     }
   };
 
@@ -162,7 +220,10 @@ export function AdminDashboard() {
       location: job.location || '',
       type: job.type || 'Full-time',
       desc: job.desc || '',
-      isRemote: job.isRemote ?? (job.location?.toLowerCase() === 'remote')
+      isRemote: job.isRemote ?? (job.location?.toLowerCase() === 'remote'),
+      stipend: job.stipend || '',
+      duration: job.duration || '',
+      skills: job.skills || ''
     });
     setShowJobForm(true);
     setTimeout(() => {
@@ -176,7 +237,16 @@ export function AdminDashboard() {
   const handleCancelJobForm = () => {
     setShowJobForm(false);
     setEditingJobId(null);
-    setJobForm({ title: '', location: '', type: 'Full-time', desc: '', isRemote: false });
+    setJobForm({ 
+      title: '', 
+      location: '', 
+      type: 'Full-time', 
+      desc: '', 
+      isRemote: false,
+      stipend: '',
+      duration: '',
+      skills: ''
+    });
   };
 
   const handleDeleteJob = async (id: string) => {
@@ -771,22 +841,76 @@ export function AdminDashboard() {
                   </button>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 relative z-10">
+                {/* 1. SMART AUTO-FILL JOB DESCRIPTION CARD (TOP OF FORM) */}
+                <div className="mb-8 relative z-10 p-6 rounded-2xl bg-gradient-to-br from-white/[0.04] to-transparent border border-white/10">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-2">
+                      <label className="text-xs font-mono font-bold text-zinc-200 uppercase tracking-widest flex items-center gap-1.5">
+                        <Wand2 size={14} className="text-[#FF5500]" />
+                        Job Description
+                      </label>
+                      <span className="text-[11px] text-zinc-400 font-mono hidden sm:inline">
+                        — Paste description to smartly auto-fill fields below
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleSmartAutofill()}
+                      disabled={isAutofilling || !jobForm.desc.trim()}
+                      className="flex items-center gap-1.5 text-xs font-mono font-bold text-black bg-[#FF5500] hover:bg-[#FF6E26] px-4 py-2 rounded-full transition-all shadow-[0_0_15px_rgba(255,85,0,0.35)] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed self-start sm:self-auto hover:scale-105 active:scale-95"
+                      title="Analyze description and autofill title, type, location, duration, and skills"
+                    >
+                      <Sparkles size={13} className={isAutofilling ? 'animate-spin' : 'animate-pulse'} />
+                      <span>{isAutofilling ? 'Smart Analyzing...' : '✨ Smart Auto-Fill Fields'}</span>
+                    </button>
+                  </div>
+
+                  <textarea
+                    required
+                    rows={6}
+                    value={jobForm.desc}
+                    onChange={e => setJobForm({...jobForm, desc: e.target.value})}
+                    onPaste={(e) => {
+                      const pasted = e.clipboardData.getData('text');
+                      if (pasted && pasted.trim().length > 25) {
+                        setTimeout(() => handleSmartAutofill(pasted), 60);
+                      }
+                    }}
+                    className="w-full bg-black/60 border border-white/20 text-white px-5 py-4 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors resize-y font-sans text-sm leading-relaxed placeholder-zinc-500"
+                    placeholder="Paste the full job or internship description here (from LinkedIn, document, or notes). Title, employment type, location, duration, and skills will be smartly extracted..."
+                  />
+
+                  {autofillSuccess && (
+                    <div className="mt-3 flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-2 rounded-xl animate-in fade-in slide-in-from-top-2">
+                      <Check size={14} className="text-emerald-400 shrink-0" />
+                      <span>Smartly auto-filled Title, Type, Location, Duration &amp; Skills from description! Review and adjust any field below.</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* 2. AUTO-FILLED & CUSTOMIZABLE PARAMETERS */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 relative z-10">
                   <div>
-                    <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-3">Job Title</label>
+                    <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-2.5">
+                      Job Title *
+                    </label>
                     <input
                       type="text"
                       required
                       value={jobForm.title}
                       onChange={e => setJobForm({...jobForm, title: e.target.value})}
-                      className="w-full bg-black/50 border border-white/20 text-white px-5 py-4 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors"
+                      className="w-full bg-black/50 border border-white/20 text-white px-4 py-3.5 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors text-sm"
                       placeholder="e.g. Senior AI Engineer"
                     />
                   </div>
+
                   <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest">Location</label>
-                      <label className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#FF5500] uppercase cursor-pointer bg-[#FF5500]/10 px-3 py-1 rounded-md transition-colors hover:bg-[#FF5500]/20 border border-[#FF5500]/30">
+                    <div className="flex items-center justify-between mb-2.5">
+                      <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest">
+                        Location *
+                      </label>
+                      <label className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-[#FF5500] uppercase cursor-pointer bg-[#FF5500]/10 px-2.5 py-0.5 rounded-md transition-colors hover:bg-[#FF5500]/20 border border-[#FF5500]/30">
                         <input
                           type="checkbox"
                           checked={jobForm.isRemote}
@@ -800,7 +924,7 @@ export function AdminDashboard() {
                           }}
                           className="accent-[#FF5500] cursor-pointer"
                         />
-                        Remote Position
+                        Remote
                       </label>
                     </div>
                     <input
@@ -809,36 +933,68 @@ export function AdminDashboard() {
                       disabled={jobForm.isRemote}
                       value={jobForm.isRemote ? 'Remote' : jobForm.location}
                       onChange={e => setJobForm({...jobForm, location: e.target.value})}
-                      className={`w-full bg-black/50 border border-white/20 text-white px-5 py-4 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors ${jobForm.isRemote ? 'opacity-50 cursor-not-allowed text-zinc-500' : ''}`}
+                      className={`w-full bg-black/50 border border-white/20 text-white px-4 py-3.5 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors text-sm ${jobForm.isRemote ? 'opacity-60 cursor-not-allowed text-zinc-400' : ''}`}
                       placeholder="e.g. New York, NY"
                     />
                   </div>
+
                   <div>
-                    <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-3">Employment Type</label>
+                    <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-2.5">
+                      Employment Type *
+                    </label>
                     <select
                       value={jobForm.type}
                       onChange={e => setJobForm({...jobForm, type: e.target.value})}
-                      className="w-full bg-black/50 border border-white/20 text-white px-5 py-4 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors appearance-none cursor-pointer"
+                      className="w-full bg-black/50 border border-white/20 text-white px-4 py-3.5 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors appearance-none cursor-pointer text-sm"
                     >
                       <option value="Full-time">Full-time</option>
-                      <option value="Contract-to-Hire">Contract-to-Hire</option>
-                      <option value="Contract">Contract</option>
-                      <option value="Part-time">Part-time</option>
                       <option value="Internship">Internship</option>
+                      <option value="Contract">Contract</option>
+                      <option value="Contract-to-Hire">Contract-to-Hire</option>
+                      <option value="Part-time">Part-time</option>
                     </select>
                   </div>
                 </div>
 
-                <div className="mb-10 relative z-10">
-                  <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-3">Description</label>
-                  <textarea
-                    required
-                    rows={5}
-                    value={jobForm.desc}
-                    onChange={e => setJobForm({...jobForm, desc: e.target.value})}
-                    className="w-full bg-black/50 border border-white/20 text-white px-5 py-4 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors resize-none"
-                    placeholder="Briefly describe the role, responsibilities, and requirements..."
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10 relative z-10">
+                  <div>
+                    <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-2.5">
+                      Duration
+                    </label>
+                    <input
+                      type="text"
+                      value={jobForm.duration}
+                      onChange={e => setJobForm({...jobForm, duration: e.target.value})}
+                      className="w-full bg-black/50 border border-white/20 text-white px-4 py-3.5 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors text-sm"
+                      placeholder="e.g. 3 Months or Full-time"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-2.5">
+                      Stipend / Comp (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={jobForm.stipend}
+                      onChange={e => setJobForm({...jobForm, stipend: e.target.value})}
+                      className="w-full bg-black/50 border border-white/20 text-white px-4 py-3.5 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors text-sm"
+                      placeholder="Leave blank if not applicable"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-2.5">
+                      Key Technologies (CSV)
+                    </label>
+                    <input
+                      type="text"
+                      value={jobForm.skills}
+                      onChange={e => setJobForm({...jobForm, skills: e.target.value})}
+                      className="w-full bg-black/50 border border-white/20 text-white px-4 py-3.5 rounded-xl focus:outline-none focus:border-[#FF5500] transition-colors text-sm"
+                      placeholder="e.g. React, Node.js, MongoDB, Git"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex justify-end gap-4 relative z-10">
