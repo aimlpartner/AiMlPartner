@@ -208,22 +208,25 @@ export function Analyzer() {
         description="Find out exactly how much money you can save with AI in 60 seconds. Our AI will analyze your business and tell you what to automate."
         url="https://aimlpartner.com/analyzer"
       />
-      {/* Cinematic Saturn Atmospheric Backdrop */}
-      <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
-        <video
-          src="/saturn_loop.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-full object-cover object-center opacity-40 brightness-95 contrast-110"
+      {/* Majestic Saturn Hero Backdrop */}
+      <div className="absolute top-0 inset-x-0 h-[720px] sm:h-[800px] lg:h-[860px] overflow-hidden pointer-events-none z-0">
+        <img
+          src="/saturn_analyzer_hero.jpg"
+          alt="Planet Saturn and Luminous Golden Rings"
+          className="w-full h-full object-cover object-center lg:object-left opacity-85 brightness-105 contrast-110 filter saturate-[1.05]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/75 to-black pointer-events-none" />
-      </div>
+        {/* Top Edge Fade for Navbar Readability */}
+        <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-black via-black/50 to-transparent" />
 
-      {/* Ambient Cosmic Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-[#FF5500]/10 rounded-full blur-[160px] pointer-events-none" />
+        {/* Ambient Ring Glow */}
+        <div className="absolute top-1/3 left-1/3 w-[650px] h-[380px] bg-[#FF5500]/12 rounded-full blur-[150px] pointer-events-none" />
+
+        {/* Soft Radial Scrim for Clean Center Typographic Contrast */}
+        <div className="absolute inset-0 bg-radial from-black/35 via-black/65 to-black/90 pointer-events-none" />
+
+        {/* Seamless Bottom Gradient Fade into Diagnostic Input */}
+        <div className="absolute bottom-0 inset-x-0 h-44 bg-gradient-to-t from-black via-black/85 to-transparent pointer-events-none" />
+      </div>
 
       {/* STATE 1: NO RESULT - Show Hero and Input Forms */}
       {!result ? (
@@ -236,8 +239,8 @@ export function Analyzer() {
               transition={{ duration: 0.5 }}
               className="space-y-6 max-w-4xl mx-auto flex flex-col items-center"
             >
-              <span className="text-xs uppercase tracking-widest text-[#FF5500] font-mono font-bold block">
-                // FREE AI BUSINESS AUDIT
+              <span className="text-xs uppercase tracking-widest text-[#FF5500] font-display font-bold block">
+                Free AI Business Audit
               </span>
 
               <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight text-white leading-[1.12] max-w-5xl mx-auto">

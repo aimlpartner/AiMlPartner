@@ -527,22 +527,33 @@ export function Resources() {
         url="https://aimlpartner.com/resources"
       />
 
-      {/* Ambient Saturn Background Atmosphere */}
-      <div className="absolute top-0 left-0 right-0 h-[65vh] z-0 overflow-hidden pointer-events-none">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-          style={{ backgroundImage: 'url("/blueprint_audit.jpg")' }}
+      {/* Majestic Saturn Hero Backdrop */}
+      <div className="absolute top-0 inset-x-0 h-[720px] sm:h-[800px] lg:h-[880px] overflow-hidden pointer-events-none z-0">
+        <img
+          src="/saturn_resources_hero.jpg"
+          alt="Saturn and Golden Rings Exploration"
+          className="w-full h-full object-cover object-center lg:object-right opacity-85 brightness-105 contrast-110 filter saturate-[1.05]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/85 to-black z-10" />
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[550px] bg-[#FF5500]/12 rounded-full blur-[160px] pointer-events-none z-10" />
+
+        {/* Top Edge Fade for Navbar Readability */}
+        <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-black via-black/50 to-transparent" />
+
+        {/* Ambient Ring Glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#FF5500]/12 rounded-full blur-[160px] pointer-events-none" />
+
+        {/* Soft Radial Scrim for Clean Center Typographic Contrast */}
+        <div className="absolute inset-0 bg-radial from-black/35 via-black/65 to-black/90 pointer-events-none" />
+
+        {/* Seamless Bottom Gradient Fade into Content */}
+        <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-black via-black/85 to-transparent pointer-events-none" />
       </div>
 
       {/* HERO SECTION */}
       <section className="pt-32 sm:pt-40 pb-12 px-6 md:px-16 max-w-7xl mx-auto relative z-20 text-center">
         <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6">
           <Sparkles size={14} className="text-[#FF5500]" />
-          <span className="text-xs font-mono font-bold uppercase tracking-widest text-zinc-300">
-            Open Operational Artifacts // No Fluff
+          <span className="text-xs font-display font-bold uppercase tracking-widest text-zinc-300">
+            Open Operational Artifacts · Production Blueprints
           </span>
         </div>
 
@@ -553,12 +564,12 @@ export function Resources() {
           </span>
         </h1>
 
-        <p className="font-sans text-base sm:text-lg md:text-xl text-zinc-300 leading-relaxed max-w-3xl mx-auto text-balance font-medium mb-8">
-          Field-tested operational playbooks, CISO security checklists, ROI financial models, and system prompt architectures used in live deployments. 100% free direct downloads — not apps or software, but actionable solutions you can implement immediately.
+        <p className="font-sans text-base sm:text-lg text-zinc-300 leading-relaxed max-w-2xl mx-auto font-normal mb-8">
+          Free, battle-tested AI playbooks, security checklists, and ROI models you can use right away. No paywalls, no sign-ups.
         </p>
 
         {/* Quick Highlights Counter Pill */}
-        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 font-mono text-xs text-zinc-400">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 font-display text-xs font-medium text-zinc-400">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
             <span>8 Production Artifacts</span>
@@ -576,16 +587,16 @@ export function Resources() {
 
       {/* CONTROLS & FILTER BAR */}
       <section className="px-6 md:px-16 max-w-7xl mx-auto relative z-20 mb-12">
-        <div className="bg-black/60 border border-white/10 rounded-3xl p-4 sm:p-6 backdrop-blur-2xl shadow-2xl flex flex-col gap-6">
+        <div className="bg-zinc-950/80 border border-white/10 rounded-3xl p-4 sm:p-6 backdrop-blur-2xl shadow-2xl flex flex-col gap-6">
           {/* Top: Search Input */}
           <div className="relative w-full">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#FF5500]" size={18} />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by keyword, department, framework, or file format (e.g. 'Security', 'ROI', 'Prompts')..."
-              className="w-full bg-zinc-950/80 border border-zinc-800 rounded-2xl pl-12 pr-10 py-3.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5500] transition-colors"
+              className="w-full bg-zinc-950/90 border border-zinc-800 hover:border-zinc-700 rounded-2xl pl-12 pr-10 py-3.5 text-sm font-sans text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5500] focus:ring-1 focus:ring-[#FF5500]/50 transition-all shadow-inner"
             />
             {searchQuery && (
               <button
@@ -598,15 +609,15 @@ export function Resources() {
           </div>
 
           {/* Bottom: Category Filters */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none no-scrollbar">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-mono font-bold tracking-wider uppercase whitespace-nowrap transition-all cursor-pointer ${
+                className={`px-4 py-2 rounded-xl text-xs font-display font-semibold tracking-wide whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   selectedCategory === cat
-                    ? 'bg-[#FF5500] text-black shadow-[0_0_20px_rgba(255,85,0,0.4)]'
-                    : 'bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/20'
+                    ? 'bg-[#FF5500] text-black shadow-[0_0_20px_rgba(255,85,0,0.45)] scale-[1.02]'
+                    : 'bg-white/[0.04] border border-white/10 text-zinc-400 hover:text-white hover:bg-white/[0.08] hover:border-white/20'
                 }`}
               >
                 {cat}

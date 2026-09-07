@@ -87,53 +87,67 @@ export function AboutUs() {
         url="https://aimlpartner.com/about-us"
       />
       
-      {/* Cinematic Saturn Atmospheric Backdrop */}
-      <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[700px] overflow-hidden pointer-events-none z-0">
-        <video
-          src="/saturn_loop.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-full object-cover object-center opacity-40 brightness-95 contrast-110"
+      {/* ========================================================================= */}
+      {/* CINEMATIC SATURN HERO ATMOSPHERE (HIGH-RES BESPOKE SATURN & RINGS) */}
+      {/* ========================================================================= */}
+      <div className="absolute top-0 left-0 right-0 h-[750px] sm:h-[880px] lg:h-[950px] pointer-events-none z-0 overflow-hidden select-none">
+        {/* High-Resolution Majestic Saturn & Rings Hero Image */}
+        <img
+          src="/saturn_about_hero.jpg"
+          alt="Saturn Cosmic Orbit"
+          className="w-full h-full object-cover object-right opacity-85 brightness-105 contrast-110 filter saturate-[1.05]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/90 to-black pointer-events-none" />
-      </div>
 
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-[#FF5500]/5 rounded-full blur-[250px] pointer-events-none -z-10" />
+        {/* Top Edge Fade for Navbar Readability */}
+        <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-black via-black/50 to-transparent" />
+
+        {/* Soft Radial Ambient Solar Flare */}
+        <div className="absolute top-1/3 right-1/4 w-[650px] h-[450px] bg-[#FF5500]/15 rounded-full blur-[160px]" />
+
+        {/* Text Backdrop Scrim on the Left to Ensure Razor-Sharp Typographic Readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
+
+        {/* Seamless Bottom Gradient Fade into the Content Section */}
+        <div className="absolute bottom-0 inset-x-0 h-44 bg-gradient-to-t from-black via-black/80 to-transparent" />
+      </div>
 
       {/* ========================================================================= */}
       {/* SECTION 1: WHAT WE ACTUALLY DO (THE SILENT SALESPERSON) */}
       {/* ========================================================================= */}
-      <section className="pt-36 sm:pt-48 pb-24 px-6 md:px-16 max-w-7xl mx-auto relative z-10">
-        <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-mono font-bold mb-6">
+      <section className="pt-28 sm:pt-32 pb-16 px-6 md:px-16 max-w-7xl mx-auto relative z-10">
+        <p className="text-xs uppercase tracking-[0.25em] text-[#FF5500] font-display font-bold mb-4">
           WHAT WE ACTUALLY DO
         </p>
-        <h1 className="font-display text-4xl sm:text-6xl md:text-[5rem] font-black tracking-tight text-white leading-[1.05] mb-10 max-w-5xl">
-          We build custom software that <br className="hidden md:block" />
-          <span className="text-[#FF5500]">replaces manual work.</span>
+        <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-[3.85rem] xl:text-[4.25rem] font-black tracking-tight text-white leading-[1.14] mb-6 max-w-5xl">
+          <span className="block sm:whitespace-nowrap">We build custom software</span>
+          <span className="block text-[#FF5500] sm:whitespace-nowrap">that replaces manual work.</span>
         </h1>
-        <p className="font-sans text-lg sm:text-xl text-zinc-400 leading-relaxed max-w-3xl mb-24 text-balance">
-          We are a private AI engineering firm. We do not sell consulting retainers, and we do not sell generic SaaS subscriptions. We build tailored automation systems that plug directly into your existing business, saving your team dozens of hours a week.
+        <p className="font-sans text-base sm:text-lg text-zinc-300 leading-relaxed max-w-2xl mb-8 font-normal">
+          We build tailored AI automations that plug directly into your business to eliminate manual work and save your team dozens of hours every week.
         </p>
 
-        {/* 3 Step Breakdown */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 border-t border-zinc-900 pt-16">
+        {/* 3 Step Breakdown (Original Clean Layout) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 border-t border-zinc-900/80 pt-8 sm:pt-9">
           <div>
-            <p className="font-mono text-xs text-[#FF5500] font-bold tracking-widest uppercase mb-5">01 // The Audit</p>
-            <h3 className="font-display text-3xl font-bold text-white mb-4">Find the bleeding.</h3>
-            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">We look at your operations to find exactly where your team is wasting time on data entry, repetitive emails, and manual copy-pasting. We calculate the exact dollar cost of that wasted time.</p>
+            <p className="font-mono text-xs text-[#FF5500] font-bold tracking-widest uppercase mb-3">01 // The Audit</p>
+            <h3 className="font-display text-2xl lg:text-3xl font-bold text-white mb-2">Find the bleeding.</h3>
+            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
+              We look at your operations to find exactly where your team wastes time on data entry, repetitive emails, and manual copy-pasting.
+            </p>
           </div>
           <div>
-            <p className="font-mono text-xs text-[#FF5500] font-bold tracking-widest uppercase mb-5">02 // The Build</p>
-            <h3 className="font-display text-3xl font-bold text-white mb-4">Engineer the fix.</h3>
-            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">Our senior engineers build a custom AI automation that handles that specific task. It connects directly to your existing CRM, inbox, and databases so it fits your exact workflow.</p>
+            <p className="font-mono text-xs text-[#FF5500] font-bold tracking-widest uppercase mb-3">02 // The Build</p>
+            <h3 className="font-display text-2xl lg:text-3xl font-bold text-white mb-2">Engineer the fix.</h3>
+            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
+              Our senior engineers build a custom AI automation that connects directly to your existing CRM, inbox, and tools.
+            </p>
           </div>
           <div>
-            <p className="font-mono text-xs text-[#FF5500] font-bold tracking-widest uppercase mb-5">03 // The Handoff</p>
-            <h3 className="font-display text-3xl font-bold text-white mb-4">You own it forever.</h3>
-            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">We deploy the system on your own servers. You own 100% of the code. There are no monthly SaaS licenses to pay us. You simply stop paying for the manual labor.</p>
+            <p className="font-mono text-xs text-[#FF5500] font-bold tracking-widest uppercase mb-3">03 // The Handoff</p>
+            <h3 className="font-display text-2xl lg:text-3xl font-bold text-white mb-2">You own it forever.</h3>
+            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
+              We deploy the system on your own servers. You own 100% of the code with zero monthly SaaS fees.
+            </p>
           </div>
         </div>
       </section>

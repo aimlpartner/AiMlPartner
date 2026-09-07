@@ -31,49 +31,66 @@ export function WhatWeAutomate() {
   return (
     <div className="min-h-screen bg-black text-white selection:bg-[#FF5500] selection:text-black pt-28 pb-20 relative overflow-hidden">
       <SEO
-        title="What We Automate — 15 Industries We Work With"
+        title="What We Automate : 15 Industries We Work With"
         description="Find your industry and see exactly how we can help. Simple AI solutions for real business problems."
         url="https://aimlpartner.com/what-we-automate"
       />
 
-      {/* Fixed Background Image */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-screen"
-          style={{ backgroundImage: 'url("/automation_saturn_bg.jpg")' }}
+      {/* Majestic Saturn Hero Backdrop */}
+      <div className="absolute top-0 inset-x-0 h-[720px] sm:h-[800px] lg:h-[880px] pointer-events-none overflow-hidden z-0">
+        <img
+          src="/saturn_automate_hero.jpg"
+          alt="Saturn and Golden Rings Exploration"
+          className="w-full h-full object-cover object-center opacity-85 brightness-105 contrast-110 filter saturate-[1.05]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/80 to-black z-10" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#FF5500]/10 rounded-full blur-[150px] z-10" />
+
+        {/* Top Edge Fade for Navbar Readability */}
+        <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-black via-black/50 to-transparent" />
+
+        {/* Solar Flare Ambient Glow matching the left sun */}
+        <div className="absolute top-1/4 left-10 w-[450px] h-[450px] bg-[#FF5500]/15 rounded-full blur-[150px]" />
+
+        {/* Central Ambient Glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-[#FF5500]/10 rounded-full blur-[160px]" />
+
+        {/* Soft Radial Scrim for Pristine Text & Search Bar Readability */}
+        <div className="absolute inset-0 bg-radial from-black/30 via-black/60 to-black/90" />
+
+        {/* Seamless Bottom Gradient Fade into Solution Grid */}
+        <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-black via-black/85 to-transparent" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 pt-4">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-4">
+          <span className="text-xs font-display font-bold uppercase tracking-widest text-[#FF5500] block mb-3">
+            Industry Automation Blueprints
+          </span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold text-white tracking-tight leading-tight mb-4">
             What We <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5500] via-orange-400 to-amber-300">Automate</span>
           </h1>
-          <p className="text-base sm:text-lg text-zinc-400 max-w-xl mx-auto">
+          <p className="text-base sm:text-lg text-zinc-300 max-w-xl mx-auto font-sans leading-relaxed">
             Find your industry below and see exactly what we can take off your plate. Click any card to learn more.
           </p>
         </div>
 
         {/* Search & Category Filter Controls */}
-        <div className="mb-10 space-y-4 max-w-4xl mx-auto">
+        <div className="mb-12 space-y-4 max-w-4xl mx-auto">
           {/* Search Bar */}
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#FF5500]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by industry or software you use (e.g. 'QuickBooks', 'dental', 'HVAC')..."
-              className="w-full pl-11 pr-10 py-3 bg-zinc-950/90 border border-white/10 rounded-xl text-sm text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-[#FF5500] transition-all shadow-inner"
+              className="w-full pl-12 pr-10 py-3.5 bg-zinc-950/80 backdrop-blur-md border border-white/10 hover:border-white/20 rounded-2xl text-sm font-sans text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[#FF5500] focus:ring-1 focus:ring-[#FF5500]/50 transition-all shadow-2xl"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-1"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -86,10 +103,10 @@ export function WhatWeAutomate() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+                className={`px-4 py-2 rounded-xl text-xs font-display font-medium whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   selectedCategory === cat
-                    ? 'bg-[#FF5500] text-black font-semibold shadow-[0_0_15px_-2px_rgba(255,85,0,0.4)]'
-                    : 'bg-zinc-900/60 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-white/5'
+                    ? 'bg-[#FF5500] text-black font-bold shadow-[0_0_20px_-2px_rgba(255,85,0,0.45)] scale-[1.02]'
+                    : 'bg-zinc-950/70 backdrop-blur-sm text-zinc-400 hover:text-white hover:bg-zinc-900 border border-white/10'
                 }`}
               >
                 {cat}

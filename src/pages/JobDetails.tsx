@@ -178,7 +178,7 @@ export function JobDetails() {
       <div className="absolute top-0 left-0 right-0 h-[50vh] z-0 overflow-hidden pointer-events-none">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" 
-          style={{ backgroundImage: 'url("/blueprint_audit.jpg")' }} 
+          style={{ backgroundImage: 'url("/saturn_resources_hero.jpg")' }} 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050507]/90 to-[#050507] z-10" />
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#FF5500]/10 rounded-full blur-[140px] pointer-events-none z-10" />

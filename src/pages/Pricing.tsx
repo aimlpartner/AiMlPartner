@@ -11,7 +11,7 @@ export function Pricing() {
 
   const tiers = [
     {
-      kicker: "PHASE 1 // DISCOVERY SPRINT",
+      kicker: "Phase 1 · Discovery Sprint",
       title: "Audit & Proof of Concept",
       price: "Fixed Flat Fee",
       subtitle: "Before you commit to a massive project, we find the exact bottlenecks costing you money and build a small working test version so you can see the AI work with your own eyes.",
@@ -26,7 +26,7 @@ export function Pricing() {
       isHero: false
     },
     {
-      kicker: "PHASE 2 // PRODUCTION BUILD",
+      kicker: "Phase 2 · Production Build",
       title: "Full System Build & Launch",
       price: "Billed per 2-Week Sprint",
       subtitle: "Once you approve the prototype, we build the full automation system and hardwire it directly into your company's existing tools (like your email, CRM, or spreadsheets).",
@@ -71,22 +71,25 @@ export function Pricing() {
         description="Clear, predictable pricing. No hourly billing surprises. We charge a flat fee per 2-week sprint to build your custom AI automation systems."
         url="https://aimlpartner.com/pricing"
       />
-      {/* Cinematic Saturn Atmospheric Backdrop */}
-      <div className="absolute top-0 left-0 right-0 h-[600px] sm:h-[680px] overflow-hidden pointer-events-none z-0">
-        <video
-          src="/saturn_loop.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-full object-cover object-center opacity-40 brightness-95 contrast-110"
+      {/* Majestic Saturn Hero Backdrop */}
+      <div className="absolute top-0 inset-x-0 h-[720px] sm:h-[800px] lg:h-[860px] overflow-hidden pointer-events-none z-0">
+        <img
+          src="/saturn_pricing_hero.jpg"
+          alt="Planet Saturn and Golden Rings"
+          className="w-full h-full object-cover object-center lg:object-left opacity-85 brightness-105 contrast-110 filter saturate-[1.05]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/75 to-black pointer-events-none" />
-      </div>
+        {/* Top Edge Fade for Navbar Readability */}
+        <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-black via-black/50 to-transparent" />
 
-      {/* Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[550px] bg-[#FF5500]/10 rounded-full blur-[280px] pointer-events-none" />
+        {/* Ambient Ring Glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#FF5500]/12 rounded-full blur-[160px] pointer-events-none" />
+
+        {/* Soft Radial Scrim for Clean Center Typographic Contrast */}
+        <div className="absolute inset-0 bg-radial from-black/35 via-black/65 to-black/90 pointer-events-none" />
+
+        {/* Seamless Bottom Gradient Fade into Pricing Cards */}
+        <div className="absolute bottom-0 inset-x-0 h-44 bg-gradient-to-t from-black via-black/85 to-transparent pointer-events-none" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-6 md:px-16 relative z-10 w-full">
         
@@ -94,17 +97,17 @@ export function Pricing() {
         {/* 1. HERO: SIMPLE, PLAIN-ENGLISH PRICING */}
         {/* ======================================================================= */}
         <div className="max-w-4xl mx-auto text-center flex flex-col items-center mb-24">
-          <p className="text-xs font-mono uppercase tracking-[0.25em] text-[#FF5500] font-bold mb-4">
-            // SIMPLE, FIXED PRICING
-          </p>
+          <span className="text-xs font-display uppercase tracking-widest text-[#FF5500] font-bold mb-4 block">
+            Simple, Fixed Pricing
+          </span>
 
           <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight text-white leading-[1.12] max-w-5xl mx-auto mb-6">
             Clear, predictable pricing. <br className="hidden md:inline" />
             <span className="text-[#FF5500]">No hourly billing surprises.</span>
           </h1>
 
-          <p className="text-zinc-400 text-base sm:text-lg font-sans leading-relaxed max-w-2xl mx-auto">
-            We charge a flat fee per 2-week sprint. You know exactly what you're paying and exactly what you're getting. No 50-page slide decks—just working AI tools that save you time and money.
+          <p className="text-zinc-300 text-base sm:text-lg font-sans leading-relaxed max-w-2xl mx-auto">
+            We charge a flat fee per 2-week sprint. You know exactly what you're paying and exactly what you're getting. No 50-page slide decks: just working AI tools that save you time and money.
           </p>
         </div>
 

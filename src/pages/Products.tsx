@@ -34,6 +34,14 @@ interface ArtisticProduct {
     status: string;
     essence: string;
   };
+  systemDossier: {
+    engineCore: string;
+    telemetryNodes: {
+      label: string;
+      value: string;
+    }[];
+    statusBeacon: string;
+  };
   sculpturalAttributes: {
     name: string;
     definition: string;
@@ -51,41 +59,51 @@ const ARTISTIC_WORKS: ArtisticProduct[] = [
     numeral: '01',
     roman: 'WORK I',
     title: 'BrandToPost',
-    subtitle: 'The Monolith of Autonomous Voice',
+    subtitle: 'AI Brand Content & Social Automation',
     insignia: '/b2p_logo.png',
     insigniaAlt: 'BrandToPost Insignia',
     monolithImage: '/b2p_monolith.jpg',
-    curatorCategory: 'AUTONOMOUS LANGUAGE ARCHITECTURE',
-    manifestoLead: 'Language without latency. The elimination of the creative marketing cartel.',
+    curatorCategory: 'AI CONTENT & SOCIAL AUTOMATION',
+    manifestoLead: 'Your entire social pipeline on autopilot. Zero agency headaches.',
     manifestoBody: [
-      'For decades, corporate narrative was held hostage by agency retainers: armies of account managers who dilly-dallied for fourteen days over forty words of copy. We considered this an insult to engineering velocity.',
-      'BrandToPost is an autonomous language monument. It ingests the raw, uncompromising truth of a company, spanning its architectural blueprints, founder conviction, and visual geometry, and synthesizes an uninterrupted stream of high-tension narrative across the global social web.',
-      'No brainstorm sessions. No creative revisions. Only pure business context propagating at the speed of light.'
+      'Traditional marketing agencies take weeks and hefty monthly retainers just to draft a handful of social posts. We got tired of waiting, so we built the solution.',
+      'BrandToPost scans your website, product docs, and brand guidelines to understand your voice inside out. Then it writes, designs, and schedules high-quality content across LinkedIn, Instagram, X, and Reddit automatically.',
+      'No endless email chains, revision delays, or forgotten post schedules. Just consistent, on-brand content published at scale.'
     ],
-    philosophicalQuote: 'When your product moves at the frontier, your voice cannot wait for human consensus.',
-    quoteAuthor: 'BRANDTOPOST ARCHITECTURAL MANIFESTO',
+    philosophicalQuote: 'If you are building fast, your content pipeline has to keep up.',
+    quoteAuthor: 'BRANDTOPOST FOUNDER PRINCIPLE',
     exhibitionPlaque: {
-      medium: 'Autonomous Generative Reasoners + Immutable JSON Geometries',
-      origin: 'AIMLPartner Sovereign Atelier // Node 01',
-      status: 'Active Global Pilot Fleet',
-      essence: 'Zero-Latency Brand Context'
+      medium: 'Gemini AI Engine + Multi-Channel Social APIs',
+      origin: 'AIMLPartner Labs // Built In-House',
+      status: 'Live Pilot with Growing Brands',
+      essence: 'Hands-Free Brand Content at Scale'
+    },
+    systemDossier: {
+      engineCore: 'Gemini 2.0 Engine with Custom Brand Voice Tuning',
+      telemetryNodes: [
+        { label: 'INPUT SOURCES', value: 'Websites, Docs & Brand Guides' },
+        { label: 'GENERATION SPEED', value: 'Instant Social Content Drafting' },
+        { label: 'CHANNELS', value: 'LinkedIn, Instagram, X, Reddit' },
+        { label: 'STATUS', value: 'Live in Production // Real Users' }
+      ],
+      statusBeacon: 'LIVE IN PRODUCTION'
     },
     sculpturalAttributes: [
       {
-        name: 'The Context Core',
-        definition: 'Autonomous extraction of foundational product DNA, including tone, cadence, chromatic palette, and competitive moats from raw documentation.'
+        name: 'Smart Context Ingestion',
+        definition: 'Scans your website and product documentation to learn your exact tone, audience, and value proposition.'
       },
       {
-        name: 'Deterministic Flow',
-        definition: 'Eliminates model hallucination by binding synthetic creativity to strict typographic schemas and refusal boundaries.'
+        name: 'Guardrails & Accuracy',
+        definition: 'Built-in review loops ensure every post is accurate, factual, and strictly aligned with your brand guidelines.'
       },
       {
-        name: 'Polyphonic Distribution',
-        definition: 'Simultaneously speaks the dialect of LinkedIn institutional prose, Instagram visual minimalism, and Reddit technical scrutiny.'
+        name: 'Tailored Channel Formats',
+        definition: 'Automatically formats copy for professional LinkedIn discussions, visual Instagram carousels, and Reddit threads.'
       }
     ],
-    externalLinkText: 'Request Atelier Access',
-    externalLinkNote: 'Private Beta // Selective Brand Intake'
+    externalLinkText: 'Explore BrandToPost',
+    externalLinkNote: 'Live Beta // Request Early Access'
   },
 
   // --------------------------------------------------------------------------
@@ -96,41 +114,51 @@ const ARTISTIC_WORKS: ArtisticProduct[] = [
     numeral: '02',
     roman: 'WORK II',
     title: 'KNWN',
-    subtitle: 'The Monolith of Pure Cinema',
+    subtitle: 'Direct Network for Elite Film & Commercial Crews',
     insignia: '/weareknwn_logo.png',
     insigniaAlt: 'WEAREKNWN Insignia',
     monolithImage: '/knwn_cinema_rig.jpg',
-    curatorCategory: 'CELLULOID & HUMAN MASTERY',
-    manifestoLead: 'Bypass the agency. Reclaim the frame.',
+    curatorCategory: 'FILM PRODUCTION & CREW MARKETPLACE',
+    manifestoLead: 'Book top-tier cinema crews directly. No agency markups.',
     manifestoBody: [
-      'The modern cinematic apparatus has been suffocated by commercial talent agencies, parasitic middlemen taking thirty-percent tariffs while obscuring the master craftsmen who actually light, frame, and capture moving light.',
-      'KNWN is a closed sanctuary for elite cinema crew. It binds A24, HBO, Netflix, and Searchlight-caliber Directors of Photography, Steadicam operators, and gaffers directly to the visionary directors who commission them.',
-      'No bureaucracy. No inflated markups. Every camera package verified down to the glass; every credit cryptographically validated through peer trust.'
+      'Hiring cinematographers and commercial crews has always been slowed down by talent agencies charging 30% markups and adding weeks of back-and-forth.',
+      'KNWN connects commercial directors and production companies directly with vetted Directors of Photography, Steadicam operators, and gaffers who shoot for top brands and studios.',
+      'Zero middlemen. Verified camera gear down to the lens package, and peer-reviewed credits you can trust on set.'
     ],
-    philosophicalQuote: 'The lens does not care about an agent’s commission. It only answers to light, optical truth, and human discipline.',
-    quoteAuthor: 'KNWN CINEMATOGRAPHIC TREATISE',
+    philosophicalQuote: 'Great films get made when directors and camera crews connect directly.',
+    quoteAuthor: 'THE KNWN PRINCIPLE',
     exhibitionPlaque: {
-      medium: 'ARRI Large-Format Sensors + Peer-Verified Cryptographic Registry',
-      origin: 'AIMLPartner Sovereign Atelier // Node 02',
-      status: 'Live Production Fleet // NY, LA, London',
-      essence: 'Disintermediated Optical Craft'
+      medium: 'Verified Gear Registry + Direct Booking Platform',
+      origin: 'AIMLPartner Labs // Built In-House',
+      status: 'Active Crews in NY, LA & London',
+      essence: 'Direct Crew Hiring with Zero Agency Fees'
+    },
+    systemDossier: {
+      engineCore: 'Direct Booking Engine with Verified Gear & Credits',
+      telemetryNodes: [
+        { label: 'GEAR REGISTRY', value: 'ARRI Alexa 35, RED, Anamorphic Glass' },
+        { label: 'VETTED ROSTER', value: 'Top Commercial & Film Crew' },
+        { label: 'COMMISSION', value: '0% Agency Markups' },
+        { label: 'KEY MARKETS', value: 'New York, Los Angeles, London' }
+      ],
+      statusBeacon: 'ACTIVE CREW NETWORK'
     },
     sculpturalAttributes: [
       {
-        name: 'The Optical Locker',
-        definition: 'Verified hardware provenance across ARRI Alexa 35, RED V-Raptor XL, Master Anamorphics, and Steadicam M-2 kits registered to the operator.'
+        name: 'Verified Gear Registry',
+        definition: 'Verified camera kits from ARRI Alexa 35 to Steadicams, confirmed directly with working operators.'
       },
       {
-        name: 'Algorithmic Call Sheets',
-        definition: 'Scene-by-scene script breakdown translating atmospheric treatments into turnkey camera and lighting manifests in seconds.'
+        name: 'Fast Crew Assembly',
+        definition: 'Quickly find and assemble matching camera, lighting, and grip teams for any commercial or narrative shoot.'
       },
       {
-        name: 'Sovereign Squads',
-        definition: 'Persistent collectives of camera, grip, and gaffer teams assembled for high-tension commercial and narrative masterworks.'
+        name: 'Direct Messaging & Booking',
+        definition: 'Direct communication and transparent scheduling between directors, producers, and crew.'
       }
     ],
-    externalLinkText: 'Enter the Closed Network',
-    externalLinkNote: 'Strict Vetted Membership // Top 5% Global Crew'
+    externalLinkText: 'Explore KNWN',
+    externalLinkNote: 'Vetted Community // By Invitation'
   },
 
   // --------------------------------------------------------------------------
@@ -141,41 +169,51 @@ const ARTISTIC_WORKS: ArtisticProduct[] = [
     numeral: '03',
     roman: 'WORK III',
     title: 'SuperHero Fitness OS',
-    subtitle: 'The Monolith of Iron & Biomechanics',
+    subtitle: 'Modern All-in-One Operating System for Gyms',
     insignia: '/superherologo.png',
     insigniaAlt: 'SuperHero Fitness OS Emblem',
     monolithImage: '/superhero_gym_sanctuary.jpg',
-    curatorCategory: 'BIOMECHANICAL HEALTH & PHYSICAL OS',
-    manifestoLead: 'The iron never lies. Physical temples synchronized with synthetic intelligence.',
+    curatorCategory: 'GYM MANAGEMENT & FITNESS TECH',
+    manifestoLead: 'Smart gym management meets AI workout coaching.',
     manifestoBody: [
-      'Commercial wellness has degraded into chaotic spreadsheets, neglected gym floors, and bro-science marketing. Human physical transformation requires the rigor of an architectural discipline.',
-      'SuperHero Fitness OS is a living physical-digital organism. It connects physical turnstile gates, pro shop performance dispensaries, and artisanal shake bars to "Superne", an autonomous biomechanical coach that measures human capacity and engineers its evolution.',
-      'A sanctuary where cold knurled steel meets microsecond biometric precision. Every rep recorded, every macronutrient accounted for, every barrier dismantled.'
+      'Running a modern gym usually means juggling four separate tools: turnstiles, POS systems, spreadsheets, and trainer apps that do not talk to each other.',
+      'SuperHero Fitness OS brings everything together: smart QR turnstiles, shake bar sales, member management, and an AI workout coach called Superne.',
+      'Members get personalized progressive training and instant check-ins, while gym owners get a completely automated club operation.'
     ],
-    philosophicalQuote: 'Strength is not an accident of genetics. It is a mathematical consequence of progressive mechanical overload.',
-    quoteAuthor: 'SUPERHERO KINETIC MANIFESTO',
+    philosophicalQuote: 'Real fitness progress happens when great coaching is powered by simple, reliable tech.',
+    quoteAuthor: 'SUPERHERO FITNESS PRINCIPLE',
     exhibitionPlaque: {
-      medium: 'Turnstile Hardware Webhooks + Autonomous Biomechanical Coach',
-      origin: 'AIMLPartner Sovereign Atelier // Node 03',
-      status: 'Commercial Fleet // Physical Gym Network',
-      essence: 'Physical Transformation Architecture'
+      medium: 'Hardware Turnstile Webhooks + AI Coach + Club POS',
+      origin: 'AIMLPartner Labs // Built In-House',
+      status: 'Live in Active Gym Facilities',
+      essence: 'All-In-One Gym Operations & Coaching'
+    },
+    systemDossier: {
+      engineCore: 'Connected Gym OS with AI Coaching & Hardware Sync',
+      telemetryNodes: [
+        { label: 'CHECK-IN SPEED', value: 'Sub-300ms QR Turnstile Scan' },
+        { label: 'AI COACH', value: 'Superne Progressive Workout Logic' },
+        { label: 'IN-CLUB POS', value: 'Shake Bar & Supplement Checkout' },
+        { label: 'DEPLOYMENT', value: 'Live in Active Gym Facilities' }
+      ],
+      statusBeacon: 'LIVE GYM DEPLOYMENT'
     },
     sculpturalAttributes: [
       {
-        name: 'Superne AI Intelligence',
-        definition: 'Autonomous daily programming that calibrates rate of perceived exertion (RPE), bar velocity, and eccentric tempo dynamically.'
+        name: 'Fast QR Turnstile Access',
+        definition: 'Instant, secure entry via rotating QR codes directly on members\' phones.'
       },
       {
-        name: 'The Physical Sanctuary',
-        definition: 'Encrypted rotating QR access passes eliminating plastic clutter and securing exclusive access for committed athletes.'
+        name: 'Superne AI Workout Coach',
+        definition: 'Tracks workouts, sets, and weights to automatically suggest progressive overload.'
       },
       {
-        name: 'Nutrient Dispensation',
-        definition: 'Zero-latency ordering of cold-pressed whey isolate and laboratory-certified compounds ready at the club bar upon session completion.'
+        name: 'Front Desk & Shake Bar POS',
+        definition: 'Quick checkout for smoothies and supplements connected straight to member accounts.'
       }
     ],
-    externalLinkText: 'Explore the Club Ecosystem',
-    externalLinkNote: 'Physical Network Node // Live in Production'
+    externalLinkText: 'Explore SuperHero OS',
+    externalLinkNote: 'Live in Active Gyms // Request Demo'
   }
 ];
 
@@ -191,8 +229,8 @@ export function Products() {
   return (
     <div className="bg-black text-white min-h-screen font-sans selection:bg-[#FF5500] selection:text-black relative overflow-hidden">
       <SEO
-        title="The Sovereign Atelier: BrandToPost, KNWN & SuperHero Fitness OS | AIMLPartner"
-        description="An exhibition of three sovereign platforms built, owned, and operated in-house by AIMLPartner: BrandToPost, KNWN, and SuperHero Fitness OS."
+        title="Our In-House Products: BrandToPost, KNWN & SuperHero Fitness OS | AIMLPartner"
+        description="Explore three production platforms designed, built, and operated in-house by AIMLPartner: BrandToPost, KNWN, and SuperHero Fitness OS."
         url="https://aimlpartner.com/products"
       />
 
@@ -221,37 +259,37 @@ export function Products() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. EXHIBITION PROLOGUE // CURATOR OPENING */}
+      {/* 2. HEADER OPENING */}
       {/* ========================================================================= */}
       <header className="relative z-10 pt-36 sm:pt-48 pb-20 px-6 md:px-16 max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 border-b border-zinc-900 pb-16">
           <div className="max-w-4xl">
             <h1 className="font-display text-4xl sm:text-7xl md:text-8xl font-black tracking-tighter text-white leading-[0.98] uppercase mb-8">
-              What We <br />
+              Products We <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-300 to-[#FF5500]">
-                Birthed &amp; Own.
+                Built &amp; Own.
               </span>
             </h1>
 
             <p className="font-sans text-base sm:text-xl text-zinc-400 max-w-2xl font-light leading-relaxed">
-              We do not build toys for hire. In the privacy of our Bedminster atelier, we conceive, architect, and operate living software monoliths. Three sovereign works, each born from an obsession with autonomy, optical truth, and physical mastery.
+              We don't just build software for clients. We design, launch, and operate our own production platforms. Here are three products we created in-house from day one.
             </p>
           </div>
 
-          {/* Exhibition Stamp */}
+          {/* Product Stamp */}
           <div className="lg:text-right shrink-0 font-display text-xs text-zinc-500 space-y-1 border-l lg:border-l-0 lg:border-r border-zinc-800 pl-4 lg:pl-0 lg:pr-4">
-            <div className="text-white font-bold tracking-wider uppercase">CURATORIAL CATALOG</div>
+            <div className="text-white font-bold tracking-wider uppercase">IN-HOUSE PRODUCTS</div>
             <div className="text-zinc-400">EST. 2026 // BEDMINSTER, NJ</div>
-            <div className="text-[#FF5500] font-bold">PERMANENT FLEET COLLECTION</div>
+            <div className="text-[#FF5500] font-bold">100% PROPRIETARY IP</div>
           </div>
         </div>
 
         {/* ===================================================================== */}
-        {/* EXHIBITION GALLERY DOCK (MINIMALIST HAUTE-COUTURE SWITCHER) */}
+        {/* PRODUCT SWITCHER DOCK */}
         {/* ===================================================================== */}
         <div className="pt-10 flex flex-wrap items-center justify-start gap-3 sm:gap-4">
           <span className="text-xs font-display uppercase tracking-wider text-zinc-500 font-bold mr-2">
-            GALLERY ROOMS:
+            SELECT PRODUCT:
           </span>
           {ARTISTIC_WORKS.map((work, idx) => {
             const isSelected = activeWorkIndex === idx;
@@ -330,43 +368,97 @@ export function Products() {
                 </div>
               </div>
 
-              {/* Plaque Metadata */}
+              {/* Status Metadata */}
               <div className="font-display text-xs text-zinc-400 space-y-1 md:text-right border-l-2 md:border-l-0 md:border-r-2 border-[#FF5500] pl-4 md:pl-0 md:pr-4">
-                <div className="text-zinc-500 uppercase tracking-wider font-semibold">PROVENANCE // STATUS</div>
+                <div className="text-zinc-500 uppercase tracking-wider font-semibold">STATUS // ORIGIN</div>
                 <div className="text-white font-bold tracking-wider uppercase">{currentWork.exhibitionPlaque.status}</div>
                 <div className="text-zinc-400 tracking-wider">{currentWork.exhibitionPlaque.origin}</div>
               </div>
             </div>
 
             {/* Sculptural Core: 2-Column Monolithic Composition */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-stretch">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
               
-              {/* LEFT COLUMN: THE MONOLITH CANVAS (ARTISTIC VISUAL SLAB) */}
-              <div className="lg:col-span-6 relative flex flex-col justify-between group">
-                <div className="relative w-full h-[450px] sm:h-[600px] rounded-3xl overflow-hidden border border-zinc-800/80 bg-zinc-950 shadow-2xl">
-                  {/* Textured Image Slab */}
+              {/* LEFT COLUMN: THE MONOLITH CANVAS & SYSTEM DOSSIER */}
+              <div className="lg:col-span-6 flex flex-col space-y-6">
+                {/* 1. Unobstructed Hero Artwork Slab */}
+                <div className="relative w-full h-[420px] sm:h-[500px] lg:h-[540px] rounded-3xl overflow-hidden border border-zinc-800/80 bg-zinc-950 shadow-2xl group">
+                  {/* High-Impact Image */}
                   <img
                     src={currentWork.monolithImage}
                     alt={`${currentWork.title} Architectural Monolith`}
-                    className="w-full h-full object-cover object-center brightness-90 contrast-110 filter saturate-[0.85] group-hover:scale-105 transition-transform duration-1000 ease-out"
+                    className="w-full h-full object-cover object-center brightness-95 contrast-105 filter group-hover:scale-105 transition-transform duration-1000 ease-out"
                   />
                   
-                  {/* Dramatic Chiaroscuro Gradient Overlays */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-85" />
-                  <div className="absolute inset-0 bg-radial from-transparent via-black/40 to-black/80" />
+                  {/* Subtle Chiaroscuro Overlays that allow image details to shine */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/40" />
 
-                  {/* Corner Celestial Brackets */}
-                  <div className="absolute top-6 left-6 text-[11px] font-display tracking-wider text-zinc-300 uppercase bg-black/75 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-zinc-800 font-bold">
-                    SLAB REF // {currentWork.numeral}
+                  {/* Top Badges */}
+                  <div className="absolute top-5 left-5 right-5 flex items-center justify-between pointer-events-none">
+                    <div className="text-[11px] font-display tracking-wider text-white uppercase bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-zinc-700/70 font-bold flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF5500]" />
+                      <span>PRODUCT // {currentWork.numeral}</span>
+                    </div>
+
+                    <div className="text-[10px] font-display tracking-wider text-zinc-400 uppercase bg-black/70 backdrop-blur-md px-3 py-1 rounded-full border border-zinc-800">
+                      IN-HOUSE SOFTWARE
+                    </div>
                   </div>
 
-                  <div className="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-black/80 backdrop-blur-md border border-white/10">
-                    <p className="font-serif italic text-base sm:text-lg text-zinc-200 leading-snug">
-                      "{currentWork.philosophicalQuote}"
-                    </p>
-                    <p className="font-display text-xs tracking-wider text-[#FF5500] uppercase mt-3 font-bold">
-                      // {currentWork.quoteAuthor}
-                    </p>
+                  {/* Bottom Minimalist Status Bar */}
+                  <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-xs font-display">
+                    <span className="text-zinc-300 font-bold tracking-wider uppercase bg-black/75 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-zinc-800/80">
+                      {currentWork.title}
+                    </span>
+                    <span className="text-[#FF5500] font-bold tracking-wider uppercase bg-black/75 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-zinc-800/80">
+                      100% IN-HOUSE IP
+                    </span>
+                  </div>
+                </div>
+
+                {/* 2. Philosophical Manifesto Quote Card */}
+                <div className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-800/90 shadow-xl backdrop-blur-md relative overflow-hidden group hover:border-[#FF5500]/50 transition-colors duration-300">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-[#FF5500]" />
+                  <p className="font-serif italic text-base sm:text-lg text-zinc-100 leading-snug pl-2">
+                    "{currentWork.philosophicalQuote}"
+                  </p>
+                  <p className="font-display text-xs tracking-wider text-[#FF5500] uppercase mt-3 font-bold pl-2">
+                    // {currentWork.quoteAuthor}
+                  </p>
+                </div>
+
+                {/* 3. Architectural Telemetry & Engine Specs Card (Eliminates empty space) */}
+                <div className="p-6 rounded-3xl bg-zinc-950/60 border border-zinc-800/80 backdrop-blur-md space-y-4">
+                  <div className="flex items-center justify-between border-b border-zinc-900 pb-3">
+                    <span className="text-[11px] font-display tracking-wider uppercase text-zinc-500 font-bold">
+                      SYSTEM SPECS &amp; ARCHITECTURE
+                    </span>
+                    <div className="flex items-center gap-2 text-[10px] font-display uppercase tracking-wider text-[#FF5500] font-bold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF5500] animate-pulse" />
+                      <span>{currentWork.systemDossier.statusBeacon}</span>
+                    </div>
+                  </div>
+
+                  <div className="text-xs text-zinc-400 font-sans leading-relaxed">
+                    <span className="text-zinc-500 font-display uppercase text-[10px] tracking-wider font-bold block mb-1">
+                      ENGINE CORE
+                    </span>
+                    <span className="text-zinc-200 font-medium font-sans">
+                      {currentWork.systemDossier.engineCore}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    {currentWork.systemDossier.telemetryNodes.map((node, nidx) => (
+                      <div key={nidx} className="p-3 rounded-xl bg-black/60 border border-zinc-900">
+                        <div className="text-[10px] font-display uppercase tracking-wider text-zinc-500 font-semibold mb-0.5">
+                          {node.label}
+                        </div>
+                        <div className="text-xs text-zinc-200 font-medium font-sans truncate">
+                          {node.value}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -387,10 +479,10 @@ export function Products() {
                   </div>
                 </div>
 
-                {/* Sculptural Attributes (Museum Spec Plaque) */}
+                {/* Key Capabilities */}
                 <div className="border-t border-zinc-900 pt-8 space-y-6">
                   <div className="text-xs font-display tracking-wider text-zinc-500 uppercase font-bold">
-                    ARCHITECTURAL ATTRIBUTES
+                    KEY CAPABILITIES
                   </div>
 
                   <div className="space-y-4">
@@ -428,22 +520,22 @@ export function Products() {
               </div>
             </div>
 
-            {/* Museum Exhibition Lower Specification Plaque */}
+            {/* Lower Product Overview Plaque */}
             <div className="mt-16 p-8 rounded-3xl bg-zinc-950/80 border border-zinc-800/90 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
               <div>
-                <div className="text-[10px] font-display uppercase tracking-wider text-zinc-500 mb-1 font-bold">MEDIUM</div>
+                <div className="text-[10px] font-display uppercase tracking-wider text-zinc-500 mb-1 font-bold">TECHNOLOGY</div>
                 <div className="text-xs text-zinc-200 font-medium">{currentWork.exhibitionPlaque.medium}</div>
               </div>
               <div>
-                <div className="text-[10px] font-display uppercase tracking-wider text-zinc-500 mb-1 font-bold">SOVEREIGN ORIGIN</div>
+                <div className="text-[10px] font-display uppercase tracking-wider text-zinc-500 mb-1 font-bold">ORIGIN</div>
                 <div className="text-xs text-zinc-200 font-medium">{currentWork.exhibitionPlaque.origin}</div>
               </div>
               <div>
-                <div className="text-[10px] font-display uppercase tracking-wider text-zinc-500 mb-1 font-bold">DEPLOYMENT STATE</div>
+                <div className="text-[10px] font-display uppercase tracking-wider text-zinc-500 mb-1 font-bold">DEPLOYMENT STATUS</div>
                 <div className="text-xs text-[#FF5500] font-bold font-display uppercase tracking-wider">{currentWork.exhibitionPlaque.status}</div>
               </div>
               <div>
-                <div className="text-[10px] font-display uppercase tracking-wider text-zinc-500 mb-1 font-bold">PHILOSOPHICAL ESSENCE</div>
+                <div className="text-[10px] font-display uppercase tracking-wider text-zinc-500 mb-1 font-bold">CORE BENEFIT</div>
                 <div className="text-xs text-zinc-200 font-medium">{currentWork.exhibitionPlaque.essence}</div>
               </div>
             </div>
@@ -452,25 +544,25 @@ export function Products() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. CURATOR'S THESIS: THE SOVEREIGN CODE MANIFESTO */}
+      {/* 4. BUILDER PHILOSOPHY: PROVEN IN PRODUCTION */}
       {/* ========================================================================= */}
       <section className="relative z-10 px-6 md:px-16 max-w-7xl mx-auto py-24 border-t border-zinc-900">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <p className="text-xs font-display uppercase tracking-wider text-[#FF5500] font-bold">
-            CURATOR'S THESIS // THE THREE SOVEREIGN WORKS
+            OUR PHILOSOPHY // PROVEN IN PRODUCTION
           </p>
 
           <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-black text-white uppercase tracking-tight leading-[1.05]">
-            "We do not preach AI. <br />
-            <span className="text-zinc-500">We forge its living manifestations."</span>
+            "We don't just talk about AI. <br />
+            <span className="text-zinc-500">We build real software with it."</span>
           </h2>
 
           <p className="font-sans text-sm sm:text-base text-zinc-400 font-light leading-relaxed max-w-2xl mx-auto">
-            These three works are living proof of our core conviction: true engineering leadership is proven in public production, not in consulting PowerPoint decks. We own every line of code, every database schema, and every inference loop.
+            Every product here is an active platform with real users, live infrastructure, and real traction. We test, break, and refine our technology in production before bringing those exact engineering standards to our client projects.
           </p>
         </div>
 
-        {/* 3 Visual Artwork Cards Side-by-Side */}
+        {/* 3 Product Cards Side-by-Side */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
           {ARTISTIC_WORKS.map((work, idx) => (
             <div
@@ -514,7 +606,7 @@ export function Products() {
               </div>
 
               <div className="relative z-10 pt-6 border-t border-zinc-900 flex items-center justify-between text-xs font-display font-bold tracking-wider text-zinc-500 group-hover:text-white transition-colors">
-                <span>VIEW MONOLITH</span>
+                <span>EXPLORE PRODUCT</span>
                 <ArrowRight size={14} className="group-hover:translate-x-1 text-[#FF5500] transition-transform" />
               </div>
             </div>

@@ -263,21 +263,41 @@ export function UseCases() {
         url="https://aimlpartner.com/use-cases"
       />
 
-      {/* Atmospheric Ambient Lighting */}
-      <div className="absolute top-[-10%] left-[-10%] w-[55%] h-[55%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,85,0,0.12),transparent_70%)] blur-[140px] pointer-events-none" />
-      <div className="absolute top-[45%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,85,0,0.08),transparent_70%)] blur-[140px] pointer-events-none" />
+      {/* ========================================================================= */}
+      {/* CINEMATIC SATURN HERO ATMOSPHERE (BESPOKE HIGH-RES SATURN & RINGS) */}
+      {/* ========================================================================= */}
+      <div className="absolute top-0 left-0 right-0 h-[750px] sm:h-[880px] lg:h-[920px] pointer-events-none z-0 overflow-hidden select-none">
+        {/* High-Resolution Majestic Saturn & Rings Hero Image */}
+        <img
+          src="/saturn_usecases_hero.jpg"
+          alt="Saturn Rings Orbit"
+          className="w-full h-full object-cover object-top lg:object-center opacity-85 brightness-105 contrast-110 filter saturate-[1.05]"
+        />
+
+        {/* Top Edge Fade for Navbar Readability */}
+        <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-black via-black/50 to-transparent" />
+
+        {/* Soft Radial Ambient Solar Flare */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-[#FF5500]/12 rounded-full blur-[160px]" />
+
+        {/* Radial Text Scrim for Clean Typographic Readability */}
+        <div className="absolute inset-0 bg-radial from-black/40 via-black/60 to-black/85" />
+
+        {/* Seamless Bottom Gradient Fade into Case Studies */}
+        <div className="absolute bottom-0 inset-x-0 h-44 bg-gradient-to-t from-black via-black/80 to-transparent" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Editorial Header */}
         <div className="max-w-4xl mx-auto text-center mb-16 pt-4">
-          <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#FF5500] block mb-3">
+          <span className="text-xs font-display font-bold uppercase tracking-widest text-[#FF5500] block mb-3">
             Real Deployments · Measurable Outcomes
           </span>
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.08] mb-6">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-extrabold text-white tracking-tight leading-[1.08] mb-6">
             Proven AI <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5500] via-orange-400 to-amber-300">Use Cases</span>
           </h1>
-          <p className="text-lg sm:text-xl text-zinc-300 font-normal leading-relaxed max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-zinc-300 font-normal leading-relaxed max-w-2xl mx-auto font-sans">
             See exactly how we eliminate operational friction, automate high-value workflows, and drive measurable revenue for market leaders in four major industries.
           </p>
         </div>

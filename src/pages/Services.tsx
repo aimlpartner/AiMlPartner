@@ -150,21 +150,24 @@ export function Services() {
         url="https://aimlpartner.com/services"
       />
       {/* Cinematic Saturn Atmospheric Backdrop */}
-      <div className="absolute top-0 left-0 right-0 h-[620px] sm:h-[700px] overflow-hidden pointer-events-none z-0">
-        <video
-          src="/saturn_loop.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-full object-cover object-center opacity-40 brightness-95 contrast-110"
+      <div className="absolute top-0 inset-x-0 h-[720px] sm:h-[800px] lg:h-[860px] overflow-hidden pointer-events-none z-0">
+        <img
+          src="/saturn_services_hero.jpg"
+          alt="Planet Saturn and Golden Rings"
+          className="w-full h-full object-cover object-center lg:object-right opacity-85 brightness-105 contrast-110 filter saturate-[1.05]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/75 to-black pointer-events-none" />
-      </div>
+        {/* Top Edge Fade for Navbar Readability */}
+        <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-black via-black/50 to-transparent" />
 
-      {/* Ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-[#FF5500]/10 rounded-full blur-[160px] pointer-events-none" />
+        {/* Ambient Ring Glow */}
+        <div className="absolute top-1/3 left-1/3 w-[600px] h-[350px] bg-[#FF5500]/12 rounded-full blur-[150px] pointer-events-none" />
+
+        {/* Soft Radial Scrim for Clean Center Typographic Contrast */}
+        <div className="absolute inset-0 bg-radial from-black/35 via-black/65 to-black/90 pointer-events-none" />
+
+        {/* Seamless Bottom Gradient Fade into Content */}
+        <div className="absolute bottom-0 inset-x-0 h-44 bg-gradient-to-t from-black via-black/85 to-transparent pointer-events-none" />
+      </div>
 
       {/* Hero Section */}
       <section className="relative pt-40 pb-20 px-6 md:px-12 max-w-[1200px] mx-auto text-center flex flex-col items-center z-10">
@@ -174,8 +177,8 @@ export function Services() {
           transition={{ duration: 0.5 }}
           className="space-y-6 max-w-4xl mx-auto flex flex-col items-center"
         >
-          <span className="text-xs uppercase tracking-widest text-[#FF5500] font-mono font-bold block">
-            // TAILORED APPLIED AI ENGINEERING TRACKS
+          <span className="text-xs uppercase tracking-widest text-[#FF5500] font-display font-bold block">
+            Tailored Applied AI Engineering Tracks
           </span>
 
           <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight text-white leading-[1.12] max-w-5xl mx-auto">

@@ -168,8 +168,8 @@ export function AnalyzerInput({ onAnalyze, isLoading }: AnalyzerInputProps) {
 
             <div className="relative z-10">
               <div className="text-center max-w-xl mx-auto mb-8">
-                <span className="text-xs font-mono font-bold text-[#FF5500] uppercase tracking-widest block mb-2">
-                  // CHOOSE YOUR AUDIT INPUT METHOD
+                <span className="text-xs font-display font-bold text-[#FF5500] uppercase tracking-widest block mb-2">
+                  Choose Your Audit Input Method
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
                   Start Your Operational Diagnostic
