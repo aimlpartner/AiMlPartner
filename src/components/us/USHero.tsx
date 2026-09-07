@@ -9,7 +9,7 @@ const COMPANY_LOGOS = [
   { name: "LOHIA TRADERS", src: "/lohiatraderslogo.png" },
   { name: "EQUESTRIAN", src: "/equestrianlogo.png" },
   { name: "GVRG INDUSTRIES", src: "/gvrgindustrieslogo.png" },
-  { name: "SUPERHERO GYM", src: "/superherogym_logo.png" },
+  { name: "SUPERHERO GYM", src: "/superherologo.png" },
   { name: "WEAREKNWN", src: "/weareknwn_logo.png" },
   { name: "AVENOIR", src: "/avenoirlogo.png" },
 ];
