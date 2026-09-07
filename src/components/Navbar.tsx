@@ -192,6 +192,9 @@ export function Navbar() {
               </AnimatePresence>
             </div>
 
+            <Link to="/products" className={linkClass(location.pathname === '/products')}>
+              Products
+            </Link>
             <Link to="/use-cases" className={linkClass(location.pathname === '/use-cases')}>
               Use Cases
             </Link>
@@ -289,6 +292,17 @@ export function Navbar() {
                 </div>
               )}
             </div>
+
+            <Link
+              to="/products"
+              className={`text-sm font-semibold py-2 transition-colors flex items-center justify-between ${
+                location.pathname === '/products' ? 'text-[#FF5500]' : 'text-zinc-300 hover:text-white'
+              }`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span>Proprietary Products</span>
+              <ArrowRight size={14} className="opacity-40" />
+            </Link>
 
             <Link
               to="/use-cases"

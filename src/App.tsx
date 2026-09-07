@@ -34,6 +34,7 @@ const Blog = lazy(() => import('./pages/Blog').then((module) => ({ default: modu
 const Careers = lazy(() => import('./pages/Careers').then((module) => ({ default: module.Careers })));
 const JobDetails = lazy(() => import('./pages/JobDetails').then((module) => ({ default: module.JobDetails })));
 const Resources = lazy(() => import('./pages/Resources').then((module) => ({ default: module.Resources })));
+const Products = lazy(() => import('./pages/Products').then((module) => ({ default: module.Products })));
 
 // Services Hub & Specialized Subpages
 const Services = lazy(() => import('./pages/Services').then((module) => ({ default: module.Services })));
@@ -104,6 +105,7 @@ export default function App() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/analyzer" element={<Analyzer />} />
             <Route path="/partner-waitlist" element={<PartnerWaitlist />} />
+            <Route path="/products" element={<Products />} />
             <Route path="/what-we-automate" element={<WhatWeAutomate />} />
             <Route path="/what-we-automate/:industryId" element={<SMBSolutionDetail />} />
             <Route path="/blog" element={<Blog />} />
