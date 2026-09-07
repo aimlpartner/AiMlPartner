@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const COMPANY_LOGOS = [
   { name: "MINIM", src: "/MINIM-logo-primary.png" },
+  { name: "BRANDTOPOST", src: "/b2p_logo.png" },
   { name: "LOHIA TRADERS", src: "/lohiatraderslogo.png" },
   { name: "EQUESTRIAN", src: "/equestrianlogo.png" },
   { name: "GVRG INDUSTRIES", src: "/gvrgindustrieslogo.png" },

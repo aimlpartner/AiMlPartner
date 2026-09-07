@@ -55,6 +55,7 @@ export interface ProductProfile {
   category: string;
   status: 'PILOT DEPLOYMENT' | 'PRODUCTION LIVE' | 'COMMERCIAL FLEET';
   logoText: string;
+  logoSrc: string;
   accentGlow: string;
   heroImage: string;
   videoPoster?: string;
@@ -83,6 +84,7 @@ const PRODUCTS_CATALOG: ProductProfile[] = [
     category: 'Autonomous Content & Brand Intelligence',
     status: 'PILOT DEPLOYMENT',
     logoText: 'BRANDTOPOST',
+    logoSrc: '/b2p_logo.png',
     accentGlow: '#FF5500',
     heroImage: '/stage1_blueprint.jpg',
     overview:
@@ -143,6 +145,7 @@ const PRODUCTS_CATALOG: ProductProfile[] = [
     category: 'Film & Media Marketplace / AI Operations',
     status: 'PRODUCTION LIVE',
     logoText: 'WEAREKNWN',
+    logoSrc: '/weareknwn_logo.png',
     accentGlow: '#F47164',
     heroImage: '/saturn_case_titan.jpg',
     overview:
@@ -203,6 +206,7 @@ const PRODUCTS_CATALOG: ProductProfile[] = [
     category: 'Connected Health / Gym Operating System',
     status: 'COMMERCIAL FLEET',
     logoText: 'SUPERHERO FITNESS OS',
+    logoSrc: '/superherogym_logo.png',
     accentGlow: '#FF5500',
     heroImage: '/blueprint_sovereignty.jpg',
     overview:
@@ -497,13 +501,22 @@ export function Products() {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    {p.id === 'brandtopost' && <Share2 size={18} className={isActive ? 'text-[#FF5500]' : 'text-zinc-400'} />}
-                    {p.id === 'knwn' && <Film size={18} className={isActive ? 'text-[#FF5500]' : 'text-zinc-400'} />}
-                    {p.id === 'superherofs' && <Dumbbell size={18} className={isActive ? 'text-[#FF5500]' : 'text-zinc-400'} />}
-                    <span className={`text-base font-bold font-display ${isActive ? 'text-white' : 'text-zinc-300'}`}>
-                      {p.title}
-                    </span>
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-black/60 border border-zinc-800 p-1.5 flex items-center justify-center shrink-0">
+                      <img
+                        src={p.logoSrc}
+                        alt={`${p.title} Official Logo`}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <div>
+                      <span className={`text-base font-bold font-display block leading-tight ${isActive ? 'text-white' : 'text-zinc-300'}`}>
+                        {p.title}
+                      </span>
+                      <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-wider block">
+                        Official Fleet Node
+                      </span>
+                    </div>
                   </div>
 
                   <div className="text-[11px] text-zinc-400 mt-1 line-clamp-1">
@@ -536,27 +549,39 @@ export function Products() {
             transition={{ duration: 0.4 }}
             className="bg-zinc-950/90 border border-zinc-800 rounded-3xl p-6 sm:p-10 md:p-12 backdrop-blur-2xl shadow-[0_30px_90px_rgba(0,0,0,0.85)] relative overflow-hidden"
           >
-            {/* Top Product Header Row */}
+            {/* Top Product Header Row with Official Logo */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between pb-8 border-b border-zinc-800/80 gap-6">
-              <div>
-                <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <span className="text-xs font-mono font-bold tracking-widest text-[#FF5500] bg-[#FF5500]/10 border border-[#FF5500]/30 px-3 py-1 rounded-full uppercase">
-                    {activeProduct.badge}
-                  </span>
-                  <span className="text-xs font-mono tracking-widest text-zinc-400 bg-zinc-900 px-3 py-1 rounded-full uppercase border border-zinc-800">
-                    STATUS: {activeProduct.status}
-                  </span>
-                  <span className="text-xs font-mono tracking-widest text-zinc-500 uppercase">
-                    ID: {activeProduct.orbitalCode}
-                  </span>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-5">
+                {/* Official Product Logo Frame */}
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-black/80 border border-zinc-800 p-3 flex items-center justify-center shrink-0 shadow-2xl relative">
+                  <img
+                    src={activeProduct.logoSrc}
+                    alt={`${activeProduct.title} Official Logo`}
+                    className="w-full h-full object-contain filter drop-shadow-md"
+                  />
+                  <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-[#FF5500] border-2 border-black animate-pulse" />
                 </div>
 
-                <h2 className="font-display text-3xl sm:text-5xl font-black tracking-tight text-white mb-2">
-                  {activeProduct.title}
-                </h2>
-                <p className="text-sm sm:text-base text-zinc-400 max-w-2xl font-medium">
-                  {activeProduct.subtitle}
-                </p>
+                <div>
+                  <div className="flex flex-wrap items-center gap-3 mb-2">
+                    <span className="text-xs font-mono font-bold tracking-widest text-[#FF5500] bg-[#FF5500]/10 border border-[#FF5500]/30 px-3 py-1 rounded-full uppercase">
+                      {activeProduct.badge}
+                    </span>
+                    <span className="text-xs font-mono tracking-widest text-zinc-400 bg-zinc-900 px-3 py-1 rounded-full uppercase border border-zinc-800">
+                      STATUS: {activeProduct.status}
+                    </span>
+                    <span className="text-xs font-mono tracking-widest text-zinc-500 uppercase">
+                      ID: {activeProduct.orbitalCode}
+                    </span>
+                  </div>
+
+                  <h2 className="font-display text-3xl sm:text-5xl font-black tracking-tight text-white mb-2">
+                    {activeProduct.title}
+                  </h2>
+                  <p className="text-sm sm:text-base text-zinc-400 max-w-2xl font-medium">
+                    {activeProduct.subtitle}
+                  </p>
+                </div>
               </div>
 
               {/* Action Buttons */}
@@ -1170,9 +1195,24 @@ export function Products() {
             <thead>
               <tr className="border-b border-zinc-800 text-zinc-500 font-mono uppercase text-[10px]">
                 <th className="py-3 px-4">System Spec</th>
-                <th className="py-3 px-4 text-white">BrandToPost</th>
-                <th className="py-3 px-4 text-white">KNWN (weareknwn)</th>
-                <th className="py-3 px-4 text-white">SuperHero Fitness OS</th>
+                <th className="py-3 px-4 text-white">
+                  <div className="flex items-center gap-2">
+                    <img src="/b2p_logo.png" alt="BrandToPost Logo" className="w-5 h-5 object-contain" />
+                    <span>BrandToPost</span>
+                  </div>
+                </th>
+                <th className="py-3 px-4 text-white">
+                  <div className="flex items-center gap-2">
+                    <img src="/weareknwn_logo.png" alt="KNWN Logo" className="w-5 h-5 object-contain" />
+                    <span>KNWN (weareknwn)</span>
+                  </div>
+                </th>
+                <th className="py-3 px-4 text-white">
+                  <div className="flex items-center gap-2">
+                    <img src="/superherogym_logo.png" alt="SuperHero Logo" className="w-5 h-5 object-contain" />
+                    <span>SuperHero Fitness OS</span>
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-900 font-sans text-zinc-300">
