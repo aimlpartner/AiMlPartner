@@ -38,12 +38,38 @@ export async function startServer() {
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+  // [DEBUG] Log every incoming request to verify LiteSpeed proxying
+  app.use((req, _res, next) => {
+    console.log(`[Request] ${req.method} ${req.url} (host: ${req.headers.host})`);
+    next();
+  });
+
   // Mount API router
   app.use('/api', apiRouter);
 
   // Health-check endpoint for uptime monitors
   app.get('/health', (_req, res) => {
     res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
+  // [DEBUG] Test route that reads dist/index.html and returns diagnostic info
+  app.get('/debug-html', (_req, res) => {
+    const info = {
+      distPath,
+      distIndexPath,
+      distIndexExists: fs.existsSync(distIndexPath),
+      publicHtaccess: null,
+      distHtaccess: null,
+    };
+    try { info.publicHtaccess = fs.readFileSync(path.join(rootDir, 'public', '.htaccess'), 'utf8').substring(0, 500); } catch (e) { info.publicHtaccess = e.message; }
+    try { info.distHtaccess = fs.readFileSync(path.join(distPath, '.htaccess'), 'utf8').substring(0, 500); } catch (e) { info.distHtaccess = e.message; }
+    
+    if (fs.existsSync(distIndexPath)) {
+      const size = fs.statSync(distIndexPath).size;
+      info.indexHtmlSize = size;
+      info.indexHtmlPreview = fs.readFileSync(distIndexPath, 'utf8').substring(0, 200);
+    }
+    res.status(200).json(info);
   });
 
   if (fs.existsSync(distIndexPath)) {
