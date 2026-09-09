@@ -8,6 +8,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { USFooter } from './components/us/USFooter';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { useVisitorTracking } from './hooks/useVisitorTracking';
 
 // Core Landing Pages (Eagerly imported to eliminate CLS and prevent footer flash on load)
@@ -31,6 +32,7 @@ const NotFound = lazy(() =>
   import('./pages/NotFound').then((module) => ({ default: module.NotFound })),
 );
 const Blog = lazy(() => import('./pages/Blog').then((module) => ({ default: module.Blog })));
+const BlogPost = lazy(() => import('./pages/BlogPost').then((module) => ({ default: module.BlogPost })));
 const Careers = lazy(() => import('./pages/Careers').then((module) => ({ default: module.Careers })));
 const JobDetails = lazy(() => import('./pages/JobDetails').then((module) => ({ default: module.JobDetails })));
 const Resources = lazy(() => import('./pages/Resources').then((module) => ({ default: module.Resources })));
@@ -72,51 +74,56 @@ export default function App() {
   useVisitorTracking();
 
   return (
-    <div className={`min-h-screen overflow-x-hidden font-sans flex flex-col justify-between ${
+    <div className={`min-h-screen overflow-x-clip font-sans flex flex-col justify-between ${
       isUS ? 'bg-black text-white selection:bg-[#FF5500] selection:text-black' : isIN ? 'bg-black text-white' : 'bg-gradient-to-br from-slate-50 to-sky-50/30 text-slate-900'
     }`}>
       <Navbar />
       
       <main className="flex-1 w-full">
-        <Suspense fallback={<div className="min-h-screen bg-black" />}>
-          <Routes>
-            {/* Flagship US-Market Landing Page (Default & /us) */}
-            <Route path="/" element={<HomeUS />} />
-            <Route path="/us" element={<HomeUS />} />
+        <ErrorBoundary key={pathname}>
+          <Suspense fallback={<div className="min-h-screen bg-black" />}>
+            <Routes>
+              {/* Flagship US-Market Landing Page (Default & /us) */}
+              <Route path="/" element={<HomeUS />} />
+              <Route path="/us" element={<HomeUS />} />
 
-            {/* Preserved Indian-Market Landing Page (/in) */}
-            <Route path="/in" element={<HomeIN />} />
+              {/* Preserved Indian-Market Landing Page (/in) */}
+              <Route path="/in" element={<HomeIN />} />
 
-            {/* Services Hub & Persona Subpages */}
-            <Route path="/services" element={<Services />} />
-            <Route path="/services/operations-automation" element={<OperationsAutomation />} />
-            <Route path="/services/sales-ai" element={<SalesAI />} />
-            <Route path="/services/customer-agents" element={<CustomerAgents />} />
-            <Route path="/services/custom-engineering" element={<CustomEngineering />} />
-            <Route path="/low-code-pods" element={<Services />} />
+              {/* Services Hub & Persona Subpages */}
+              <Route path="/services" element={<Services />} />
+              <Route path="/services/operations-automation" element={<OperationsAutomation />} />
+              <Route path="/services/sales-ai" element={<SalesAI />} />
+              <Route path="/services/customer-agents" element={<CustomerAgents />} />
+              <Route path="/services/custom-engineering" element={<CustomEngineering />} />
+              <Route path="/low-code-pods" element={<Services />} />
 
-            {/* Deep Tools & Shared Enterprise Pages */}
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/team" element={<AboutUs />} />
-            <Route path="/use-cases" element={<UseCases />} />
-            <Route path="/agent-studio" element={<UseCases />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/analyzer" element={<Analyzer />} />
-            <Route path="/partner-waitlist" element={<PartnerWaitlist />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/what-we-automate" element={<WhatWeAutomate />} />
-            <Route path="/what-we-automate/:industryId" element={<SMBSolutionDetail />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/resources" element={<Resources />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/careers/:id" element={<JobDetails />} />
+              {/* Deep Tools & Shared Enterprise Pages */}
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/team" element={<AboutUs />} />
+              <Route path="/use-cases" element={<UseCases />} />
+              <Route path="/agent-studio" element={<UseCases />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/analyzer" element={<Analyzer />} />
+              <Route path="/auditor" element={<Analyzer />} />
+              <Route path="/ai-auditor" element={<Analyzer />} />
+              <Route path="/partner-waitlist" element={<PartnerWaitlist />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/what-we-automate" element={<WhatWeAutomate />} />
+              <Route path="/what-we-automate/:industryId" element={<SMBSolutionDetail />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/resources" element={<Resources />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/careers/:id" element={<JobDetails />} />
 
-            {/* Catch-all 404 Route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
+              {/* Catch-all 404 Route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
       </main>
       
       {isIN ? <Footer /> : <USFooter />}

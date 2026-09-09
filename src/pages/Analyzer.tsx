@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AnalyzerInput } from '../components/AnalyzerInput';
 import { AnalyzerDashboard } from '../components/AnalyzerDashboard';
 import { BookCallWidget } from '../components/BookCallWidget';
 import { SEO } from '../components/SEO';
-import { Sparkles, Brain, Cpu, Lock, ArrowRight, Loader2, X, ShieldAlert } from 'lucide-react';
+import { Brain, Cpu, Lock, ArrowRight, Loader2, X, ShieldAlert } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
@@ -28,6 +28,7 @@ export function Analyzer() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const hasAutoAnalyzedRef = useRef(false);
 
   useEffect(() => {
     const auditCountStr = localStorage.getItem('aiml_analyzer_run_count');
@@ -37,17 +38,38 @@ export function Analyzer() {
     }
   }, []);
 
-  // Handle incoming audit requests passed via router state from homepage search bar
+  // Handle incoming audit requests passed via router state or query parameters (from hero search bar or direct link)
   useEffect(() => {
+    if (hasAutoAnalyzedRef.current) return;
+
     const navState = location.state as { url?: string; description?: string } | null;
-    if (navState && (navState.url || navState.description) && !result && !isLoading) {
-      navigate('/analyzer', { replace: true, state: null });
+    const searchParams = new URLSearchParams(location.search);
+    const queryUrl = searchParams.get('url') || searchParams.get('website');
+    const queryDesc = searchParams.get('description') || searchParams.get('desc');
+
+    const targetUrl = navState?.url || (queryUrl ? decodeURIComponent(queryUrl).trim() : undefined);
+    const targetDesc = navState?.description || (queryDesc ? decodeURIComponent(queryDesc).trim() : undefined);
+
+    if ((targetUrl || targetDesc) && !result && !isLoading) {
+      hasAutoAnalyzedRef.current = true;
+
+      // Clean URL bar smoothly without unmounting
+      window.history.replaceState({}, document.title, window.location.pathname);
+
+      // Auto-scroll directly to scanner card for immediate visual feedback
+      setTimeout(() => {
+        const scannerEl = document.getElementById('diagnostic-scanner');
+        if (scannerEl) {
+          scannerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 120);
+
       handleAnalyze({
-        url: navState.url,
-        description: navState.description
+        url: targetUrl,
+        description: targetDesc
       });
     }
-  }, [location.state]);
+  }, [location.state, location.search]);
 
   const handleAnalyze = async (payload: { url?: string; description?: string; fileContent?: string }) => {
     // Strict client rate-limiting to maximum 5 diagnostic runs to prevent server/API abuse
@@ -255,7 +277,7 @@ export function Analyzer() {
           </section>
 
           {/* Input Area */}
-          <section className="py-12 px-6 relative z-10 min-h-[500px] max-w-4xl mx-auto">
+          <section id="diagnostic-scanner" className="py-12 px-6 relative z-10 min-h-[500px] max-w-4xl mx-auto">
             {limitExceeded ? (
               <div className="max-w-2xl mx-auto bg-zinc-950 border border-zinc-800 rounded-3xl p-8 sm:p-12 text-center text-white shadow-2xl relative overflow-hidden">
                 <div className="space-y-6">

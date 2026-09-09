@@ -4,7 +4,7 @@ import { SEO } from '../components/SEO';
 import { WorkflowSimulator } from '../components/WorkflowSimulator';
 import { BookCallWidget } from '../components/BookCallWidget';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 export function Home() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'website' | 'workflow'>('website');
@@ -730,7 +730,7 @@ export function Home() {
         <div className="max-w-[1200px] mx-auto reveal relative z-10 px-6 mb-12">
           <div className="text-center">
             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 text-emerald-400 rounded-full text-xs font-mono font-bold tracking-wider uppercase mb-6 shadow-sm">
-              <Sparkles size={12} className="text-emerald-400 animate-pulse" />
+              <TrendingUp size={12} className="text-emerald-400 animate-pulse" />
               Real World Results
             </div>
             <h2 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">Don't just take our word for it.</h2>

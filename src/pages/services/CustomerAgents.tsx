@@ -10,7 +10,7 @@ import {
   Clock, 
   ShieldAlert, 
   ShieldCheck, 
-  Sparkles,
+  TrendingUp,
   MessageSquareCode
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -185,7 +185,7 @@ export function CustomerAgents() {
               </h3>
             </div>
             <div className="bg-zinc-900/90 border border-zinc-800 px-5 py-3 rounded-2xl flex items-center gap-3 shrink-0 self-start md:self-auto">
-              <Sparkles size={18} className="text-emerald-400" />
+              <TrendingUp size={18} className="text-emerald-400" />
               <div>
                 <div className="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">Business Impact</div>
                 <div className="text-sm font-bold text-white">{agents[activeAgent].impact}</div>

@@ -14,6 +14,21 @@ export default defineConfig(({mode}) => {
       alias: {
         '@': path.resolve(__dirname, '.'),
       },
+      dedupe: ['react', 'react-dom', 'react-dom/client', 'react-router-dom'],
+    },
+    optimizeDeps: {
+      include: [
+        'react',
+        'react-dom',
+        'react-dom/client',
+        'react-router-dom',
+        'lucide-react',
+        'motion',
+        'motion/react',
+        'firebase/app',
+        'firebase/auth',
+        'firebase/firestore'
+      ],
     },
     build: {
       rollupOptions: {
@@ -27,8 +42,16 @@ export default defineConfig(({mode}) => {
       },
     },
     server: {
+      watch: {
+        ignored: [
+          '**/server/data/**',
+          '**/server/public/**',
+          '**/public/blog-images/**',
+          '**/*.json'
+        ],
+      },
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
+      // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
     },
   };

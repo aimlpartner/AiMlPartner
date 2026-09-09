@@ -1,21 +1,35 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { collection, query, onSnapshot, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth, signInWithGoogle, logOut } from '../lib/firebase';
-import { LogOut, Users, FileText, Activity, DollarSign, Briefcase, Plus, Trash2, Pencil, LayoutDashboard, Send, ShieldAlert, ArrowLeft, Eye, X, Calendar, Sparkles, TrendingUp, Clock, ExternalLink, Check, Wand2 } from 'lucide-react';
+import { LogOut, Users, FileText, Activity, DollarSign, Briefcase, Plus, Trash2, Pencil, LayoutDashboard, Send, ShieldAlert, ArrowLeft, Eye, X, Calendar, Zap, TrendingUp, Clock, ExternalLink, Check, Wand2 } from 'lucide-react';
 import { smartAutoFillJobDescription } from '../utils/jobDescriptionParser';
+import { AdminBlogManager } from '../components/admin/AdminBlogManager';
 
-type Tab = 'overview' | 'jobs' | 'applications';
+type Tab = 'overview' | 'jobs' | 'applications' | 'blogs';
 
 export function AdminDashboard() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlTab = searchParams.get('tab') as Tab;
+  const initialTab: Tab = (urlTab && ['overview', 'jobs', 'applications', 'blogs'].includes(urlTab))
+    ? urlTab
+    : ((localStorage.getItem('admin_active_tab') as Tab) || 'overview');
+
   const [user, setUser] = useState<any>(null);
   const [leads, setLeads] = useState<any[]>([]);
   const [visitorCount, setVisitorCount] = useState(0);
   const [audits, setAudits] = useState<any[]>([]);
   const [selectedLead, setSelectedLead] = useState<any | null>(null);
   
-  // New States
-  const [activeTab, setActiveTab] = useState<Tab>('overview');
+  // Persistent Tab State
+  const [activeTab, setActiveTabState] = useState<Tab>(initialTab);
+
+  const setActiveTab = (tab: Tab) => {
+    setActiveTabState(tab);
+    localStorage.setItem('admin_active_tab', tab);
+    setSearchParams({ tab }, { replace: true });
+  };
   const [jobs, setJobs] = useState<any[]>([]);
   const [applications, setApplications] = useState<any[]>([]);
   
@@ -126,10 +140,10 @@ export function AdminDashboard() {
     fetchVisitors();
 
     return () => {
-      unsubscribeLeads();
-      unsubscribeAudits();
-      unsubscribeJobs();
-      unsubscribeApps();
+      try { unsubscribeLeads(); } catch (_) {}
+      try { unsubscribeAudits(); } catch (_) {}
+      try { unsubscribeJobs(); } catch (_) {}
+      try { unsubscribeApps(); } catch (_) {}
     };
   }, [user]);
 
@@ -425,6 +439,15 @@ export function AdminDashboard() {
               </span>
             )}
           </button>
+          <button
+            onClick={() => setActiveTab('blogs')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold transition-all cursor-pointer ${
+              activeTab === 'blogs' ? 'bg-[#FF5500] text-black shadow-[0_0_20px_rgba(255,85,0,0.4)]' : 'bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white border border-white/5'
+            }`}
+          >
+            <Zap size={16} />
+            Blogs & Automation
+          </button>
         </div>
 
         {/* TAB CONTENT: OVERVIEW */}
@@ -536,7 +559,7 @@ export function AdminDashboard() {
                                 onClick={() => setSelectedLead(lead)}
                                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FF5500]/10 hover:bg-[#FF5500]/20 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold transition-all cursor-pointer shadow-sm"
                               >
-                                <Sparkles size={12} />
+                                <Zap size={12} />
                                 <span>View Data</span>
                               </button>
                             ) : (
@@ -634,7 +657,7 @@ export function AdminDashboard() {
 
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 rounded-2xl bg-[#FF5500]/10 border border-[#FF5500]/20 flex items-center justify-center text-[#FF5500]">
-                      <Sparkles size={20} />
+                      <Activity size={20} />
                     </div>
                     <div>
                       <span className="text-[10px] font-mono text-[#FF5500] uppercase tracking-widest block font-bold">
@@ -861,8 +884,8 @@ export function AdminDashboard() {
                       className="flex items-center gap-1.5 text-xs font-mono font-bold text-black bg-[#FF5500] hover:bg-[#FF6E26] px-4 py-2 rounded-full transition-all shadow-[0_0_15px_rgba(255,85,0,0.35)] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed self-start sm:self-auto hover:scale-105 active:scale-95"
                       title="Analyze description and autofill title, type, location, duration, and skills"
                     >
-                      <Sparkles size={13} className={isAutofilling ? 'animate-spin' : 'animate-pulse'} />
-                      <span>{isAutofilling ? 'Smart Analyzing...' : '✨ Smart Auto-Fill Fields'}</span>
+                      <Wand2 size={13} className={isAutofilling ? 'animate-spin' : ''} />
+                      <span>{isAutofilling ? 'Smart Analyzing...' : 'Smart Auto-Fill Fields'}</span>
                     </button>
                   </div>
 
@@ -1140,6 +1163,11 @@ export function AdminDashboard() {
               )}
             </div>
           </div>
+        )}
+
+        {/* TAB CONTENT: BLOGS & AUTOMATION */}
+        {activeTab === 'blogs' && (
+          <AdminBlogManager user={user} />
         )}
 
       </div>

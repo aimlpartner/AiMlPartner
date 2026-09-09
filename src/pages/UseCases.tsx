@@ -6,7 +6,6 @@ import {
   Wrench,
   ArrowRight,
   ArrowUpRight,
-  Sparkles,
   CheckCircle2,
   TrendingUp,
   Clock,

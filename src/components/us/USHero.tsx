@@ -26,21 +26,31 @@ export function USHero({ onBookCallClick }: USHeroProps) {
 
   const handleAuditSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
+    const val = inputValue.trim();
+    if (!val) return;
 
-    if (inputMode === 'url') {
-      let cleaned = inputValue.trim().toLowerCase();
+    // Smart detection: check if input looks like a domain/URL or was submitted in website mode
+    const isDomain = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$/i.test(val);
+
+    if (inputMode === 'url' || (isDomain && !val.includes(' '))) {
+      let cleaned = val.toLowerCase();
       cleaned = cleaned.replace(/^https?:\/\//i, '');
       cleaned = cleaned.replace(/^www\./i, '');
       cleaned = cleaned.split('/')[0];
-      navigate(`/analyzer?url=${encodeURIComponent(cleaned)}`);
+      cleaned = cleaned.split('?')[0];
+      cleaned = cleaned.split('#')[0];
+      navigate(`/analyzer?url=${encodeURIComponent(cleaned)}`, {
+        state: { url: cleaned }
+      });
     } else {
-      navigate(`/analyzer?description=${encodeURIComponent(inputValue.trim())}`);
+      navigate(`/analyzer?description=${encodeURIComponent(val)}`, {
+        state: { description: val }
+      });
     }
   };
 
   return (
-    <section className="relative min-h-[850px] lg:min-h-screen w-full flex flex-col justify-center items-center pt-28 pb-16 px-6 md:px-16 bg-black text-white overflow-hidden select-none">
+    <section className="relative min-h-screen w-full flex flex-col justify-center items-center pt-24 pb-12 px-6 md:px-12 bg-black text-white overflow-hidden select-none">
       
       {/* ========================================================================= */}
       {/* 1. CINEMATIC SATURN ROTATION (NATIVE HARDWARE 60FPS FORWARD + REVERSE PING-PONG) */}
@@ -64,26 +74,27 @@ export function USHero({ onBookCallClick }: USHeroProps) {
       {/* ========================================================================= */}
       {/* 2. CENTER STAGE: MONUMENTAL EDITORIAL HEADLINE & CLEAN LUXURY ANALYZER */}
       {/* ========================================================================= */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto flex-1 flex flex-col items-center justify-center text-center my-auto py-6">
+      <div className="relative z-10 w-full max-w-5xl mx-auto flex-1 flex flex-col items-center justify-center text-center my-auto py-2 sm:py-4">
         
         {/* Monumental Centered Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight text-white leading-[1.02] drop-shadow-[0_15px_40px_rgba(0,0,0,0.95)] max-w-4xl mx-auto"
+          className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.65rem] xl:text-[4.15rem] font-black tracking-tight text-white leading-[1.08] drop-shadow-[0_15px_40px_rgba(0,0,0,0.95)] max-w-5xl mx-auto"
         >
-          Stop doing <span className="text-[#FF5500]">manual work.</span>
+          Automate the Work <br className="hidden sm:inline" />
+          <span className="text-[#FF5500]">That Holds Your Business Back.</span>
         </motion.h1>
 
-        {/* Narrative Statement with Local Trust Anchor */}
+        {/* Narrative Statement with High-Motivation Value Proposition */}
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="font-sans text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mt-5 leading-relaxed drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)] mx-auto"
+          className="font-sans text-xs sm:text-sm md:text-base text-zinc-300 max-w-2xl mt-4 leading-relaxed drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)] mx-auto"
         >
-          We build custom software that automates your team's busywork. Save hours every week, cut costs, and boost your bottom line.
+          We design and deploy AI agents that handle repetitive operations across your business, so your team saves time, reduces overhead, and focuses on higher-value work.
         </motion.p>
 
         {/* ========================================================================= */}
@@ -93,56 +104,48 @@ export function USHero({ onBookCallClick }: USHeroProps) {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-xl mt-10"
+          className="w-full max-w-xl mt-6 sm:mt-7"
         >
-          {/* Elegant Mode Switcher */}
-          <div className="flex items-center justify-center gap-6 mb-3 font-sans text-xs text-zinc-400">
-            <button
-              type="button"
-              onClick={() => { setInputMode('url'); setInputValue(''); }}
-              className={`pb-1 transition-all cursor-pointer ${
-                inputMode === 'url'
-                  ? 'text-white font-bold border-b-2 border-[#FF5500]'
-                  : 'hover:text-white border-b-2 border-transparent'
-              }`}
-            >
-              Company Website
-            </button>
-            <span className="text-zinc-600">•</span>
-            <button
-              type="button"
-              onClick={() => { setInputMode('description'); setInputValue(''); }}
-              className={`pb-1 transition-all cursor-pointer ${
-                inputMode === 'description'
-                  ? 'text-white font-bold border-b-2 border-[#FF5500]'
-                  : 'hover:text-white border-b-2 border-transparent'
-              }`}
-            >
-              Manual Task
-            </button>
+          {/* Interactive Selector */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-3.5 font-sans text-xs">
+            <span className="text-zinc-400 font-medium">What would you like to automate?</span>
+            <div className="inline-flex items-center gap-1.5 bg-black/70 border border-white/15 rounded-full p-1 backdrop-blur-md">
+              <button
+                type="button"
+                onClick={() => setInputMode('url')}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                  inputMode === 'url'
+                    ? 'bg-[#FF5500] text-black shadow-sm font-bold'
+                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                My company website
+              </button>
+              <button
+                type="button"
+                onClick={() => setInputMode('description')}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                  inputMode === 'description'
+                    ? 'bg-[#FF5500] text-black shadow-sm font-bold'
+                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                A repetitive task
+              </button>
+            </div>
           </div>
 
           {/* Clean Glass Input Pill */}
           <div className="p-1.5 sm:p-2 rounded-full bg-black/70 border border-white/15 backdrop-blur-2xl shadow-[0_20px_70px_rgba(0,0,0,0.8)] hover:border-white/25 transition-all duration-300">
             <form onSubmit={handleAuditSubmit} className="flex items-center gap-2">
               <div className="relative flex-1 pl-4">
-                {inputMode === 'url' ? (
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Enter your company website..."
-                    className="w-full bg-transparent text-white placeholder-zinc-400 font-sans text-xs sm:text-sm focus:outline-none py-2"
-                  />
-                ) : (
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Describe a manual task costing you time and money..."
-                    className="w-full bg-transparent text-white placeholder-zinc-400 font-sans text-xs sm:text-sm focus:outline-none py-2"
-                  />
-                )}
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Enter your website or describe a task…"
+                  className="w-full bg-transparent text-white placeholder-zinc-400 font-sans text-xs sm:text-sm focus:outline-none py-2"
+                />
               </div>
 
               {/* Action Button */}
@@ -150,7 +153,7 @@ export function USHero({ onBookCallClick }: USHeroProps) {
                 type="submit"
                 className="px-6 py-3 rounded-full bg-[#FF5500] hover:bg-[#FF6E26] text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-us-pop hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer shrink-0"
               >
-                <span>Automate It</span>
+                <span>Find My Automation</span>
                 <ArrowRight size={14} />
               </button>
             </form>
@@ -165,9 +168,9 @@ export function USHero({ onBookCallClick }: USHeroProps) {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-5xl mt-12 pt-8 border-t border-white/10 flex flex-col items-center select-none"
+          className="w-full max-w-5xl mt-7 sm:mt-9 pt-5 sm:pt-6 border-t border-white/10 flex flex-col items-center select-none"
         >
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500 font-semibold mb-5">
+          <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-zinc-500 font-semibold mb-3.5">
             COMPANIES WE HAVE AUTOMATED WORKFLOWS FOR
           </span>
           

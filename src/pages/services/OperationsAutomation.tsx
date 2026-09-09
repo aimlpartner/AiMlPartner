@@ -11,8 +11,7 @@ import {
   Zap, 
   Layers, 
   ShieldCheck, 
-  RefreshCw,
-  Sparkles
+  RefreshCw
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { USIntakeCTA } from '../../components/us/USIntakeCTA';

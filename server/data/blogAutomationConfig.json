@@ -1,0 +1,41 @@
+{
+  "enabled": true,
+  "intervalHours": 24,
+  "statusOnGenerate": "published",
+  "selectedNiches": [
+    "Private LLM Deployment & Enterprise VPC Infrastructure",
+    "Autonomous Agentic Workflows & Multi-Agent Swarms",
+    "Zero-Data-Leakage AI Governance & Compliance",
+    "Automating Invoicing, Logistics & ERP Data Pipelines",
+    "Customer Experience AI Agents with Sub-Second Latency"
+  ],
+  "customNiches": [],
+  "selectedIndustries": [
+    "Enterprise SaaS",
+    "Financial Services & FinTech",
+    "Healthcare & Life Sciences",
+    "Logistics & Supply Chain",
+    "Legal & Corporate Compliance"
+  ],
+  "customIndustries": [],
+  "tone": "authoritative-technical",
+  "primaryKeywords": [
+    "Private LLMs",
+    "Data Sovereignty AI",
+    "Autonomous AI Agents",
+    "Enterprise Workflow Automation",
+    "VPC AI Deployment",
+    "AI Readiness Audit"
+  ],
+  "callToAction": {
+    "type": "call",
+    "title": "Deploy Private Enterprise AI with AIMLPartner in 14 Days",
+    "description": "Skip the 6-month consulting bloat. Build and deploy private AI in 14-day execution sprints.",
+    "buttonText": "Book Architecture Discovery Call",
+    "buttonUrl": "/#book-call"
+  },
+  "lastRunAt": "2026-09-08T20:15:26.742Z",
+  "nextRunAt": "2026-09-09T20:15:26.742Z",
+  "totalGenerated": 1,
+  "updatedAt": "2026-09-09T03:46:13.197Z"
+}

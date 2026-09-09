@@ -11,7 +11,6 @@ import {
   Zap, 
   Clock, 
   ShieldCheck, 
-  Sparkles,
   Users,
   Compass
 } from 'lucide-react';

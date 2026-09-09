@@ -14,7 +14,6 @@ import {
   X, 
   ArrowRight, 
   ArrowUpRight, 
-  Sparkles,
   BookOpen,
   Cpu,
   Layers,
@@ -551,7 +550,7 @@ export function Resources() {
       {/* HERO SECTION */}
       <section className="pt-32 sm:pt-40 pb-12 px-6 md:px-16 max-w-7xl mx-auto relative z-20 text-center">
         <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6">
-          <Sparkles size={14} className="text-[#FF5500]" />
+          <Cpu size={14} className="text-[#FF5500]" />
           <span className="text-xs font-display font-bold uppercase tracking-widest text-zinc-300">
             Open Operational Artifacts · Production Blueprints
           </span>

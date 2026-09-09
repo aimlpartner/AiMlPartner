@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Globe, FileText, UploadCloud, Sparkles, Cpu, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
+import { Globe, FileText, UploadCloud, Cpu, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface AnalyzerInputProps {

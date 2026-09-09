@@ -13,7 +13,6 @@ import {
   Share2, 
   Bookmark, 
   BookmarkCheck, 
-  Sparkles, 
   BookOpen, 
   Check, 
   Laptop, 
@@ -297,7 +296,7 @@ export function JobDetails() {
 
           {/* Callout Notice Box (From Screenshot) */}
           <div className="mt-6 p-4 sm:p-5 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-start gap-3.5 text-sky-200 text-xs sm:text-sm leading-relaxed">
-            <Sparkles size={18} className="text-sky-400 shrink-0 mt-0.5" />
+            <Rocket size={18} className="text-sky-400 shrink-0 mt-0.5" />
             <div>
               <p className="font-bold text-sky-300 mb-0.5">
                 Anyone can apply — School Students, College Students, Graduates &amp; Freshers

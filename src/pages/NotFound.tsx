@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Compass, Sparkles, RefreshCw, Home, Shield } from 'lucide-react';
+import { ArrowLeft, Compass, RefreshCw, Home, Shield } from 'lucide-react';
 
 interface Particle {
   x: number;

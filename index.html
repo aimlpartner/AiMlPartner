@@ -5,21 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     
+    <!-- Immediate Service Worker & Stale Cache Annihilator -->
+    <script>
+      (function() {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function(regs) {
+            for (var i = 0; i < regs.length; i++) {
+              regs[i].unregister();
+              console.warn('[SW-Guard] Unregistered rogue ServiceWorker:', regs[i].scope);
+            }
+          }).catch(function() {});
+        }
+        if (typeof caches !== 'undefined' && caches.keys) {
+          caches.keys().then(function(names) {
+            for (var j = 0; j < names.length; j++) {
+              caches.delete(names[j]);
+              console.warn('[SW-Guard] Purged stale CacheStorage:', names[j]);
+            }
+          }).catch(function() {});
+        }
+      })();
+    </script>
+    
     <!-- Primary Brand SEO Title & Meta -->
     <title>AIMLpartner | Sovereign AI Architecture & Autonomous Enterprise Pods</title>
     <meta name="title" content="AIMLpartner | Sovereign AI Architecture & Autonomous Enterprise Pods" />
     <meta name="description" content="AIMLpartner (AIML Partner) architects and deploys sovereign, autonomous AI engineering pods directly inside your private enterprise VPC in 14-day outcome sprints. Headquartered in Bedminster, New Jersey." />
     <meta name="keywords" content="aimlpartner, AIMLpartner, AIML Partner, aiml partner, aimlpartner.com, sovereign AI, AI engineering Bedminster New Jersey, autonomous AI pods, enterprise AI consultancy, AI ML partner, AI engineering agency, private VPC AI" />
     
-    <!-- Canonical URL -->
+    <!-- Canonical URL & Icons -->
     <link rel="canonical" href="https://aimlpartner.com/" />
     <link rel="icon" type="image/png" href="/aimlpartner_logo.png" />
     <link rel="apple-touch-icon" href="/aimlpartner_logo.png" />
-    <link rel="manifest" href="/site.webmanifest" />
     
     <!-- Brand & Geographic Identification -->
-    <meta name="application-name" content="AIMLpartner" />
-    <meta name="apple-mobile-web-app-title" content="AIMLpartner" />
     <meta name="publisher" content="AIMLpartner Inc." />
     <meta name="author" content="AIMLpartner" />
     <meta name="geo.region" content="US-NJ" />

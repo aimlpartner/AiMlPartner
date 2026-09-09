@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, ArrowRight, ShieldCheck, Sparkles, Terminal, Cpu, Radio, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, ShieldCheck, Terminal, Cpu, Radio, CheckCircle2 } from 'lucide-react';
 import { SEO } from '../components/SEO';
 
 export function AboutUs() {

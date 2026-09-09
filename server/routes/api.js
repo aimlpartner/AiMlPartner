@@ -7,6 +7,17 @@ import { emailReportHandler } from '../controllers/emailController.js';
 import { buildRequestHandler } from '../controllers/buildController.js';
 import { bookCallHandler } from '../controllers/bookCallController.js';
 import { parseJobDescriptionHandler } from '../controllers/jobParserController.js';
+import {
+  getBlogConfigHandler,
+  updateBlogConfigHandler,
+  getBlogLogsHandler,
+  generateBlogHandler,
+  getCuratedImagesHandler,
+  getGeneratedPostsHandler,
+  saveBlogPostHandler,
+  deleteBlogPostHandler,
+  generateBlogImageHandler
+} from '../controllers/blogController.js';
 import { GEMINI_API_KEY } from '../config/env.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,6 +31,17 @@ router.post('/email-report', emailReportHandler);
 router.post('/build-request', buildRequestHandler);
 router.post('/book-call', bookCallHandler);
 router.post('/parse-job-description', parseJobDescriptionHandler);
+
+// Automated Blog System endpoints
+router.get('/blog/posts', getGeneratedPostsHandler);
+router.post('/blog/posts', saveBlogPostHandler);
+router.delete('/blog/posts/:id', deleteBlogPostHandler);
+router.get('/blog/config', getBlogConfigHandler);
+router.post('/blog/config', updateBlogConfigHandler);
+router.get('/blog/logs', getBlogLogsHandler);
+router.post('/blog/generate', generateBlogHandler);
+router.post('/blog/generate-image', generateBlogImageHandler);
+router.get('/blog/curated-images', getCuratedImagesHandler);
 
 // Debug & Health status
 router.get('/debug-status', (_req, res) => {

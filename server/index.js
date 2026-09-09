@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import apiRouter from './routes/api.js';
 import { PORT, HOST } from './config/env.js';
+import { startBlogScheduler } from './services/blogScheduler.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,5 +57,6 @@ export async function startServer() {
   app.listen(PORT, HOST, () => {
     console.log(`[Server] Production server running on http://${HOST}:${PORT}`);
     console.log(`[Server] NODE_ENV=${process.env.NODE_ENV || 'production'}`);
+    startBlogScheduler();
   });
 }

@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import apiRouter from './server/routes/api.js';
+import { startBlogScheduler } from './server/services/blogScheduler.js';
 
 // Resolve and load .env using the absolute working directory path
 dotenv.config({ path: path.join(process.cwd(), '.env') });
@@ -24,6 +25,34 @@ async function startServer() {
   // Health-check endpoint for hosting platforms
   app.get('/health', (_req, res) => {
     res.status(200).json({ status: 'ok' });
+  });
+
+  // Self-destruct and permanently unregister any rogue/zombie service workers
+  const swKillScript = `
+self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', () => {
+  self.registration.unregister().then(() => {
+    return self.clients.matchAll({ type: 'window' });
+  }).then((clients) => {
+    clients.forEach((client) => {
+      if (client.url && 'navigate' in client) {
+        client.navigate(client.url);
+      }
+    });
+  });
+});
+self.addEventListener('fetch', () => {
+  // Pass-through: never intercept or block any requests
+  return;
+});
+`;
+
+  app.get(['/sw.js', '/service-worker.js', '/worker.js', '/firebase-messaging-sw.js'], (_req, res) => {
+    res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.send(swKillScript);
   });
 
   const isDev = process.env.NODE_ENV !== 'production';
@@ -54,6 +83,7 @@ async function startServer() {
 
   app.listen(PORT, HOST, () => {
     console.log(`Development server running on http://${HOST}:${PORT}`);
+    startBlogScheduler();
   });
 }
 

@@ -52,26 +52,13 @@ export async function analyzeHandler(req, res) {
 
     const prompt = buildAnalysisPrompt(sourceChannel, finalContext);
 
-    let aiResponse;
-    try {
-      aiResponse = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: prompt,
-        config: {
-          tools: [{ googleSearch: {} }],
-          responseMimeType: 'application/json',
-        }
-      });
-    } catch (err) {
-      console.warn('[Analyze] Grounding failed, falling back to normal:', err.message);
-      aiResponse = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-        }
-      });
-    }
+    const aiResponse = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+      }
+    });
 
     const rawText = aiResponse.text;
     if (!rawText) throw new Error('Empty text');

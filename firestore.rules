@@ -163,5 +163,21 @@ service cloud.firestore {
       // Only admins can read, update, or delete applications
       allow read, update, delete: if isAdmin();
     }
+
+    match /blog_posts/{postId} {
+      // Anyone can read blog posts
+      allow read: if true;
+      // Admins can create, update, delete, and system-generated posts are allowed
+      allow write: if isAdmin() || (request.resource.data.systemGenerated == true);
+    }
+
+    match /blog_automation_config/{configId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /blog_automation_logs/{logId} {
+      allow read: if isAdmin();
+      allow write: if isAdmin() || (request.resource.data.systemGenerated == true);
+    }
   }
 }

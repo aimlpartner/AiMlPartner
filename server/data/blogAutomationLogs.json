@@ -1,0 +1,27 @@
+[
+  {
+    "id": "log_1788898471810",
+    "timestamp": "2026-09-08T20:14:31.810Z",
+    "status": "success",
+    "triggerType": "manual",
+    "niche": "Private LLM Deployment & Zero-Data-Leakage VPC",
+    "industry": "Financial Services & Banking",
+    "systemGenerated": true,
+    "postId": "blog_1788898526390",
+    "postTitle": "The Executive Blueprint: Private LLMs & Zero-Data-Leakage AI in Financial Services VPCs",
+    "postSlug": "private-llms-financial-services-zero-data-leakage-vpc",
+    "durationMs": 54932,
+    "details": "Generated The Executive Blueprint: Private LLMs & Zero-Data-Leakage AI in Financial Services VPCs (12 min read) for Financial Services & Banking."
+  },
+  {
+    "id": "log_1788873124592",
+    "timestamp": "2026-09-08T13:12:04.592Z",
+    "status": "error",
+    "triggerType": "manual",
+    "niche": "Private LLM Deployment & Zero-Data-Leakage VPC",
+    "industry": "Financial Services & Banking",
+    "systemGenerated": true,
+    "durationMs": 44376,
+    "error": "Could not parse JSON from Gemini response"
+  }
+]

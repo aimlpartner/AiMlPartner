@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, onSnapshot } from 'firebase/firestore';
+import { collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Briefcase, GraduationCap, Users } from 'lucide-react';
@@ -14,30 +14,42 @@ export function Careers() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    let isMounted = true;
 
-    const jobsQuery = query(collection(db, 'job_postings'));
-    const unsubscribe = onSnapshot(jobsQuery, (snapshot) => {
-      const jobsData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate()
-      }));
-      
-      // Sort locally to avoid index errors
-      jobsData.sort((a: any, b: any) => {
-        const timeA = a.createdAt?.getTime() || 0;
-        const timeB = b.createdAt?.getTime() || 0;
-        return timeB - timeA; // desc
-      });
+    async function loadJobs() {
+      try {
+        const jobsQuery = query(collection(db, 'job_postings'));
+        const snapshot = await getDocs(jobsQuery);
+        if (!isMounted) return;
 
-      setRoles(jobsData);
-      setLoading(false);
-    }, (error) => {
-      console.error("Firestore error in Careers:", error);
-      setLoading(false);
-    });
+        const jobsData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: (doc.data() as any).createdAt?.toDate ? (doc.data() as any).createdAt.toDate() : new Date()
+        }));
+        
+        // Sort locally to avoid index errors
+        jobsData.sort((a: any, b: any) => {
+          const timeA = a.createdAt?.getTime() || 0;
+          const timeB = b.createdAt?.getTime() || 0;
+          return timeB - timeA; // desc
+        });
 
-    return () => unsubscribe();
+        setRoles(jobsData);
+      } catch (error) {
+        console.error("Firestore error in Careers:", error);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadJobs();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const filteredRoles = roles.filter(role => {
