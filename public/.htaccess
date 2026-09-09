@@ -6,8 +6,11 @@
   RewriteRule ^index\.html$ - [L]
 
   # 2. Stop rewrite processing for backend API and health routes so Express handles them
-  RewriteRule ^api(/.*)?$ - [L]
-  RewriteRule ^health(/.*)?$ - [L]
+  RewriteCond %{REQUEST_URI} ^/api [NC]
+  RewriteRule .* - [L]
+
+  RewriteCond %{REQUEST_URI} ^/health [NC]
+  RewriteRule .* - [L]
 
   # 3. Do not rewrite requests for actual files or directories
   RewriteCond %{REQUEST_FILENAME} -f [OR]
