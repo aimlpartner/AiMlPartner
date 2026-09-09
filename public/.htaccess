@@ -2,9 +2,13 @@
   RewriteEngine On
   RewriteBase /
 
-  # Bypass rewriting for API and health check endpoints
-  RewriteRule ^api(/.*)?$ - [L]
-  RewriteRule ^health$ - [L]
+  # Do not rewrite index.html
+  RewriteRule ^index\.html$ - [L]
+
+  # Exclude backend API and health checks from SPA rewriting so Node.js handles them
+  RewriteCond %{REQUEST_URI} ^/api [NC,OR]
+  RewriteCond %{REQUEST_URI} ^/health [NC]
+  RewriteRule ^ - [L]
 
   # Do not rewrite requests for actual files or directories
   RewriteCond %{REQUEST_FILENAME} -f [OR]
