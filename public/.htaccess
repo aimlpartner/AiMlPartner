@@ -2,21 +2,20 @@
   RewriteEngine On
   RewriteBase /
 
-  # Do not rewrite index.html
+  # 1. Stop rewrite processing for index.html
   RewriteRule ^index\.html$ - [L]
 
-  # Bypass rewriting for API and health check endpoints so Node.js Express handles them
-  RewriteCond %{REQUEST_URI} ^/(api|health) [NC]
-  RewriteRule ^ - [L]
+  # 2. Stop rewrite processing for backend API and health routes so Express handles them
+  RewriteRule ^api(/.*)?$ - [L]
+  RewriteRule ^health(/.*)?$ - [L]
 
-  # Do not rewrite requests for actual files or directories
+  # 3. Do not rewrite requests for actual files or directories
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # Send all other requests to index.html for React SPA routing
-  RewriteCond %{REQUEST_URI} !^/(api|health) [NC]
-  RewriteRule . /index.html [L]
+  # 4. Rewrite all remaining client routes to index.html for React Router
+  RewriteRule ^(.*)$ index.html [L]
 </IfModule>
 
 # Enable gzip compression
