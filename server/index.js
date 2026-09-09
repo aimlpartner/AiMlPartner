@@ -34,6 +34,13 @@ export async function startServer() {
     }
   }
 
+  // Support JSON and urlencoded request bodies
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+  // Mount API router
+  app.use('/api', apiRouter);
+
   // Health-check endpoint for uptime monitors
   app.get('/health', (_req, res) => {
     res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
