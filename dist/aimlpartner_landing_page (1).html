@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIMLPartner - Operational Audit Engine</title>
+    
+    <!-- Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS Setup -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                        display: ['"Manrope"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        surface: {
+                            DEFAULT: '#FDFDFC', // Warmer, cleaner alabaster
+                            alt: '#F4F4F2',
+                            dark: '#0A0A0A',
+                            glass: 'rgba(255, 255, 255, 0.85)',
+                            glassDark: 'rgba(10, 10, 10, 0.45)',
+                        },
+                        accent: {
+                            DEFAULT: '#2563EB', // Vibrant Modern Blue (Splash)
+                            hover: '#1D4ED8',
+                            soft: '#EFF6FF', 
+                        },
+                        alert: {
+                            DEFAULT: '#D94526', // Terracotta
+                            soft: '#FFF0EC',
+                            border: '#F2D3CC'
+                        },
+                        success: {
+                            DEFAULT: '#1A7B6B', // Deep Sage
+                            soft: '#EAF6F4',
+                            border: '#BFE3DC'
+                        },
+                        ink: {
+                            DEFAULT: '#111110',
+                            light: '#555554',
+                            lighter: '#999998',
+                        }
+                    },
+                    backgroundImage: {
+                        'architectural-grid': "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23111110' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+                        'space-gradient': 'linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.9) 70%, #FDFDFC 100%)',
+                    },
+                    boxShadow: {
+                        'editorial': '0 20px 40px -15px rgba(0,0,0,0.05), 0 0 1px rgba(0,0,0,0.1)',
+                        'editorial-hover': '0 30px 60px -15px rgba(0,0,0,0.08), 0 0 1px rgba(0,0,0,0.1)',
+                        'float': '0 30px 60px -20px rgba(0,0,0,0.2)',
+                        'glow': '0 0 40px -10px rgba(37, 99, 235, 0.5)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.4)',
+                    },
+                    animation: {
+                        'float-slow': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FDFDFC;
+            color: #111110;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Organic Texture Overlay */
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.04%22/%3E%3C/svg%3E');
+        }
+
+        ::selection { background: #2563EB; color: #ffffff; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #555554; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2563EB; }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Tangible Object Hover States */
+        .tangible-card {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.6s ease;
+        }
+        .tangible-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.08), 0 0 1px rgba(0,0,0,0.15);
+        }
+
+        /* Offering Rows */
+        .offering-row {
+            transition: padding 0.6s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.6s ease;
+        }
+        .offering-row:hover {
+            background-color: #ffffff;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.03);
+            border-radius: 1rem;
+        }
+        .offering-row .arrow-icon {
+            transform: translateX(-15px) scale(0.9);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .offering-row:hover .arrow-icon {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Crossfade Utility */
+        .img-fade {
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Flowing Gradient Background */
+        .flowing-gradient {
+            background: linear-gradient(120deg, #A5B4FC, #FBCFE8, #93C5FD, #86EFAC, #A5B4FC);
+            background-size: 300% 300%;
+            animation: flow 15s ease infinite;
+        }
+        @keyframes flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        input:focus, textarea:focus { outline: none; }
+    </style>
+</head>
+<body class="relative overflow-x-hidden">
+
+    <!-- Texture Overlays -->
+    <div class="grain-overlay"></div>
+    <div class="absolute inset-0 bg-architectural-grid opacity-50 pointer-events-none -z-10 h-full"></div>
+
+    <!-- Minimalist Navigation (Dynamic colors on scroll) -->
+    <nav class="fixed w-full top-0 z-50 transition-all duration-500" id="navbar">
+        <div class="max-w-[1400px] mx-auto px-6 py-5 flex justify-between items-center border-b border-transparent transition-all duration-500" id="nav-container">
+            <!-- Logo -->
+            <div class="flex items-center gap-2 group cursor-pointer z-10">
+                <div id="nav-logo-box" class="w-8 h-8 bg-white text-ink flex items-center justify-center font-bold text-lg rounded-sm transform group-hover:scale-95 transition-all shadow-sm">
+                    A
+                </div>
+                <span id="nav-logo-text" class="font-display font-bold text-xl tracking-tight text-white transition-colors">AIMLPartner</span>
+            </div>
+            
+            <!-- Links -->
+            <div id="nav-links" class="hidden md:flex gap-10 text-sm font-medium text-white/80 transition-colors">
+                <a href="#bottlenecks" class="hover:text-accent transition-colors">Bottlenecks</a>
+                <a href="#offerings" class="hover:text-accent transition-colors">Offerings</a>
+                <a href="#showcase" class="hover:text-accent transition-colors">How it Works</a>
+                <a href="#proof" class="hover:text-accent transition-colors">Proof</a>
+            </div>
+            
+            <!-- CTA -->
+            <a href="#audit" id="nav-cta" class="px-6 py-2.5 bg-white text-ink text-sm font-bold hover:bg-accent hover:text-white transition-colors duration-300 rounded-sm z-10 shadow-sm transform hover:-translate-y-0.5">
+                Get Started
+            </a>
+        </div>
+    </nav>
+
+    <!-- SECTION 1: IMMERSIVE SPACE HERO -->
+    <section id="audit" class="relative pt-40 pb-32 lg:pt-56 lg:pb-48 px-6 overflow-hidden">
+        
+        <!-- Hero Background Image & Overlays -->
+        <div class="absolute inset-0 z-0">
+            <!-- Deep Space / Nebula Background representing the "Universe of Data" -->
+            <div class="absolute inset-0 animate-[float_30s_ease-in-out_infinite]">
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-90 transform scale-[1.15] origin-center"></div>
+            </div>
+            <!-- Gradient Overlays for readability and smooth transition to next section -->
+            <div class="absolute inset-0 bg-space-gradient"></div>
+            <!-- Accent glow in the center -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-accent/30 md:bg-accent/20 rounded-full blur-[80px] md:blur-[120px] pointer-events-none"></div>
+        </div>
+
+        <div class="max-w-[1400px] mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+            
+            <!-- Left Content: Typography over Dark Space -->
+            <div class="lg:col-span-7 reveal">
+                <div class="flex items-center gap-3 mb-8 bg-white/10 backdrop-blur-md w-fit px-3 py-1.5 rounded-full border border-white/20 shadow-glow">
+                    <div class="w-2 h-2 rounded-full bg-accent animate-pulse-slow"></div>
+                    <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-white font-semibold">Operational Audit Engine</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-extrabold tracking-tighter leading-[1.05] text-white mb-8 text-shadow-sm">
+                    Quantify your <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-300 italic font-medium pr-2">AI agent</span> ROI.
+                </h1>
+                
+                <p class="text-lg md:text-xl text-white/70 max-w-xl font-medium leading-relaxed">
+                    Figure it out in under 30 seconds. Scan your site or outline an operational bottleneck to generate your diagnostic blueprint.
+                </p>
+            </div>
+
+            <!-- Right Content: The Glass Audit Tool floating in space -->
+            <div class="lg:col-span-5 w-full reveal" style="transition-delay: 200ms;">
+                <div class="relative bg-surface-glassDark backdrop-blur-2xl p-2.5 rounded-3xl shadow-glass border border-white/20 animate-float-slow group overflow-hidden">
+                    
+                    <!-- Decorative Application Header -->
+                    <div class="flex items-center px-4 pt-3 pb-3 mb-1 border-b border-white/10">
+                        <div class="flex gap-1.5">
+                            <div class="w-3 h-3 rounded-full bg-alert/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-success/80"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs Minimal (Dark Mode for Glass) -->
+                    <div class="flex p-1.5 bg-black/40 rounded-2xl mb-4 relative z-10 mx-2 mt-4 shadow-inner">
+                        <div id="tab-slider" class="absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-6px)] bg-white/10 rounded-xl shadow-sm transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) z-0 border border-white/10 backdrop-blur-md"></div>
+                        <button onclick="switchHeroTab('website', this)" class="flex-1 py-3 text-xs font-bold uppercase tracking-wider text-white relative z-10 transition-colors duration-300">
+                            Website Scan
+                        </button>
+                        <button onclick="switchHeroTab('workflow', this)" class="flex-1 py-3 text-xs font-bold uppercase tracking-wider text-white/50 hover:text-white relative z-10 transition-colors duration-300">
+                            Manual Workflow
+                        </button>
+                    </div>
+
+                    <!-- Input Area (Responsive Grid Stack) -->
+                    <div class="px-5 md:px-6 pb-5 md:pb-6 pt-2 grid relative">
+                        <!-- Website -->
+                        <div id="content-website" class="col-start-1 row-start-1 transition-all duration-500 opacity-100 transform translate-x-0 w-full z-10">
+                            <label class="block font-mono text-[10px] uppercase text-white/60 mb-2 tracking-[0.2em] font-semibold">Target Architecture URL</label>
+                            <input type="url" placeholder="https://yourcompany.com" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 md:py-4 text-base md:text-lg font-display text-white placeholder-white/30 mb-4 focus:border-accent focus:bg-black/50 transition-all shadow-inner outline-none">
+                            <button class="w-full bg-white text-ink font-bold py-3 md:py-4 rounded-xl hover:bg-surface-alt transition-all flex items-center justify-center gap-2 group/btn shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                                Launch Diagnostic <i class="ph-bold ph-arrow-right group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+
+                        <!-- Workflow -->
+                        <div id="content-workflow" class="col-start-1 row-start-1 transition-all duration-500 opacity-0 transform translate-x-8 pointer-events-none w-full z-0">
+                            <label class="block font-mono text-[10px] uppercase text-white/60 mb-2 tracking-[0.2em] font-semibold">Friction Point Description</label>
+                            <textarea rows="2" placeholder="e.g., We spend 10 hrs/week moving data from HubSpot..." class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-sm font-display text-white placeholder-white/30 resize-none mb-4 focus:border-accent focus:bg-black/50 transition-all shadow-inner outline-none"></textarea>
+                            <button class="w-full bg-accent text-white font-bold py-3 md:py-4 rounded-xl hover:bg-accent-hover transition-all flex items-center justify-center gap-2 group/btn shadow-glow">
+                                Analyze Workflow <i class="ph-bold ph-arrow-right group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- SECTION 2: PROBLEM & SOLUTION (Asymmetric Bento Grid - Light Theme) -->
+    <section id="bottlenecks" class="py-24 md:py-32 px-6 relative z-10 -mt-10 bg-surface rounded-t-[3rem]">
+        <div class="max-w-[1400px] mx-auto">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 reveal pt-10">
+                <div class="max-w-2xl">
+                    <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">Core Operations</span>
+                    <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink leading-[1.1]">
+                        Where manual workflows <br class="hidden md:block">hold you back.
+                    </h2>
+                </div>
+                <p class="text-ink-light max-w-md font-medium leading-relaxed pb-2">
+                    We replace brittle, human-dependent processes with resilient agentic systems that run continuously in the background.
+                </p>
+            </div>
+
+            <!-- Bento Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                
+                <!-- Large Feature Card -->
+                <div class="md:col-span-8 bg-white border border-black/5 rounded-3xl p-8 md:p-12 flex flex-col justify-between tangible-card reveal shadow-editorial">
+                    <div class="grid md:grid-cols-2 gap-8 h-full">
+                        <div class="flex flex-col justify-between">
+                            <div>
+                                <div class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-alert font-bold mb-6 bg-alert-soft px-2.5 py-1.5 rounded-md border border-alert-border/50">
+                                    <i class="ph-fill ph-warning-circle text-sm"></i> The Friction
+                                </div>
+                                <h3 class="font-display text-2xl font-bold mb-4 tracking-tight">Manual lead research & profiling</h3>
+                                <p class="text-ink-light text-sm leading-relaxed">SDRs waste 12+ hours a week copy-pasting LinkedIn profiles, corporate news, and drafting personalized icebreakers. Highly prone to human error.</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-between relative">
+                            <div class="hidden md:block absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-black/10 to-transparent -ml-4"></div>
+                            <div class="pt-6 md:pt-0">
+                                <div class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-success font-bold mb-6 bg-success-soft px-2.5 py-1.5 rounded-md border border-success-border/50">
+                                    <i class="ph-fill ph-cpu text-sm"></i> The Architecture
+                                </div>
+                                <h3 class="font-display text-2xl font-bold mb-4 tracking-tight">Autonomous Context Enrichment</h3>
+                                <p class="text-ink-light text-sm leading-relaxed">AI agents auto-enrich accounts upon lead creation, drafting contextual sequence messages directly within Salesforce or Outreach in seconds.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vertical Card (Dark with Space overlay) -->
+                <div class="md:col-span-4 bg-ink text-surface rounded-3xl p-8 md:p-10 flex flex-col justify-between relative overflow-hidden tangible-card reveal shadow-editorial" style="transition-delay: 100ms;">
+                    <!-- Space Nebula Background -->
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen pointer-events-none">
+                    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-transparent pointer-events-none"></div>
+                    
+                    <div class="relative z-10 mb-12">
+                        <div class="font-mono text-[10px] uppercase tracking-[0.2em] text-white/50 mb-4 block font-bold">Triage Bottleneck</div>
+                        <h3 class="font-display text-2xl font-bold mb-4 leading-tight text-white tracking-tight">Slow lead routing & manual ticket sorting</h3>
+                        <p class="text-surface-alt/70 text-sm leading-relaxed">Inbound requests sit in shared inboxes for hours, drastically reducing response rates and losing pipeline.</p>
+                    </div>
+                    
+                    <div class="relative z-10 bg-white/10 rounded-xl p-5 border border-white/10 backdrop-blur-md mt-auto shadow-inner">
+                        <div class="flex items-center gap-2 text-success bg-white w-fit px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider mb-3 rounded shadow-sm">
+                            <i class="ph-fill ph-lightning"></i> AI Resolution
+                        </div>
+                        <p class="text-sm text-white/90 font-medium leading-relaxed">NLP agents parse queries instantly, routing high-value accounts straight to Slack with full context.</p>
+                    </div>
+                </div>
+
+                <!-- Wide Horizontal Card -->
+                <div class="md:col-span-12 bg-white border border-black/5 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 tangible-card reveal shadow-editorial" style="transition-delay: 200ms;">
+                    <div class="md:w-[45%]">
+                        <div class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-alert font-bold mb-4 bg-alert-soft px-2.5 py-1.5 rounded-md border border-alert-border/50">
+                            <i class="ph-fill ph-database text-sm"></i> The Friction
+                        </div>
+                        <h3 class="font-display text-2xl font-bold mb-3 tracking-tight">Siloed CRMs & manual database syncs</h3>
+                        <p class="text-ink-light text-sm leading-relaxed">Reps manually update client records across CRM systems and internal SQL databases, leading to double reach-outs and stale, fractured data.</p>
+                    </div>
+                    
+                    <div class="hidden md:flex w-12 h-12 rounded-full bg-surface-alt shadow-inner border border-black/5 items-center justify-center shrink-0 z-10 relative">
+                        <i class="ph-bold ph-arrow-right text-ink-light text-lg"></i>
+                        <div class="absolute w-24 h-px bg-gradient-to-r from-transparent to-black/10 right-full top-1/2"></div>
+                        <div class="absolute w-24 h-px bg-gradient-to-l from-transparent to-black/10 left-full top-1/2"></div>
+                    </div>
+                    
+                    <div class="md:w-[45%]">
+                        <div class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-success font-bold mb-4 bg-success-soft px-2.5 py-1.5 rounded-md border border-success-border/50">
+                            <i class="ph-fill ph-arrows-clockwise text-sm"></i> The Architecture
+                        </div>
+                        <h3 class="font-display text-2xl font-bold mb-3 tracking-tight">Real-Time Agentic Sync</h3>
+                        <p class="text-ink-light text-sm leading-relaxed">Vetted database listeners update records automatically, cleaning data fields and maintaining compliance logs overhead-free.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: SHOWCASE (Visual Workflow) -->
+    <section id="showcase" class="py-24 md:py-32 px-6 border-y border-black/5 relative overflow-hidden bg-white">
+        <div class="max-w-[1400px] mx-auto relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+                <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold mb-4 block">Visualized Workflow</span>
+                <h2 class="font-display text-4xl md:text-5xl font-extrabold mb-6 text-ink tracking-tight">See value extracted in real-time.</h2>
+                <p class="text-ink-light text-lg leading-relaxed font-medium">
+                    AI doesn't have to be a black box. Our agents interpret messy, unstructured data and translate it into clean records automatically.
+                </p>
+            </div>
+
+            <!-- The Visual Diagram -->
+            <div class="relative bg-surface rounded-[2rem] border border-black/5 p-8 md:p-16 shadow-editorial overflow-hidden reveal">
+                
+                <!-- Animated Background Grid / Constellation Vibe -->
+                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuMDUiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-40 z-0"></div>
+
+                <!-- Connecting Line with Animated Dash -->
+                <svg class="absolute top-1/2 left-0 w-full h-24 -translate-y-1/2 z-0 hidden md:block" preserveAspectRatio="none">
+                    <path d="M0,48 C200,48 300,10 500,48 C700,86 800,48 1400,48" fill="none" stroke="#2563EB" stroke-width="2" stroke-opacity="0.3" stroke-dasharray="8 8" class="animate-dash"/>
+                </svg>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-4 items-center relative z-10">
+                    
+                    <!-- Step 1: Messy Input -->
+                    <div class="flex flex-col items-center">
+                        <div class="bg-white p-5 rounded-xl border border-black/10 shadow-sm w-full max-w-[280px] transform -rotate-3 hover:rotate-0 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1)">
+                            <div class="flex items-center justify-between mb-3 border-b border-black/5 pb-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded bg-surface flex items-center justify-center border border-black/5 shadow-sm">
+                                        <i class="ph-fill ph-envelope-simple text-ink-light text-xs"></i>
+                                    </div>
+                                    <span class="text-[10px] font-mono text-ink-light uppercase tracking-wider font-bold">Inbound Email</span>
+                                </div>
+                                <div class="w-2 h-2 rounded-full bg-alert"></div>
+                            </div>
+                            <p class="text-sm font-medium text-ink leading-relaxed italic opacity-80">
+                                "Hey, I'm John from Acme Corp. We need about 50 licenses by next month. Can you sort this?"
+                            </p>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <h4 class="font-display font-bold text-ink mb-1 tracking-tight">Unstructured Data</h4>
+                            <p class="text-xs text-ink-light font-medium uppercase tracking-wider">Human-written text</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: The Agent Processor -->
+                    <div class="flex flex-col items-center justify-center animate-float-slow">
+                        <div class="relative w-20 h-20 md:w-24 md:h-24">
+                            <!-- Glowing rings -->
+                            <div class="absolute inset-0 rounded-full border-2 border-accent/30 animate-ping" style="animation-duration: 4s;"></div>
+                            <div class="absolute inset-2 rounded-full border border-accent/40 bg-white/80 backdrop-blur-sm"></div>
+                            <!-- Core -->
+                            <div class="absolute inset-4 rounded-full bg-accent text-white flex items-center justify-center shadow-glow">
+                                <i class="ph-fill ph-magic-wand text-2xl md:text-3xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center bg-white/90 backdrop-blur-md px-4 py-2 rounded-lg border border-black/5 shadow-sm">
+                            <h4 class="font-mono text-[10px] uppercase tracking-[0.2em] font-bold text-accent mb-0.5">Agent Logic</h4>
+                            <p class="text-[10px] text-ink-light font-medium uppercase tracking-wider">Extracting Intent</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Clean Output -->
+                    <div class="flex flex-col items-center">
+                        <div class="bg-ink p-5 rounded-xl border border-black shadow-editorial w-full max-w-[280px] transform translate-y-3 hover:-translate-y-0 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1)">
+                            <div class="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded bg-white/10 flex items-center justify-center">
+                                        <i class="ph-fill ph-database text-success text-xs"></i>
+                                    </div>
+                                    <span class="text-[10px] font-mono text-white uppercase tracking-wider font-bold">CRM Payload</span>
+                                </div>
+                                <i class="ph-bold ph-check-circle text-success"></i>
+                            </div>
+                            <div class="space-y-3 font-mono text-xs">
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-white/50">Company:</span>
+                                    <span class="text-white font-medium">"Acme Corp"</span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-white/50">Intent:</span>
+                                    <span class="text-white font-medium">"Purchase"</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-white/50">Quantity:</span>
+                                    <span class="text-success font-bold">50</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <h4 class="font-display font-bold text-ink mb-1 tracking-tight">Structured Action</h4>
+                            <p class="text-xs text-ink-light font-medium uppercase tracking-wider">Clean JSON for API</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <a href="#" class="inline-flex items-center gap-2 px-8 py-4 bg-ink text-surface font-semibold text-sm hover:bg-accent hover:text-white transition-all duration-300 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    Design Your Agent Flow <i class="ph-bold ph-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: OFFERINGS (Interactive Gallery with Space/Tech imagery) -->
+    <section id="offerings" class="py-24 md:py-32 px-6 flowing-gradient border-y border-black/5 relative">
+        <div class="absolute inset-0 bg-architectural-grid opacity-30 pointer-events-none z-0"></div>
+        <div class="max-w-[1000px] mx-auto relative z-10">
+            
+            <div class="mb-16 reveal text-center">
+                <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">Core Offerings</span>
+                <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink">
+                    How we partner.
+                </h2>
+                <p class="text-ink-light mt-6 max-w-2xl mx-auto font-medium text-lg">
+                    We build custom, production-ready AI systems directly integrated into your operational stack.
+                </p>
+            </div>
+
+            <div class="relative z-10 space-y-4" id="offering-list">
+                <!-- Row 01 -->
+                <div class="offering-row block border border-black/10 bg-white/60 backdrop-blur-md rounded-2xl py-8 px-6 md:px-10 reveal group cursor-pointer shadow-sm hover:shadow-md">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center">
+                        <div class="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">01/</div>
+                        <div class="md:col-span-3">
+                            <h3 class="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">Strategy & Audit</h3>
+                        </div>
+                        <div class="md:col-span-7">
+                            <p class="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">Map bottlenecks. We analyze team structure, SaaS overhead, and friction to generate a detailed roadmap.</p>
+                        </div>
+                        <div class="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
+                            <div class="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent group-hover:text-white transition-all shadow-sm">
+                                <i class="ph-bold ph-arrow-right arrow-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 02 -->
+                <div class="offering-row block border border-black/10 bg-white/60 backdrop-blur-md rounded-2xl py-8 px-6 md:px-10 reveal group cursor-pointer shadow-sm hover:shadow-md" style="transition-delay: 50ms;">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center">
+                        <div class="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">02/</div>
+                        <div class="md:col-span-3">
+                            <h3 class="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">Agent Engineering</h3>
+                        </div>
+                        <div class="md:col-span-7">
+                            <p class="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">Replace repetitive work. We design AI agents built to handle specific business processes flawlessly, 24/7.</p>
+                        </div>
+                        <div class="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
+                            <div class="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent group-hover:text-white transition-all shadow-sm">
+                                <i class="ph-bold ph-arrow-right arrow-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 03 -->
+                <div class="offering-row block border border-black/10 bg-white/60 backdrop-blur-md rounded-2xl py-8 px-6 md:px-10 reveal group cursor-pointer shadow-sm hover:shadow-md" style="transition-delay: 100ms;">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center">
+                        <div class="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">03/</div>
+                        <div class="md:col-span-3">
+                            <h3 class="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">Low-Code Portals</h3>
+                        </div>
+                        <div class="md:col-span-7">
+                            <p class="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">Keep humans in the loop. Custom dashboards to let staff review outputs, approve reports, and monitor safely.</p>
+                        </div>
+                        <div class="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
+                            <div class="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent group-hover:text-white transition-all shadow-sm">
+                                <i class="ph-bold ph-arrow-right arrow-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 04 -->
+                <div class="offering-row block border border-black/10 bg-white/60 backdrop-blur-md rounded-2xl py-8 px-6 md:px-10 reveal group cursor-pointer shadow-sm hover:shadow-md" style="transition-delay: 150ms;">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center">
+                        <div class="md:col-span-1 font-mono text-sm text-ink-lighter font-bold">04/</div>
+                        <div class="md:col-span-3">
+                            <h3 class="font-display text-2xl font-bold text-ink group-hover:text-accent transition-colors tracking-tight">Enterprise Sync</h3>
+                        </div>
+                        <div class="md:col-span-7">
+                            <p class="text-ink-light text-sm leading-relaxed font-medium group-hover:text-ink transition-colors">Bridge CRM triggers directly with LLM pipelines. We set up robust observability logs and security standards.</p>
+                        </div>
+                        <div class="md:col-span-1 flex justify-start md:justify-end mt-4 md:mt-0">
+                            <div class="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent group-hover:text-white transition-all shadow-sm">
+                                <i class="ph-bold ph-arrow-right arrow-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 5: PROOF (Massive Metrics) -->
+    <section id="proof" class="py-24 md:py-32 px-6 bg-surface-alt/40 border-y border-black/5 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent pointer-events-none"></div>
+        <div class="max-w-[1400px] mx-auto relative z-10">
+            <div class="text-center mb-20 reveal">
+                <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">System Performance</span>
+                <h2 class="font-display text-4xl font-extrabold tracking-tight text-ink">Production-grade results.</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12 md:gap-8 border-t border-black/5 pt-16">
+                <!-- Stat 1 -->
+                <div class="reveal relative bg-white/80 backdrop-blur-sm p-8 rounded-3xl border border-white shadow-editorial tangible-card">
+                    <div class="font-display text-6xl lg:text-[6rem] font-black text-ink leading-none tracking-tighter mb-6">
+                        320<span class="text-accent">%</span>
+                    </div>
+                    <div class="font-mono text-[10px] font-bold uppercase tracking-widest text-accent mb-3">Qualified Pipeline</div>
+                    <p class="text-ink-light text-sm font-medium leading-relaxed">
+                        Account Enrichment & Acceleration. AI extracts LinkedIn context and drafts sequences in 90 seconds flat.
+                    </p>
+                </div>
+
+                <!-- Stat 2 -->
+                <div class="reveal relative bg-white/80 backdrop-blur-sm p-8 rounded-3xl border border-white shadow-editorial tangible-card" style="transition-delay: 100ms;">
+                    <div class="font-display text-6xl lg:text-[6rem] font-black text-ink leading-none tracking-tighter mb-6">
+                        $14<span class="text-accent text-5xl">k</span>
+                    </div>
+                    <div class="font-mono text-[10px] font-bold uppercase tracking-widest text-accent mb-3">Overhead Reclaimed</div>
+                    <p class="text-ink-light text-sm font-medium leading-relaxed">
+                        Automated Support Triaging. NLP parses queries instantly and routes high-priority tickets to specific channels.
+                    </p>
+                </div>
+
+                <!-- Stat 3 -->
+                <div class="reveal relative bg-white/80 backdrop-blur-sm p-8 rounded-3xl border border-white shadow-editorial tangible-card" style="transition-delay: 200ms;">
+                    <div class="font-display text-6xl lg:text-[6rem] font-black text-ink leading-none tracking-tighter mb-6">
+                        99<span class="text-accent">.8<span class="text-4xl">%</span></span>
+                    </div>
+                    <div class="font-mono text-[10px] font-bold uppercase tracking-widest text-accent mb-3">Accuracy Vetted</div>
+                    <p class="text-ink-light text-sm font-medium leading-relaxed">
+                        Enterprise Syncing. Secure listeners clean and perfectly sync records across multiple SQL databases.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: PROCESS (Architectural Timeline) -->
+    <section id="process" class="py-24 md:py-32 px-6 bg-white">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="mb-20 reveal">
+                <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4 block font-bold">Delivery Framework</span>
+                <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink max-w-2xl">
+                    How we ship systems that drive growth.
+                </h2>
+            </div>
+
+            <div class="relative">
+                <!-- The continuous line -->
+                <div class="hidden lg:block absolute top-0 bottom-0 left-[27px] w-px bg-gradient-to-b from-black/10 via-black/10 to-transparent z-0"></div>
+
+                <div class="space-y-12 lg:space-y-20 relative z-10">
+                    
+                    <!-- Step 1 -->
+                    <div class="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start reveal group">
+                        <div class="w-14 h-14 bg-ink text-white rounded-full font-display text-lg font-bold flex items-center justify-center shrink-0 shadow-md group-hover:bg-accent transition-all duration-500">
+                            1
+                        </div>
+                        <div class="lg:pt-2 max-w-2xl">
+                            <h3 class="font-display text-2xl font-bold mb-3 tracking-tight">Diagnostics & ROI Modeling</h3>
+                            <p class="text-ink-light font-medium leading-relaxed text-sm">
+                                We audit your CRM pipelines, team sizes, and manual entry points to compile a detailed ROI forecast and operational blueprint before writing any code.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start reveal group">
+                        <div class="w-14 h-14 bg-white border border-black/10 rounded-full text-ink font-display text-lg font-bold flex items-center justify-center shrink-0 group-hover:border-accent group-hover:text-accent group-hover:shadow-md transition-all duration-500 bg-surface-glass backdrop-blur-sm">
+                            2
+                        </div>
+                        <div class="lg:pt-2 max-w-2xl">
+                            <h3 class="font-display text-2xl font-bold mb-3 tracking-tight">Orchestration & Agent Engineering</h3>
+                            <p class="text-ink-light font-medium leading-relaxed text-sm">
+                                We design custom agent loops, configure vector stores for context grounding, and write custom tool-calling schemas tailored strictly to your business rules.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start reveal group">
+                        <div class="w-14 h-14 bg-white border border-black/10 rounded-full text-ink font-display text-lg font-bold flex items-center justify-center shrink-0 group-hover:border-accent group-hover:text-accent group-hover:shadow-md transition-all duration-500 bg-surface-glass backdrop-blur-sm">
+                            3
+                        </div>
+                        <div class="lg:pt-2 max-w-2xl">
+                            <h3 class="font-display text-2xl font-bold mb-3 tracking-tight">Human-in-the-Loop Portals</h3>
+                            <p class="text-ink-light font-medium leading-relaxed text-sm">
+                                We build intuitive low-code control panels that let your operations team monitor agent tasks, edit drafted responses, and approve outbound actions safely.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start reveal group">
+                        <div class="w-14 h-14 bg-white border border-black/10 rounded-full text-ink font-display text-lg font-bold flex items-center justify-center shrink-0 group-hover:border-accent group-hover:text-accent group-hover:shadow-md transition-all duration-500 bg-surface-glass backdrop-blur-sm">
+                            4
+                        </div>
+                        <div class="lg:pt-2 max-w-2xl">
+                            <h3 class="font-display text-2xl font-bold mb-3 tracking-tight">CRM & Enterprise Syncing</h3>
+                            <p class="text-ink-light font-medium leading-relaxed text-sm">
+                                We bridge agent webhooks directly with Salesforce Agentforce, HubSpot, or SQL backends, deploying continuous observability logs and API rate limits.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-ink py-16 px-6 relative overflow-hidden">
+        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative z-10">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-white text-ink flex items-center justify-center font-bold text-sm rounded-sm shadow-sm">
+                    A
+                </div>
+                <span class="font-display font-bold text-xl tracking-tight text-white">AIMLPartner</span>
+            </div>
+            
+            <div class="text-sm font-mono text-white/40 tracking-wider">
+                &copy; 2026 AIMLPartner. Engineered logic.
+            </div>
+            
+            <div class="flex gap-8">
+                <a href="#" class="text-white/50 text-sm font-medium hover:text-white transition-colors">
+                    LinkedIn
+                </a>
+                <a href="#" class="text-white/50 text-sm font-medium hover:text-white transition-colors">
+                    Twitter
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Hero Tab Sliding Logic 
+        function switchHeroTab(tabName, btnElement) {
+            const contentWeb = document.getElementById('content-website');
+            const contentWork = document.getElementById('content-workflow');
+            const slider = document.getElementById('tab-slider');
+            const buttons = btnElement.parentElement.querySelectorAll('button');
+            
+            buttons.forEach(btn => {
+                btn.classList.remove('text-white');
+                btn.classList.add('text-white/50');
+            });
+            
+            btnElement.classList.remove('text-white/50');
+            btnElement.classList.add('text-white');
+
+            if(tabName === 'website') {
+                slider.style.transform = 'translateX(0)';
+                contentWeb.style.opacity = '1';
+                contentWeb.style.transform = 'translateX(0)';
+                contentWeb.style.pointerEvents = 'auto';
+                contentWeb.style.zIndex = '10';
+                
+                contentWork.style.opacity = '0';
+                contentWork.style.transform = 'translateX(20px)';
+                contentWork.style.pointerEvents = 'none';
+                contentWork.style.zIndex = '0';
+            } else {
+                slider.style.transform = `translateX(${btnElement.offsetLeft - 6}px)`;
+                contentWork.style.opacity = '1';
+                contentWork.style.transform = 'translateX(0)';
+                contentWork.style.pointerEvents = 'auto';
+                contentWork.style.zIndex = '10';
+                
+                contentWeb.style.opacity = '0';
+                contentWeb.style.transform = 'translateX(-20px)';
+                contentWeb.style.pointerEvents = 'none';
+                contentWeb.style.zIndex = '0';
+            }
+        }
+
+        // Scroll Reveal & Navbar Logic
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach(el => observer.observe(el));
+            
+            // Dynamic Navbar
+            const navbar = document.getElementById('navbar');
+            const navContainer = document.getElementById('nav-container');
+            const navLogoBox = document.getElementById('nav-logo-box');
+            const navLogoText = document.getElementById('nav-logo-text');
+            const navLinks = document.getElementById('nav-links');
+            const navCta = document.getElementById('nav-cta');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    // Light Mode Navbar (Scrolled)
+                    navbar.classList.add('bg-surface/95', 'backdrop-blur-xl', 'shadow-sm');
+                    navContainer.classList.add('border-black/5', 'py-3');
+                    navContainer.classList.remove('py-5', 'border-transparent');
+                    
+                    navLogoBox.classList.remove('bg-white', 'text-ink');
+                    navLogoBox.classList.add('bg-ink', 'text-white');
+                    
+                    navLogoText.classList.remove('text-white');
+                    navLogoText.classList.add('text-ink');
+                    
+                    navLinks.classList.remove('text-white/80');
+                    navLinks.classList.add('text-ink-light');
+                    
+                    navCta.classList.remove('bg-white', 'text-ink');
+                    navCta.classList.add('bg-ink', 'text-white');
+                } else {
+                    // Dark Mode Navbar (Hero)
+                    navbar.classList.remove('bg-surface/95', 'backdrop-blur-xl', 'shadow-sm');
+                    navContainer.classList.remove('border-black/5', 'py-3');
+                    navContainer.classList.add('py-5', 'border-transparent');
+                    
+                    navLogoBox.classList.add('bg-white', 'text-ink');
+                    navLogoBox.classList.remove('bg-ink', 'text-white');
+                    
+                    navLogoText.classList.add('text-white');
+                    navLogoText.classList.remove('text-ink');
+                    
+                    navLinks.classList.add('text-white/80');
+                    navLinks.classList.remove('text-ink-light');
+                    
+                    navCta.classList.add('bg-white', 'text-ink');
+                    navCta.classList.remove('bg-ink', 'text-white');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

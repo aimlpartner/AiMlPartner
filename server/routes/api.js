@@ -45,15 +45,42 @@ router.get('/blog/curated-images', getCuratedImagesHandler);
 
 // Debug & Health status
 router.get('/debug-status', (_req, res) => {
-  const envPath = path.join(__dirname, '..', '..', '.env');
+  const rootDir = path.join(__dirname, '..', '..');
+  const envPath = path.join(rootDir, '.env');
+  const distPath = path.join(rootDir, 'dist');
+  const distIndexPath = path.join(distPath, 'index.html');
+
+  let rootDirFiles = [];
+  try {
+    rootDirFiles = fs.readdirSync(rootDir);
+  } catch (e) {
+    rootDirFiles = [e.message];
+  }
+
+  let distFiles = [];
+  try {
+    if (fs.existsSync(distPath)) {
+      distFiles = fs.readdirSync(distPath);
+    }
+  } catch (e) {
+    distFiles = [e.message];
+  }
+
   res.status(200).json({
+    status: 'ok',
     hasApiKey: !!GEMINI_API_KEY,
     apiKeyLength: GEMINI_API_KEY ? GEMINI_API_KEY.length : 0,
-    apiKeyPrefix: GEMINI_API_KEY ? GEMINI_API_KEY.substring(0, 5) + '...' : 'none',
     cwd: process.cwd(),
+    rootDir,
+    distPath,
+    distExists: fs.existsSync(distPath),
+    distIndexExists: fs.existsSync(distIndexPath),
+    distFilesCount: distFiles.length,
+    rootDirContents: rootDirFiles,
     envFilePath: envPath,
     envFileExists: fs.existsSync(envPath),
     nodeVersion: process.version,
+    timestamp: new Date().toISOString()
   });
 });
 

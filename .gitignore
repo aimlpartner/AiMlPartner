@@ -1,6 +1,5 @@
 node_modules/
 build/
-dist/
 coverage/
 intro-video/
 .DS_Store
