@@ -42,6 +42,7 @@ import {
   ArrowUpRight
 } from 'lucide-react';
 import { CustomSelect, CustomSelectOption } from '../common/CustomSelect';
+import { cleanPlainText } from '../../pages/BlogPost';
 
 const INTERVAL_OPTIONS: CustomSelectOption[] = [
   { value: 6, label: 'Every 6 Hours', sublabel: 'High Frequency' },
@@ -172,18 +173,57 @@ export function AdminBlogManager({ user }: AdminBlogManagerProps) {
   useEffect(() => {
     const q = query(collection(db, 'blog_posts'));
     const unsubscribe = onSnapshot(q, async (snapshot) => {
-      const firestorePosts: any[] = snapshot.docs.map(d => ({
-        id: d.id,
-        ...d.data(),
-        publishedAt: d.data().publishedAt?.toDate ? d.data().publishedAt.toDate().toISOString() : d.data().publishedAt
-      }));
+      const firestorePosts: any[] = snapshot.docs.map(d => {
+        const dData = d.data();
+        const rawContent = dData.content || '';
+        const cleanContent = rawContent.replace(/\*\*/g, '');
+        const cleanTitle = cleanPlainText(dData.title);
+        const cleanExcerpt = cleanPlainText(dData.excerpt);
+        const cleanCategory = cleanPlainText(dData.category) || 'Engineering';
+        const cleanIndustry = cleanPlainText(dData.industry) || 'Enterprise SaaS';
+        const cleanTags = Array.isArray(dData.tags) ? dData.tags.map((t: string) => cleanPlainText(t)) : [];
+
+        // Auto-clean any stars from Firestore documents using authenticated admin credentials
+        if (rawContent.includes('**') || dData.title?.includes('**') || dData.excerpt?.includes('**') || dData.category?.includes('**')) {
+          updateDoc(doc(db, 'blog_posts', d.id), {
+            title: cleanTitle,
+            excerpt: cleanExcerpt,
+            content: cleanContent,
+            category: cleanCategory,
+            industry: cleanIndustry,
+            tags: cleanTags
+          }).catch(() => {});
+        }
+
+        return {
+          id: d.id,
+          ...dData,
+          title: cleanTitle,
+          excerpt: cleanExcerpt,
+          content: cleanContent,
+          category: cleanCategory,
+          industry: cleanIndustry,
+          tags: cleanTags,
+          publishedAt: dData.publishedAt?.toDate ? dData.publishedAt.toDate().toISOString() : dData.publishedAt
+        };
+      });
 
       const serverPosts = await fetchLocalServerPosts();
+      const sanitizedServerPosts = serverPosts.map((sp: any) => ({
+        ...sp,
+        title: cleanPlainText(sp.title),
+        excerpt: cleanPlainText(sp.excerpt),
+        content: (sp.content || '').replace(/\*\*/g, ''),
+        category: cleanPlainText(sp.category) || 'Engineering',
+        industry: cleanPlainText(sp.industry) || 'Enterprise SaaS',
+        tags: Array.isArray(sp.tags) ? sp.tags.map((t: string) => cleanPlainText(t)) : []
+      }));
+
       const existingIds = new Set(firestorePosts.map((p: any) => p.id));
       const existingSlugs = new Set(firestorePosts.map((p: any) => p.slug));
 
       const merged = [...firestorePosts];
-      for (const sp of serverPosts) {
+      for (const sp of sanitizedServerPosts) {
         if (!existingIds.has(sp.id) && !existingSlugs.has(sp.slug)) {
           merged.push(sp);
           existingIds.add(sp.id);
@@ -208,8 +248,17 @@ export function AdminBlogManager({ user }: AdminBlogManagerProps) {
     }, async (err) => {
       console.warn('Firestore blog subscription notice, using server posts fallback:', err);
       const serverPosts = await fetchLocalServerPosts();
-      serverPosts.sort((a, b) => new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime());
-      setPosts(serverPosts);
+      const sanitizedServerPosts = serverPosts.map((sp: any) => ({
+        ...sp,
+        title: cleanPlainText(sp.title),
+        excerpt: cleanPlainText(sp.excerpt),
+        content: (sp.content || '').replace(/\*\*/g, ''),
+        category: cleanPlainText(sp.category) || 'Engineering',
+        industry: cleanPlainText(sp.industry) || 'Enterprise SaaS',
+        tags: Array.isArray(sp.tags) ? sp.tags.map((t: string) => cleanPlainText(t)) : []
+      }));
+      sanitizedServerPosts.sort((a, b) => new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime());
+      setPosts(sanitizedServerPosts);
       setLoadingPosts(false);
     });
 
@@ -307,10 +356,19 @@ export function AdminBlogManager({ user }: AdminBlogManagerProps) {
 
       // Sync immediately to Firestore with authenticated admin credentials
       if (data.post) {
+        const sanitizedPost = {
+          ...data.post,
+          title: cleanPlainText(data.post.title),
+          excerpt: cleanPlainText(data.post.excerpt),
+          content: (data.post.content || '').replace(/\*\*/g, ''),
+          category: cleanPlainText(data.post.category) || 'Engineering',
+          industry: cleanPlainText(data.post.industry) || 'Enterprise SaaS',
+          tags: Array.isArray(data.post.tags) ? data.post.tags.map((t: string) => cleanPlainText(t)) : []
+        };
         if (user) {
           try {
             await addDoc(collection(db, 'blog_posts'), {
-              ...data.post,
+              ...sanitizedPost,
               createdAt: serverTimestamp(),
               publishedAt: serverTimestamp()
             });
@@ -320,8 +378,8 @@ export function AdminBlogManager({ user }: AdminBlogManagerProps) {
           }
         }
         setPosts(prev => {
-          if (prev.some(p => p.slug === data.post.slug || p.id === data.post.id)) return prev;
-          return [data.post, ...prev];
+          if (prev.some(p => p.slug === sanitizedPost.slug || p.id === sanitizedPost.id)) return prev;
+          return [sanitizedPost, ...prev];
         });
       }
 
@@ -377,19 +435,19 @@ export function AdminBlogManager({ user }: AdminBlogManagerProps) {
   const handleStartEditPost = (post: any) => {
     setEditingPostId(post.id);
     setPostForm({
-      title: post.title || '',
+      title: cleanPlainText(post.title) || '',
       slug: post.slug || '',
-      category: post.category || 'Engineering',
-      industry: post.industry || 'Enterprise SaaS',
+      category: cleanPlainText(post.category) || 'Engineering',
+      industry: cleanPlainText(post.industry) || 'Enterprise SaaS',
       readTime: post.readTime || '6 min read',
-      excerpt: post.excerpt || '',
-      content: post.content || '',
+      excerpt: cleanPlainText(post.excerpt) || '',
+      content: (post.content || '').replace(/\*\*/g, ''),
       coverImage: post.coverImage || '/blog_saturn_bg.jpg',
-      tags: Array.isArray(post.tags) ? post.tags.join(', ') : post.tags || '',
+      tags: Array.isArray(post.tags) ? post.tags.map((t: string) => cleanPlainText(t)).join(', ') : cleanPlainText(post.tags) || '',
       status: post.status || 'published',
-      metaTitle: post.seo?.metaTitle || post.title || '',
-      metaDescription: post.seo?.metaDescription || post.excerpt || '',
-      focusKeywords: Array.isArray(post.seo?.keywords) ? post.seo.keywords.join(', ') : ''
+      metaTitle: cleanPlainText(post.seo?.metaTitle || post.title) || '',
+      metaDescription: cleanPlainText(post.seo?.metaDescription || post.excerpt) || '',
+      focusKeywords: Array.isArray(post.seo?.keywords) ? post.seo.keywords.map((k: string) => cleanPlainText(k)).join(', ') : ''
     });
     setEditorTab('write');
     setShowEditorModal(true);
@@ -405,23 +463,23 @@ export function AdminBlogManager({ user }: AdminBlogManagerProps) {
     setIsSavingPost(true);
     try {
       const slug = (postForm.slug.trim() || postForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')).toLowerCase();
-      const tagsArray = postForm.tags.split(',').map(t => t.trim()).filter(Boolean);
-      const keywordsArray = postForm.focusKeywords.split(',').map(k => k.trim()).filter(Boolean);
+      const tagsArray = postForm.tags.split(',').map(t => cleanPlainText(t)).filter(Boolean);
+      const keywordsArray = postForm.focusKeywords.split(',').map(k => cleanPlainText(k)).filter(Boolean);
 
       const payload = {
-        title: postForm.title.trim(),
+        title: cleanPlainText(postForm.title),
         slug,
-        category: postForm.category,
-        industry: postForm.industry.trim() || 'Enterprise SaaS',
+        category: cleanPlainText(postForm.category),
+        industry: cleanPlainText(postForm.industry) || 'Enterprise SaaS',
         readTime: postForm.readTime.trim() || '6 min read',
-        excerpt: postForm.excerpt.trim() || postForm.content.slice(0, 160) + '...',
-        content: postForm.content.trim(),
+        excerpt: cleanPlainText(postForm.excerpt) || cleanPlainText(postForm.content.slice(0, 160)) + '...',
+        content: postForm.content.replace(/\*\*/g, '').trim(),
         coverImage: postForm.coverImage,
         tags: tagsArray,
         status: postForm.status,
         seo: {
-          metaTitle: postForm.metaTitle.trim() || `${postForm.title.trim()} | AIMLPartner`,
-          metaDescription: postForm.metaDescription.trim() || postForm.excerpt.trim() || '',
+          metaTitle: cleanPlainText(postForm.metaTitle) || `${cleanPlainText(postForm.title)} | AIMLPartner`,
+          metaDescription: cleanPlainText(postForm.metaDescription) || cleanPlainText(postForm.excerpt) || '',
           keywords: keywordsArray
         },
         updatedAt: serverTimestamp()
@@ -527,18 +585,18 @@ export function AdminBlogManager({ user }: AdminBlogManagerProps) {
       if (data.post) {
         setPostForm(prev => ({
           ...prev,
-          title: data.post.title || prev.title,
+          title: cleanPlainText(data.post.title) || prev.title,
           slug: data.post.slug || prev.slug,
-          excerpt: data.post.excerpt || prev.excerpt,
-          content: data.post.content || prev.content,
+          excerpt: cleanPlainText(data.post.excerpt) || prev.excerpt,
+          content: (data.post.content || prev.content || '').replace(/\*\*/g, ''),
           coverImage: data.post.coverImage || prev.coverImage,
           readTime: data.post.readTime || prev.readTime,
-          category: data.post.category || prev.category,
-          industry: data.post.industry || prev.industry,
-          tags: Array.isArray(data.post.tags) ? data.post.tags.join(', ') : prev.tags,
-          metaTitle: data.post.seo?.metaTitle || prev.metaTitle,
-          metaDescription: data.post.seo?.metaDescription || prev.metaDescription,
-          focusKeywords: Array.isArray(data.post.seo?.keywords) ? data.post.seo.keywords.join(', ') : prev.focusKeywords
+          category: cleanPlainText(data.post.category) || prev.category,
+          industry: cleanPlainText(data.post.industry) || prev.industry,
+          tags: Array.isArray(data.post.tags) ? data.post.tags.map((t: string) => cleanPlainText(t)).join(', ') : prev.tags,
+          metaTitle: cleanPlainText(data.post.seo?.metaTitle) || prev.metaTitle,
+          metaDescription: cleanPlainText(data.post.seo?.metaDescription) || prev.metaDescription,
+          focusKeywords: Array.isArray(data.post.seo?.keywords) ? data.post.seo.keywords.map((k: string) => cleanPlainText(k)).join(', ') : prev.focusKeywords
         }));
       }
     } catch (err: any) {
@@ -1219,10 +1277,10 @@ export function AdminBlogManager({ user }: AdminBlogManagerProps) {
                         )}
                       </div>
                       <h4 className="font-display text-base font-bold text-white truncate hover:text-[#FF5500] transition-colors">
-                        {post.title}
+                        {cleanPlainText(post.title)}
                       </h4>
                       <p className="text-xs text-zinc-400 truncate mt-0.5">
-                        {post.excerpt || 'No summary'}
+                        {cleanPlainText(post.excerpt) || 'No summary'}
                       </p>
                     </div>
                   </div>

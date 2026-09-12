@@ -50,6 +50,51 @@ function getUniqueId(baseId: string, seenSet: Set<string>) {
   return id;
 }
 
+// Helper to strip markdown stars and symbols from plain text strings (headings, titles, excerpts, tags)
+export function cleanPlainText(text?: string): string {
+  if (!text || typeof text !== 'string') return '';
+  return text.replace(/\*\*/g, '').replace(/\*/g, '').trim();
+}
+
+// Helper to parse and render inline markdown (bold **text**, inline `code`, and clean all raw stars)
+export function renderInlineMarkdown(text: string): React.ReactNode {
+  if (!text) return null;
+
+  // Match bold (**text** or ***text***) or inline code (`code`)
+  const tokenRegex = /(\*{2,3}[^*]+\*{2,3}|`[^`]+`)/g;
+  const parts = text.split(tokenRegex);
+
+  return parts.map((part, idx) => {
+    // Bold tokens: **text** or ***text***
+    if (part.startsWith('**') && part.endsWith('**') && part.length >= 4) {
+      const inner = part.replace(/^\*+/, '').replace(/\*+$/, '').trim();
+      if (!inner) return null;
+      return (
+        <strong key={idx} className="text-white font-semibold">
+          {inner}
+        </strong>
+      );
+    }
+
+    // Inline code tokens: `code`
+    if (part.startsWith('`') && part.endsWith('`') && part.length >= 2) {
+      const inner = part.slice(1, -1);
+      return (
+        <code
+          key={idx}
+          className="px-1.5 py-0.5 rounded bg-white/10 font-mono text-xs text-[#FF5500] border border-white/10"
+        >
+          {inner}
+        </code>
+      );
+    }
+
+    // Plain text: strip any stray or orphaned asterisks so literal asterisks never leak into the UI
+    const cleaned = part.replace(/\*/g, '');
+    return <React.Fragment key={idx}>{cleaned}</React.Fragment>;
+  });
+}
+
 // Helper to extract table of contents from markdown
 function extractHeadings(markdownText: string, postTitle?: string) {
   if (!markdownText) return [];
@@ -61,7 +106,7 @@ function extractHeadings(markdownText: string, postTitle?: string) {
     const match = line.match(/^(#{1,3})\s+(.*)/);
     if (match) {
       const level = match[1].length;
-      const text = match[2].trim().replace(/\*\*/g, '');
+      const text = cleanPlainText(match[2]);
       // Skip invalid/orphan numbers like "2." or empty headings
       if (!isMeaningfulHeading(text)) {
         return;
@@ -232,7 +277,9 @@ export function BlogPost() {
         if (!snapshot.empty && isMounted) {
           const docData = snapshot.docs[0].data();
           const docId = snapshot.docs[0].id;
-          let content = docData.content || '';
+          let content = (docData.content || '').replace(/\*\*/g, '');
+          const cleanedTitle = cleanPlainText(docData.title);
+          const cleanedExcerpt = cleanPlainText(docData.excerpt);
 
           // Prefer richer/updated content from server cache if Firestore had a truncated draft
           try {
@@ -240,36 +287,46 @@ export function BlogPost() {
             if (sRes.ok) {
               const sPosts: any[] = await sRes.json();
               const sMatch = Array.isArray(sPosts) ? sPosts.find(p => p.slug === slug) : null;
-              if (sMatch && sMatch.content && sMatch.content.length > content.length) {
-                content = sMatch.content;
-                // Opportunistically persist full content to Firestore
-                updateDoc(doc(db, 'blog_posts', docId), { content, readTime: sMatch.readTime || '10 min read' }).catch(() => {});
+              if (sMatch && sMatch.content) {
+                const sCleanedContent = sMatch.content.replace(/\*\*/g, '');
+                if (sCleanedContent.length >= content.length) {
+                  content = sCleanedContent;
+                }
               }
             }
           } catch (_) {}
 
+          // If Firestore doc had any asterisks, persist cleaned text back to Firestore
+          if (docData.content?.includes('**') || docData.title?.includes('**') || docData.excerpt?.includes('**')) {
+            updateDoc(doc(db, 'blog_posts', docId), {
+              content,
+              title: cleanedTitle,
+              excerpt: cleanedExcerpt
+            }).catch(() => {});
+          }
+
           const loadedPost: BlogPostData = {
             id: docId,
-            title: docData.title,
+            title: cleanedTitle,
             slug: docData.slug,
-            excerpt: docData.excerpt,
+            excerpt: cleanedExcerpt,
             content: content,
             coverImage: docData.coverImage || '/blog_saturn_bg.jpg',
-            category: docData.category || 'Engineering',
-            industry: docData.industry || 'Enterprise SaaS',
+            category: cleanPlainText(docData.category) || 'Engineering',
+            industry: cleanPlainText(docData.industry) || 'Enterprise SaaS',
             readTime: docData.readTime || '5 min read',
             author: docData.author || {
               name: 'AIMLPartner Research Lab',
               role: 'Enterprise AI & Distributed Systems',
               avatar: '/team_deepak.jpg'
             },
-            tags: docData.tags || [],
+            tags: (docData.tags || []).map((t: string) => cleanPlainText(t)),
             status: docData.status || 'published',
             publishedAt: docData.publishedAt?.toDate ? docData.publishedAt.toDate().toISOString() : docData.publishedAt || new Date().toISOString(),
-            seo: docData.seo || {
-              metaTitle: docData.title,
-              metaDescription: docData.excerpt,
-              keywords: docData.tags || []
+            seo: {
+              metaTitle: cleanPlainText(docData.seo?.metaTitle || docData.title),
+              metaDescription: cleanPlainText(docData.seo?.metaDescription || docData.excerpt),
+              keywords: (docData.seo?.keywords || docData.tags || []).map((k: string) => cleanPlainText(k))
             },
             cta: docData.cta,
             views: (docData.views || 0) + 1
@@ -282,12 +339,36 @@ export function BlogPost() {
             views: increment(1)
           }).catch(() => {});
 
-          // Fetch other posts for related section
+          // Fetch other posts for related section and auto-clean any with stars in Firestore
           const allSnap = await getDocs(collection(db, 'blog_posts'));
+          allSnap.docs.forEach(d => {
+            const dData = d.data();
+            const rawContent = dData.content || '';
+            if (rawContent.includes('**') || dData.title?.includes('**') || dData.excerpt?.includes('**') || dData.category?.includes('**')) {
+              updateDoc(doc(db, 'blog_posts', d.id), {
+                title: cleanPlainText(dData.title),
+                excerpt: cleanPlainText(dData.excerpt),
+                content: rawContent.replace(/\*\*/g, ''),
+                category: cleanPlainText(dData.category) || 'Engineering',
+                industry: cleanPlainText(dData.industry) || 'Enterprise SaaS',
+                tags: Array.isArray(dData.tags) ? dData.tags.map((t: string) => cleanPlainText(t)) : []
+              }).catch(() => {});
+            }
+          });
+
           let others = allSnap.docs
             .filter(d => d.id !== docId && d.data().status !== 'draft')
             .slice(0, 3)
-            .map(d => ({ id: d.id, ...d.data() } as any));
+            .map(d => {
+              const dData = d.data();
+              return {
+                id: d.id,
+                ...dData,
+                title: cleanPlainText(dData.title),
+                excerpt: cleanPlainText(dData.excerpt),
+                content: (dData.content || '').replace(/\*\*/g, '')
+              } as any;
+            });
 
           if (others.length === 0) {
             try {
@@ -295,7 +376,12 @@ export function BlogPost() {
               if (res.ok) {
                 const sPosts: any[] = await res.json();
                 others = Array.isArray(sPosts)
-                  ? sPosts.filter((p: any) => p.slug !== slug && p.status !== 'draft').slice(0, 3)
+                  ? sPosts.filter((p: any) => p.slug !== slug && p.status !== 'draft').slice(0, 3).map((p: any) => ({
+                      ...p,
+                      title: cleanPlainText(p.title),
+                      excerpt: cleanPlainText(p.excerpt),
+                      content: (p.content || '').replace(/\*\*/g, '')
+                    }))
                   : [];
               }
             } catch (_) {}
@@ -315,9 +401,17 @@ export function BlogPost() {
           const sPosts: any[] = await res.json();
           const serverMatch = Array.isArray(sPosts) ? sPosts.find(p => p.slug === slug) : null;
           if (serverMatch && isMounted) {
+            serverMatch.title = cleanPlainText(serverMatch.title);
+            serverMatch.excerpt = cleanPlainText(serverMatch.excerpt);
+            serverMatch.content = (serverMatch.content || '').replace(/\*\*/g, '');
             setPost(serverMatch);
             const others = Array.isArray(sPosts)
-              ? sPosts.filter((p: any) => p.slug !== slug && p.status !== 'draft').slice(0, 3)
+              ? sPosts.filter((p: any) => p.slug !== slug && p.status !== 'draft').slice(0, 3).map((p: any) => ({
+                  ...p,
+                  title: cleanPlainText(p.title),
+                  excerpt: cleanPlainText(p.excerpt),
+                  content: (p.content || '').replace(/\*\*/g, '')
+                }))
               : [];
             setRelatedPosts(others);
             setLoading(false);
@@ -420,13 +514,13 @@ export function BlogPost() {
 
       // Blockquotes (> Quote or Takeaway)
       if (trimmed.startsWith('>')) {
-        const quoteText = trimmed.replace(/^>\s*/gm, '').replace(/\*\*/g, '');
+        const quoteText = trimmed.replace(/^>\s*/gm, '').replace(/[""]/g, '"');
         return (
           <div key={secIdx} className="my-8 p-6 rounded-2xl bg-gradient-to-r from-[#FF5500]/10 via-[#FF5500]/5 to-transparent border-l-4 border-[#FF5500] backdrop-blur-sm">
             <div className="flex items-start gap-3">
               <Quote size={20} className="text-[#FF5500] shrink-0 mt-0.5" />
               <div className="font-sans text-base sm:text-lg text-zinc-200 italic leading-relaxed font-medium">
-                {quoteText}
+                {renderInlineMarkdown(quoteText)}
               </div>
             </div>
           </div>
@@ -440,7 +534,7 @@ export function BlogPost() {
 
       // Heading 1 (# in markdown body)
       if (trimmed.startsWith('# ')) {
-        const titleText = trimmed.replace(/^#\s+/, '').replace(/\*\*/g, '').trim();
+        const titleText = cleanPlainText(trimmed.replace(/^#\s+/, ''));
         if (!isMeaningfulHeading(titleText)) return null;
         if (post && titleText.toLowerCase() === post.title.toLowerCase()) {
           return null;
@@ -462,7 +556,7 @@ export function BlogPost() {
 
       // Heading 2 (##)
       if (trimmed.startsWith('## ')) {
-        const titleText = trimmed.replace('## ', '').replace(/\*\*/g, '').trim();
+        const titleText = cleanPlainText(trimmed.replace(/^##\s+/, ''));
         if (!isMeaningfulHeading(titleText)) return null;
         const isFirst = headingCounter++ === 0;
         const headingId = getUniqueId(generateHeadingId(titleText), seenIds);
@@ -481,7 +575,7 @@ export function BlogPost() {
 
       // Heading 3 (###)
       if (trimmed.startsWith('### ')) {
-        const titleText = trimmed.replace('### ', '').replace(/\*\*/g, '').trim();
+        const titleText = cleanPlainText(trimmed.replace(/^###\s+/, ''));
         if (!isMeaningfulHeading(titleText)) return null;
         headingCounter++;
         const headingId = getUniqueId(generateHeadingId(titleText), seenIds);
@@ -501,23 +595,12 @@ export function BlogPost() {
           <ul key={secIdx} className="my-5 space-y-2.5 pl-2">
             {items.map((item, itemIdx) => {
               const rawText = item.replace(/^[-*]\s+/, '');
-              // Check for bold title format: **Title**: Description
-              const boldMatch = rawText.match(/^\*\*(.*?)\*\*:(.*)/);
-              if (boldMatch) {
-                return (
-                  <li key={itemIdx} className="flex items-start gap-3 text-sm sm:text-base text-zinc-300 leading-relaxed">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#FF5500] mt-2.5 shrink-0 shadow-[0_0_8px_rgba(255,85,0,0.8)]" />
-                    <div>
-                      <strong className="text-white font-semibold">{boldMatch[1]}:</strong>
-                      <span>{boldMatch[2]}</span>
-                    </div>
-                  </li>
-                );
-              }
               return (
                 <li key={itemIdx} className="flex items-start gap-3 text-sm sm:text-base text-zinc-300 leading-relaxed">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#FF5500] mt-2.5 shrink-0 shadow-[0_0_8px_rgba(255,85,0,0.8)]" />
-                  <span>{rawText}</span>
+                  <div className="flex-1">
+                    {renderInlineMarkdown(rawText)}
+                  </div>
                 </li>
               );
             })}
@@ -537,7 +620,9 @@ export function BlogPost() {
                   <span className="font-mono text-xs font-bold text-[#FF5500] bg-[#FF5500]/10 border border-[#FF5500]/20 rounded-md w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">
                     {itemIdx + 1}
                   </span>
-                  <span>{cleaned}</span>
+                  <div className="flex-1">
+                    {renderInlineMarkdown(cleaned)}
+                  </div>
                 </li>
               );
             })}
@@ -548,12 +633,7 @@ export function BlogPost() {
       // Regular Paragraph with bold formatting support
       return (
         <p key={secIdx} className="text-sm sm:text-base text-zinc-300 leading-relaxed my-4 font-normal">
-          {trimmed.split(/(\*\*.*?\*\*)/g).map((chunk, cIdx) => {
-            if (chunk.startsWith('**') && chunk.endsWith('**')) {
-              return <strong key={cIdx} className="text-white font-semibold">{chunk.slice(2, -2)}</strong>;
-            }
-            return chunk;
-          })}
+          {renderInlineMarkdown(trimmed)}
         </p>
       );
     });
@@ -623,8 +703,8 @@ export function BlogPost() {
   return (
     <div className="bg-black text-white min-h-screen font-sans selection:bg-[#FF5500] selection:text-black relative overflow-x-clip">
       <SEO
-        title={post.seo?.metaTitle || post.title}
-        description={post.seo?.metaDescription || post.excerpt}
+        title={cleanPlainText(post.seo?.metaTitle || post.title)}
+        description={cleanPlainText(post.seo?.metaDescription || post.excerpt)}
         url={shareUrl}
         schema={articleSchema}
       />
@@ -682,11 +762,11 @@ export function BlogPost() {
             </div>
 
             <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1] mb-6 drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
-              {post.title}
+              {cleanPlainText(post.title)}
             </h1>
 
             <p className="font-sans text-base sm:text-lg md:text-xl text-zinc-100 leading-relaxed font-normal max-w-3xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)] mb-8">
-              {post.excerpt}
+              {cleanPlainText(post.excerpt)}
             </p>
           </div>
 
@@ -764,7 +844,7 @@ export function BlogPost() {
                     key={tIdx} 
                     className="text-xs font-mono text-zinc-300 bg-white/5 border border-white/10 px-3 py-1 rounded-full hover:border-[#FF5500]/50 hover:text-[#FF5500] transition-colors"
                   >
-                    #{tag}
+                    #{cleanPlainText(tag)}
                   </span>
                 ))}
               </div>
@@ -956,10 +1036,10 @@ export function BlogPost() {
                       </div>
                     </div>
                     <h4 className="font-display text-lg font-bold text-white group-hover:text-[#FF5500] transition-colors leading-snug mb-2 line-clamp-2">
-                      {rel.title}
+                      {cleanPlainText(rel.title)}
                     </h4>
                     <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
-                      {rel.excerpt}
+                      {cleanPlainText(rel.excerpt)}
                     </p>
                   </div>
                   <div className="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-xs text-zinc-500 font-mono">

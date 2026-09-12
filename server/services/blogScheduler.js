@@ -22,9 +22,20 @@ export function loadGeneratedPostsFromDisk() {
     if (fs.existsSync(postsFilePath)) {
       const raw = fs.readFileSync(postsFilePath, 'utf8');
       const list = JSON.parse(raw);
-      return Array.isArray(list) 
-        ? list.filter(p => p.id !== 'gen_test_01' && p.slug !== 'private-llms-zero-data-leakage-financial-services-vpc')
-        : [];
+      if (Array.isArray(list)) {
+        const cleanStr = (s) => typeof s === 'string' ? s.replace(/\*\*/g, '').replace(/\*/g, '').trim() : s;
+        return list
+          .filter(p => p.id !== 'gen_test_01' && p.slug !== 'private-llms-zero-data-leakage-financial-services-vpc')
+          .map(p => ({
+            ...p,
+            title: cleanStr(p.title),
+            excerpt: cleanStr(p.excerpt),
+            content: typeof p.content === 'string' ? p.content.replace(/\*\*/g, '') : p.content,
+            category: cleanStr(p.category),
+            industry: cleanStr(p.industry),
+            tags: Array.isArray(p.tags) ? p.tags.map(cleanStr) : p.tags
+          }));
+      }
     }
   } catch (err) {
     console.error('[BlogScheduler] Failed to load posts from disk:', err);
@@ -34,12 +45,22 @@ export function loadGeneratedPostsFromDisk() {
 
 export function saveGeneratedPostToDisk(post) {
   try {
+    const cleanStr = (s) => typeof s === 'string' ? s.replace(/\*\*/g, '').replace(/\*/g, '').trim() : s;
+    const cleanPost = {
+      ...post,
+      title: cleanStr(post.title),
+      excerpt: cleanStr(post.excerpt),
+      content: typeof post.content === 'string' ? post.content.replace(/\*\*/g, '') : post.content,
+      category: cleanStr(post.category),
+      industry: cleanStr(post.industry),
+      tags: Array.isArray(post.tags) ? post.tags.map(cleanStr) : post.tags
+    };
     const list = loadGeneratedPostsFromDisk();
-    const existingIdx = list.findIndex(p => p.slug === post.slug || (post.id && p.id === post.id));
+    const existingIdx = list.findIndex(p => p.slug === cleanPost.slug || (cleanPost.id && p.id === cleanPost.id));
     if (existingIdx >= 0) {
-      list[existingIdx] = { ...list[existingIdx], ...post, updatedAt: new Date().toISOString() };
+      list[existingIdx] = { ...list[existingIdx], ...cleanPost, updatedAt: new Date().toISOString() };
     } else {
-      list.unshift(post);
+      list.unshift(cleanPost);
     }
     fs.writeFileSync(postsFilePath, JSON.stringify(list, null, 2), 'utf8');
   } catch (err) {

@@ -199,7 +199,10 @@ Return a strictly valid JSON object conforming to this EXACT schema:
   "tags": ["Tag1", "Tag2", "Tag3", "Tag4"]
 }
 
-IMPORTANT:
+CRITICAL FORMATTING & SYNTAX RULES:
+- Never include literal markdown asterisks (**) inside "title", "excerpt", "category", "tags", or "keywords".
+- In "content", never put asterisks around heading titles (e.g. write "## System Architecture", NOT "## **System Architecture**").
+- Never leave orphan or unclosed asterisks in list items.
 - Return strictly valid JSON conforming to the schema.
 - Escape all double-quotes inside markdown strings as \" and do NOT use raw unescaped newlines inside JSON string literals.
 - Ensure all braces and brackets are properly closed.`;
@@ -240,10 +243,23 @@ IMPORTANT:
 
   const parsed = parseGeminiJson(response.text);
 
+  // Helper to sanitize plain text fields: strip any stray markdown stars
+  const cleanStr = (str) => typeof str === 'string' ? str.replace(/\*\*/g, '').replace(/\*/g, '').trim() : str;
+
   // Fallback sanity checks on generated fields
-  const title = parsed.title || 'Architecting Enterprise AI Systems for Scalable Operations';
-  const slug = (parsed.slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')).toLowerCase();
-  const category = parsed.category || 'Engineering';
+  const title = cleanStr(parsed.title || 'Architecting Enterprise AI Systems for Scalable Operations');
+  const slug = (cleanStr(parsed.slug) || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')).toLowerCase();
+  const category = cleanStr(parsed.category || 'Engineering');
+  const industryClean = cleanStr(parsed.industry || industry);
+  const excerpt = cleanStr(parsed.excerpt || `An in-depth architectural guide on ${niche} for modern ${industryClean} teams.`);
+  const tags = Array.isArray(parsed.tags) && parsed.tags.length > 0 
+    ? parsed.tags.map(cleanStr) 
+    : [category, industryClean, 'AI'];
+  const metaTitle = cleanStr(parsed.seo?.metaTitle || `${title} | AIMLPartner`);
+  const metaDescription = cleanStr(parsed.seo?.metaDescription || excerpt);
+  const seoKeywords = Array.isArray(parsed.seo?.keywords) 
+    ? parsed.seo.keywords.map(cleanStr) 
+    : keywords.map(cleanStr);
 
   // Generate a dedicated 16:9 widescreen landscape AI cover image (with fallback to curated landscape images)
   let assignedCoverImage;
@@ -251,35 +267,35 @@ IMPORTANT:
     assignedCoverImage = await generateLandscapeBlogCoverImage({
       title,
       niche,
-      industry: parsed.industry || industry,
+      industry: industryClean,
       slug,
       category,
-      fallbackImage: selectCuratedCoverImage(category, parsed.industry || industry)
+      fallbackImage: selectCuratedCoverImage(category, industryClean)
     });
   } catch (imgErr) {
     console.warn('[BlogGenerator] Landscape image generator notice:', imgErr.message || imgErr);
-    assignedCoverImage = selectCuratedCoverImage(category, parsed.industry || industry);
+    assignedCoverImage = selectCuratedCoverImage(category, industryClean);
   }
 
   const postPayload = {
     title,
     slug,
-    excerpt: parsed.excerpt || `An in-depth architectural guide on ${niche} for modern ${industry} teams.`,
+    excerpt,
     category,
-    industry: parsed.industry || industry,
+    industry: industryClean,
     readTime: parsed.readTime || '6 min read',
-    content: parsed.content || 'Content generation encountered an issue.',
+    content: (parsed.content || 'Content generation encountered an issue.').replace(/\*\*/g, '').trim(),
     coverImage: assignedCoverImage,
     author: {
       name: 'AIMLPartner Research Lab',
       role: 'Enterprise AI & Distributed Systems',
       avatar: '/team_deepak.jpg'
     },
-    tags: Array.isArray(parsed.tags) && parsed.tags.length > 0 ? parsed.tags : [category, industry, 'AI'],
+    tags,
     seo: {
-      metaTitle: parsed.seo?.metaTitle || `${title} | AIMLPartner`,
-      metaDescription: parsed.seo?.metaDescription || parsed.excerpt || `Read our latest engineering notes on ${title}.`,
-      keywords: Array.isArray(parsed.seo?.keywords) ? parsed.seo.keywords : keywords
+      metaTitle,
+      metaDescription,
+      keywords: seoKeywords
     },
     cta: {
       type: cta.type,
@@ -295,7 +311,7 @@ IMPORTANT:
       model: 'gemini-2.5-flash',
       durationMs: Date.now() - startTime,
       niche,
-      industry,
+      industry: industryClean,
       tone
     }
   };

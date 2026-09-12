@@ -35,6 +35,19 @@ export async function saveBlogPostHandler(req, res) {
     if (!post || !post.title) {
       return res.status(400).json({ error: 'Invalid blog post payload' });
     }
+    const cleanStr = (s) => typeof s === 'string' ? s.replace(/\*\*/g, '').replace(/\*/g, '').trim() : s;
+    post.title = cleanStr(post.title);
+    if (post.excerpt) post.excerpt = cleanStr(post.excerpt);
+    if (post.category) post.category = cleanStr(post.category);
+    if (post.content && typeof post.content === 'string') {
+      post.content = post.content.replace(/\*\*/g, '').trim();
+    }
+    if (Array.isArray(post.tags)) post.tags = post.tags.map(cleanStr);
+    if (post.seo) {
+      if (post.seo.metaTitle) post.seo.metaTitle = cleanStr(post.seo.metaTitle);
+      if (post.seo.metaDescription) post.seo.metaDescription = cleanStr(post.seo.metaDescription);
+      if (Array.isArray(post.seo.keywords)) post.seo.keywords = post.seo.keywords.map(cleanStr);
+    }
     saveGeneratedPostToDisk(post);
     return res.status(200).json({ success: true, post });
   } catch (err) {

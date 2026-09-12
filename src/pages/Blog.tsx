@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { collection, query, getDocs } from 'firebase/firestore';
+import { collection, query, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { SEO } from '../components/SEO';
 import { STARTER_BLOGS, BlogPostData } from '../data/starterBlogs';
+import { cleanPlainText } from './BlogPost';
 import { 
   ArrowUpRight, 
   Search, 
@@ -38,27 +39,51 @@ export function Blog() {
         const postsQuery = query(collection(db, 'blog_posts'));
         const snapshot = await getDocs(postsQuery);
         firestorePosts = snapshot.docs
-          .map(doc => {
-            const data = doc.data();
+          .map(docSnap => {
+            const data = docSnap.data();
+            const rawContent = data.content || '';
+            const cleanContent = rawContent.replace(/\*\*/g, '');
+            const cleanTitle = cleanPlainText(data.title);
+            const cleanExcerpt = cleanPlainText(data.excerpt);
+            const cleanCategory = cleanPlainText(data.category) || 'Engineering';
+            const cleanIndustry = cleanPlainText(data.industry) || 'Cross-Industry';
+            const cleanTags = Array.isArray(data.tags) ? data.tags.map((t: string) => cleanPlainText(t)) : [];
+
+            // Automatically clean Firestore document if any double-asterisks (stars) are present
+            if (rawContent.includes('**') || data.title?.includes('**') || data.excerpt?.includes('**') || data.category?.includes('**')) {
+              updateDoc(doc(db, 'blog_posts', docSnap.id), {
+                title: cleanTitle,
+                excerpt: cleanExcerpt,
+                content: cleanContent,
+                category: cleanCategory,
+                industry: cleanIndustry,
+                tags: cleanTags
+              }).catch(() => {});
+            }
+
             return {
-              id: doc.id,
-              title: data.title,
-              slug: data.slug || doc.id,
-              excerpt: data.excerpt || '',
-              content: data.content || '',
+              id: docSnap.id,
+              title: cleanTitle,
+              slug: data.slug || docSnap.id,
+              excerpt: cleanExcerpt,
+              content: cleanContent,
               coverImage: data.coverImage || '/blog_saturn_bg.jpg',
-              category: data.category || 'Engineering',
-              industry: data.industry || 'Cross-Industry',
+              category: cleanCategory,
+              industry: cleanIndustry,
               readTime: data.readTime || '5 min read',
               author: data.author || {
                 name: 'AIMLPartner Lab',
                 role: 'Enterprise AI Engineer',
                 avatar: '/team_deepak.jpg'
               },
-              tags: data.tags || [],
+              tags: cleanTags,
               status: data.status || 'published',
               publishedAt: data.publishedAt?.toDate ? data.publishedAt.toDate().toISOString() : data.publishedAt || new Date().toISOString(),
-              seo: data.seo || { metaTitle: data.title, metaDescription: data.excerpt, keywords: [] },
+              seo: {
+                metaTitle: cleanPlainText(data.seo?.metaTitle || cleanTitle),
+                metaDescription: cleanPlainText(data.seo?.metaDescription || cleanExcerpt),
+                keywords: Array.isArray(data.seo?.keywords) ? data.seo.keywords.map((k: string) => cleanPlainText(k)) : cleanTags
+              },
               featured: data.featured ?? false,
               views: data.views || 0
             };
@@ -75,7 +100,19 @@ export function Blog() {
       try {
         const res = await fetch('/api/blog/posts');
         const serverPosts = res.ok ? await res.json() : [];
-        const validServer = Array.isArray(serverPosts) ? serverPosts.filter((p: any) => p.status !== 'draft') : [];
+        const validServer = Array.isArray(serverPosts) 
+          ? serverPosts
+              .filter((p: any) => p.status !== 'draft')
+              .map((p: any) => ({
+                ...p,
+                title: cleanPlainText(p.title),
+                excerpt: cleanPlainText(p.excerpt),
+                content: (p.content || '').replace(/\*\*/g, ''),
+                category: cleanPlainText(p.category) || 'Engineering',
+                industry: cleanPlainText(p.industry) || 'Cross-Industry',
+                tags: Array.isArray(p.tags) ? p.tags.map((t: string) => cleanPlainText(t)) : []
+              }))
+          : [];
         const existingSlugs = new Set(firestorePosts.map(p => p.slug));
         const uniqueServer = validServer.filter((sp: any) => !existingSlugs.has(sp.slug));
         uniqueServer.forEach((sp: any) => existingSlugs.add(sp.slug));
@@ -260,11 +297,11 @@ export function Blog() {
                 </div>
 
                 <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight mb-4 group-hover:text-[#FF5500] transition-colors">
-                  {featuredPost.title}
+                  {cleanPlainText(featuredPost.title)}
                 </h2>
 
                 <p className="text-zinc-300 text-sm sm:text-base leading-relaxed line-clamp-3 mb-8 font-medium">
-                  {featuredPost.excerpt}
+                  {cleanPlainText(featuredPost.excerpt)}
                 </p>
 
                 <div className="flex items-center gap-3">
@@ -340,11 +377,11 @@ export function Blog() {
                   </div>
 
                   <h3 className="font-display text-xl font-bold text-white tracking-tight mb-3 group-hover:text-[#FF5500] transition-colors leading-snug line-clamp-2">
-                    {post.title}
+                    {cleanPlainText(post.title)}
                   </h3>
 
                   <p className="font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed line-clamp-3 mb-4">
-                    {post.excerpt}
+                    {cleanPlainText(post.excerpt)}
                   </p>
                 </div>
                 
