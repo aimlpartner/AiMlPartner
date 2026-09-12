@@ -203,6 +203,8 @@ CRITICAL FORMATTING & SYNTAX RULES:
 - Never include literal markdown asterisks (**) inside "title", "excerpt", "category", "tags", or "keywords".
 - In "content", never put asterisks around heading titles (e.g. write "## System Architecture", NOT "## **System Architecture**").
 - Never leave orphan or unclosed asterisks in list items.
+- CODE BLOCKS: Always enclose all code snippets, script examples, Python classes, and JSON architectures inside standard markdown code blocks with language identifiers (e.g. \`\`\`python ... \`\`\` or \`\`\`json ... \`\`\`). NEVER write raw code without triple backtick fences.
+- NEVER use Python comments (#) as markdown headings. Headings (##, ###) must ONLY be used for real article section titles (e.g. '## Strategic Implementation', NEVER '# Define Custom Tools').
 - Return strictly valid JSON conforming to the schema.
 - Escape all double-quotes inside markdown strings as \" and do NOT use raw unescaped newlines inside JSON string literals.
 - Ensure all braces and brackets are properly closed.`;

@@ -95,32 +95,216 @@ export function renderInlineMarkdown(text: string): React.ReactNode {
   });
 }
 
+export interface MarkdownBlock {
+  type: 'code' | 'heading' | 'hr' | 'blockquote' | 'bullet-list' | 'ordered-list' | 'paragraph';
+  content?: string;
+  lang?: string;
+  level?: number;
+  items?: string[];
+  text?: string;
+}
+
+export function isCodeLine(line: string): boolean {
+  const t = line.trim();
+  if (!t) return false;
+  return (
+    t.startsWith('class ') ||
+    t.startsWith('def ') ||
+    t.startsWith('import ') ||
+    t.startsWith('from ') ||
+    t.startsWith('print(') ||
+    t.startsWith('return ') ||
+    t.startsWith('@') ||
+    t.startsWith('self.') ||
+    t.startsWith('name =') ||
+    t.startsWith('description =') ||
+    t.startsWith('tool =') ||
+    (t.startsWith('#') && /\b(class|def|tool|import|simulate|API|check|logic|pattern|instantiate)\b/i.test(t)) ||
+    (t.startsWith('# ---') && t.endsWith('---')) ||
+    /^[a-zA-Z_]\w*\s*=\s*/.test(t)
+  );
+}
+
+export function isRealHeading(line: string): boolean {
+  const match = line.match(/^(#{1,3})\s+(.*)$/);
+  if (!match) return false;
+  const level = match[1].length;
+  const text = match[2].trim().replace(/\*\*/g, '').replace(/\*/g, '');
+  if (text.startsWith('---') || text.length > 100) return false;
+  if (/\b(class|def|import|from|return|print|self|BaseTool|lambda)\b/.test(text)) return false;
+  if (level === 1 && (/^[a-z]/.test(text) || /\b(tools|instantiate|step|define|simulate|run)\b/i.test(text))) {
+    return false;
+  }
+  const stripped = text.replace(/^[\d\.\:\)\s-]+/, '').trim();
+  return stripped.length >= 2;
+}
+
+export function normalizeMarkdownCodeBlocks(content: string): string {
+  if (!content) return '';
+  const fenceMatches = content.match(/```/g);
+  const fenceCount = fenceMatches ? fenceMatches.length : 0;
+  if (fenceCount % 2 !== 0) {
+    content += '\n```';
+  }
+  return content;
+}
+
+export function parseMarkdownBlocks(markdown: string): MarkdownBlock[] {
+  if (!markdown) return [];
+  const lines = markdown.split(/\r?\n/);
+  const blocks: MarkdownBlock[] = [];
+
+  let i = 0;
+  while (i < lines.length) {
+    const rawLine = lines[i];
+    const trimmed = rawLine.trim();
+
+    // Skip empty lines
+    if (!trimmed) {
+      i++;
+      continue;
+    }
+
+    // Fenced Code Block (```)
+    if (trimmed.startsWith('```')) {
+      const lang = trimmed.replace(/^```/, '').trim() || 'code';
+      const codeLines: string[] = [];
+      i++;
+      while (i < lines.length && !lines[i].trim().startsWith('```')) {
+        codeLines.push(lines[i]);
+        i++;
+      }
+      if (i < lines.length && lines[i].trim().startsWith('```')) {
+        i++;
+      }
+      blocks.push({ type: 'code', lang, content: codeLines.join('\n') });
+      continue;
+    }
+
+    // Horizontal rule
+    if (/^[-*_]{3,}$/.test(trimmed)) {
+      blocks.push({ type: 'hr' });
+      i++;
+      continue;
+    }
+
+    // Real Heading (# , ## , ### )
+    if (isRealHeading(rawLine)) {
+      const match = rawLine.match(/^(#{1,3})\s+(.*)$/);
+      if (match) {
+        blocks.push({
+          type: 'heading',
+          level: match[1].length,
+          text: match[2].trim().replace(/\*\*/g, '').replace(/\*/g, '')
+        });
+        i++;
+        continue;
+      }
+    }
+
+    // Blockquote (>)
+    if (trimmed.startsWith('>')) {
+      const quoteLines: string[] = [];
+      while (i < lines.length && lines[i].trim().startsWith('>')) {
+        quoteLines.push(lines[i].trim().replace(/^>\s*/, ''));
+        i++;
+      }
+      blocks.push({ type: 'blockquote', content: quoteLines.join(' ') });
+      continue;
+    }
+
+    // Bullet List (- or *)
+    if (/^[-*]\s+/.test(trimmed)) {
+      const items: string[] = [];
+      while (i < lines.length && /^[-*]\s+/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^[-*]\s+/, ''));
+        i++;
+      }
+      blocks.push({ type: 'bullet-list', items });
+      continue;
+    }
+
+    // Ordered List (1. , 2. )
+    if (/^\d+\.\s+/.test(trimmed)) {
+      const items: string[] = [];
+      while (i < lines.length && /^\d+\.\s+/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^\d+\.\s+/, ''));
+        i++;
+      }
+      blocks.push({ type: 'ordered-list', items });
+      continue;
+    }
+
+    // Standalone dangling numbers
+    if (/^\d+[\.\:\)]*$/.test(trimmed)) {
+      i++;
+      continue;
+    }
+
+    // Unfenced Code detection (Python, JS, Shell, JSON)
+    if (isCodeLine(trimmed)) {
+      const codeLines: string[] = [];
+      while (i < lines.length) {
+        if (isRealHeading(lines[i])) break;
+        if (lines[i].trim().startsWith('```')) break;
+        if (!lines[i].trim()) {
+          if (
+            i + 1 < lines.length &&
+            (isRealHeading(lines[i + 1]) || (!isCodeLine(lines[i + 1]) && lines[i + 1].trim().length > 60))
+          ) {
+            break;
+          }
+        }
+        codeLines.push(lines[i]);
+        i++;
+      }
+      blocks.push({ type: 'code', lang: 'python', content: codeLines.join('\n').trim() });
+      continue;
+    }
+
+    // Regular Paragraph
+    const paraLines: string[] = [];
+    while (
+      i < lines.length &&
+      lines[i].trim() &&
+      !lines[i].trim().startsWith('```') &&
+      !isRealHeading(lines[i]) &&
+      !lines[i].trim().startsWith('>') &&
+      !/^[-*]\s+/.test(lines[i].trim()) &&
+      !/^\d+\.\s+/.test(lines[i].trim()) &&
+      !/^[-*_]{3,}$/.test(lines[i].trim()) &&
+      !isCodeLine(lines[i].trim())
+    ) {
+      paraLines.push(lines[i]);
+      i++;
+    }
+
+    if (paraLines.length > 0) {
+      blocks.push({ type: 'paragraph', content: paraLines.join('\n') });
+    } else {
+      i++;
+    }
+  }
+
+  return blocks;
+}
+
 // Helper to extract table of contents from markdown
 function extractHeadings(markdownText: string, postTitle?: string) {
   if (!markdownText) return [];
-  const lines = markdownText.split('\n');
+  const blocks = parseMarkdownBlocks(markdownText);
   const headings: { id: string; text: string; level: number }[] = [];
   const seenIds = new Set<string>();
 
-  lines.forEach(line => {
-    const match = line.match(/^(#{1,3})\s+(.*)/);
-    if (match) {
-      const level = match[1].length;
-      const text = cleanPlainText(match[2]);
-      // Skip invalid/orphan numbers like "2." or empty headings
-      if (!isMeaningfulHeading(text)) {
-        return;
-      }
-      // If it repeats the main post title, skip it
-      if (level === 1 && postTitle && text.toLowerCase() === postTitle.toLowerCase()) {
-        return;
-      }
-      const rawId = generateHeadingId(text);
-      if (!rawId) return;
-      const id = getUniqueId(rawId, seenIds);
-      headings.push({ id, text, level });
-    }
+  blocks.forEach(b => {
+    if (b.type !== 'heading' || !b.text) return;
+    if (b.level === 1 && postTitle && b.text.toLowerCase() === postTitle.toLowerCase()) return;
+    const rawId = generateHeadingId(b.text);
+    if (!rawId) return;
+    const id = getUniqueId(rawId, seenIds);
+    headings.push({ id, text: b.text, level: b.level || 2 });
   });
+
   return headings;
 }
 
@@ -277,7 +461,7 @@ export function BlogPost() {
         if (!snapshot.empty && isMounted) {
           const docData = snapshot.docs[0].data();
           const docId = snapshot.docs[0].id;
-          let content = (docData.content || '').replace(/\*\*/g, '');
+          let content = normalizeMarkdownCodeBlocks(docData.content || '').replace(/\*\*/g, '');
           const cleanedTitle = cleanPlainText(docData.title);
           const cleanedExcerpt = cleanPlainText(docData.excerpt);
 
@@ -288,7 +472,7 @@ export function BlogPost() {
               const sPosts: any[] = await sRes.json();
               const sMatch = Array.isArray(sPosts) ? sPosts.find(p => p.slug === slug) : null;
               if (sMatch && sMatch.content) {
-                const sCleanedContent = sMatch.content.replace(/\*\*/g, '');
+                const sCleanedContent = normalizeMarkdownCodeBlocks(sMatch.content).replace(/\*\*/g, '');
                 if (sCleanedContent.length >= content.length) {
                   content = sCleanedContent;
                 }
@@ -296,8 +480,8 @@ export function BlogPost() {
             }
           } catch (_) {}
 
-          // If Firestore doc had any asterisks, persist cleaned text back to Firestore
-          if (docData.content?.includes('**') || docData.title?.includes('**') || docData.excerpt?.includes('**')) {
+          // If Firestore doc had any asterisks or needs code normalization, persist cleaned text back to Firestore
+          if (content !== docData.content || docData.title?.includes('**') || docData.excerpt?.includes('**')) {
             updateDoc(doc(db, 'blog_posts', docId), {
               content,
               title: cleanedTitle,
@@ -460,29 +644,25 @@ export function BlogPost() {
   const renderMarkdownContent = (markdownText: string) => {
     if (!markdownText) return null;
 
-    const sections = markdownText.split('\n\n');
+    const blocks = parseMarkdownBlocks(markdownText);
     let codeBlockCounter = 0;
     let headingCounter = 0;
     const seenIds = new Set<string>();
 
-    return sections.map((sec, secIdx) => {
-      const trimmed = sec.trim();
-
+    return blocks.map((block, idx) => {
       // Horizontal rule
-      if (trimmed === '---') {
-        return <hr key={secIdx} className="border-white/10 my-10" />;
+      if (block.type === 'hr') {
+        return <hr key={idx} className="border-white/10 my-10" />;
       }
 
-      // Code blocks (```language ... ```)
-      if (trimmed.startsWith('```')) {
-        const lines = trimmed.split('\n');
-        const firstLine = lines[0].replace('```', '').trim();
-        const codeLang = firstLine || 'code';
-        const codeBody = lines.slice(1, lines[lines.length - 1].startsWith('```') ? -1 : undefined).join('\n');
+      // Code blocks
+      if (block.type === 'code') {
         const thisCodeIdx = codeBlockCounter++;
+        const codeLang = block.lang || 'code';
+        const codeBody = block.content || '';
 
         return (
-          <div key={secIdx} className="my-8 rounded-2xl overflow-hidden border border-white/10 bg-[#0A0A0C] shadow-2xl relative group">
+          <div key={idx} className="my-8 rounded-2xl overflow-hidden border border-white/10 bg-[#0A0A0C] shadow-2xl relative group">
             <div className="flex items-center justify-between px-4 py-2.5 bg-white/[0.03] border-b border-white/10 text-xs font-mono text-zinc-400">
               <div className="flex items-center gap-2">
                 <Terminal size={14} className="text-[#FF5500]" />
@@ -512,128 +692,89 @@ export function BlogPost() {
         );
       }
 
-      // Blockquotes (> Quote or Takeaway)
-      if (trimmed.startsWith('>')) {
-        const quoteText = trimmed.replace(/^>\s*/gm, '').replace(/[""]/g, '"');
+      // Blockquotes
+      if (block.type === 'blockquote') {
         return (
-          <div key={secIdx} className="my-8 p-6 rounded-2xl bg-gradient-to-r from-[#FF5500]/10 via-[#FF5500]/5 to-transparent border-l-4 border-[#FF5500] backdrop-blur-sm">
+          <div key={idx} className="my-8 p-6 rounded-2xl bg-gradient-to-r from-[#FF5500]/10 via-[#FF5500]/5 to-transparent border-l-4 border-[#FF5500] backdrop-blur-sm">
             <div className="flex items-start gap-3">
               <Quote size={20} className="text-[#FF5500] shrink-0 mt-0.5" />
               <div className="font-sans text-base sm:text-lg text-zinc-200 italic leading-relaxed font-medium">
-                {renderInlineMarkdown(quoteText)}
+                {renderInlineMarkdown(block.content || '')}
               </div>
             </div>
           </div>
         );
       }
 
-      // Standalone dangling numbers or punctuation (e.g. "2." or "3")
-      if (/^\d+[\.\:\)]*$/.test(trimmed)) {
-        return null;
-      }
-
-      // Heading 1 (# in markdown body)
-      if (trimmed.startsWith('# ')) {
-        const titleText = cleanPlainText(trimmed.replace(/^#\s+/, ''));
-        if (!isMeaningfulHeading(titleText)) return null;
-        if (post && titleText.toLowerCase() === post.title.toLowerCase()) {
+      // Headings
+      if (block.type === 'heading' && block.text) {
+        if (block.level === 1 && post && block.text.toLowerCase() === post.title.toLowerCase()) {
           return null;
         }
+        const headingId = getUniqueId(generateHeadingId(block.text), seenIds);
         const isFirst = headingCounter++ === 0;
-        const headingId = getUniqueId(generateHeadingId(titleText), seenIds);
-        return (
-          <div key={secIdx} id={headingId} className={`scroll-mt-28 ${isFirst ? 'pt-1' : 'pt-8'} mb-6`}>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-white tracking-tight leading-tight flex items-baseline gap-3 group">
-              <span>{titleText}</span>
-              <a href={`#${headingId}`} className="text-zinc-600 hover:text-[#FF5500] opacity-0 group-hover:opacity-100 transition-opacity text-sm font-mono font-normal">
-                #
-              </a>
-            </h2>
-            <div className="h-0.5 w-20 bg-gradient-to-r from-[#FF5500] via-orange-400 to-transparent mt-3 mb-4" />
-          </div>
-        );
-      }
 
-      // Heading 2 (##)
-      if (trimmed.startsWith('## ')) {
-        const titleText = cleanPlainText(trimmed.replace(/^##\s+/, ''));
-        if (!isMeaningfulHeading(titleText)) return null;
-        const isFirst = headingCounter++ === 0;
-        const headingId = getUniqueId(generateHeadingId(titleText), seenIds);
-        return (
-          <div key={secIdx} id={headingId} className={`scroll-mt-28 ${isFirst ? 'pt-1' : 'pt-6'} mb-4`}>
-            <h2 className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight leading-tight flex items-baseline gap-3 group">
-              <span>{titleText}</span>
-              <a href={`#${headingId}`} className="text-zinc-600 hover:text-[#FF5500] opacity-0 group-hover:opacity-100 transition-opacity text-sm font-mono font-normal">
-                #
-              </a>
-            </h2>
-            <div className="h-0.5 w-16 bg-gradient-to-r from-[#FF5500] to-transparent mt-2 mb-4" />
-          </div>
-        );
-      }
+        if (block.level === 1 || block.level === 2) {
+          return (
+            <div key={idx} id={headingId} className={`scroll-mt-28 ${isFirst ? 'pt-1' : 'pt-8'} mb-4`}>
+              <h2 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight leading-tight flex items-baseline gap-3 group">
+                <span>{block.text}</span>
+                <a href={`#${headingId}`} className="text-zinc-600 hover:text-[#FF5500] opacity-0 group-hover:opacity-100 transition-opacity text-sm font-mono font-normal">
+                  #
+                </a>
+              </h2>
+              <div className="h-0.5 w-16 bg-gradient-to-r from-[#FF5500] to-transparent mt-2 mb-4" />
+            </div>
+          );
+        }
 
-      // Heading 3 (###)
-      if (trimmed.startsWith('### ')) {
-        const titleText = cleanPlainText(trimmed.replace(/^###\s+/, ''));
-        if (!isMeaningfulHeading(titleText)) return null;
-        headingCounter++;
-        const headingId = getUniqueId(generateHeadingId(titleText), seenIds);
         return (
-          <div key={secIdx} id={headingId} className="scroll-mt-28 pt-4 mb-3">
+          <div key={idx} id={headingId} className="scroll-mt-28 pt-4 mb-3">
             <h3 className="text-xl sm:text-2xl font-display font-bold text-white tracking-tight">
-              {titleText}
+              {block.text}
             </h3>
           </div>
         );
       }
 
-      // Bullet lists
-      if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-        const items = trimmed.split('\n').filter(l => l.trim().startsWith('- ') || l.trim().startsWith('* '));
+      // Bullet List
+      if (block.type === 'bullet-list' && block.items) {
         return (
-          <ul key={secIdx} className="my-5 space-y-2.5 pl-2">
-            {items.map((item, itemIdx) => {
-              const rawText = item.replace(/^[-*]\s+/, '');
-              return (
-                <li key={itemIdx} className="flex items-start gap-3 text-sm sm:text-base text-zinc-300 leading-relaxed">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF5500] mt-2.5 shrink-0 shadow-[0_0_8px_rgba(255,85,0,0.8)]" />
-                  <div className="flex-1">
-                    {renderInlineMarkdown(rawText)}
-                  </div>
-                </li>
-              );
-            })}
+          <ul key={idx} className="my-5 space-y-2.5 pl-2">
+            {block.items.map((item, itemIdx) => (
+              <li key={itemIdx} className="flex items-start gap-3 text-sm sm:text-base text-zinc-300 leading-relaxed">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5500] mt-2.5 shrink-0 shadow-[0_0_8px_rgba(255,85,0,0.8)]" />
+                <div className="flex-1">
+                  {renderInlineMarkdown(item)}
+                </div>
+              </li>
+            ))}
           </ul>
         );
       }
 
-      // Numbered lists (1. , 2. )
-      if (/^\d+\.\s+/.test(trimmed)) {
-        const items = trimmed.split('\n').filter(l => /^\d+\.\s+/.test(l.trim()));
+      // Ordered List
+      if (block.type === 'ordered-list' && block.items) {
         return (
-          <ol key={secIdx} className="my-5 space-y-3 pl-2">
-            {items.map((item, itemIdx) => {
-              const cleaned = item.replace(/^\d+\.\s+/, '');
-              return (
-                <li key={itemIdx} className="flex items-start gap-3 text-sm sm:text-base text-zinc-300 leading-relaxed">
-                  <span className="font-mono text-xs font-bold text-[#FF5500] bg-[#FF5500]/10 border border-[#FF5500]/20 rounded-md w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">
-                    {itemIdx + 1}
-                  </span>
-                  <div className="flex-1">
-                    {renderInlineMarkdown(cleaned)}
-                  </div>
-                </li>
-              );
-            })}
+          <ol key={idx} className="my-5 space-y-3 pl-2">
+            {block.items.map((item, itemIdx) => (
+              <li key={itemIdx} className="flex items-start gap-3 text-sm sm:text-base text-zinc-300 leading-relaxed">
+                <span className="font-mono text-xs font-bold text-[#FF5500] bg-[#FF5500]/10 border border-[#FF5500]/20 rounded-md w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">
+                  {itemIdx + 1}
+                </span>
+                <div className="flex-1">
+                  {renderInlineMarkdown(item)}
+                </div>
+              </li>
+            ))}
           </ol>
         );
       }
 
-      // Regular Paragraph with bold formatting support
+      // Paragraph
       return (
-        <p key={secIdx} className="text-sm sm:text-base text-zinc-300 leading-relaxed my-4 font-normal">
-          {renderInlineMarkdown(trimmed)}
+        <p key={idx} className="text-sm sm:text-base text-zinc-300 leading-relaxed my-4 font-normal">
+          {renderInlineMarkdown(block.content || '')}
         </p>
       );
     });
