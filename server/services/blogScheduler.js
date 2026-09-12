@@ -25,7 +25,7 @@ export function loadGeneratedPostsFromDisk() {
       if (Array.isArray(list)) {
         const cleanStr = (s) => typeof s === 'string' ? s.replace(/\*\*/g, '').replace(/\*/g, '').trim() : s;
         return list
-          .filter(p => p.id !== 'gen_test_01' && p.slug !== 'private-llms-zero-data-leakage-financial-services-vpc')
+          .filter(p => p.id !== 'gen_test_01')
           .map(p => ({
             ...p,
             title: cleanStr(p.title),

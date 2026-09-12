@@ -1,3 +1,5 @@
+import rawStarterBlogs from './starterBlogsData.json';
+
 export interface BlogPostData {
   id: string;
   title: string;
@@ -32,5 +34,4 @@ export interface BlogPostData {
   views?: number;
 }
 
-export const STARTER_BLOGS: BlogPostData[] = [];
-
+export const STARTER_BLOGS: BlogPostData[] = rawStarterBlogs as BlogPostData[];

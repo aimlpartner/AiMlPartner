@@ -570,6 +570,13 @@ export function BlogPost() {
               }
             } catch (_) {}
           }
+
+          if (others.length < 3) {
+            const existingSlugs = new Set([slug, ...others.map(o => o.slug)]);
+            const extra = STARTER_BLOGS.filter(sb => !existingSlugs.has(sb.slug)).slice(0, 3 - others.length);
+            others = [...others, ...extra];
+          }
+
           setRelatedPosts(others);
           setLoading(false);
           return;
@@ -589,7 +596,7 @@ export function BlogPost() {
             serverMatch.excerpt = cleanPlainText(serverMatch.excerpt);
             serverMatch.content = (serverMatch.content || '').replace(/\*\*/g, '');
             setPost(serverMatch);
-            const others = Array.isArray(sPosts)
+            let others = Array.isArray(sPosts)
               ? sPosts.filter((p: any) => p.slug !== slug && p.status !== 'draft').slice(0, 3).map((p: any) => ({
                   ...p,
                   title: cleanPlainText(p.title),
@@ -597,12 +604,39 @@ export function BlogPost() {
                   content: (p.content || '').replace(/\*\*/g, '')
                 }))
               : [];
+
+            if (others.length < 3) {
+              const existingSlugs = new Set([slug, ...others.map(o => o.slug)]);
+              const extra = STARTER_BLOGS.filter(sb => !existingSlugs.has(sb.slug)).slice(0, 3 - others.length);
+              others = [...others, ...extra];
+            }
+
             setRelatedPosts(others);
             setLoading(false);
             return;
           }
         }
       } catch (_) {}
+
+      // Fallback to foundational starter blogs
+      const starterMatch = STARTER_BLOGS.find(sb => 
+        sb.slug === slug || 
+        (slug === 'private-llms-zero-data-leakage-financial-services-vpc' && sb.slug === 'private-llms-financial-services-zero-data-leakage-vpc') ||
+        (slug === 'autonomous-multi-agent-ai-financial-services-private-llms' && sb.slug === 'private-llms-financial-services-zero-data-leakage-vpc')
+      );
+
+      if (starterMatch && isMounted) {
+        setPost({
+          ...starterMatch,
+          title: cleanPlainText(starterMatch.title),
+          excerpt: cleanPlainText(starterMatch.excerpt),
+          content: normalizeMarkdownCodeBlocks(starterMatch.content).replace(/\*\*/g, '')
+        });
+        const others = STARTER_BLOGS.filter(sb => sb.id !== starterMatch.id).slice(0, 3);
+        setRelatedPosts(others);
+        setLoading(false);
+        return;
+      }
 
       if (isMounted) {
         setPost(null);

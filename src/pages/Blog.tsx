@@ -88,8 +88,8 @@ export function Blog() {
               views: data.views || 0
             };
           })
-          // Only show published authentic articles in the public directory (filter out dummy stubs)
-          .filter(p => p.status !== 'draft' && p.id !== 'gen_test_01' && p.slug !== 'private-llms-zero-data-leakage-financial-services-vpc' && !p.id.startsWith('starter-'));
+          // Only filter out unready draft documents and test stubs
+          .filter(p => p.status !== 'draft' && p.id !== 'gen_test_01');
       } catch (err: any) {
         console.warn('Firestore blog query notice, falling back to server and starter blogs:', err?.message || err);
       }
